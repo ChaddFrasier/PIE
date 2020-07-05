@@ -1,10 +1,15 @@
-html
+html 
     head
-        title= title
+        title="Home"
+        style
+            include css/pips2.css
     body
-        h1= "Login to use PIPS2"
-        h3= emailMessage
-        input#email(type="email", name="usgsEmail", placeholder="someone@usgs.gov", pattern=".+(@usgs.gov|@contractor.usgs.gov)")
-        input#passcode(type="password", name="usgsPassword", placeholder="***********")
-        br
-        input(type="button", value="Sign in", role="submit")
+        header
+            .centercontainer(style="text-align:center; margin: 0 auto 0 auto;")
+                h2="Planetary Image Publication Server"
+            .menubar
+                ul
+                    li="File"
+                    li="Options"
+        h4="You Typed " + usgsEmail
+        h5="password was " + usgsPassword
