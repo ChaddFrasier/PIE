@@ -1,32 +1,116 @@
-html {
-    width: 100%;
+:root {
+    --main-bg-color: #0A2239;
+    --primary-color: #1D84B5;
+    --secondary-color: #89BFD2;
+    --accent-color: #124A69;
+    --contrast-color: #3E95A3;
 }
 
-.headerLogo {
+html {
+    width: 100%;
+    overflow-y: hidden;
+    background: var(--main-bg-color);
+    color: var(--contrast-color);
+}
+
+.primarycolor {
+    color: var(--primary-color);
+}
+.secondarycolor {
+    color: var(--secondary-color);
+}
+.accentcolor {
+    color: var(--accent-color);
+}
+.pieLogo {
     width: 20%;
     height: auto;
-    min-width: 150px;
+    min-width: 200px;
     max-width: 350px;
-    border: 1px solid red;
+}
+
+.usgsLogo {
+    height: auto;
+    min-width: 175px;
+    max-width: 350px;
 }
 
 .pips2header {
-    border: 1px solid blue;
     width: 100%;
     display: flex;
 }
 
 .leftcontainer {
-    float: left;
+    margin: auto auto auto 0;
     width: 33.3%;
 }
 .centercontainer {
-    float: center;
-    width: 33.3%;
+    margin: auto auto auto 0;
+    width: auto;
 }
 .rightcontainer {
-    float: right;
+    margin: auto 0 auto auto;
     width: 33.3%;
+}
+
+.mainfooter {
+    display: flex;
+    width: 100%;
+    height: 5%;
+    background: white;
+    color: var(--accent-color);
+}
+
+.leftfooter {
+    vertical-align: center;
+    margin: auto auto auto 0;
+    width: 33.3%;
+    background: inherit;
+    color: inherit;
+}
+.centerfooter {
+    margin: auto;
+    text-align: center;
+    color: inherit;
+    background: inherit;
+    width: auto;
+}
+.rightfooter {  
+    color: inherit;
+    background: inherit;
+    text-align: right;
+    margin: auto 0 auto auto;
+    width: 33.3%;
+}
+.toolbox {
+    margin: 0 auto 0 auto;
+    background: var(--secondary-color);
+    color: black;
+    border: 1px solid black;
+    width: auto;
+    height: auto;
+    min-width: 33.3%;
+    max-height: max-content;
+}
+
+.editbox {
+    margin: 0 0 0 auto;
+    background: var(--primary-color);
+    color: var(--main-bg-color);
+    width: auto;
+    border: 2px dotted red;
+    height: auto;
+    min-width: 66.6%;
+    max-width: 95%;
+    max-height: max-content;
+}
+
+.trademark {
+    height: 5px;
+    width: auto;
+    font-size: 10px;
+    color: var(--secondary-color);
+    float: right;
 }
 
 .pagetitle {

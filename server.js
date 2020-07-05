@@ -32,8 +32,10 @@ app.get('/', (req, res) => {
     console.log(req.url);
     console.log(req.body);
 
+    res.render('index', {usgsEmail:"test@usgs.gov", usgsPassword:"password"});
+
     // render basic pug file
-    res.redirect('/login');
+    // res.redirect('/login');
 });
 
 app.get('/login', (req, res) => {
