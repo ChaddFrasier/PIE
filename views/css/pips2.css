@@ -4,6 +4,7 @@
     --secondary-color: #89BFD2;
     --accent-color: #124A69;
     --contrast-color: #3E95A3;
+    --bar-gradient: linear-gradient(to top right,white, lightgrey);
 }
 
 html {
@@ -11,6 +12,15 @@ html {
     overflow-y: hidden;
     background: var(--main-bg-color);
     color: var(--contrast-color);
+    padding: 0 0 0 0;
+}
+
+body {
+    margin: 2px;
+}
+
+div {
+    border-radius: 1px 1px;
 }
 
 .primarycolor {
@@ -56,53 +66,166 @@ html {
 .mainfooter {
     display: flex;
     width: 100%;
-    height: 5%;
-    background: white;
+    height: 7%;
+    background: var(--bar-gradient);
     color: var(--accent-color);
+    margin: auto auto 0 auto;
+}
+
+.filetoolsbox {
+    border: 1px solid black;
+    width: auto;
+    min-width: 100%;
+    min-height: 0%;
+    max-height: 30%;
+    background: var(--contrast-color);
+    height: 25%;
+    overflow-y: hidden;
+    transition: ease-out .3s;
+}
+
+.edittoolsbox {
+    border: 1px solid black;
+    width: auto;
+    min-width: 100%;
+    min-height: 0%;
+    max-height: 100%;
+    background: var(--contrast-color);
+    height: 90%;
+    overflow-y: hidden;
+    transition: ease-out .3s;
+    margin: 0;
+}
+
+.toolboxminimizebtn {
+    background: transparent;
+    border-radius: 2px 2px;
+    font-size: 10px;
+    vertical-align: top;
+    width: 100%;
+    height: 5%;
+    border: 1px solid transparent;
+    box-shadow: 0 2px #999;
+}
+
+button:hover {
+    border-color: black;
+}
+
+.exportoptionsbar {
+    text-align: right;
+    width: 100%;
+    overflow: hidden;
+}
+
+.buttongroup {
+    margin: 0 0 0 auto;
+}
+
+.buttongroup > button {
+    background-color: transparent;
+    border-right: 1px solid black;
+    color: white;
+    border-radius: 2px 2px;
+}
+
+.footerbuttongroup {
+    margin: 0 0 0 auto;
+}
+
+.footerbuttongroup > a {
+    background-color: transparent;
+    color: inherit;
+    text-decoration: none;
+    margin: auto 5px auto 5px;
+    padding: 5px;
+    box-shadow: 0 2px #999;
+}
+
+.footerbuttongroup > a:hover {
+    cursor: pointer;
+    border: 1px solid black;
+}
+
+.windowminimizebtn {
+    background: transparent;
+    border-radius: 2px 2px;
+    font-size: 10px;
+    vertical-align: top;
+    margin: 0 0 0 auto;
+    border: 1px solid transparent;
+}
+
+.windowoptionsbar {
+    background: var(--bar-gradient);
+    text-align: right;
+    width: 100%;
+    border: 1px solid black;
+    overflow: hidden;
+}
+
+.toolscontainer{
+    width: 100%;
+    overflow: hidden;
+}
+
+.windowsidebar {
+    background: var(--bar-gradient);
+    border: 2px solid black;
+    width: 25px;
 }
 
 .leftfooter {
     vertical-align: center;
     margin: auto auto auto 0;
     width: 33.3%;
-    background: inherit;
     color: inherit;
 }
 .centerfooter {
     margin: auto;
     text-align: center;
     color: inherit;
-    background: inherit;
+    border: 1px solid black;
     width: auto;
 }
+
+.rightfooter:hover {
+    cursor: pointer;
+}
+
 .rightfooter {  
     color: inherit;
-    background: inherit;
-    text-align: right;
+    text-align: center;
     margin: auto 0 auto auto;
     width: 33.3%;
 }
-.toolbox {
+
+.toolboxcontainer {
     margin: 0 auto 0 auto;
-    background: var(--secondary-color);
+    background: var(--main-bg-color);
     color: black;
-    border: 1px solid black;
+    display: flex;
     width: auto;
     height: auto;
-    min-width: 33.3%;
+    max-width: 33.3%;
+    width: 33.3%;
+    transition: ease-in-out .25s;
     max-height: max-content;
+    margin: 0 2.5px 0 0;
 }
 
 .editbox {
-    margin: 0 0 0 auto;
+    margin: 0 auto 0 auto;
     background: var(--primary-color);
     color: var(--main-bg-color);
-    width: auto;
-    border: 2px dotted red;
+    border: 2px solid black;
     height: auto;
+    width:auto;
     min-width: 66.6%;
     max-width: 95%;
     max-height: max-content;
+    border: 2px solid black;
+    transition: ease-in-out .25s;
 }
 
 .trademark {
@@ -133,16 +256,4 @@ html {
     max-width: 75%;
     height: auto;
     border: 1px solid black;
-}
-
-.btnLg {
-    min-width: 100px;
-    max-width: 300px;
-    min-height: 25px;
-    max-height: 75px;
-}
-
-.footerbox {
-    background: coral;
-    margin: auto 0 0 auto;
 }

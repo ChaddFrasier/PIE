@@ -3,6 +3,9 @@ html
         title="Home"
         style
             include css/pips2.css
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js", type="text/javascript")
+        script
+            include scripts/index.js
     body
         header.pips2header 
             .leftcontainer
@@ -12,10 +15,33 @@ html
             .rightcontainer(style="text-align:right")
                 img(src="/images/nasa-logo.png", alt="NasaLogo")
         span(style="display:flex; height:75%;")
-            .toolbox="this is a tool box here"
-            .editbox="this will be where the edit box goes"
+            #toolbox.toolboxcontainer
+                .toolscontainer
+                    .windowoptionsbar(style="display:flex;")
+                        h4(style="margin:0;")="File Tools"
+                        button.windowminimizebtn='▲'
+                    .filetoolsbox="FILE TOOLs"
+                    .windowoptionsbar(style="display:flex;")
+                        h4(style="margin:0;")="Editing Tools"
+                        button.windowminimizebtn='▲'
+                    .edittoolsbox="EDITING TOOLS"
+                .windowsidebar
+                    button.toolboxminimizebtn='◄'
+            
+            #editbox.editbox
+                .exportoptionsbar(style="display:flex;")
+                    .buttongroup
+                        button='Undo'
+                        button='Delete'
+                        button="Draft"
+                        button='Export'
+
         footer.mainfooter
-            .leftfooter="Left side of footer"
-            .centerfooter="center of footer"
-            .rightfooter="right of footer"
-        .trademark(style="heigh:5px;")="@ChaddFrasier 2020"
+            .leftfooter
+                .footerbuttongroup
+                    a(href="")='About'
+                    a(href="")='Contact'
+                    a(href="")='FAQ'
+                    a(href="https://github.com/ChaddFrasier/PIE/issues")='Report an Issue'
+
+            h5.rightfooter="Developed by the USGS Astrogeology Science Center"
