@@ -139,12 +139,25 @@ button:hover {
     text-decoration: none;
     margin: auto 5px auto 5px;
     padding: 5px;
-    box-shadow: 0 2px #999;
+    box-shadow: 0 2px var(--contrast-color);
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+
 }
 
 .footerbuttongroup > a:hover {
     cursor: pointer;
-    border: 1px solid black;
+    background: rgba(62, 149, 163, 0.24);
+}
+
+svg.imagecontainer {
+    border: 1px double red;
+    width: 100%;
+    height: auto;
+    max-height: 95%;
+    background-color: var(--bar-gradient);
 }
 
 .windowminimizebtn {
@@ -200,15 +213,18 @@ button:hover {
     width: 33.3%;
 }
 
+.toolboxcontainer.closed {
+    width: 0% !important;
+}
+
 .toolboxcontainer {
     margin: 0 auto 0 auto;
     background: var(--main-bg-color);
     color: black;
     display: flex;
-    width: auto;
-    height: auto;
-    max-width: 33.3%;
     width: 33.3%;
+    height: auto;
+    max-width: 33.3rem;
     transition: ease-in-out .25s;
     max-height: max-content;
     margin: 0 2.5px 0 0;
@@ -226,14 +242,6 @@ button:hover {
     max-height: max-content;
     border: 2px solid black;
     transition: ease-in-out .25s;
-}
-
-.trademark {
-    height: 5px;
-    width: auto;
-    font-size: 10px;
-    color: var(--secondary-color);
-    float: right;
 }
 
 .pagetitle {

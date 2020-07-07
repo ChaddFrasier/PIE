@@ -1,6 +1,6 @@
 html 
     head
-        title="Home"
+        title="PIE"
         style
             include css/pips2.css
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js", type="text/javascript")
@@ -14,7 +14,7 @@ html
                 img(src="/images/piedark.png", alt="PIElogo", class="pieLogo")
             .rightcontainer(style="text-align:right")
                 img(src="/images/nasa-logo.png", alt="NasaLogo")
-        span(style="display:flex; height:75%;")
+        span(style="display:flex; height:75%;width:100%;")
             #toolbox.toolboxcontainer
                 .toolscontainer
                     .windowoptionsbar(style="display:flex;")
@@ -35,6 +35,11 @@ html
                         button='Delete'
                         button="Draft"
                         button='Export'
+                svg.imagecontainer(viewBox="0 0 1000 1000")
+                    style 
+                        include css/svg.css
+                    text(x=10, y=100, textLength="400px")="THIS WILL BE A LABEL BOX."
+                    image(src="images/M175124932LR.tif", width="100%", height="auto")
 
         footer.mainfooter
             .leftfooter
