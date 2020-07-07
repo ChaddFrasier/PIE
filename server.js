@@ -4,7 +4,6 @@ const path = require('path');
 const compression = require('compression');
 const bodyParser = require('body-parser');
 const multer = require('multer');
-const { response } = require('express');
 
 /* init the application */
 const app = express();
@@ -48,16 +47,13 @@ app.post('/', (req, res) => {
     console.log(req.url);
     console.log(req.body);
 
-    if(req.body.usgsEmail && req.body.usgsPassword)
-    {
+    if (req.body.usgsEmail && req.body.usgsPassword) {
         res.render('index', {usgsEmail: req.body.usgsEmail, usgsPassword: req.body.usgsPassword});
     }
-    else
-    {
+    else {
         let date = new Date(); 
         res.render('login', {title: 'Login', date: date.toDateString(), emailMessage: 'Please log in with your USGS credentials'});
     }
-    
 });
 
 // run the server on port
