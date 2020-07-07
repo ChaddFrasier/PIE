@@ -17,14 +17,14 @@ $(document).ready(()=>{
     $('button.toolboxminimizebtn').click((event) => {
         let toolbox = document.getElementById('toolbox');
         let editbox = document.getElementById('editbox');
-        if(toolbox.style.width == '0%'){
-            toolbox.style.width = toolbox.style.maxWidth;
-            editbox.style.width = "66.6%";
+        if(toolbox.classList.contains('closed')){
+            toolbox.classList.remove('closed')
+            editbox.style.width = "auto";
             event.target.innerHTML = "◄";
         }
         else{
-            toolbox.style.width = '0%';
-            editbox.style.width = "95%";
+            toolbox.classList.add('closed')
+            editbox.style.width = "auto";
             event.target.innerHTML = "►";
 
         }
