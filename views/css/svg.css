@@ -1,6 +1,10 @@
-text {
-    font-size: 20px;
+textarea {
+    font-size: 25px;
     stroke: black;
+    width: 100%;
+    height: 100%;
     outline: 3px solid black;
     background-color: linear-gradient(to bottom left, white, lightgrey);
+    overflow-y: auto;
+    overflow-x: auto;
 }

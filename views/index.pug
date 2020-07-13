@@ -6,6 +6,8 @@ html
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js", type="text/javascript")
         script
             include scripts/index.js
+        script(src="https://cdn.jsdelivr.net/npm/geotiff", type="text/javascript")
+        script="console.log(geotiff)"
     body
         header.pips2header 
             .leftcontainer
@@ -20,11 +22,50 @@ html
                     .windowoptionsbar(style="display:flex;")
                         h4(style="margin:0;")="File Tools"
                         button.windowminimizebtn='▲'
-                    .filetoolsbox="FILE TOOLs"
+                    .filetoolsbox
+                        label(for="figureoutputsize")="Choose an output size"
+                        br
+                        select#figsizeselect
+                            each figsize in ["1000x1000", "2000x2000"]
+                                option(value=fidsize) #{figsize}
+                        br
+                        label(for="figureframeselector")="Select a frame design"
+                        br
+                        select#framesizeselect
+                            each frame in ["75-25", "50-50", "100-0"]
+                                option(value=frame) #{frame}
+                        br
+                        label(for="fileuploadarea")="Find an Image"
+                        br
+                        input#imageupload(type="file", name="mainimage")
+                        br
+                        label(for="backgroundcolor")="Select a background color"
+                        br
+                        input#backgroundcolor(type="color", name="backgroundcolor")
                     .windowoptionsbar(style="display:flex;")
                         h4(style="margin:0;")="Editing Tools"
                         button.windowminimizebtn='▲'
-                    .edittoolsbox="EDITING TOOLS"
+                    .edittoolsbox
+                        label(for="northarrowbtn")="North Button"
+                        br
+                        input#northarrowbtn(type="checkbox", value="North Arrow")
+                        br
+                        label(for="sunarrowbtn")="Sun Button"
+                        br
+                        input#sunarrowbtn(type="checkbox", value="Sun Arrow")
+                        br
+                        label(for="observerarrowbtn")="Observer Button"
+                        br
+                        input#observerarrowbtn(type="checkbox", value="Observer Arrow")
+                        br
+                        label(for="pencilbtn")="Pencil Button"
+                        br
+                        input#pencilbtn(type="button", value="Pencil Arrow")
+                        br
+                        label(for="outlinebtn")="Outline Button"
+                        br
+                        input#outlinebtn(type="button", value="Outline Arrow")
+                        br
                 .windowsidebar
                     button.toolboxminimizebtn='◄'
             
@@ -33,13 +74,16 @@ html
                     .buttongroup
                         button='Undo'
                         button='Delete'
-                        button="Draft"
+                        button='Draft'
                         button='Export'
-                svg.imagecontainer(viewBox="0 0 1000 1000")
-                    style 
+                svg#figurecontainer.imagecontainer(viewBox="0 0 1000 1000", xmlns="http://www.w3.org/2000/svg", version="1.1")
+                    style
                         include css/svg.css
-                    text(x=10, y=100, textLength="400px")="THIS WILL BE A LABEL BOX."
-                    image(src="images/M175124932LR.tif", width="100%", height="auto")
+                    image(src="test/M175124932LR.tif", width="100%", height="auto")
+                    foreignObject(x="0", y="75%", width="100%", height="250px")
+                        div(xmlns="http://www.w3.org/1999/xhtml", width="100%")
+                            textarea#captionbox(name="captioneditbox", cols="30", rows="10", placeholder="Caption can be typed here")
+
 
         footer.mainfooter
             .leftfooter

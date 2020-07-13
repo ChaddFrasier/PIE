@@ -77,11 +77,18 @@ div {
     width: auto;
     min-width: 100%;
     min-height: 0%;
-    max-height: 30%;
+    max-height: 40%;
     background: var(--contrast-color);
     height: 25%;
-    overflow-y: hidden;
+    overflow-y: auto;
     transition: ease-out .3s;
+}
+
+label {
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    padding: 0 10px;
+    text-align: center;
 }
 
 .edittoolsbox {
@@ -92,7 +99,7 @@ div {
     max-height: 100%;
     background: var(--contrast-color);
     height: 90%;
-    overflow-y: hidden;
+    overflow-y: auto;
     transition: ease-out .3s;
     margin: 0;
 }
