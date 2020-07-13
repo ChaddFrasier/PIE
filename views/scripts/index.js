@@ -39,22 +39,19 @@ $(document).ready(()=>{
         console.log("UPDATE THE CAPTION AND IMAGE DIMENSIONS")
     });
 // TODO:
-    $('#northarrowbtn').on("mouseup", (event) => {
-        
+    $('#northarrowopt').on("mouseup", (event) => {
         let checkbox = event.target;
 
         console.log("ADD AND REMOVE NORTH ICON")
     });
 // TODO:
-    $('#sunarrowbtn').on("mouseup", (event) => {
-        
+    $('#sunarrowopt').on("mouseup", (event) => {
         let checkbox = event.target;
 
         console.log("ADD AND REMOVE SUN ICON")
     });
 // TODO:
-    $('#observerarrowbtn').on("mouseup", (event) => {
-        
+    $('#observerarrowopt').on("mouseup", (event) => {
         let observer = event.target;
 
         console.log("ADD AND REMOVE OBSERVER ICON")

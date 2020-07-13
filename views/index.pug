@@ -46,26 +46,29 @@ html
                         h4(style="margin:0;")="Editing Tools"
                         button.windowminimizebtn='▲'
                     .edittoolsbox
-                        label(for="northarrowbtn")="North Button"
-                        br
-                        input#northarrowbtn(type="checkbox", value="North Arrow")
-                        br
-                        label(for="sunarrowbtn")="Sun Button"
-                        br
-                        input#sunarrowbtn(type="checkbox", value="Sun Arrow")
-                        br
-                        label(for="observerarrowbtn")="Observer Button"
-                        br
-                        input#observerarrowbtn(type="checkbox", value="Observer Arrow")
-                        br
-                        label(for="pencilbtn")="Pencil Button"
-                        br
-                        input#pencilbtn(type="button", value="Pencil Arrow")
-                        br
-                        label(for="outlinebtn")="Outline Button"
-                        br
-                        input#outlinebtn(type="button", value="Outline Arrow")
-                        br
+                        div#edittoolselect
+                            label(for="northarrowopt")="North Button"
+                            br
+                            input#northarrowopt(type="checkbox", value="North Arrow")
+                            br
+                            label(for="sunarrowbtn")="Sun Button"
+                            br
+                            input#sunarrowopt(type="checkbox", value="Sun Arrow")
+                            br
+                            label(for="observerarrowbtn")="Observer Button"
+                            br
+                            input#observerarrowopt(type="checkbox", value="Observer Arrow")
+                            
+                            div.radio-group
+                                label(for="pencilopt")="Pencil Button"
+                                br
+                                input#pencilopt(type="radio", value=1, name="mouseactions")
+                                br
+                                label(for="outlineopt")="Outline Button"
+                                br
+                                input#outlineopt(type="radio", value=2, name="mouseactions")
+
+
                 .windowsidebar
                     button.toolboxminimizebtn='◄'
             
