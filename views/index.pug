@@ -52,12 +52,12 @@ html
                         br
                         label(for="captionxcoord")="Caption X-Coordinate"
                         br
-                        input#captionxcoord(type="number", name="captiontools", placeholder="1000", min="-1")
+                        input#captionxcoord(type="number", name="captiontools", placeholder="1000", min="0")
                         text(for="px")=" px"
                         br
                         label(for="captionycoord")="Caption Y-Coordinate"
                         br
-                        input#captionycoord(type="number", name="captiontools", placeholder="1000", min="-1")
+                        input#captionycoord(type="number", name="captiontools", placeholder="1000", min="0")
                         text(for="px")=" px"
 
 
@@ -101,7 +101,7 @@ html
                 svg#figurecontainer.imagecontainer(viewBox="0 0 1500 1500", xmlns="http://www.w3.org/2000/svg", version="1.1", style="background: var(--contract-color);")
                     style
                         include css/svg.css
-                    image(x="0", y="0", width="1500", height="1500", xlink:href="test/moonphasestest.jpg")
+                    image(x="0", y="0", width="100%", height="1500", xlink:href="test/moonphasestest.jpg")
                     foreignObject#captionlocation(x="0", y="500", width="100%", height="1000", style="overflow:visible;")    
                         textarea#captionbox(xmlns="http://www.w3.org/1999/xhtml", name="captioneditbox", placeholder="Caption can be typed here", style="width:100%; height:200px")
 
