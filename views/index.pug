@@ -18,53 +18,24 @@ html
         span(style="display:flex; height:75%;width:100%;")
             #toolbox.toolboxcontainer
                 .toolscontainer
-                    .windowoptionsbar(style="display:flex;")
+                    #copyoptionsbar.windowoptionsbar(style="display:flex;")
                         h4(style="margin:0;")="File Tools"
                         button.windowminimizebtn='▲'
-                    .filetoolsbox
+                    #filetools.filetoolsbox
                         label(for="figureoutputsize")="Choose an output size"
                         br
                         select#figsizeselect
                             each figsize in ["1500x1500", "2500x2000"]
                                 option(value=fidsize) #{figsize}
                         br
-                        label(for="fileuploadarea")="Find an Image"
-                        br
-                        input#imageupload(type="file", name="mainimage")
-                        br
                         label(for="backgroundcolor")="Select a background color"
                         br
                         input#backgroundcolor(type="color", name="backgroundcolor")
-                    
-                    .windowoptionsbar(style="display:flex;")
-                        h4(style="margin:0;")="Caption Tools"
-                        button.windowminimizebtn='▲'
-                    .captiontoolsbox
-                        label(for="captionwidth")="Caption Width"
-                        br
-                        input#captionwidth(type="number", name="captiontools", placeholder="1000", min="250")
-                        text(for="px")=" px"
-                        br
-                        label(for="captionheight")="Caption Height"
-                        br
-                        input#captionheight(type="number", name="captiontools", placeholder="1000", min="50")
-                        text(for="px")=" px"
-                        br
-                        label(for="captionxcoord")="Caption X-Coordinate"
-                        br
-                        input#captionxcoord(type="number", name="captiontools", placeholder="1000", min="0")
-                        text(for="px")=" px"
-                        br
-                        label(for="captionycoord")="Caption Y-Coordinate"
-                        br
-                        input#captionycoord(type="number", name="captiontools", placeholder="1000", min="0")
-                        text(for="px")=" px"
-
 
                     .windowoptionsbar(style="display:flex;")
                         h4(style="margin:0;")="Editing Tools"
-                        button.windowminimizebtn='▲'
-                    .edittoolsbox
+                        button#editminibtn.windowminimizebtn='▲'
+                    #edittoolsbox.edittoolsbox
                         div#edittoolselect
                             label(for="northarrowopt")="North Button"
                             br
@@ -89,6 +60,12 @@ html
 
                 .windowsidebar
                     button.toolboxminimizebtn='◄'
+                    button#addimagebtn.toolboxaddimagebtn
+                        svg.btnvectorgraphic
+                            rect(x="0",y="3", width="10px", height="10px", fill="red", stroke="black" stroke-width="3px")
+                    button#addcaptionbtn.toolboxaddcaptionbtn
+                        svg.btnvectorgraphic
+                            rect(x="0",y="3", width="10px", height="10px", fill="blue", stroke="black" stroke-width="3px")
             
             #editbox.editbox
                 .exportoptionsbar(style="display:flex;")

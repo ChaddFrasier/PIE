@@ -6,6 +6,9 @@ $(document).ready(()=>{
     var caption = document.getElementById("captionbox");
     var captionlocation = document.getElementById("captionlocation");
     var bgpicker = document.getElementById("backgroundcolor");
+    var edittoolsbox = document.getElementById("edittoolsbox");
+    var filetoolsbox = document.getElementById("filetools");
+
     
     // set background right away when page loads
     setSVGBackground(svg, bgpicker.value);
@@ -30,14 +33,7 @@ $(document).ready(()=>{
 
     /* Show and hide contents of the tool windows works generically so we can add more later */
     $('button.windowminimizebtn').click((event) => {
-        if(event.target.parentElement.nextElementSibling.style.height == '0%'){
-            event.target.parentElement.nextElementSibling.style.height = event.target.parentElement.nextElementSibling.style.maxHeight;
-            event.target.innerHTML = '▲';
-        }
-        else{
-            event.target.parentElement.nextElementSibling.style.height = '0%';
-            event.target.innerHTML = '▼';
-        }
+        minimizeToolsWindow(event);
     });
     // close tools window if the title bar is clicked
     $(".windowoptionsbar").on("click", (event) => {
@@ -54,22 +50,44 @@ $(document).ready(()=>{
 
     // TODO: fix the transition issues happening with this now
     $('button.toolboxminimizebtn').click((event) => {
-        let toolbox = document.getElementById('toolbox');
+        let toolbox = document.getElementById('toolbox'),
+            imgbtn = document.getElementById('addimagebtn'),
+            capbtn = document.getElementById('addcaptionbtn');
+
         if( toolbox.classList.contains('closed') ){
             toolbox.classList.remove('closed');
+            // reactivate the other buttons
+            imgbtn.classList.remove("disabled");
+            capbtn.classList.remove("disabled");
             event.target.innerHTML = "◄";
         }
         else{
             toolbox.classList.add('closed');
+            // disable the other buttons
+            imgbtn.classList.add("disabled");
+            capbtn.classList.add("disabled");
             event.target.innerHTML = "►";
         }
     });
+
+    // TODO: fix the transition issues happening with this now
+    $('button.toolboxaddcaptionbtn').click((event) => {
+        console.log("ADD A CAPTION");
+    });
+    
+    // TODO: fix the transition issues happening with this now
+    $('button.toolboxaddimagebtn').click((event) => {
+        
+        filetoolsbox.insertAdjacentHTML("afterend", "<!-- THIS IS A WHERE WE INSERT THINGS --> ")
+    });
+
 
     // TODO: need to finish changing the svg boxes and stuff when these are changed
     $('#figsizeselect').on("change", (event) => {
         let tmp = event.target.value.split("x");
 
         svg.setAttribute("viewBox", "0 0 " + tmp[0] + ' ' + tmp[1]);
+
     });
 
     /**
@@ -104,10 +122,24 @@ $(document).ready(()=>{
 
         console.log("ADD AND REMOVE OBSERVER ICON")
     });
+
+    // close the tabs you dont want
+    edittoolsbox.previousElementSibling.lastElementChild.click();
 }); // end of jquery functions
 
 
 /* Helper functions */
 function setSVGBackground(svg, color){
     svg.style.background = color;
+}
+
+function minimizeToolsWindow(event) {
+    if(event.target.parentElement.nextElementSibling.style.height == '0%'){
+        event.target.parentElement.nextElementSibling.style.height = event.target.parentElement.nextElementSibling.style.maxHeight;
+        event.target.innerHTML = '▲';
+    }
+    else{
+        event.target.parentElement.nextElementSibling.style.height = '0%';
+        event.target.innerHTML = '▼';
+    }
 }
