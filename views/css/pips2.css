@@ -152,7 +152,8 @@ label {
 }
 
 .textareainputfield {
-    max-width: 100%;
+    max-width: 75%;
+    margin: 0 auto;
 }
 
 .imagetoolsbox {

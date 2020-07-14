@@ -98,9 +98,52 @@ $(document).ready(()=>{
         textinput.setAttribute("name","captiontextinput");
         textinput.classList.add('textareainputfield')
 
-        toolsarea.append( textlabel, document.createElement("br"),
-        textinput );
+        let widthlabel = document.createElement("label");
+        widthlabel.innerHTML = "Width of Caption: ";
+        widthlabel.setAttribute("for", "widthinput");
 
+        let widthinput = document.createElement("input");
+        widthinput.setAttribute("type", "number");
+        widthinput.setAttribute("min", '1500');
+        widthinput.setAttribute("placeholder", '1500');
+        widthinput.setAttribute("name","widthinput");
+
+        let heightlabel = document.createElement("label");
+        heightlabel.innerHTML = "Height of Caption: ";
+        heightlabel.setAttribute("for", "widthinput");
+
+        let heightinput = document.createElement("input");
+        heightinput.setAttribute("type", "number");
+        heightinput.setAttribute("min", '1500');
+        heightinput.setAttribute("placeholder", '1500');
+        heightinput.setAttribute("name","widthinput");
+
+        let xcoordlabel = document.createElement("label");
+        xcoordlabel.innerHTML = "X Coordinate: ";
+        xcoordlabel.setAttribute("for", "widthinput");
+
+        let xcoordinput = document.createElement("input");
+        xcoordinput.setAttribute("type", "number");
+        xcoordinput.setAttribute("min", '0');
+        xcoordinput.setAttribute("placeholder", '0');
+        xcoordinput.setAttribute("name","xcoordinput");
+        
+        let ycoordlabel = document.createElement("label");
+        ycoordlabel.innerHTML = "Y Coordinate: ";
+        ycoordlabel.setAttribute("for", "ycoordinput");
+
+        let ycoordinput = document.createElement("input");
+        ycoordinput.setAttribute("type", "number");
+        ycoordinput.setAttribute("min", '0');
+        ycoordinput.setAttribute("placeholder", '0');
+        ycoordinput.setAttribute("name","ycoorinput");
+
+        toolsarea.append( textlabel, document.createElement("br"), textinput,
+        document.createElement("br"), widthlabel, document.createElement("br"),
+        widthinput, document.createElement("br"), heightlabel, 
+        document.createElement("br"), heightinput, document.createElement("br"),
+        xcoordlabel, document.createElement("br"), xcoordinput, document.createElement("br"),
+        ycoordlabel, document.createElement("br"), ycoordinput );
 
        // append all elements together
        newoptionsbar.append(header, minibtn,toolsarea);
@@ -161,10 +204,32 @@ $(document).ready(()=>{
         heightinput.setAttribute("placeholder", '1500');
         heightinput.setAttribute("name","widthinput");
 
+        let xcoordlabel = document.createElement("label");
+        xcoordlabel.innerHTML = "X Coordinate: ";
+        xcoordlabel.setAttribute("for", "widthinput");
+
+        let xcoordinput = document.createElement("input");
+        xcoordinput.setAttribute("type", "number");
+        xcoordinput.setAttribute("min", '0');
+        xcoordinput.setAttribute("placeholder", '0');
+        xcoordinput.setAttribute("name","xcoordinput");
+        
+        let ycoordlabel = document.createElement("label");
+        ycoordlabel.innerHTML = "Y Coordinate: ";
+        ycoordlabel.setAttribute("for", "ycoordinput");
+
+        let ycoordinput = document.createElement("input");
+        ycoordinput.setAttribute("type", "number");
+        ycoordinput.setAttribute("min", '0');
+        ycoordinput.setAttribute("placeholder", '0');
+        ycoordinput.setAttribute("name","ycoorinput");
+
         toolsarea.append( filelabel, document.createElement("br"),
          fileinput, document.createElement("br"), widthlabel, document.createElement("br"), 
          widthinput, document.createElement("br"), heightlabel, document.createElement("br"), 
-         heightinput );
+         heightinput, document.createElement("br"), xcoordlabel, document.createElement("br"),
+         xcoordinput, document.createElement("br"), ycoordlabel, 
+         document.createElement("br"), ycoordinput, document.createElement("br") );
 
 
         // append all elements together
