@@ -80,8 +80,13 @@ div {
     max-height: 40%;
     background: var(--contrast-color);
     height: 25%;
+    overflow-x: hidden;
     overflow-y: auto;
-    transition: ease-out .3s;
+    transition: all ease-in-out 0.3s;
+    -moz-transition: all ease-in-out 0.3s; /* Firefox 4 */
+    -webkit-transition: all ease-in-out 0.3s; /* Safari and Chrome */
+    -o-transition: all ease-in-out 0.3s; /* Opera */
+    -ms-transition: all ease-in-out 0.3s; /* Explorer 10 */
 }
 
 label {
@@ -99,8 +104,12 @@ label {
     max-height: 100%;
     background: var(--contrast-color);
     height: 90%;
-    overflow-y: auto;
-    transition: ease-out .3s;
+    overflow: auto;
+    transition: all ease-in-out 0.3s;
+    -moz-transition: all ease-in-out 0.3s; /* Firefox 4 */
+    -webkit-transition: all ease-in-out 0.3s; /* Safari and Chrome */
+    -o-transition: all ease-in-out 0.3s; /* Opera */
+    -ms-transition: all ease-in-out 0.3s; /* Explorer 10 */
     margin: 0;
 }
 
@@ -151,7 +160,6 @@ button:hover {
     border-bottom-right-radius: 0px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-
 }
 
 .footerbuttongroup > a:hover {
@@ -170,6 +178,7 @@ svg.imagecontainer {
     background: transparent;
     border-radius: 2px 2px;
     font-size: 10px;
+    padding: 5px 5px;
     vertical-align: top;
     margin: 0 0 0 auto;
     border: 1px solid transparent;
@@ -191,7 +200,7 @@ svg.imagecontainer {
 .windowsidebar {
     background: var(--bar-gradient);
     border: 2px solid black;
-    width: 25px;
+    width: auto;
 }
 
 .leftfooter {
@@ -224,14 +233,16 @@ svg.imagecontainer {
 }
 
 .toolboxcontainer {
-    margin: 0 auto 0 auto;
     background: var(--main-bg-color);
     color: black;
     display: flex;
-    width: 33.3%;
     height: auto;
-    max-width: 33.3rem;
-    transition: ease-in-out .25s;
+    max-width: 33.3%;
+    transition: all ease-in-out 0.3s;
+    -moz-transition: all ease-in-out 0.3s; /* Firefox 4 */
+    -webkit-transition: all ease-in-out 0.3s; /* Safari and Chrome */
+    -o-transition: all ease-in-out 0.3s; /* Opera */
+    -ms-transition: all ease-in-out 0.3s; /* Explorer 10 */
     max-height: max-content;
     margin: 0 2.5px 0 0;
 }
@@ -242,12 +253,16 @@ svg.imagecontainer {
     color: var(--main-bg-color);
     border: 2px solid black;
     height: auto;
-    width:auto;
+    width: auto;
     min-width: 66.6%;
     max-width: 95%;
     max-height: max-content;
     border: 2px solid black;
-    transition: ease-in-out .25s;
+    transition: all ease-in-out 0.3s;
+    -moz-transition: all ease-in-out 0.3s; /* Firefox 4 */
+    -webkit-transition: all ease-in-out 0.3s; /* Safari and Chrome */
+    -o-transition: all ease-in-out 0.3s; /* Opera */
+    -ms-transition: all ease-in-out 0.3s; /* Explorer 10 */
 }
 
 .pagetitle {

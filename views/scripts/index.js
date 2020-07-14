@@ -26,13 +26,13 @@ $(document).ready(()=>{
     $('button.toolboxminimizebtn').click((event) => {
         let toolbox = document.getElementById('toolbox');
         let editbox = document.getElementById('editbox');
-        if(toolbox.classList.contains('closed')){
-            toolbox.classList.remove('closed')
-            editbox.style.width = "66.6%";
+        if( toolbox.classList.contains('closed') ){
+            toolbox.classList.remove('closed');
+            editbox.style.width = "auto";
             event.target.innerHTML = "◄";
         }
         else{
-            toolbox.classList.add('closed')
+            toolbox.classList.add('closed');
             editbox.style.width = "95%";
             event.target.innerHTML = "►";
         }
@@ -43,13 +43,11 @@ $(document).ready(()=>{
         let tmp = event.target.value.split("x");
 
         svg.setAttribute("viewBox", "0 0 " + tmp[0] + ' ' + tmp[1]);
-
     });
 
     // TODO: need to finish changing the svg boxes and stuff when these are changed
     $('#backgroundcolor').on("change", () => {
         setSVGBackground(svg, bgpicker.value)
-
     });
 
 // TODO:
