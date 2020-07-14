@@ -82,11 +82,13 @@ div {
     height: 25%;
     overflow-x: hidden;
     overflow-y: auto;
-    transition: all ease-in-out 0.3s;
-    -moz-transition: all ease-in-out 0.3s; /* Firefox 4 */
-    -webkit-transition: all ease-in-out 0.3s; /* Safari and Chrome */
-    -o-transition: all ease-in-out 0.3s; /* Opera */
-    -ms-transition: all ease-in-out 0.3s; /* Explorer 10 */
+    transition: all ease-in-out .15s;
+    -moz-transition: all ease-in-out .15s; /* Firefox 4 */
+    -webkit-transition: all ease-in-out .15s; /* Safari and Chrome */
+    -o-transition: all ease-in-out .15s; /* Opera */
+    -ms-transition: all ease-in-out .15s; /* Explorer 10 */
+    resize: vertical;
+
 }
 
 label {
@@ -99,18 +101,36 @@ label {
 .edittoolsbox {
     border: 1px solid black;
     width: auto;
+    min-height: 0%;
+    max-height: 100%;
+    background: var(--contrast-color);
+    height: 25%;
+    resize: vertical;
+    overflow: auto;
+    transition: all ease-in-out .15s;
+    -moz-transition: all ease-in-out .15s; /* Firefox 4 */
+    -webkit-transition: all ease-in-out .15s; /* Safari and Chrome */
+    -o-transition: all ease-in-out .15s; /* Opera */
+    -ms-transition: all ease-in-out .15s; /* Explorer 10 */
+    margin: 0 0 0 0;
+}
+
+.captiontoolsbox {
+    border: 1px solid black;
+    width: auto;
     min-width: 100%;
     min-height: 0%;
     max-height: 100%;
     background: var(--contrast-color);
-    height: 90%;
+    height: 35%;
     overflow: auto;
-    transition: all ease-in-out 0.3s;
-    -moz-transition: all ease-in-out 0.3s; /* Firefox 4 */
-    -webkit-transition: all ease-in-out 0.3s; /* Safari and Chrome */
-    -o-transition: all ease-in-out 0.3s; /* Opera */
-    -ms-transition: all ease-in-out 0.3s; /* Explorer 10 */
+    transition: all ease-in-out .15s;
+    -moz-transition: all ease-in-out .15s; /* Firefox 4 */
+    -webkit-transition: all ease-in-out .15s; /* Safari and Chrome */
+    -o-transition: all ease-in-out .15s; /* Opera */
+    -ms-transition: all ease-in-out .15s; /* Explorer 10 */
     margin: 0;
+    resize: vertical;
 }
 
 .toolboxminimizebtn {
@@ -155,7 +175,7 @@ button:hover {
     text-decoration: none;
     margin: auto 5px auto 5px;
     padding: 5px;
-    box-shadow: 0 2px var(--contrast-color);
+    box-shadow: 0 2px (--contrast-color);
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
     border-top-left-radius: 5px;
@@ -168,10 +188,11 @@ button:hover {
 }
 
 svg.imagecontainer {
-    border: 1px double red;
-    width: 100%;
+    width: auto;
     height: auto;
     max-height: 95%;
+    padding: 0;
+    margin: 0 auto 0 auto;
 }
 
 .windowminimizebtn {
@@ -194,7 +215,8 @@ svg.imagecontainer {
 
 .toolscontainer{
     width: 100%;
-    overflow: hidden;
+    overflow-y: hidden;
+    overflow-x: hidden;
 }
 
 .windowsidebar {
@@ -238,11 +260,11 @@ svg.imagecontainer {
     display: flex;
     height: auto;
     max-width: 33.3%;
-    transition: all ease-in-out 0.3s;
-    -moz-transition: all ease-in-out 0.3s; /* Firefox 4 */
-    -webkit-transition: all ease-in-out 0.3s; /* Safari and Chrome */
-    -o-transition: all ease-in-out 0.3s; /* Opera */
-    -ms-transition: all ease-in-out 0.3s; /* Explorer 10 */
+    transition: all ease-in-out 0.15s;
+    -moz-transition: all ease-in-out 0.15s; /* Firefox 4 */
+    -webkit-transition: all ease-in-out .15s; /* Safari and Chrome */
+    -o-transition: all ease-in-out .15s; /* Opera */
+    -ms-transition: all ease-in-out .15s; /* Explorer 10 */
     max-height: max-content;
     margin: 0 2.5px 0 0;
 }
@@ -254,15 +276,16 @@ svg.imagecontainer {
     border: 2px solid black;
     height: auto;
     width: auto;
-    min-width: 66.6%;
+    text-align: center;
+    min-width: none;
     max-width: 95%;
     max-height: max-content;
     border: 2px solid black;
-    transition: all ease-in-out 0.3s;
-    -moz-transition: all ease-in-out 0.3s; /* Firefox 4 */
-    -webkit-transition: all ease-in-out 0.3s; /* Safari and Chrome */
-    -o-transition: all ease-in-out 0.3s; /* Opera */
-    -ms-transition: all ease-in-out 0.3s; /* Explorer 10 */
+    transition: all ease-in-out .15s;
+    -moz-transition: all ease-in-out .15s; /* Firefox 4 */
+    -webkit-transition: all ease-in-out .15s; /* Safari and Chrome */
+    -o-transition: all ease-in-out .15s; /* Opera */
+    -ms-transition: all ease-in-out .15s; /* Explorer 10 */
 }
 
 .pagetitle {
