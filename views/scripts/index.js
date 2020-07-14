@@ -7,8 +7,7 @@ $(document).ready(()=>{
     var captionlocation = document.getElementById("captionlocation");
     var bgpicker = document.getElementById("backgroundcolor");
     var edittoolsbox = document.getElementById("edittoolsbox");
-    var filetoolsbox = document.getElementById("filetools");
-
+    var filetoolsbox = document.getElementById("toolcontainer");
     
     // set background right away when page loads
     setSVGBackground(svg, bgpicker.value);
@@ -72,13 +71,107 @@ $(document).ready(()=>{
 
     // TODO: fix the transition issues happening with this now
     $('button.toolboxaddcaptionbtn').click((event) => {
-        console.log("ADD A CAPTION");
+        let newoptionsbar = document.createElement("div");
+
+        newoptionsbar.classList.add("windowoptionsbar");
+        newoptionsbar.style.display = "flex";
+
+        let header = document.createElement("h4");
+        header.innerHTML = "Caption Object";
+        header.style.margin = "0";
+
+        let minibtn = document.createElement("button");
+        minibtn.classList.add("windowminimizebtn");
+        minibtn.innerHTML = "▲";
+        minibtn.addEventListener( "click", function(event) {
+            minimizeToolsWindow(event);
+        });
+
+        let toolsarea = document.createElement("div")
+        toolsarea.classList.add("captiontoolsbox");
+
+        let textlabel = document.createElement("label");
+        textlabel.innerHTML = "Caption Text:  ";
+        textlabel.setAttribute("for", "captiontextinput");
+
+        let textinput = document.createElement("textarea");
+        textinput.setAttribute("name","captiontextinput");
+        textinput.classList.add('textareainputfield')
+
+        toolsarea.append( textlabel, document.createElement("br"),
+        textinput );
+
+
+       // append all elements together
+       newoptionsbar.append(header, minibtn,toolsarea);
+       // finish by appending the whole thing
+       filetoolsbox.insertBefore(newoptionsbar, document.getElementById("copyoptionsbar"));
+       filetoolsbox.insertBefore(toolsarea, document.getElementById("copyoptionsbar"));
+
     });
     
     // TODO: fix the transition issues happening with this now
     $('button.toolboxaddimagebtn').click((event) => {
-        
-        filetoolsbox.insertAdjacentHTML("afterend", "<!-- THIS IS A WHERE WE INSERT THINGS --> ")
+
+        let newoptionsbar = document.createElement("div");
+
+        newoptionsbar.classList.add("windowoptionsbar");
+        newoptionsbar.style.display = "flex";
+
+        let header = document.createElement("h4");
+        header.innerHTML = "Image Tools";
+        header.style.margin = "0";
+
+        let minibtn = document.createElement("button");
+        minibtn.classList.add("windowminimizebtn");
+        minibtn.innerHTML = "▲";
+        minibtn.addEventListener( "click", function(event) {
+            minimizeToolsWindow(event);
+        });
+
+        let toolsarea = document.createElement("div")
+        toolsarea.classList.add("imagetoolsbox");
+
+        let filelabel = document.createElement("label");
+        filelabel.innerHTML = "Choose a file: ";
+        filelabel.setAttribute("for", "imageinput");
+
+        let fileinput = document.createElement("input");
+        fileinput.setAttribute("type", "file");
+        fileinput.setAttribute("name","imageinput");
+        fileinput.classList.add('fileinputfield')
+
+        let widthlabel = document.createElement("label");
+        widthlabel.innerHTML = "Width of Image: ";
+        widthlabel.setAttribute("for", "widthinput");
+
+        let widthinput = document.createElement("input");
+        widthinput.setAttribute("type", "number");
+        widthinput.setAttribute("min", '1500');
+        widthinput.setAttribute("placeholder", '1500');
+        widthinput.setAttribute("name","widthinput");
+
+        let heightlabel = document.createElement("label");
+        heightlabel.innerHTML = "Height of Image: ";
+        heightlabel.setAttribute("for", "widthinput");
+
+        let heightinput = document.createElement("input");
+        heightinput.setAttribute("type", "number");
+        heightinput.setAttribute("min", '1500');
+        heightinput.setAttribute("placeholder", '1500');
+        heightinput.setAttribute("name","widthinput");
+
+        toolsarea.append( filelabel, document.createElement("br"),
+         fileinput, document.createElement("br"), widthlabel, document.createElement("br"), 
+         widthinput, document.createElement("br"), heightlabel, document.createElement("br"), 
+         heightinput );
+
+
+        // append all elements together
+        newoptionsbar.append(header, minibtn,toolsarea);
+        // finish by appending the whole thing
+        filetoolsbox.insertBefore(newoptionsbar, document.getElementById("copyoptionsbar"));
+        filetoolsbox.insertBefore(toolsarea, document.getElementById("copyoptionsbar"));
     });
 
 

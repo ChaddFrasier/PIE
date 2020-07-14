@@ -73,6 +73,10 @@ button.disabled {
     width: 33.3%;
 }
 
+.fileinputfield {
+    width: 100%;
+}
+
 .mainfooter {
     display: flex;
     width: 100%;
@@ -99,6 +103,10 @@ button.disabled {
     -ms-transition: all ease-in-out .15s; /* Explorer 10 */
     resize: vertical;
 
+}
+
+.filetoolsbox > input[type="file"] {
+    width: 100%;
 }
 
 label {
@@ -141,6 +149,10 @@ label {
     -ms-transition: all ease-in-out .15s; /* Explorer 10 */
     margin: 0;
     resize: vertical;
+}
+
+.textareainputfield {
+    max-width: 100%;
 }
 
 .imagetoolsbox {
