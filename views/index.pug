@@ -18,6 +18,8 @@ html
         span(style="display:flex; height:75%;width:100%;")
             #toolbox.toolboxcontainer
                 #toolcontainer.toolscontainer
+                    .dividerline="Tools"
+
                     #copyoptionsbar.windowoptionsbar(style="display:flex;")
                         h4(style="margin:0;")="File Tools"
                         button.windowminimizebtn='▲'
@@ -57,6 +59,8 @@ html
                                 label(for="outlineopt")="Outline Button"
                                 br
                                 input#outlineopt(type="radio", value=2, name="mouseactions")
+                    #tooldivider.dividerline="Vector Layers"
+
 
                 .windowsidebar
                     button.toolboxminimizebtn='◄'
@@ -78,10 +82,6 @@ html
                 svg#figurecontainer.imagecontainer(viewBox="0 0 1500 1500", xmlns="http://www.w3.org/2000/svg", version="1.1", style="background: var(--contract-color);")
                     style
                         include css/svg.css
-                    image(x="0", y="0", width="100%", height="1500", xlink:href="test/moonphasestest.jpg")
-                    foreignObject#captionlocation(x="0", y="500", width="100%", height="1000", style="overflow:visible;")    
-                        textarea#captionbox(xmlns="http://www.w3.org/1999/xhtml", name="captioneditbox", placeholder="Caption can be typed here", style="width:100%; height:200px")
-
 
     footer.mainfooter
         .leftfooter

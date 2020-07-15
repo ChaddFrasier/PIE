@@ -12,7 +12,7 @@ html {
     overflow-y: hidden;
     background: var(--main-bg-color);
     color: var(--contrast-color);
-    padding: 0 0 0 0;
+    padding: 0 0px;
 }
 
 body {
@@ -65,7 +65,7 @@ button.disabled {
     width: 33.3%;
 }
 .centercontainer {
-    margin: auto auto auto 0;
+    margin: auto auto 0;
     width: auto;
 }
 .rightcontainer {
@@ -84,6 +84,18 @@ button.disabled {
     background: var(--bar-gradient);
     color: var(--accent-color);
     margin: auto auto 0 auto;
+    padding: 0;
+}
+
+.windowremovebtn {
+    background: transparent;
+    border-radius: 2px 2px;
+    font-size: 10px;
+    padding: 5px 5px;
+    vertical-align: top;
+    margin: 0 0 0 0;
+    border: 1px solid transparent;
+    cursor: pointer;
 }
 
 .filetoolsbox {
@@ -103,6 +115,16 @@ button.disabled {
     -ms-transition: all ease-in-out .15s; /* Explorer 10 */
     resize: vertical;
 
+}
+
+.dividerline {
+    width: 100%;
+    height: 3%;
+    min-height: 20px;
+    max-height: 30px;
+    background: var(--contrast-color);
+    border-radius: 2px 2px;
+    margin: 4px 0 auto 0;
 }
 
 .filetoolsbox > input[type="file"] {
@@ -137,10 +159,11 @@ label {
     border: 1px solid black;
     width: auto;
     min-width: 100%;
+    max-width: 100%;
     min-height: 0%;
     max-height: 100%;
     background: var(--contrast-color);
-    height: 35%;
+    height: 25%;
     overflow: auto;
     transition: all ease-in-out .15s;
     -moz-transition: all ease-in-out .15s; /* Firefox 4 */
@@ -152,7 +175,8 @@ label {
 }
 
 .textareainputfield {
-    max-width: 75%;
+    max-width: 100%;
+    font-size: 13px;
     margin: 0 auto;
 }
 
@@ -308,7 +332,7 @@ svg.imagecontainer {
     background: var(--bar-gradient);
     border: 2px solid black;
     width: auto;
-    max-width: 10%;
+    max-width: 25px;
     min-width: 25px;
 }
 

@@ -3,37 +3,21 @@
 $(document).ready(()=>{
     // variables for basic js functions
     var svg = document.getElementById("figurecontainer");
-    var caption = document.getElementById("captionbox");
-    var captionlocation = document.getElementById("captionlocation");
     var bgpicker = document.getElementById("backgroundcolor");
     var edittoolsbox = document.getElementById("edittoolsbox");
     var filetoolsbox = document.getElementById("toolcontainer");
+    var divider = document.getElementById("tooldivider");
     
+    var NS = {xhtml:"http://www.w3.org/1999/xhtml",
+                svg: "http://www.w3.org/2000/svg"};
     // set background right away when page loads
     setSVGBackground(svg, bgpicker.value);
-
-
-    /** CAPTION TOOLS LISTENERS */
-    $('#captionwidth').on("change", function(event){
-        caption.style.width = this.value;
-    });
-
-    $('#captionheight').on("change", function(event){
-        caption.style.height = this.value;
-    });
-
-    $('#captionxcoord').on("change", function(event){
-        captionlocation.setAttribute("x",this.value);
-    });
-
-    $('#captionycoord').on("change", function(event){
-        captionlocation.setAttribute("y",this.value);
-    });
 
     /* Show and hide contents of the tool windows works generically so we can add more later */
     $('button.windowminimizebtn').click((event) => {
         minimizeToolsWindow(event);
     });
+    
     // close tools window if the title bar is clicked
     $(".windowoptionsbar").on("click", (event) => {
         let btn = event.target.lastElementChild;
@@ -71,13 +55,17 @@ $(document).ready(()=>{
 
     // TODO: fix the transition issues happening with this now
     $('button.toolboxaddcaptionbtn').click((event) => {
+
+        // used for identifying the tool box for each caption in the image 
+        let captionId = randomId("caption");
+
         let newoptionsbar = document.createElement("div");
 
         newoptionsbar.classList.add("windowoptionsbar");
         newoptionsbar.style.display = "flex";
 
         let header = document.createElement("h4");
-        header.innerHTML = "Caption Object";
+        header.innerHTML = "Caption Layer";
         header.style.margin = "0";
 
         let minibtn = document.createElement("button");
@@ -85,6 +73,14 @@ $(document).ready(()=>{
         minibtn.innerHTML = "▲";
         minibtn.addEventListener( "click", function(event) {
             minimizeToolsWindow(event);
+        });
+
+        
+        let deletebtn = document.createElement("button");
+        deletebtn.classList.add("windowremovebtn");
+        deletebtn.innerHTML = "&times";
+        deletebtn.addEventListener( "click", function(event) {
+            removeToolsWindow(event);
         });
 
         let toolsarea = document.createElement("div")
@@ -96,7 +92,19 @@ $(document).ready(()=>{
 
         let textinput = document.createElement("textarea");
         textinput.setAttribute("name","captiontextinput");
+        textinput.setAttribute("placeholder", "Type your caption here")
         textinput.classList.add('textareainputfield')
+
+        textinput.addEventListener("keyup", function(event){
+
+            // find the matching html caption element
+            let matchingCaption = document.getElementById( this.attributes.objectid.value+"text" );
+            // updpate the text inside once found
+            if(matchingCaption)
+            {
+                matchingCaption.innerHTML = this.value;
+            }
+        });
 
         let widthlabel = document.createElement("label");
         widthlabel.innerHTML = "Width of Caption: ";
@@ -104,9 +112,18 @@ $(document).ready(()=>{
 
         let widthinput = document.createElement("input");
         widthinput.setAttribute("type", "number");
-        widthinput.setAttribute("min", '1500');
-        widthinput.setAttribute("placeholder", '1500');
+        widthinput.setAttribute("min", '100');
+        widthinput.setAttribute("placeholder", '100');
         widthinput.setAttribute("name","widthinput");
+        widthinput.addEventListener("change", function(event){
+            // find the matching html caption element
+            let matchingCaption = document.getElementById( this.attributes.objectid.value );
+            // updpate the text inside once found
+            if(matchingCaption)
+            {
+                matchingCaption.setAttribute("width", this.value);
+            }
+        });
 
         let heightlabel = document.createElement("label");
         heightlabel.innerHTML = "Height of Caption: ";
@@ -114,9 +131,19 @@ $(document).ready(()=>{
 
         let heightinput = document.createElement("input");
         heightinput.setAttribute("type", "number");
-        heightinput.setAttribute("min", '1500');
-        heightinput.setAttribute("placeholder", '1500');
+        heightinput.setAttribute("min", '150');
+        heightinput.setAttribute("placeholder", '150');
         heightinput.setAttribute("name","widthinput");
+        heightinput.addEventListener("change", function(event){
+            // find the matching html caption element
+            let matchingCaption = document.getElementById( this.attributes.objectid.value );
+            // updpate the text inside once found
+            if(matchingCaption)
+            {
+                matchingCaption.setAttribute("height", this.value);
+            }
+        });
+
 
         let xcoordlabel = document.createElement("label");
         xcoordlabel.innerHTML = "X Coordinate: ";
@@ -127,6 +154,16 @@ $(document).ready(()=>{
         xcoordinput.setAttribute("min", '0');
         xcoordinput.setAttribute("placeholder", '0');
         xcoordinput.setAttribute("name","xcoordinput");
+
+        xcoordinput.addEventListener("change", function(event){
+            // find the matching html caption element
+            let matchingCaption = document.getElementById( this.attributes.objectid.value );
+            // updpate the text inside once found
+            if(matchingCaption)
+            {
+                matchingCaption.setAttribute("x", this.value);
+            }
+        });
         
         let ycoordlabel = document.createElement("label");
         ycoordlabel.innerHTML = "Y Coordinate: ";
@@ -138,6 +175,16 @@ $(document).ready(()=>{
         ycoordinput.setAttribute("placeholder", '0');
         ycoordinput.setAttribute("name","ycoorinput");
 
+        ycoordinput.addEventListener("change", function(event){
+            // find the matching html caption element
+            let matchingCaption = document.getElementById( this.attributes.objectid.value );
+            // updpate the text inside once found
+            if(matchingCaption)
+            {
+                matchingCaption.setAttribute("y", this.value);
+            }
+        });
+
         toolsarea.append( textlabel, document.createElement("br"), textinput,
         document.createElement("br"), widthlabel, document.createElement("br"),
         widthinput, document.createElement("br"), heightlabel, 
@@ -145,24 +192,55 @@ $(document).ready(()=>{
         xcoordlabel, document.createElement("br"), xcoordinput, document.createElement("br"),
         ycoordlabel, document.createElement("br"), ycoordinput );
 
-       // append all elements together
-       newoptionsbar.append(header, minibtn,toolsarea);
-       // finish by appending the whole thing
-       filetoolsbox.insertBefore(newoptionsbar, document.getElementById("copyoptionsbar"));
-       filetoolsbox.insertBefore(toolsarea, document.getElementById("copyoptionsbar"));
+        // set caption id on all input elements
+        toolsarea.childNodes.forEach(element => {
+            element.setAttribute("objectid", captionId);
+        });
 
+        // append all elements together
+        newoptionsbar.append(header, minibtn, deletebtn, toolsarea);
+        newoptionsbar.setAttribute("objectid", captionId );
+        // finish by appending the whole thing
+        divider.insertAdjacentElement("afterend", toolsarea);
+        divider.insertAdjacentElement("afterend", newoptionsbar);
+
+        /** Add a caption box in the svg area */
+        const textholder = document.createElementNS(NS.svg, "foreignObject");
+        textholder.setAttribute("id", captionId);
+        textholder.setAttribute("x", "0");
+        textholder.setAttribute("y", "0");
+        textholder.setAttribute("width", "100%");
+        textholder.setAttribute("height", "250");
+
+        const text = document.createElement("div");
+        text.classList.add('captions')
+        text.setAttribute("id", captionId + "text");
+        text.setAttribute("x", "0");
+        text.setAttribute("y", "0");
+        text.setAttribute("width","auto");
+        text.setAttribute("height","auto");
+        text.setAttribute("fill","red");
+        
+        text.innerHTML = "This is the caption";
+
+        textholder.appendChild(text)
+
+        svg.appendChild(textholder);
     });
     
     // TODO: fix the transition issues happening with this now
     $('button.toolboxaddimagebtn').click((event) => {
 
+        // used for identifying the tool box for each caption in the image 
+        let imageId = randomId("image");
+        
         let newoptionsbar = document.createElement("div");
 
         newoptionsbar.classList.add("windowoptionsbar");
         newoptionsbar.style.display = "flex";
 
         let header = document.createElement("h4");
-        header.innerHTML = "Image Tools";
+        header.innerHTML = "Image Layer";
         header.style.margin = "0";
 
         let minibtn = document.createElement("button");
@@ -170,6 +248,13 @@ $(document).ready(()=>{
         minibtn.innerHTML = "▲";
         minibtn.addEventListener( "click", function(event) {
             minimizeToolsWindow(event);
+        });
+
+        let deletebtn = document.createElement("button");
+        deletebtn.classList.add("windowremovebtn");
+        deletebtn.innerHTML = "&times";
+        deletebtn.addEventListener( "click", function(event) {
+            removeToolsWindow(event);
         });
 
         let toolsarea = document.createElement("div")
@@ -184,6 +269,8 @@ $(document).ready(()=>{
         fileinput.setAttribute("name","imageinput");
         fileinput.classList.add('fileinputfield')
 
+        // TODO: add an event listener here for the file input field
+
         let widthlabel = document.createElement("label");
         widthlabel.innerHTML = "Width of Image: ";
         widthlabel.setAttribute("for", "widthinput");
@@ -193,6 +280,16 @@ $(document).ready(()=>{
         widthinput.setAttribute("min", '1500');
         widthinput.setAttribute("placeholder", '1500');
         widthinput.setAttribute("name","widthinput");
+
+        widthinput.addEventListener("change", function(event){
+            // find the matching html caption element
+            let matchingCaption = document.getElementById( this.attributes.objectid.value );
+            // updpate the text inside once found
+            if(matchingCaption)
+            {
+                matchingCaption.setAttribute("width", this.value);
+            }
+        });
 
         let heightlabel = document.createElement("label");
         heightlabel.innerHTML = "Height of Image: ";
@@ -204,6 +301,16 @@ $(document).ready(()=>{
         heightinput.setAttribute("placeholder", '1500');
         heightinput.setAttribute("name","widthinput");
 
+        heightinput.addEventListener("change", function(event){
+            // find the matching html caption element
+            let matchingCaption = document.getElementById( this.attributes.objectid.value );
+            // updpate the text inside once found
+            if(matchingCaption)
+            {
+                matchingCaption.setAttribute("height", this.value);
+            }
+        });
+
         let xcoordlabel = document.createElement("label");
         xcoordlabel.innerHTML = "X Coordinate: ";
         xcoordlabel.setAttribute("for", "widthinput");
@@ -213,6 +320,16 @@ $(document).ready(()=>{
         xcoordinput.setAttribute("min", '0');
         xcoordinput.setAttribute("placeholder", '0');
         xcoordinput.setAttribute("name","xcoordinput");
+
+        xcoordinput.addEventListener("change", function(event){
+            // find the matching html caption element
+            let matchingCaption = document.getElementById( this.attributes.objectid.value );
+            // updpate the text inside once found
+            if(matchingCaption)
+            {
+                matchingCaption.setAttribute("x", this.value);
+            }
+        });
         
         let ycoordlabel = document.createElement("label");
         ycoordlabel.innerHTML = "Y Coordinate: ";
@@ -224,6 +341,16 @@ $(document).ready(()=>{
         ycoordinput.setAttribute("placeholder", '0');
         ycoordinput.setAttribute("name","ycoorinput");
 
+        ycoordinput.addEventListener("change", function(event){
+            // find the matching html caption element
+            let matchingCaption = document.getElementById( this.attributes.objectid.value );
+            // updpate the text inside once found
+            if(matchingCaption)
+            {
+                matchingCaption.setAttribute("y", this.value);
+            }
+        });
+
         toolsarea.append( filelabel, document.createElement("br"),
          fileinput, document.createElement("br"), widthlabel, document.createElement("br"), 
          widthinput, document.createElement("br"), heightlabel, document.createElement("br"), 
@@ -231,12 +358,31 @@ $(document).ready(()=>{
          xcoordinput, document.createElement("br"), ycoordlabel, 
          document.createElement("br"), ycoordinput, document.createElement("br") );
 
+         // set caption id on all input elements
+        toolsarea.childNodes.forEach(element => {
+            element.setAttribute("objectid", imageId);
+        });
 
         // append all elements together
-        newoptionsbar.append(header, minibtn,toolsarea);
+        newoptionsbar.append(header, minibtn, deletebtn, toolsarea);
+
+        newoptionsbar.setAttribute("objectid", imageId);
+    
         // finish by appending the whole thing
-        filetoolsbox.insertBefore(newoptionsbar, document.getElementById("copyoptionsbar"));
-        filetoolsbox.insertBefore(toolsarea, document.getElementById("copyoptionsbar"));
+        divider.insertAdjacentElement("afterend", toolsarea);
+        divider.insertAdjacentElement("afterend", newoptionsbar);
+
+        let imagesvg = document.createElementNS(NS.svg, "image")
+        imagesvg.setAttribute("x", "0");
+        imagesvg.setAttribute("y", "0");
+        imagesvg.setAttribute("width", "1500px");
+        imagesvg.setAttribute("height", "1000px");
+        imagesvg.setAttribute("id", imageId);
+        imagesvg.setAttribute("href", "test/moonphasestest.jpg")
+
+
+        svg.appendChild(imagesvg);
+
     });
 
 
@@ -283,6 +429,7 @@ $(document).ready(()=>{
 
     // close the tabs you dont want
     edittoolsbox.previousElementSibling.lastElementChild.click();
+
 }); // end of jquery functions
 
 
@@ -300,4 +447,30 @@ function minimizeToolsWindow(event) {
         event.target.parentElement.nextElementSibling.style.height = '0%';
         event.target.innerHTML = '▼';
     }
+}
+
+function removeToolsWindow( event )
+{
+    if(event.target.parentElement.attributes.objectid.value)
+    {
+        // remove the current options bar, its next child and the caption matching the same id
+        let captiontoolsbar = event.target.parentElement;
+        let toolsbox = captiontoolsbar.nextElementSibling;
+        let captionsvg = document.getElementById(event.target.parentElement.attributes.objectid.value);
+
+        let toolcontainer = document.getElementById('toolcontainer');
+        let svgcontainer = document.getElementById('figurecontainer');
+        toolcontainer.removeChild(captiontoolsbar); 
+        toolcontainer.removeChild(toolsbox); 
+        svgcontainer.removeChild(captionsvg);
+    }
+}
+
+function randomId( textareafix )
+{
+    return textareafix + String( Math.floor((Math.random() * 1000) + 1) );
+}
+
+function getCaptionText( captionId ) {
+    
 }
