@@ -1,4 +1,4 @@
-
+var shiftObjects, lowerObject, upperObject = null;
 // start of jquery function
 $(document).ready(()=>{
     // variables for basic js functions
@@ -10,6 +10,8 @@ $(document).ready(()=>{
     
     var NS = {xhtml:"http://www.w3.org/1999/xhtml",
                 svg: "http://www.w3.org/2000/svg"};
+
+
     // set background right away when page loads
     setSVGBackground(svg, bgpicker.value);
 
@@ -84,30 +86,63 @@ $(document).ready(()=>{
         });
 
 
+        /** Dyncamic layer buttoon */
         let layerbtn = document.createElement("button");
         layerbtn.classList.add("windoworderingbtn");
-        layerbtn.innerHTML = "<svg viewBox='0 0 100 100' width='20' height='20' style='padding:1px'>"+
-                            "<rect x='0' y='0' width='10' height='10' fill='black' rx='5'/>"+
-                            "<rect x='20' y='0' width='50' height='10' fill='black' rx='5'/>"+
-                            "<rect x='0' y='31' width='10' height='10' fill='black' rx='5'/>"+
-                            "<rect x='20' y='31' width='50' height='10' fill='black' rx='5'/>" + 
-                            "<rect x='0' y='60' width='10' height='10' fill='black' rx='5'/>"+
-                            "<rect x='20' y='60' width='50' height='10' fill='black' rx='5'/></svg>"
+        layerbtn.innerHTML = "<svg viewBox='0 0 100 100' width='100%' height='100%' style='padding:1px' >"+
+                            "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
+                            "<rect x='30' y='10' width='50' height='10' fill='black' rx='5'/>"+
+                            "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
+                            "<rect x='30' y='41' width='50' height='10' fill='black' rx='5'/>" + 
+                            "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
+                            "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
                             
         layerbtn.addEventListener("mousedown", function(event) {
            
-            var mousey = event.clientY;
-            // putt dragging stuff here
-            document.addEventListener("mousemove", docucmentMouseOverHandler, [mousey, event.clientY]);
+            // capture the start y when the click happens
+            oldY = event.pageY;
+
+            layerbtn.addEventListener("mouseup", documentMouseUpListener, layerbtn)
+            document.addEventListener("mousemove", getMouseDirection, false);
+            // the element to put things above
+            try{
+                upperObject = (event.target.parentElement.parentElement.previousSibling.previousSibling) ?
+                event.target.parentElement.parentElement.previousElementSibling.previousSibling :
+                null; 
+                
+            }catch(err){
+                upperObject = null;
+            }
+            
+            // the element to put things below
+            try{
+                lowerObject = event.target.parentElement.parentElement.nextSibling.nextSibling.nextSibling
+            }
+            catch(err){
+                lowerObject = null;
+            }
+         
+            // objects that need to shift
+            try{
+                shiftObjects = [event.target.parentElement.parentElement, event.target.parentElement.parentElement.nextSibling];
+            }catch{
+                shiftObjects = null;
+            }
+
+            // put dragging stuff here
+            document.addEventListener("mousemove", docucmentMouseOverHandler);
         });
 
-        document.addEventListener("mouseup", documentMouseUpListener)
-
+        window.addEventListener("mousedown", function(event){
+            window.addEventListener("mouseup", documentMouseUpListener, layerbtn)
+        });
         
+        /** End */
 
 
         let toolsarea = document.createElement("div")
         toolsarea.classList.add("captiontoolsbox");
+        toolsarea.setAttribute("objectid", captionId);
 
         let textlabel = document.createElement("label");
         textlabel.innerHTML = "Caption Text:  ";
@@ -280,24 +315,55 @@ $(document).ready(()=>{
             removeToolsWindow(event);
         });
 
+        /** Dyncamic layer buttoon */
         let layerbtn = document.createElement("button");
         layerbtn.classList.add("windoworderingbtn");
-        layerbtn.innerHTML = "<svg viewBox='0 0 100 100' width='20' height='20' style='padding:1px'>"+
-                            "<rect x='0' y='0' width='10' height='10' fill='black' rx='5'/>"+
-                            "<rect x='20' y='0' width='50' height='10' fill='black' rx='5'/>"+
-                            "<rect x='0' y='31' width='10' height='10' fill='black' rx='5'/>"+
-                            "<rect x='20' y='31' width='50' height='10' fill='black' rx='5'/>" + 
-                            "<rect x='0' y='60' width='10' height='10' fill='black' rx='5'/>"+
-                            "<rect x='20' y='60' width='50' height='10' fill='black' rx='5'/></svg>"
+        layerbtn.innerHTML = "<svg viewBox='0 0 100 100' width='100%' height='100%' style='padding:1px'>"+
+                            "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
+                            "<rect x='30' y='10' width='50' height='10' fill='black' rx='5'/>"+
+                            "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
+                            "<rect x='30' y='41' width='50' height='10' fill='black' rx='5'/>" + 
+                            "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
+                            "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
                             
         layerbtn.addEventListener("mousedown", function(event) {
            
-            var mousey = event.clientY;
-            // putt dragging stuff here
-            document.addEventListener("mousemove", docucmentMouseOverHandler, [mousey, event.clientY]);
+            layerbtn.addEventListener("mouseup", documentMouseUpListener, layerbtn)
+            // the element to put things above
+            try{
+                upperObject = (event.target.parentElement.parentElement.previousSibling.objectid) ?
+                event.target.parentElement.parentElement.previousElementSibling.previousSibling :
+                null; 
+                console.log("UPPER: ");
+                console.log(event.target.parentElement.parentElement.previousSibling)
+            }catch(err){
+                upperObject = null;
+            }
+            
+            // the element to put things below
+            try{
+                lowerObject = event.target.parentElement.parentElement.nextSibling.nextSibling.nextSibling
+            }
+            catch(err){
+                lowerObject = null;
+            }
+         
+            // objects that need to shift
+            try{
+                shiftObjects = [event.target.parentElement.parentElement, event.target.parentElement.parentElement.nextSibling];
+            }catch{
+                shiftObjects = null;
+            }
+
+            // put dragging stuff here
+            document.addEventListener("mousemove", docucmentMouseOverHandler);
         });
 
-        document.addEventListener("mouseup", documentMouseUpListener);
+        window.addEventListener("mousedown", function(event){
+            window.addEventListener("mouseup", documentMouseUpListener, layerbtn)
+        });
+        
+        /** End */
 
         let toolsarea = document.createElement("div")
         toolsarea.classList.add("imagetoolsbox");
@@ -513,23 +579,109 @@ function randomId( textareafix )
     return textareafix + String( Math.floor((Math.random() * 1000) + 1) );
 }
 
-function docucmentMouseOverHandler ( mousey ) {
-        console.log("this is a drag");
-
-        if(mousey + 10 < this.clientY) {
+// dragging function to help with layer browser
+function docucmentMouseOverHandler () {
+     // TODO: trigger the function that moves the object
+        if(yDirection == "up") {
             console.log("MOUSE IS MOVING UP");
+            if(shiftObjects && upperObject)
+            {
+                shiftUp(shiftObjects, upperObject);
+            }
         }
-        else if(mousey + 10 > this.clientY){
+        else if(yDirection == "down"){
             console.log("MOUSE IS MOVING DOWN");
+            if(shiftObjects && lowerObject)
+            {
+                shiftDown(shiftObjects, lowerObject);
+            }
         }
 }
 
-function documentMouseUpListener(){
-    console.log("this ran")
+ 
+/** Setup a function to track the mouse movement of the user */
+
+var xDirection = "";
+var yDirection = "";
+ 
+var oldX = 0;
+var oldY = 0;
+var sensitivity = 150;
+ 
+function getMouseDirection(e) {
+
+    //deal with the horizontal case
+    if (oldX + sensitivity < e.pageX) {
+        update = true;
+        xDirection = "right";
+        oldX = e.pageX;
+
+    } else if(oldX - sensitivity > e.pageX) {
+        update = true;
+        xDirection = "left";
+        oldX = e.pageX;
+    }
+ 
+    //deal with the vertical case
+    if (oldY + sensitivity < e.pageY) {
+        yDirection = "down";
+        update = true;
+        oldY = e.pageY;
+
+    } else if (oldY - sensitivity > e.pageY) {
+        update = true;
+        yDirection = "up";
+        oldY = e.pageY;
+    }
+    else{
+        yDirection = "";
+    }
+}
+
+function documentMouseUpListener(btn){
     try{
         document.removeEventListener("mousemove", docucmentMouseOverHandler);
+        window.removeEventListener("mouseup", documentMouseUpListener);
+        document.removeEventListener("mousemove", getMouseDirection);
     }catch(err)
     {
         console.log("document listener remove failed");
+    }
+
+    lowerObject = null;
+    upperObject = null;
+    shiftObjects = null;
+    oldX = 0;
+    oldY = 0;
+}
+
+function shiftUp(){
+    if(!upperObject.classList.contains("tooldivider") ){
+        // runs the shift operations here
+        console.log( "shift up:")
+        shiftObjects.forEach(domElement => {
+            console.log("runs")
+            document.getElementById("toolcontainer").insertBefore(domElement, upperObject);
+        });
+        lowerObject = null;
+        upperObject = null;
+        shiftObjects = null;
+        yDirection = "";
+    }
+}
+
+function shiftDown(){
+    if(lowerObject)
+    {
+        console.log(lowerObject)
+        // run the function to shift the object downward
+        console.log( "shift down:")
+        shiftObjects.reverse().forEach(domElement => {
+            lowerObject.insertAdjacentElement("afterend", domElement);
+        });
+        lowerObject = null;
+        upperObject = null;
+        shiftObjects = null;
+        yDirection = "";
     }
 }
