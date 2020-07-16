@@ -83,6 +83,29 @@ $(document).ready(()=>{
             removeToolsWindow(event);
         });
 
+
+        let layerbtn = document.createElement("button");
+        layerbtn.classList.add("windoworderingbtn");
+        layerbtn.innerHTML = "<svg viewBox='0 0 100 100' width='20' height='20' style='padding:1px'>"+
+                            "<rect x='0' y='0' width='10' height='10' fill='black' rx='5'/>"+
+                            "<rect x='20' y='0' width='50' height='10' fill='black' rx='5'/>"+
+                            "<rect x='0' y='31' width='10' height='10' fill='black' rx='5'/>"+
+                            "<rect x='20' y='31' width='50' height='10' fill='black' rx='5'/>" + 
+                            "<rect x='0' y='60' width='10' height='10' fill='black' rx='5'/>"+
+                            "<rect x='20' y='60' width='50' height='10' fill='black' rx='5'/></svg>"
+                            
+        layerbtn.addEventListener("mousedown", function(event) {
+           
+            var mousey = event.clientY;
+            // putt dragging stuff here
+            document.addEventListener("mousemove", docucmentMouseOverHandler, [mousey, event.clientY]);
+        });
+
+        document.addEventListener("mouseup", documentMouseUpListener)
+
+        
+
+
         let toolsarea = document.createElement("div")
         toolsarea.classList.add("captiontoolsbox");
 
@@ -198,7 +221,7 @@ $(document).ready(()=>{
         });
 
         // append all elements together
-        newoptionsbar.append(header, minibtn, deletebtn, toolsarea);
+        newoptionsbar.append(header, minibtn, deletebtn, layerbtn, toolsarea);
         newoptionsbar.setAttribute("objectid", captionId );
         // finish by appending the whole thing
         divider.insertAdjacentElement("afterend", toolsarea);
@@ -256,6 +279,25 @@ $(document).ready(()=>{
         deletebtn.addEventListener( "click", function(event) {
             removeToolsWindow(event);
         });
+
+        let layerbtn = document.createElement("button");
+        layerbtn.classList.add("windoworderingbtn");
+        layerbtn.innerHTML = "<svg viewBox='0 0 100 100' width='20' height='20' style='padding:1px'>"+
+                            "<rect x='0' y='0' width='10' height='10' fill='black' rx='5'/>"+
+                            "<rect x='20' y='0' width='50' height='10' fill='black' rx='5'/>"+
+                            "<rect x='0' y='31' width='10' height='10' fill='black' rx='5'/>"+
+                            "<rect x='20' y='31' width='50' height='10' fill='black' rx='5'/>" + 
+                            "<rect x='0' y='60' width='10' height='10' fill='black' rx='5'/>"+
+                            "<rect x='20' y='60' width='50' height='10' fill='black' rx='5'/></svg>"
+                            
+        layerbtn.addEventListener("mousedown", function(event) {
+           
+            var mousey = event.clientY;
+            // putt dragging stuff here
+            document.addEventListener("mousemove", docucmentMouseOverHandler, [mousey, event.clientY]);
+        });
+
+        document.addEventListener("mouseup", documentMouseUpListener);
 
         let toolsarea = document.createElement("div")
         toolsarea.classList.add("imagetoolsbox");
@@ -364,7 +406,7 @@ $(document).ready(()=>{
         });
 
         // append all elements together
-        newoptionsbar.append(header, minibtn, deletebtn, toolsarea);
+        newoptionsbar.append(header, minibtn, deletebtn, layerbtn, toolsarea);
 
         newoptionsbar.setAttribute("objectid", imageId);
     
@@ -471,6 +513,23 @@ function randomId( textareafix )
     return textareafix + String( Math.floor((Math.random() * 1000) + 1) );
 }
 
-function getCaptionText( captionId ) {
-    
+function docucmentMouseOverHandler ( mousey ) {
+        console.log("this is a drag");
+
+        if(mousey + 10 < this.clientY) {
+            console.log("MOUSE IS MOVING UP");
+        }
+        else if(mousey + 10 > this.clientY){
+            console.log("MOUSE IS MOVING DOWN");
+        }
+}
+
+function documentMouseUpListener(){
+    console.log("this ran")
+    try{
+        document.removeEventListener("mousemove", docucmentMouseOverHandler);
+    }catch(err)
+    {
+        console.log("document listener remove failed");
+    }
 }
