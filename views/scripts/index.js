@@ -36,7 +36,6 @@ $(document).ready(()=>{
         window.open("https://www.usgs.gov/centers/astrogeology-science-center", '_blank');
     });
 
-    // TODO: fix the transition issues happening with this now
     /** handler for the whole tool window mini button */
     $('button.toolboxminimizebtn').click(function(event) {
         let toolbox = document.getElementById('toolbox'),
@@ -60,7 +59,6 @@ $(document).ready(()=>{
         }
     });
 
-    // TODO: fix the transition issues happening with this now
     /** handler for button to add caption to svg */
     $('button.toolboxaddcaptionbtn').click(() => {
 
@@ -298,7 +296,6 @@ $(document).ready(()=>{
         svg.appendChild(textholder);
     });
     
-    // TODO: fix the transition issues happening with this now
     /** handler for adding anothe image to the svg */
     $('button.toolboxaddimagebtn').click(() => {
 
@@ -692,7 +689,7 @@ function shiftUp(){
             document.getElementById("toolcontainer").insertBefore(domElement, upperObject);
         });
         
-        //TODO: move the svg layer up one
+        // move up one layer
         moveSvgUp(document.getElementById(shiftObjects[0].attributes.objectid.value));
         
 
@@ -713,8 +710,7 @@ function shiftDown(){
             lowerObject.insertAdjacentElement("afterend", domElement);
         });
 
-
-        //TODO: move the svg layer up one
+        // move up one layer
         moveSvgDown(document.getElementById(shiftObjects[0].attributes.objectid.value));
 
         lowerObject = null;
