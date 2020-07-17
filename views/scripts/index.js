@@ -1,3 +1,4 @@
+
 //GLOABALS
 // only used to track which menu item is being moved and where it should move to
 var shiftObjects, lowerObject, upperObject = null;
@@ -617,7 +618,6 @@ function docucmentMouseOverHandler () {
             }
         }
 }
-
  
 /** Setup a function to track the mouse movement of the user */
 var xDirection = "",

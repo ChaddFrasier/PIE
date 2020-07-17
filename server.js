@@ -13,6 +13,7 @@ const upload = multer();
 // using pug engine
 app.set('view engine', 'pug');
 app.set('views', './views');
+app.set('utils', './scripts');
 // set path for static folder
 app.use(express.static(path.join(__dirname,'public')));
 // using compression for speed
