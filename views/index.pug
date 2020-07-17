@@ -65,11 +65,11 @@ html
                 .windowsidebar
                     button.toolboxminimizebtn='◄'
                     button#addimagebtn.toolboxaddimagebtn
-                        svg.btnvectorgraphic
-                            rect(x="0",y="3", width="10px", height="10px", fill="red", stroke="black" stroke-width="3px")
+                        svg.btnvectorgraphic(viewBox="0 0 25 25")
+                            image.svgimg(href="images/add.svg", width="25px", height="25px")
                     button#addcaptionbtn.toolboxaddcaptionbtn
-                        svg.btnvectorgraphic
-                            rect(x="0",y="3", width="10px", height="10px", fill="blue", stroke="black" stroke-width="3px")
+                        svg.btnvectorgraphic(viewBox="0 0 25 25")
+                            image.svgimg(href="images/text.svg", width="25px", height="25px")
             
             #editbox.editbox
                 .exportoptionsbar(style="display:flex;")
