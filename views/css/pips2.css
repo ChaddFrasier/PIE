@@ -393,6 +393,7 @@ svg.imagecontainer {
 
 .toolboxcontainer.closed {
     width: 0% !important;
+    min-width: 0% !important;
 }
 
 .toolboxcontainer {
@@ -400,7 +401,8 @@ svg.imagecontainer {
     color: black;
     display: flex;
     height: auto;
-    max-width: 33.3%;
+    max-width: 15%;
+    min-width: 15%;
     transition: all ease-in-out 0.15s;
     -moz-transition: all ease-in-out 0.15s; /* Firefox 4 */
     -webkit-transition: all ease-in-out .15s; /* Safari and Chrome */
