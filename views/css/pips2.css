@@ -4,7 +4,7 @@
     --secondary-color: #89BFD2;
     --accent-color: #124A69;
     --contrast-color: #3E95A3;
-    --bar-gradient: linear-gradient(to top right,white, lightgrey);
+    --bar-gradient: linear-gradient(to top right,rgb(236, 236, 236), rgb(156, 156, 156));
 }
 
 html {
@@ -68,6 +68,7 @@ button.disabled {
 
 .pips2header {
     width: 100%;
+    height: 15%;
     display: flex;
 }
 
@@ -91,7 +92,7 @@ button.disabled {
 .mainfooter {
     display: flex;
     width: 100%;
-    height: 7%;
+    height: 5%;
     background: var(--bar-gradient);
     color: var(--accent-color);
     margin: auto auto 0 auto;
@@ -133,7 +134,8 @@ button.disabled {
     min-height: 0%;
     max-height: 40%;
     background: var(--contrast-color);
-    height: 17%;
+    height: 20%;
+    padding: 0 2px;
     overflow-x: hidden;
     overflow-y: auto;
     transition: all ease-in-out .15s;
@@ -150,7 +152,7 @@ button.disabled {
     height: 3%;
     min-height: 20px;
     max-height: 30px;
-    background: var(--contrast-color);
+    background: var(--secondary-color);
     border-radius: 2px 2px;
     margin: 4px 0 auto 0;
 }
@@ -172,8 +174,9 @@ label {
     min-height: 0%;
     max-height: 100%;
     background: var(--contrast-color);
-    height: 25%;
+    height: 35%;
     resize: vertical;
+    padding: 0 2px;
     overflow: auto;
     transition: all ease-in-out .15s;
     -moz-transition: all ease-in-out .15s; /* Firefox 4 */
@@ -191,8 +194,9 @@ label {
     min-height: 0%;
     max-height: 100%;
     background: var(--contrast-color);
-    height: 25%;
+    height: 35%;
     overflow: auto;
+    padding: 0 2px;
     transition: all ease-in-out .15s;
     -moz-transition: all ease-in-out .15s; /* Firefox 4 */
     -webkit-transition: all ease-in-out .15s; /* Safari and Chrome */
@@ -216,6 +220,7 @@ label {
     max-height: 100%;
     background: var(--contrast-color);
     height: 35%;
+    padding: 0 2px;
     overflow: auto;
     transition: all ease-in-out .15s;
     -moz-transition: all ease-in-out .15s; /* Firefox 4 */
@@ -312,7 +317,7 @@ button:hover {
     text-decoration: none;
     margin: auto 5px auto 5px;
     padding: 5px;
-    box-shadow: 0 2px (--contrast-color);
+    box-shadow: 0 2px var(--contrast-color);
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
     border-top-left-radius: 5px;

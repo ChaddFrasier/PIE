@@ -380,7 +380,7 @@ $(document).ready(()=>{
            document.addEventListener("mousemove", docucmentMouseOverHandler);
        });
 
-       window.addEventListener("mousedown", function(event){
+       window.addEventListener("mousedown", function(){
            window.addEventListener("mouseup", documentMouseUpListener, layerbtn)
        });
        
@@ -404,7 +404,7 @@ $(document).ready(()=>{
         widthinput.setAttribute("placeholder", '1500');
         widthinput.setAttribute("name","widthinput");
 
-        widthinput.addEventListener("change", function(event){
+        widthinput.addEventListener("change", function(){
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
@@ -422,7 +422,7 @@ $(document).ready(()=>{
         heightinput.setAttribute("placeholder", '1500');
         heightinput.setAttribute("name","widthinput");
 
-        heightinput.addEventListener("change", function(event){
+        heightinput.addEventListener("change", function(){
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
@@ -440,7 +440,7 @@ $(document).ready(()=>{
         xcoordinput.setAttribute("placeholder", '0');
         xcoordinput.setAttribute("name","xcoordinput");
 
-        xcoordinput.addEventListener("change", function(event){
+        xcoordinput.addEventListener("change", function(){
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
@@ -458,7 +458,7 @@ $(document).ready(()=>{
         ycoordinput.setAttribute("placeholder", '0');
         ycoordinput.setAttribute("name","ycoorinput");
 
-        ycoordinput.addEventListener("change", function(event){
+        ycoordinput.addEventListener("change", function(){
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
@@ -624,7 +624,7 @@ var xDirection = "",
     yDirection = "",
     oldX = 0,
     oldY = 0,
-    sensitivity = 150;
+    sensitivity = 50;
  
 /**
  * TODO:
