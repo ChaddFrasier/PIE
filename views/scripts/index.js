@@ -174,7 +174,7 @@ $(document).ready(()=>{
         textinput.setAttribute("placeholder", "Type your caption here")
         textinput.classList.add('textareainputfield')
 
-        textinput.addEventListener("keyup", function(event){
+        textinput.addEventListener("keyup", function(){
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value+"text" );
             // updpate the text inside once found
@@ -190,7 +190,7 @@ $(document).ready(()=>{
         widthinput.setAttribute("min", '100');
         widthinput.setAttribute("placeholder", '100');
         widthinput.setAttribute("name","widthinput");
-        widthinput.addEventListener("change", () => {
+        widthinput.addEventListener("change", function() {
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
@@ -207,7 +207,7 @@ $(document).ready(()=>{
         heightinput.setAttribute("min", '150');
         heightinput.setAttribute("placeholder", '150');
         heightinput.setAttribute("name","widthinput");
-        heightinput.addEventListener("change", () => {
+        heightinput.addEventListener("change", function() {
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
@@ -224,7 +224,7 @@ $(document).ready(()=>{
         xcoordinput.setAttribute("placeholder", '0');
         xcoordinput.setAttribute("name","xcoordinput");
 
-        xcoordinput.addEventListener("change", () => {
+        xcoordinput.addEventListener("change", function() {
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
@@ -241,7 +241,7 @@ $(document).ready(()=>{
         ycoordinput.setAttribute("placeholder", '0');
         ycoordinput.setAttribute("name","ycoorinput");
         
-        ycoordinput.addEventListener("change", () => {
+        ycoordinput.addEventListener("change", function() {
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
@@ -390,7 +390,7 @@ $(document).ready(()=>{
        /** End */
 
         toolsarea.classList.add("imagetoolsbox");
-
+        toolsarea.setAttribute("objectid", imageId);
         filelabel.innerHTML = "Choose a file: ";
         filelabel.setAttribute("for", "imageinput");
 
@@ -686,10 +686,16 @@ function documentMouseUpListener(){
  * TODO:
  */
 function shiftUp(){
-    if(upperObject.getAttribute("objectid") ){
+    if(upperObject.getAttribute("objectid") )
+    {
         shiftObjects.forEach(domElement => {
             document.getElementById("toolcontainer").insertBefore(domElement, upperObject);
         });
+        
+        //TODO: move the svg layer up one
+        moveSvgUp(document.getElementById(shiftObjects[0].attributes.objectid.value));
+        
+
         lowerObject = null;
         upperObject = null;
         shiftObjects = null;
@@ -706,9 +712,29 @@ function shiftDown(){
         shiftObjects.reverse().forEach(domElement => {
             lowerObject.insertAdjacentElement("afterend", domElement);
         });
+
+
+        //TODO: move the svg layer up one
+        moveSvgDown(document.getElementById(shiftObjects[0].attributes.objectid.value));
+
         lowerObject = null;
         upperObject = null;
         shiftObjects = null;
         yDirection = "";
     }
+}
+
+/**
+ * TODO:
+ * @param {*} element 
+ */
+function moveSvgUp( element ){
+    element.nextSibling.insertAdjacentElement("afterend", element);
+}
+/**
+ * TODO:
+ * @param {*} element 
+ */
+function moveSvgDown( element ){
+    document.getElementById("figurecontainer").insertBefore(element, element.previousSibling);
 }
