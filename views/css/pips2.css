@@ -110,6 +110,13 @@ button.disabled {
     cursor: pointer;
 }
 
+.imageform {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
 .windoworderingbtn{
     background: transparent;
     border-radius: 2px 2px;
@@ -119,7 +126,6 @@ button.disabled {
     min-width: 25px;
     max-width: 25px;
     min-height: 25px;
-    max-height: 25px;
     vertical-align: top;
     margin: 0 0 0 0;
     border: 1px solid transparent;

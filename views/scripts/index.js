@@ -393,10 +393,42 @@ $(document).ready(()=>{
         filelabel.setAttribute("for", "imageinput");
 
         fileinput.setAttribute("type", "file");
-        fileinput.setAttribute("name","imageinput");
+        fileinput.setAttribute("id","input"+imageId);
         fileinput.classList.add('fileinputfield')
 
-        // TODO: add an event listener here for the file input field
+        let form = document.createElement("form");
+        form.setAttribute("runat", "server");
+        form.setAttribute("class", "imageform");
+        form.appendChild(fileinput);
+
+        // listener for when the user changes the image of the input field
+        fileinput.onchange = function(event){
+            let imgregexp = new RegExp("^.*\.(png|PNG|jpg|JPG|SVG|svg)");
+            let isisregexp = new RegExp("^.*\.(CUB|cub|tif|TIF)");
+
+            if(imgregexp.test(this.value))
+            {
+                if(this.files && this.files[0])
+                {
+                    var reader = new FileReader();
+
+                    // occurs after readAsDataURL
+                    reader.onload = function(e) {
+                    $('#'+imageId).attr('href', e.target.result);
+                    }
+                    
+                    reader.readAsDataURL(this.files[0]); // convert to base64 string
+                }
+            }
+            else if( isisregexp.test(this.value))
+            {
+                //TODO: send a very large file over to the node server
+                console.log("SEND IMG TO SERVER AND RECIEVE OMTHING BACK");
+            }
+            else{
+                alert("File Type Not Supported");
+            }
+        };
 
         widthlabel.innerHTML = "Width of Image: ";
         widthlabel.setAttribute("for", "widthinput");
