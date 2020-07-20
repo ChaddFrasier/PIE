@@ -1,5 +1,4 @@
-
-//GLOABALS
+// GLOABALS
 // only used to track which menu item is being moved and where it should move to
 var shiftObjects, lowerObject, upperObject = null;
 
@@ -8,7 +7,6 @@ $(document).ready(()=>{
     // jquery scope variables
     var svg = document.getElementById("figurecontainer"),
         bgpicker = document.getElementById("backgroundcolor"),
-        edittoolsbox = document.getElementById("edittoolsbox"),
         divider = document.getElementById("tooldivider");
     
     // Namespaces for svg ele
@@ -38,7 +36,7 @@ $(document).ready(()=>{
     });
 
     /** handler for the whole tool window mini button */
-    $('button.toolboxminimizebtn').click(function(event) {
+    $('.toolboxminimizebtn').click(function(event) {
         let toolbox = document.getElementById('toolbox'),
             imgbtn = document.getElementById('addimagebtn'),
             capbtn = document.getElementById('addcaptionbtn');
@@ -532,7 +530,6 @@ $(document).ready(()=>{
         imagesvg.setAttribute("href", "test/moonphasestest.jpg")
 
         svg.appendChild(imagesvg);
-
     });
 
 
@@ -720,7 +717,6 @@ function shiftUp(){
         
         // move up one layer
         moveSvgUp(document.getElementById(shiftObjects[0].attributes.objectid.value));
-        
 
         lowerObject = null;
         upperObject = null;

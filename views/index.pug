@@ -18,8 +18,8 @@ html
         span(style="display:flex; height:80%;width:100%; margin: 0 0 auto 0")
             #toolbox.toolboxcontainer
                 #toolcontainer.toolscontainer
-                    .dividerline="Tools"
-                    #copyoptionsbar.windowoptionsbar(style="display:flex;")
+                    h3.dividerline="Tools"
+                    .windowoptionsbar(style="display:flex;")
                         h4(style="margin:0;")="File Tools"
                         button.windowminimizebtn='▲'
                     #filetools.filetoolsbox
@@ -35,40 +35,39 @@ html
 
                     .windowoptionsbar(style="display:flex;")
                         h4(style="margin:0;")="Editing Tools"
-                        button#editminibtn.windowminimizebtn='▲'
+                        button.windowminimizebtn='▲'
                     #edittoolsbox.edittoolsbox.closed
-                        div#edittoolselect
-                            label(for="northarrowopt")="North Button"
+                        label(for="northarrowopt")="North Button"
+                        br
+                        input#northarrowopt(type="checkbox", value="North Arrow")
+                        br
+                        label(for="sunarrowbtn")="Sun Button"
+                        br
+                        input#sunarrowopt(type="checkbox", value="Sun Arrow")
+                        br
+                        label(for="observerarrowbtn")="Observer Button"
+                        br
+                        input#observerarrowopt(type="checkbox", value="Observer Arrow")
+                        
+                        div.radio-group
+                            label(for="pencilopt")="Pencil Button"
                             br
-                            input#northarrowopt(type="checkbox", value="North Arrow")
+                            input#pencilopt(type="radio", value=1, name="mouseactions")
                             br
-                            label(for="sunarrowbtn")="Sun Button"
+                            label(for="outlineopt")="Outline Button"
                             br
-                            input#sunarrowopt(type="checkbox", value="Sun Arrow")
-                            br
-                            label(for="observerarrowbtn")="Observer Button"
-                            br
-                            input#observerarrowopt(type="checkbox", value="Observer Arrow")
-                            
-                            div.radio-group
-                                label(for="pencilopt")="Pencil Button"
-                                br
-                                input#pencilopt(type="radio", value=1, name="mouseactions")
-                                br
-                                label(for="outlineopt")="Outline Button"
-                                br
-                                input#outlineopt(type="radio", value=2, name="mouseactions")
-                    #tooldivider.dividerline="Vector Layers"
+                            input#outlineopt(type="radio", value=2, name="mouseactions")
+                    h3#tooldivider.dividerline="Vector Layers"
 
 
-                .windowsidebar
-                    button.toolboxminimizebtn='◄'
-                    button#addimagebtn.toolboxaddimagebtn
-                        svg.btnvectorgraphic(viewBox="0 0 25 25")
-                            image.svgimg(href="images/add.svg", width="25px", height="25px")
-                    button#addcaptionbtn.toolboxaddcaptionbtn
-                        svg.btnvectorgraphic(viewBox="0 0 25 25")
-                            image.svgimg(href="images/text.svg", width="25px", height="25px")
+            .windowsidebar
+                button.toolboxminimizebtn='◄'
+                button#addimagebtn.toolboxaddimagebtn
+                    svg.btnvectorgraphic(viewBox="0 0 25 25")
+                        image.svgimg(href="images/add.svg", width="25px", height="25px")
+                button#addcaptionbtn.toolboxaddcaptionbtn
+                    svg.btnvectorgraphic(viewBox="0 0 25 25")
+                        image.svgimg(href="images/text.svg", width="25px", height="25px")
             
             #editbox.editbox
                 .exportoptionsbar(style="display:flex;")
