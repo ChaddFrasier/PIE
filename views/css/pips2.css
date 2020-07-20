@@ -140,7 +140,7 @@ button.disabled {
     min-height: 0%;
     max-height: 40%;
     background: var(--contrast-color);
-    height: 20%;
+
     padding: 0 2px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -180,7 +180,6 @@ label {
     min-height: 0%;
     max-height: 100%;
     background: var(--contrast-color);
-    height: 35%;
     resize: vertical;
     padding: 0 2px;
     overflow: auto;
@@ -401,6 +400,12 @@ svg.imagecontainer {
     margin: auto 0 auto auto;
     width: 33.3%;
 }
+
+
+.closed {
+    height: 0%;
+}
+
 
 .toolboxcontainer.closed {
     width: 0% !important;

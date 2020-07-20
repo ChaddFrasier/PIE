@@ -576,9 +576,6 @@ $(document).ready(()=>{
         console.log("ADD AND REMOVE OBSERVER ICON")
     });
 
-    // close the tabs that are not wanted
-    edittoolsbox.previousElementSibling.lastElementChild.click();
-
 }); // end of jquery functions
 
 
@@ -595,13 +592,13 @@ function setSVGBackground(svg, color){
  * TODO:
  */
 function minimizeToolsWindow(event) {
-    if(event.target.parentElement.nextElementSibling.style.height == '0%'){
-        event.target.parentElement.nextElementSibling.style.height = event.target.parentElement.nextElementSibling.style.maxHeight;
+    if(event.target.parentElement.nextElementSibling.classList.contains("closed")){
         event.target.innerHTML = '▲';
+        event.target.parentElement.nextElementSibling.classList.remove("closed");
     }
     else{
-        event.target.parentElement.nextElementSibling.style.height = '0%';
         event.target.innerHTML = '▼';
+        event.target.parentElement.nextElementSibling.classList.add("closed");
     }
 }
 

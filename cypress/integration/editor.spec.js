@@ -61,4 +61,14 @@ describe('Editor Page Tests > ', () => {
         cy.get("svg#figurecontainer[viewBox='0 0 2500 2000']").should("have.length",0)
     });
 
+    it("Window Size Changes when the mini button is clicked", () => {
+        cy.get("#edittoolsbox").should("have.class", "closed")
+        cy.get("#editminibtn").click()
+        cy.get("#edittoolsbox[class='closed']").should("have.length", 0)
+        cy.get("#editminibtn").click()
+        cy.get("#edittoolsbox").should("have.class", "closed")
+
+
+    });
+
 });
