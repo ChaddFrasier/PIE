@@ -40,4 +40,25 @@ describe('Editor Page Tests > ', () => {
 
     });
 
+    it("Background should change when value changes", () => {
+        let testcolor = "#374783";
+
+        // change bg color and check
+        cy.get("#backgroundcolor").invoke('val', testcolor).trigger('change')
+
+        cy.get("svg#figurecontainer").should("have.css", "background-color", "rgb(55, 71, 131)")
+    });
+
+    it("Figure Size Changes SVG viewBox", () => {
+        // change bg color and check
+        cy.get("#figsizeselect").select('2500x2000')
+
+        cy.get("svg#figurecontainer[viewBox='0 0 2500 2000']").should("have.length",1)
+    
+        // change bg color and check
+        cy.get("#figsizeselect").select('1500x1500')
+
+        cy.get("svg#figurecontainer[viewBox='0 0 2500 2000']").should("have.length",0)
+    });
+
 });
