@@ -67,8 +67,6 @@ describe('Editor Page Tests > ', () => {
         cy.get("#edittoolsbox[class='closed']").should("have.length", 0)
         cy.get("#editminibtn").click()
         cy.get("#edittoolsbox").should("have.class", "closed")
-
-
     });
 
 });
