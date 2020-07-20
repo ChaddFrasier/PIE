@@ -68,5 +68,30 @@ describe('Editor Page Tests > ', () => {
         cy.get("#editminibtn").click()
         cy.get("#edittoolsbox").should("have.class", "closed")
     });
+});
 
+describe("Image Tool Box Tests > ", () => {
+
+    it("Should change image href when image in the input box changes", () => {
+        // adds image object
+        cy.get("#addimagebtn").click()
+
+        cy.fixture('galaxycolor.jpg').then(fileContent => {
+            return Cypress.Blob.base64StringToBlob(fileContent, "image/jpeg")
+        })
+        .then(dataUrl => {
+            cy.get('input[type="file"]').attachFile({
+                fileContent: dataUrl,
+                fileName: 'galaxycolor.jpg',
+                mimeType: 'image/jpeg'
+            });
+        });
+
+        // check that image is not default image
+        cy.get("#figurecontainer > image").should("have.length",1);
+        cy.get("#figurecontainer > image").not("href",'test/moonphasestest.jpg').should("have.length", 1);
+
+        cy.get("#addimagebtn").click()
+        cy.get("#figurecontainer > image[href='test/moonphasestest.jpg']").should("have.length", 1);
+    });
 });
