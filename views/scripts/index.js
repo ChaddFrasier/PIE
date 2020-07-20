@@ -1,13 +1,17 @@
+
+//GLOABALS
+// only used to track which menu item is being moved and where it should move to
 var shiftObjects, lowerObject, upperObject = null;
+
 // start of jquery function
 $(document).ready(()=>{
-    // variables for basic js functions
-    var svg = document.getElementById("figurecontainer");
-    var bgpicker = document.getElementById("backgroundcolor");
-    var edittoolsbox = document.getElementById("edittoolsbox");
-    var filetoolsbox = document.getElementById("toolcontainer");
-    var divider = document.getElementById("tooldivider");
+    // jquery scope variables
+    var svg = document.getElementById("figurecontainer"),
+        bgpicker = document.getElementById("backgroundcolor"),
+        edittoolsbox = document.getElementById("edittoolsbox"),
+        divider = document.getElementById("tooldivider");
     
+    // Namespaces for svg ele
     var NS = {xhtml:"http://www.w3.org/1999/xhtml",
                 svg: "http://www.w3.org/2000/svg"};
 
@@ -16,12 +20,12 @@ $(document).ready(()=>{
     setSVGBackground(svg, bgpicker.value);
 
     /* Show and hide contents of the tool windows works generically so we can add more later */
-    $('button.windowminimizebtn').click((event) => {
+    $('button.windowminimizebtn').click(function(event) {
         minimizeToolsWindow(event);
     });
     
     // close tools window if the title bar is clicked
-    $(".windowoptionsbar").on("click", (event) => {
+    $(".windowoptionsbar").on("click", function(event) {
         let btn = event.target.lastElementChild;
         if( btn ){
             btn.click();
@@ -33,12 +37,13 @@ $(document).ready(()=>{
         window.open("https://www.usgs.gov/centers/astrogeology-science-center", '_blank');
     });
 
-    // TODO: fix the transition issues happening with this now
-    $('button.toolboxminimizebtn').click((event) => {
+    /** handler for the whole tool window mini button */
+    $('button.toolboxminimizebtn').click(function(event) {
         let toolbox = document.getElementById('toolbox'),
             imgbtn = document.getElementById('addimagebtn'),
             capbtn = document.getElementById('addcaptionbtn');
 
+        // check if the box is already closed if true open otherwise close
         if( toolbox.classList.contains('closed') ){
             toolbox.classList.remove('closed');
             // reactivate the other buttons
@@ -48,46 +53,51 @@ $(document).ready(()=>{
         }
         else{
             toolbox.classList.add('closed');
-            // disable the other buttons
+            // disable the other buttons to help focus on editing image
             imgbtn.classList.add("disabled");
             capbtn.classList.add("disabled");
             event.target.innerHTML = "►";
         }
     });
 
-    // TODO: fix the transition issues happening with this now
-    $('button.toolboxaddcaptionbtn').click((event) => {
+    /** handler for button to add caption to svg */
+    $('button.toolboxaddcaptionbtn').click(() => {
 
         // used for identifying the tool box for each caption in the image 
-        let captionId = randomId("caption");
+        let captionId = randomId("caption"),
+            newoptionsbar = document.createElement("div"),
+            header = document.createElement("h4"),
+            minibtn = document.createElement("button"),
+            deletebtn = document.createElement("button"),
+            layerbtn = document.createElement("button");
 
-        let newoptionsbar = document.createElement("div");
-
+        // set required styles
         newoptionsbar.classList.add("windowoptionsbar");
         newoptionsbar.style.display = "flex";
 
-        let header = document.createElement("h4");
+        // setup the header of the optionsbar
         header.innerHTML = "Caption Layer";
         header.style.margin = "0";
 
-        let minibtn = document.createElement("button");
+        // same with the minimize button
         minibtn.classList.add("windowminimizebtn");
         minibtn.innerHTML = "▲";
+
+        // cant forget the event handler for the minimize btn
         minibtn.addEventListener( "click", function(event) {
             minimizeToolsWindow(event);
         });
 
-        
-        let deletebtn = document.createElement("button");
+        // same for delete as minimize
         deletebtn.classList.add("windowremovebtn");
         deletebtn.innerHTML = "&times";
         deletebtn.addEventListener( "click", function(event) {
             removeToolsWindow(event);
         });
 
+        /** Dyncamic layer buttoon requires more work*/
 
-        /** Dyncamic layer buttoon */
-        let layerbtn = document.createElement("button");
+        // set the class css and the svg button graphic
         layerbtn.classList.add("windoworderingbtn");
         layerbtn.innerHTML = "<svg viewBox='0 0 100 100' width='100%' height='100%' style='padding:1px' >"+
                             "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
@@ -95,66 +105,75 @@ $(document).ready(()=>{
                             "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
                             "<rect x='30' y='41' width='50' height='10' fill='black' rx='5'/>" + 
                             "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
-                            "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
-                            
+                            "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>";
+        
+        // main handler for the dragging functionality
         layerbtn.addEventListener("mousedown", function(event) {
-           
             // capture the start y when the click happens
             oldY = event.pageY;
 
+            // add the listeners for removing the drag functions
             layerbtn.addEventListener("mouseup", documentMouseUpListener, layerbtn)
             document.addEventListener("mousemove", getMouseDirection, false);
-            // the element to put things above
+
+            // try to find the element to put things above
             try{
+                // ** I know to look for this because the structure of the layer browser. ** could be simplified in the future
                 upperObject = (event.target.parentElement.parentElement.previousSibling.previousSibling) ?
                 event.target.parentElement.parentElement.previousElementSibling.previousSibling :
                 null; 
-                
-            }catch(err){
+            }catch{
                 upperObject = null;
             }
-            
             // the element to put things below
             try{
                 lowerObject = event.target.parentElement.parentElement.nextSibling.nextSibling.nextSibling
             }
-            catch(err){
+            catch{
                 lowerObject = null;
             }
-         
             // objects that need to shift
             try{
+                // get current targets parentElement for shifting
                 shiftObjects = [event.target.parentElement.parentElement, event.target.parentElement.parentElement.nextSibling];
             }catch{
                 shiftObjects = null;
             }
 
-            // put dragging stuff here
+            // drag function
             document.addEventListener("mousemove", docucmentMouseOverHandler);
         });
 
-        window.addEventListener("mousedown", function(event){
+        // add the window lister to remove active dragging
+        window.addEventListener("mousedown", () => {
             window.addEventListener("mouseup", documentMouseUpListener, layerbtn)
         });
-        
-        /** End */
+        /** End Dragging */
 
 
-        let toolsarea = document.createElement("div")
+        // this is all dynamic css for the caption tool box
+        // the most important part is just the 'objectid' attribute
+        let toolsarea = document.createElement("div"),
+            textinput = document.createElement("textarea"),
+            widthlabel = document.createElement("label"),
+            widthinput = document.createElement("input"),
+            heightlabel = document.createElement("label"),
+            heightinput = document.createElement("input"),
+            xcoordlabel = document.createElement("label"),
+            xcoordinput = document.createElement("input"),
+            ycoordlabel = document.createElement("label"),
+            ycoordinput = document.createElement("input"),
+            textlabel = document.createElement("label");
+
         toolsarea.classList.add("captiontoolsbox");
         toolsarea.setAttribute("objectid", captionId);
-
-        let textlabel = document.createElement("label");
         textlabel.innerHTML = "Caption Text:  ";
         textlabel.setAttribute("for", "captiontextinput");
-
-        let textinput = document.createElement("textarea");
         textinput.setAttribute("name","captiontextinput");
         textinput.setAttribute("placeholder", "Type your caption here")
         textinput.classList.add('textareainputfield')
 
-        textinput.addEventListener("keyup", function(event){
-
+        textinput.addEventListener("keyup", function(){
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value+"text" );
             // updpate the text inside once found
@@ -164,16 +183,13 @@ $(document).ready(()=>{
             }
         });
 
-        let widthlabel = document.createElement("label");
         widthlabel.innerHTML = "Width of Caption: ";
         widthlabel.setAttribute("for", "widthinput");
-
-        let widthinput = document.createElement("input");
         widthinput.setAttribute("type", "number");
         widthinput.setAttribute("min", '100');
         widthinput.setAttribute("placeholder", '100');
         widthinput.setAttribute("name","widthinput");
-        widthinput.addEventListener("change", function(event){
+        widthinput.addEventListener("change", function() {
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
@@ -183,16 +199,14 @@ $(document).ready(()=>{
             }
         });
 
-        let heightlabel = document.createElement("label");
         heightlabel.innerHTML = "Height of Caption: ";
         heightlabel.setAttribute("for", "widthinput");
 
-        let heightinput = document.createElement("input");
         heightinput.setAttribute("type", "number");
         heightinput.setAttribute("min", '150');
         heightinput.setAttribute("placeholder", '150');
         heightinput.setAttribute("name","widthinput");
-        heightinput.addEventListener("change", function(event){
+        heightinput.addEventListener("change", function() {
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
@@ -202,18 +216,14 @@ $(document).ready(()=>{
             }
         });
 
-
-        let xcoordlabel = document.createElement("label");
         xcoordlabel.innerHTML = "X Coordinate: ";
         xcoordlabel.setAttribute("for", "widthinput");
-
-        let xcoordinput = document.createElement("input");
         xcoordinput.setAttribute("type", "number");
         xcoordinput.setAttribute("min", '0');
         xcoordinput.setAttribute("placeholder", '0');
         xcoordinput.setAttribute("name","xcoordinput");
 
-        xcoordinput.addEventListener("change", function(event){
+        xcoordinput.addEventListener("change", function() {
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
@@ -223,17 +233,14 @@ $(document).ready(()=>{
             }
         });
         
-        let ycoordlabel = document.createElement("label");
         ycoordlabel.innerHTML = "Y Coordinate: ";
         ycoordlabel.setAttribute("for", "ycoordinput");
-
-        let ycoordinput = document.createElement("input");
         ycoordinput.setAttribute("type", "number");
         ycoordinput.setAttribute("min", '0');
         ycoordinput.setAttribute("placeholder", '0');
         ycoordinput.setAttribute("name","ycoorinput");
-
-        ycoordinput.addEventListener("change", function(event){
+        
+        ycoordinput.addEventListener("change", function() {
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
@@ -243,12 +250,15 @@ $(document).ready(()=>{
             }
         });
 
-        toolsarea.append( textlabel, document.createElement("br"), textinput,
-        document.createElement("br"), widthlabel, document.createElement("br"),
-        widthinput, document.createElement("br"), heightlabel, 
-        document.createElement("br"), heightinput, document.createElement("br"),
-        xcoordlabel, document.createElement("br"), xcoordinput, document.createElement("br"),
-        ycoordlabel, document.createElement("br"), ycoordinput );
+        // append all the elements to the tool box
+        toolsarea.append( 
+            textlabel, document.createElement("br"), textinput,
+            document.createElement("br"), widthlabel, document.createElement("br"),
+            widthinput, document.createElement("br"), heightlabel, 
+            document.createElement("br"), heightinput, document.createElement("br"),
+            xcoordlabel, document.createElement("br"), xcoordinput, document.createElement("br"),
+            ycoordlabel, document.createElement("br"), ycoordinput 
+        );
 
         // set caption id on all input elements
         toolsarea.childNodes.forEach(element => {
@@ -258,6 +268,7 @@ $(document).ready(()=>{
         // append all elements together
         newoptionsbar.append(header, minibtn, deletebtn, layerbtn, toolsarea);
         newoptionsbar.setAttribute("objectid", captionId );
+
         // finish by appending the whole thing
         divider.insertAdjacentElement("afterend", toolsarea);
         divider.insertAdjacentElement("afterend", newoptionsbar);
@@ -281,34 +292,47 @@ $(document).ready(()=>{
         
         text.innerHTML = "This is the caption";
 
+        // finish by adding them to the document
         textholder.appendChild(text)
-
         svg.appendChild(textholder);
     });
     
-    // TODO: fix the transition issues happening with this now
-    $('button.toolboxaddimagebtn').click((event) => {
+    /** handler for adding anothe image to the svg */
+    $('button.toolboxaddimagebtn').click(() => {
 
         // used for identifying the tool box for each caption in the image 
-        let imageId = randomId("image");
-        
-        let newoptionsbar = document.createElement("div");
+        let imageId = randomId("image"),
+            newoptionsbar = document.createElement("div"),
+            header = document.createElement("h4"),
+            minibtn = document.createElement("button"),
+            deletebtn = document.createElement("button"),
+            layerbtn = document.createElement("button"),
+            toolsarea = document.createElement("div"),
+            filelabel = document.createElement("label"),
+            fileinput = document.createElement("input"),
+            widthlabel = document.createElement("label"),
+            widthinput = document.createElement("input"),
+            heightlabel = document.createElement("label"),
+            heightinput = document.createElement("input"),
+            xcoordlabel = document.createElement("label"),
+            xcoordinput = document.createElement("input"),
+            ycoordlabel = document.createElement("label"),
+            ycoordinput = document.createElement("input"),
+            imagesvg = document.createElementNS(NS.svg, "image");
 
+        
         newoptionsbar.classList.add("windowoptionsbar");
         newoptionsbar.style.display = "flex";
 
-        let header = document.createElement("h4");
         header.innerHTML = "Image Layer";
         header.style.margin = "0";
 
-        let minibtn = document.createElement("button");
         minibtn.classList.add("windowminimizebtn");
         minibtn.innerHTML = "▲";
         minibtn.addEventListener( "click", function(event) {
             minimizeToolsWindow(event);
         });
 
-        let deletebtn = document.createElement("button");
         deletebtn.classList.add("windowremovebtn");
         deletebtn.innerHTML = "&times";
         deletebtn.addEventListener( "click", function(event) {
@@ -316,7 +340,6 @@ $(document).ready(()=>{
         });
 
        /** Dyncamic layer buttoon */
-       let layerbtn = document.createElement("button");
        layerbtn.classList.add("windoworderingbtn");
        layerbtn.innerHTML = "<svg viewBox='0 0 100 100' width='100%' height='100%' style='padding:1px' >"+
                            "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
@@ -326,8 +349,7 @@ $(document).ready(()=>{
                            "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
                            "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
                            
-       layerbtn.addEventListener("mousedown", function(event) {
-          
+       layerbtn.addEventListener("mousedown", function(event) {  
            // capture the start y when the click happens
            oldY = event.pageY;
 
@@ -337,20 +359,17 @@ $(document).ready(()=>{
            try{
                upperObject = (event.target.parentElement.parentElement.previousSibling.previousSibling) ?
                event.target.parentElement.parentElement.previousElementSibling.previousSibling :
-               null; 
-               
-           }catch(err){
+               null;    
+           }catch{
                upperObject = null;
            }
-           
            // the element to put things below
            try{
                lowerObject = event.target.parentElement.parentElement.nextSibling.nextSibling.nextSibling
            }
-           catch(err){
+           catch{
                lowerObject = null;
            }
-        
            // objects that need to shift
            try{
                shiftObjects = [event.target.parentElement.parentElement, event.target.parentElement.parentElement.nextSibling];
@@ -362,37 +381,63 @@ $(document).ready(()=>{
            document.addEventListener("mousemove", docucmentMouseOverHandler);
        });
 
-       window.addEventListener("mousedown", function(event){
+       window.addEventListener("mousedown", function(){
            window.addEventListener("mouseup", documentMouseUpListener, layerbtn)
        });
        
        /** End */
 
-        let toolsarea = document.createElement("div")
         toolsarea.classList.add("imagetoolsbox");
-
-        let filelabel = document.createElement("label");
+        toolsarea.setAttribute("objectid", imageId);
         filelabel.innerHTML = "Choose a file: ";
         filelabel.setAttribute("for", "imageinput");
 
-        let fileinput = document.createElement("input");
         fileinput.setAttribute("type", "file");
-        fileinput.setAttribute("name","imageinput");
+        fileinput.setAttribute("id","input"+imageId);
         fileinput.classList.add('fileinputfield')
 
-        // TODO: add an event listener here for the file input field
+        let form = document.createElement("form");
+        form.setAttribute("runat", "server");
+        form.setAttribute("class", "imageform");
+        form.appendChild(fileinput);
 
-        let widthlabel = document.createElement("label");
+        // listener for when the user changes the image of the input field
+        fileinput.onchange = function(event){
+            let imgregexp = new RegExp("^.*\.(png|PNG|jpg|JPG|SVG|svg)");
+            let isisregexp = new RegExp("^.*\.(CUB|cub|tif|TIF)");
+
+            if(imgregexp.test(this.value))
+            {
+                if(this.files && this.files[0])
+                {
+                    var reader = new FileReader();
+
+                    // occurs after readAsDataURL
+                    reader.onload = function(e) {
+                    $('#'+imageId).attr('href', e.target.result);
+                    }
+                    
+                    reader.readAsDataURL(this.files[0]); // convert to base64 string
+                }
+            }
+            else if( isisregexp.test(this.value))
+            {
+                //TODO: send a very large file over to the node server
+                console.log("SEND IMG TO SERVER AND RECIEVE OMTHING BACK");
+            }
+            else{
+                alert("File Type Not Supported");
+            }
+        };
+
         widthlabel.innerHTML = "Width of Image: ";
         widthlabel.setAttribute("for", "widthinput");
-
-        let widthinput = document.createElement("input");
         widthinput.setAttribute("type", "number");
         widthinput.setAttribute("min", '1500');
         widthinput.setAttribute("placeholder", '1500');
         widthinput.setAttribute("name","widthinput");
 
-        widthinput.addEventListener("change", function(event){
+        widthinput.addEventListener("change", function(){
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
@@ -402,17 +447,15 @@ $(document).ready(()=>{
             }
         });
 
-        let heightlabel = document.createElement("label");
         heightlabel.innerHTML = "Height of Image: ";
         heightlabel.setAttribute("for", "widthinput");
 
-        let heightinput = document.createElement("input");
         heightinput.setAttribute("type", "number");
         heightinput.setAttribute("min", '1500');
         heightinput.setAttribute("placeholder", '1500');
         heightinput.setAttribute("name","widthinput");
 
-        heightinput.addEventListener("change", function(event){
+        heightinput.addEventListener("change", function(){
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
@@ -422,17 +465,15 @@ $(document).ready(()=>{
             }
         });
 
-        let xcoordlabel = document.createElement("label");
+
         xcoordlabel.innerHTML = "X Coordinate: ";
         xcoordlabel.setAttribute("for", "widthinput");
-
-        let xcoordinput = document.createElement("input");
         xcoordinput.setAttribute("type", "number");
         xcoordinput.setAttribute("min", '0');
         xcoordinput.setAttribute("placeholder", '0');
         xcoordinput.setAttribute("name","xcoordinput");
 
-        xcoordinput.addEventListener("change", function(event){
+        xcoordinput.addEventListener("change", function(){
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
@@ -442,17 +483,15 @@ $(document).ready(()=>{
             }
         });
         
-        let ycoordlabel = document.createElement("label");
         ycoordlabel.innerHTML = "Y Coordinate: ";
         ycoordlabel.setAttribute("for", "ycoordinput");
 
-        let ycoordinput = document.createElement("input");
         ycoordinput.setAttribute("type", "number");
         ycoordinput.setAttribute("min", '0');
         ycoordinput.setAttribute("placeholder", '0');
         ycoordinput.setAttribute("name","ycoorinput");
 
-        ycoordinput.addEventListener("change", function(event){
+        ycoordinput.addEventListener("change", function(){
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
@@ -462,35 +501,35 @@ $(document).ready(()=>{
             }
         });
 
-        toolsarea.append( filelabel, document.createElement("br"),
-         fileinput, document.createElement("br"), widthlabel, document.createElement("br"), 
-         widthinput, document.createElement("br"), heightlabel, document.createElement("br"), 
-         heightinput, document.createElement("br"), xcoordlabel, document.createElement("br"),
-         xcoordinput, document.createElement("br"), ycoordlabel, 
-         document.createElement("br"), ycoordinput, document.createElement("br") );
+        toolsarea.append( 
+            filelabel, document.createElement("br"),
+            fileinput, document.createElement("br"), widthlabel, document.createElement("br"), 
+            widthinput, document.createElement("br"), heightlabel, document.createElement("br"), 
+            heightinput, document.createElement("br"), xcoordlabel, document.createElement("br"),
+            xcoordinput, document.createElement("br"), ycoordlabel, 
+            document.createElement("br"), ycoordinput, document.createElement("br")
+        );
 
-         // set caption id on all input elements
+
+        // set caption id on all input elements
         toolsarea.childNodes.forEach(element => {
             element.setAttribute("objectid", imageId);
         });
 
         // append all elements together
         newoptionsbar.append(header, minibtn, deletebtn, layerbtn, toolsarea);
-
         newoptionsbar.setAttribute("objectid", imageId);
     
         // finish by appending the whole thing
         divider.insertAdjacentElement("afterend", toolsarea);
         divider.insertAdjacentElement("afterend", newoptionsbar);
 
-        let imagesvg = document.createElementNS(NS.svg, "image")
         imagesvg.setAttribute("x", "0");
         imagesvg.setAttribute("y", "0");
         imagesvg.setAttribute("width", "1500px");
         imagesvg.setAttribute("height", "1000px");
         imagesvg.setAttribute("id", imageId);
         imagesvg.setAttribute("href", "test/moonphasestest.jpg")
-
 
         svg.appendChild(imagesvg);
 
@@ -500,7 +539,6 @@ $(document).ready(()=>{
     // TODO: need to finish changing the svg boxes and stuff when these are changed
     $('#figsizeselect').on("change", (event) => {
         let tmp = event.target.value.split("x");
-
         svg.setAttribute("viewBox", "0 0 " + tmp[0] + ' ' + tmp[1]);
 
     });
@@ -538,28 +576,35 @@ $(document).ready(()=>{
         console.log("ADD AND REMOVE OBSERVER ICON")
     });
 
-    // close the tabs you dont want
-    edittoolsbox.previousElementSibling.lastElementChild.click();
-
 }); // end of jquery functions
 
 
 /* Helper functions */
+
+/**
+ * TODO:
+ */
 function setSVGBackground(svg, color){
     svg.style.background = color;
 }
 
+/**
+ * TODO:
+ */
 function minimizeToolsWindow(event) {
-    if(event.target.parentElement.nextElementSibling.style.height == '0%'){
-        event.target.parentElement.nextElementSibling.style.height = event.target.parentElement.nextElementSibling.style.maxHeight;
+    if(event.target.parentElement.nextElementSibling.classList.contains("closed")){
         event.target.innerHTML = '▲';
+        event.target.parentElement.nextElementSibling.classList.remove("closed");
     }
     else{
-        event.target.parentElement.nextElementSibling.style.height = '0%';
         event.target.innerHTML = '▼';
+        event.target.parentElement.nextElementSibling.classList.add("closed");
     }
 }
 
+/**
+ * TODO:
+ */
 function removeToolsWindow( event )
 {
     if(event.target.parentElement.attributes.objectid.value)
@@ -577,40 +622,42 @@ function removeToolsWindow( event )
     }
 }
 
+/**
+ * TODO:
+ */
 function randomId( textareafix )
 {
     return textareafix + String( Math.floor((Math.random() * 1000) + 1) );
 }
 
-// dragging function to help with layer browser
+/**
+ * TODO:
+ */
 function docucmentMouseOverHandler () {
-     // TODO: trigger the function that moves the object
         if(yDirection == "up") {
-            console.log("MOUSE IS MOVING UP");
             if(shiftObjects && upperObject)
             {
                 shiftUp(shiftObjects, upperObject);
             }
         }
         else if(yDirection == "down"){
-            console.log("MOUSE IS MOVING DOWN");
             if(shiftObjects && lowerObject)
             {
                 shiftDown(shiftObjects, lowerObject);
             }
         }
 }
-
  
 /** Setup a function to track the mouse movement of the user */
-
-var xDirection = "";
-var yDirection = "";
+var xDirection = "",
+    yDirection = "",
+    oldX = 0,
+    oldY = 0,
+    sensitivity = 50;
  
-var oldX = 0;
-var oldY = 0;
-var sensitivity = 150;
- 
+/**
+ * TODO:
+ */
 function getMouseDirection(e) {
 
     //deal with the horizontal case
@@ -641,7 +688,10 @@ function getMouseDirection(e) {
     }
 }
 
-function documentMouseUpListener(btn){
+/**
+ * TODO:
+ */
+function documentMouseUpListener(){
     try{
         document.removeEventListener("mousemove", docucmentMouseOverHandler);
         window.removeEventListener("mouseup", documentMouseUpListener);
@@ -658,16 +708,20 @@ function documentMouseUpListener(btn){
     oldY = 0;
 }
 
+/**
+ * TODO:
+ */
 function shiftUp(){
-    console.log(upperObject);
-    console.log(shiftObjects);
-    if(upperObject.getAttribute("objectid") ){
-        // runs the shift operations here
-        console.log( "shift up:")
+    if(upperObject.getAttribute("objectid") )
+    {
         shiftObjects.forEach(domElement => {
-            console.log("runs")
             document.getElementById("toolcontainer").insertBefore(domElement, upperObject);
         });
+        
+        // move up one layer
+        moveSvgUp(document.getElementById(shiftObjects[0].attributes.objectid.value));
+        
+
         lowerObject = null;
         upperObject = null;
         shiftObjects = null;
@@ -675,18 +729,37 @@ function shiftUp(){
     }
 }
 
+/**
+ * TODO:
+ */
 function shiftDown(){
     if(lowerObject)
     {
-        console.log(lowerObject)
-        // run the function to shift the object downward
-        console.log( "shift down:")
         shiftObjects.reverse().forEach(domElement => {
             lowerObject.insertAdjacentElement("afterend", domElement);
         });
+
+        // move up one layer
+        moveSvgDown(document.getElementById(shiftObjects[0].attributes.objectid.value));
+
         lowerObject = null;
         upperObject = null;
         shiftObjects = null;
         yDirection = "";
     }
+}
+
+/**
+ * TODO:
+ * @param {*} element 
+ */
+function moveSvgUp( element ){
+    element.nextSibling.insertAdjacentElement("afterend", element);
+}
+/**
+ * TODO:
+ * @param {*} element 
+ */
+function moveSvgDown( element ){
+    document.getElementById("figurecontainer").insertBefore(element, element.previousSibling);
 }

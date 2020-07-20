@@ -15,11 +15,10 @@ html
                 img(src="/images/piedark.png", alt="PIElogo", class="pieLogo")
             .rightcontainer(style="text-align:right")
                 img(src="/images/nasa-logo.png", alt="NasaLogo")
-        span(style="display:flex; height:75%;width:100%;")
+        span(style="display:flex; height:80%;width:100%; margin: 0 0 auto 0")
             #toolbox.toolboxcontainer
                 #toolcontainer.toolscontainer
                     .dividerline="Tools"
-
                     #copyoptionsbar.windowoptionsbar(style="display:flex;")
                         h4(style="margin:0;")="File Tools"
                         button.windowminimizebtn='▲'
@@ -37,7 +36,7 @@ html
                     .windowoptionsbar(style="display:flex;")
                         h4(style="margin:0;")="Editing Tools"
                         button#editminibtn.windowminimizebtn='▲'
-                    #edittoolsbox.edittoolsbox
+                    #edittoolsbox.edittoolsbox.closed
                         div#edittoolselect
                             label(for="northarrowopt")="North Button"
                             br
@@ -65,11 +64,11 @@ html
                 .windowsidebar
                     button.toolboxminimizebtn='◄'
                     button#addimagebtn.toolboxaddimagebtn
-                        svg.btnvectorgraphic
-                            rect(x="0",y="3", width="10px", height="10px", fill="red", stroke="black" stroke-width="3px")
+                        svg.btnvectorgraphic(viewBox="0 0 25 25")
+                            image.svgimg(href="images/add.svg", width="25px", height="25px")
                     button#addcaptionbtn.toolboxaddcaptionbtn
-                        svg.btnvectorgraphic
-                            rect(x="0",y="3", width="10px", height="10px", fill="blue", stroke="black" stroke-width="3px")
+                        svg.btnvectorgraphic(viewBox="0 0 25 25")
+                            image.svgimg(href="images/text.svg", width="25px", height="25px")
             
             #editbox.editbox
                 .exportoptionsbar(style="display:flex;")
@@ -79,10 +78,9 @@ html
                         button='Draft'
                         button='Export'
                         
-                svg#figurecontainer.imagecontainer(viewBox="0 0 1500 1500", xmlns="http://www.w3.org/2000/svg", version="1.1", style="background: var(--contract-color);")
+                svg#figurecontainer.imagecontainer(viewBox="0 0 1500 1500", xmlns="http://www.w3.org/2000/svg", version="1.1")
                     style
                         include css/svg.css
-
     footer.mainfooter
         .leftfooter
             .footerbuttongroup

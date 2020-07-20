@@ -4,7 +4,11 @@
   "description": "PIPS without ISIS attachment",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "start:dev": "nodemon --ignore 'editor.json' server.js",
+    "test": "cypress open",
+    "ci:dev": "start-server-and-test start:dev :8080 test",
+    "ci": "start-server-and-test start :8080 test:headless"
   },
   "repository": {
     "type": "git",
@@ -25,5 +29,11 @@
     "multer": "^1.4.2",
     "plotty": "^0.4.3",
     "pug": "^3.0.0"
+  },
+  "devDependencies": {
+    "cypress": "^4.10.0",
+    "mocha": "^8.0.1",
+    "nodemon": "^2.0.4",
+    "start-server-and-test": "^1.11.2"
   }
 }

@@ -4,7 +4,7 @@
     --secondary-color: #89BFD2;
     --accent-color: #124A69;
     --contrast-color: #3E95A3;
-    --bar-gradient: linear-gradient(to top right,white, lightgrey);
+    --bar-gradient: linear-gradient(to top right,rgb(236, 236, 236), rgb(156, 156, 156));
 }
 
 html {
@@ -21,6 +21,12 @@ body {
 
 input {
     cursor: pointer;
+}
+
+.svgimg {
+    width: 25px;
+    height: 100%;
+    margin: 0;
 }
 
 svg > rect {
@@ -62,6 +68,7 @@ button.disabled {
 
 .pips2header {
     width: 100%;
+    height: 15%;
     display: flex;
 }
 
@@ -85,7 +92,7 @@ button.disabled {
 .mainfooter {
     display: flex;
     width: 100%;
-    height: 7%;
+    height: 5%;
     background: var(--bar-gradient);
     color: var(--accent-color);
     margin: auto auto 0 auto;
@@ -103,6 +110,13 @@ button.disabled {
     cursor: pointer;
 }
 
+.imageform {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
 .windoworderingbtn{
     background: transparent;
     border-radius: 2px 2px;
@@ -112,7 +126,6 @@ button.disabled {
     min-width: 25px;
     max-width: 25px;
     min-height: 25px;
-    max-height: 25px;
     vertical-align: top;
     margin: 0 0 0 0;
     border: 1px solid transparent;
@@ -127,7 +140,8 @@ button.disabled {
     min-height: 0%;
     max-height: 40%;
     background: var(--contrast-color);
-    height: 17%;
+
+    padding: 0 2px;
     overflow-x: hidden;
     overflow-y: auto;
     transition: all ease-in-out .15s;
@@ -144,7 +158,7 @@ button.disabled {
     height: 3%;
     min-height: 20px;
     max-height: 30px;
-    background: var(--contrast-color);
+    background: var(--secondary-color);
     border-radius: 2px 2px;
     margin: 4px 0 auto 0;
 }
@@ -166,8 +180,8 @@ label {
     min-height: 0%;
     max-height: 100%;
     background: var(--contrast-color);
-    height: 25%;
     resize: vertical;
+    padding: 0 2px;
     overflow: auto;
     transition: all ease-in-out .15s;
     -moz-transition: all ease-in-out .15s; /* Firefox 4 */
@@ -185,8 +199,9 @@ label {
     min-height: 0%;
     max-height: 100%;
     background: var(--contrast-color);
-    height: 25%;
+    height: 35%;
     overflow: auto;
+    padding: 0 2px;
     transition: all ease-in-out .15s;
     -moz-transition: all ease-in-out .15s; /* Firefox 4 */
     -webkit-transition: all ease-in-out .15s; /* Safari and Chrome */
@@ -210,6 +225,7 @@ label {
     max-height: 100%;
     background: var(--contrast-color);
     height: 35%;
+    padding: 0 2px;
     overflow: auto;
     transition: all ease-in-out .15s;
     -moz-transition: all ease-in-out .15s; /* Firefox 4 */
@@ -237,7 +253,7 @@ label {
 }
 
 .btnvectorgraphic {
-    width: 10px;
+    width: 25px;
     height: 100%;
 }
 
@@ -249,6 +265,7 @@ label {
     width: 100%;
     height: 5%;
     border: 1px solid transparent;
+    padding: 0;
     box-shadow: 0 2px #999;
     min-width: 25px;
     max-width: 25px;
@@ -261,11 +278,12 @@ label {
     background: transparent;
     border-radius: 2px 2px;
     font-size: 10px;
-    vertical-align: top;
+    vertical-align: center;
     width: 100%;
     height: 5%;
     border: 1px solid transparent;
     box-shadow: 0 2px #999;
+    padding: 0;
     min-width: 25px;
     max-width: 25px;
     min-height: 25px;
@@ -304,7 +322,7 @@ button:hover {
     text-decoration: none;
     margin: auto 5px auto 5px;
     padding: 5px;
-    box-shadow: 0 2px (--contrast-color);
+    box-shadow: 0 2px var(--contrast-color);
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
     border-top-left-radius: 5px;
@@ -383,8 +401,15 @@ svg.imagecontainer {
     width: 33.3%;
 }
 
+
+.closed {
+    height: 0%;
+}
+
+
 .toolboxcontainer.closed {
     width: 0% !important;
+    min-width: 0% !important;
 }
 
 .toolboxcontainer {
@@ -392,7 +417,8 @@ svg.imagecontainer {
     color: black;
     display: flex;
     height: auto;
-    max-width: 33.3%;
+    max-width: 15%;
+    min-width: 15%;
     transition: all ease-in-out 0.15s;
     -moz-transition: all ease-in-out 0.15s; /* Firefox 4 */
     -webkit-transition: all ease-in-out .15s; /* Safari and Chrome */
