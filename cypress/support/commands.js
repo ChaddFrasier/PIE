@@ -23,3 +23,29 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+// middleware for testing file uploads
+import 'cypress-file-upload'
+
+/**
+ * Function: addTestImage
+ * Args: imagepath
+ * Desc: This function adds 1 image to the svg using the addimagebtn for cypress and renders the image at the link
+ */
+Cypress.Commands.add("addTestImage", (imagepath) => {
+    cy.get("#addimagebtn").click()
+
+    // TODO: fail if the path is none existant
+    cy.fixture(imagepath).then(fileContent => {
+        // convert the image data into a blob
+        return Cypress.Blob.base64StringToBlob(fileContent, "image/jpeg")
+    })
+    .then(dataUrl => {
+        // then atach the blob data to the input field
+        cy.get('input[type="file"]').attachFile({
+            fileContent: dataUrl,
+            fileName: imagepath,
+            mimeType: 'image/jpeg'
+        });
+    });
+});

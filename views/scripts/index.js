@@ -13,7 +13,6 @@ $(document).ready(()=>{
     var NS = {xhtml:"http://www.w3.org/1999/xhtml",
                 svg: "http://www.w3.org/2000/svg"};
 
-
     // set background right away when page loads
     setSVGBackground(svg, bgpicker.value);
 
@@ -148,7 +147,6 @@ $(document).ready(()=>{
         });
         /** End Dragging */
 
-
         // this is all dynamic css for the caption tool box
         // the most important part is just the 'objectid' attribute
         let toolsarea = document.createElement("div"),
@@ -186,14 +184,15 @@ $(document).ready(()=>{
         widthinput.setAttribute("type", "number");
         widthinput.setAttribute("min", '100');
         widthinput.setAttribute("placeholder", '100');
-        widthinput.setAttribute("name","widthinput");
+        widthinput.setAttribute("name","widthlabelinput");
+
         widthinput.addEventListener("change", function() {
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
-            if(matchingCaption)
+            if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("width", this.value);
+                matchingCaption.setAttribute("width", Number(this.value));
             }
         });
 
@@ -203,14 +202,14 @@ $(document).ready(()=>{
         heightinput.setAttribute("type", "number");
         heightinput.setAttribute("min", '150');
         heightinput.setAttribute("placeholder", '150');
-        heightinput.setAttribute("name","widthinput");
+        heightinput.setAttribute("name","heightlabelinput");
         heightinput.addEventListener("change", function() {
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
-            if(matchingCaption)
+            if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("height", this.value);
+                matchingCaption.setAttribute("height", Number(this.value));
             }
         });
 
@@ -219,15 +218,15 @@ $(document).ready(()=>{
         xcoordinput.setAttribute("type", "number");
         xcoordinput.setAttribute("min", '0');
         xcoordinput.setAttribute("placeholder", '0');
-        xcoordinput.setAttribute("name","xcoordinput");
+        xcoordinput.setAttribute("name","xcoordlabelinput");
 
         xcoordinput.addEventListener("change", function() {
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
-            if(matchingCaption)
+            if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("x", this.value);
+                matchingCaption.setAttribute("x", Number(this.value));
             }
         });
         
@@ -236,15 +235,15 @@ $(document).ready(()=>{
         ycoordinput.setAttribute("type", "number");
         ycoordinput.setAttribute("min", '0');
         ycoordinput.setAttribute("placeholder", '0');
-        ycoordinput.setAttribute("name","ycoorinput");
+        ycoordinput.setAttribute("name","ycoordlabelinput");
         
         ycoordinput.addEventListener("change", function() {
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
-            if(matchingCaption)
+            if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("y", this.value);
+                matchingCaption.setAttribute("y", Number(this.value));
             }
         });
 
@@ -276,8 +275,9 @@ $(document).ready(()=>{
         textholder.setAttribute("id", captionId);
         textholder.setAttribute("x", "0");
         textholder.setAttribute("y", "0");
-        textholder.setAttribute("width", "100%");
+        textholder.setAttribute("width", "1500");
         textholder.setAttribute("height", "250");
+        textholder.setAttribute("class", "captionObject");
 
         const text = document.createElement("div");
         text.classList.add('captions')
@@ -439,9 +439,9 @@ $(document).ready(()=>{
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
-            if(matchingCaption)
+            if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("width", this.value);
+                matchingCaption.setAttribute("width", Number(this.value));
             }
         });
 
@@ -451,19 +451,19 @@ $(document).ready(()=>{
         heightinput.setAttribute("type", "number");
         heightinput.setAttribute("min", '1500');
         heightinput.setAttribute("placeholder", '1500');
-        heightinput.setAttribute("name","widthinput");
+        heightinput.setAttribute("name","heightinput");
 
         heightinput.addEventListener("change", function(){
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
-            if(matchingCaption)
+            if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("height", this.value);
+                // TODO: type check here and everywhere else that is similar
+                matchingCaption.setAttribute("height", Number(this.value));
             }
         });
-
-
+        
         xcoordlabel.innerHTML = "X Coordinate: ";
         xcoordlabel.setAttribute("for", "widthinput");
         xcoordinput.setAttribute("type", "number");
@@ -475,9 +475,9 @@ $(document).ready(()=>{
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
-            if(matchingCaption)
+            if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("x", this.value);
+                matchingCaption.setAttribute("x", Number(this.value));
             }
         });
         
@@ -487,15 +487,15 @@ $(document).ready(()=>{
         ycoordinput.setAttribute("type", "number");
         ycoordinput.setAttribute("min", '0');
         ycoordinput.setAttribute("placeholder", '0');
-        ycoordinput.setAttribute("name","ycoorinput");
+        ycoordinput.setAttribute("name","ycoordinput");
 
         ycoordinput.addEventListener("change", function(){
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
-            if(matchingCaption)
+            if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("y", this.value);
+                matchingCaption.setAttribute("y", Number(this.value));
             }
         });
 
@@ -524,8 +524,8 @@ $(document).ready(()=>{
 
         imagesvg.setAttribute("x", "0");
         imagesvg.setAttribute("y", "0");
-        imagesvg.setAttribute("width", "1500px");
-        imagesvg.setAttribute("height", "1000px");
+        imagesvg.setAttribute("width", "1500");
+        imagesvg.setAttribute("height", "1000");
         imagesvg.setAttribute("id", imageId);
         imagesvg.setAttribute("href", "test/moonphasestest.jpg")
 
@@ -537,7 +537,6 @@ $(document).ready(()=>{
     $('#figsizeselect').on("change", (event) => {
         let tmp = event.target.value.split("x");
         svg.setAttribute("viewBox", "0 0 " + tmp[0] + ' ' + tmp[1]);
-
     });
 
     /**
@@ -547,8 +546,6 @@ $(document).ready(()=>{
     $('#backgroundcolor').on("change", () => {
         setSVGBackground(svg, bgpicker.value)
     });
-
-
 
     /** Annotation buttons */
 

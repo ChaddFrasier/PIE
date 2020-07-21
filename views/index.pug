@@ -15,7 +15,8 @@ html
                 img(src="/images/piedark.png", alt="PIElogo", class="pieLogo")
             .rightcontainer(style="text-align:right")
                 img(src="/images/nasa-logo.png", alt="NasaLogo")
-        span(style="display:flex; height:80%;width:100%; margin: 0 0 auto 0")
+        span.maincontent
+            //- Tool Box Section 
             #toolbox.toolboxcontainer
                 #toolcontainer.toolscontainer
                     h3.dividerline="Tools"
@@ -58,8 +59,8 @@ html
                             br
                             input#outlineopt(type="radio", value=2, name="mouseactions")
                     h3#tooldivider.dividerline="Vector Layers"
-
-
+                    //- Objects Section Is below here 
+            //- this is the sidebar of the tool area
             .windowsidebar
                 button.toolboxminimizebtn='◄'
                 button#addimagebtn.toolboxaddimagebtn
@@ -68,15 +69,15 @@ html
                 button#addcaptionbtn.toolboxaddcaptionbtn
                     svg.btnvectorgraphic(viewBox="0 0 25 25")
                         image.svgimg(href="images/text.svg", width="25px", height="25px")
-            
             #editbox.editbox
+                //- Other Options Button Group
                 .exportoptionsbar(style="display:flex;")
                     .buttongroup
                         button='Undo'
                         button='Delete'
                         button='Draft'
                         button='Export'
-                        
+                //- svg figure location
                 svg#figurecontainer.imagecontainer(viewBox="0 0 1500 1500", xmlns="http://www.w3.org/2000/svg", version="1.1")
                     style
                         include css/svg.css
