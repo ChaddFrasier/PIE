@@ -60,4 +60,28 @@ describe("Caption Tool Box Tests > ", () => {
         // find length 0 of .captionObjects
         cy.get("#figurecontainer > .captionObject").should("have.length", 0);
     });
+
+    it("Should not change the caption width and height when the inputs are not numbers and cannot be converted", () => {
+        // add empty caption
+        cy.get('#addcaptionbtn').click()
+
+        // change the contents of the input
+        cy.get(".captiontoolsbox>input[name='widthlabelinput']").type("dafjsg{enter}")    
+        cy.get(".captiontoolsbox>input[name='heightlabelinput']").type("heaufgwy{enter}")    
+       
+        cy.get("#figurecontainer>.captionObject").should("have.attr", "width", "1500")
+        cy.get("#figurecontainer>.captionObject").should("have.attr", "height", "250")
+    });
+
+    it("Should change the caption x and y when the caption x and y is NaN", () => {
+        // add empty caption
+        cy.get('#addcaptionbtn').click()
+
+        // change the contents of the input
+        cy.get(".captiontoolsbox>input[name='xcoordlabelinput']").type("dafjsg{enter}")    
+        cy.get(".captiontoolsbox>input[name='ycoordlabelinput']").type("heaufgwy{enter}")    
+       
+        cy.get("#figurecontainer>.captionObject").should("have.attr", "x", "0")
+        cy.get("#figurecontainer>.captionObject").should("have.attr", "y", "0")
+    });
 });

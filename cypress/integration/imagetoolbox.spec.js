@@ -59,4 +59,28 @@ describe("Image Tool Box Tests > ", () => {
         // check for a valid image, should be undefined
         cy.get("#figurecontainer>image").should("have.length",0);
     });
+
+    it("Should change the image x and y when the image x and y is NaN", () => {
+        // add empty caption
+        cy.get('#addimagebtn').click()
+
+        // change the contents of the input
+        cy.get(".imagetoolsbox>input[name='xcoordinput']").type("dafjsg{enter}")    
+        cy.get(".imagetoolsbox>input[name='ycoordinput']").type("heaufgwy{enter}")    
+       
+        cy.get("#figurecontainer>image").should("have.attr", "x", "0")
+        cy.get("#figurecontainer>image").should("have.attr", "y", "0")
+    });
+
+    it("Should change the image width and height when the image width and height is NaN", () => {
+        // add empty caption
+        cy.get('#addimagebtn').click()
+
+        // change the contents of the input
+        cy.get(".imagetoolsbox>input[name='widthinput']").type("dafjsg{enter}")    
+        cy.get(".imagetoolsbox>input[name='heightinput']").type("heaufgwy{enter}")    
+       
+        cy.get("#figurecontainer>image").should("have.attr", "width", "1500")
+        cy.get("#figurecontainer>image").should("have.attr", "height", "1000")
+    });
 });
