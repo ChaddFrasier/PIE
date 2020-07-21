@@ -13,7 +13,6 @@ $(document).ready(()=>{
     var NS = {xhtml:"http://www.w3.org/1999/xhtml",
                 svg: "http://www.w3.org/2000/svg"};
 
-
     // set background right away when page loads
     setSVGBackground(svg, bgpicker.value);
 
@@ -148,7 +147,6 @@ $(document).ready(()=>{
         });
         /** End Dragging */
 
-
         // this is all dynamic css for the caption tool box
         // the most important part is just the 'objectid' attribute
         let toolsarea = document.createElement("div"),
@@ -187,13 +185,14 @@ $(document).ready(()=>{
         widthinput.setAttribute("min", '100');
         widthinput.setAttribute("placeholder", '100');
         widthinput.setAttribute("name","widthlabelinput");
+
         widthinput.addEventListener("change", function() {
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
-            if(matchingCaption)
+            if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("width", this.value);
+                matchingCaption.setAttribute("width", Number(this.value));
             }
         });
 
@@ -208,9 +207,9 @@ $(document).ready(()=>{
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
-            if(matchingCaption)
+            if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("height", this.value);
+                matchingCaption.setAttribute("height", Number(this.value));
             }
         });
 
@@ -225,9 +224,9 @@ $(document).ready(()=>{
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
-            if(matchingCaption)
+            if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("x", this.value);
+                matchingCaption.setAttribute("x", Number(this.value));
             }
         });
         
@@ -242,9 +241,9 @@ $(document).ready(()=>{
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
-            if(matchingCaption)
+            if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("y", this.value);
+                matchingCaption.setAttribute("y", Number(this.value));
             }
         });
 
@@ -440,9 +439,9 @@ $(document).ready(()=>{
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
-            if(matchingCaption)
+            if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("width", this.value);
+                matchingCaption.setAttribute("width", Number(this.value));
             }
         });
 
@@ -458,14 +457,13 @@ $(document).ready(()=>{
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
-            if(matchingCaption)
+            if(matchingCaption && !isNaN(Number(this.value)))
             {
                 // TODO: type check here and everywhere else that is similar
-                matchingCaption.setAttribute("height", this.value);
+                matchingCaption.setAttribute("height", Number(this.value));
             }
         });
-
-
+        
         xcoordlabel.innerHTML = "X Coordinate: ";
         xcoordlabel.setAttribute("for", "widthinput");
         xcoordinput.setAttribute("type", "number");
@@ -477,9 +475,9 @@ $(document).ready(()=>{
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
-            if(matchingCaption)
+            if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("x", this.value);
+                matchingCaption.setAttribute("x", Number(this.value));
             }
         });
         
@@ -495,9 +493,9 @@ $(document).ready(()=>{
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
             // updpate the text inside once found
-            if(matchingCaption)
+            if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("y", this.value);
+                matchingCaption.setAttribute("y", Number(this.value));
             }
         });
 
@@ -539,7 +537,6 @@ $(document).ready(()=>{
     $('#figsizeselect').on("change", (event) => {
         let tmp = event.target.value.split("x");
         svg.setAttribute("viewBox", "0 0 " + tmp[0] + ' ' + tmp[1]);
-
     });
 
     /**
@@ -549,8 +546,6 @@ $(document).ready(()=>{
     $('#backgroundcolor').on("change", () => {
         setSVGBackground(svg, bgpicker.value)
     });
-
-
 
     /** Annotation buttons */
 
