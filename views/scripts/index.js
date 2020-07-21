@@ -186,7 +186,7 @@ $(document).ready(()=>{
         widthinput.setAttribute("type", "number");
         widthinput.setAttribute("min", '100');
         widthinput.setAttribute("placeholder", '100');
-        widthinput.setAttribute("name","widthinput");
+        widthinput.setAttribute("name","widthlabelinput");
         widthinput.addEventListener("change", function() {
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
@@ -203,7 +203,7 @@ $(document).ready(()=>{
         heightinput.setAttribute("type", "number");
         heightinput.setAttribute("min", '150');
         heightinput.setAttribute("placeholder", '150');
-        heightinput.setAttribute("name","widthinput");
+        heightinput.setAttribute("name","heightlabelinput");
         heightinput.addEventListener("change", function() {
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value );
@@ -219,7 +219,7 @@ $(document).ready(()=>{
         xcoordinput.setAttribute("type", "number");
         xcoordinput.setAttribute("min", '0');
         xcoordinput.setAttribute("placeholder", '0');
-        xcoordinput.setAttribute("name","xcoordinput");
+        xcoordinput.setAttribute("name","xcoordlabelinput");
 
         xcoordinput.addEventListener("change", function() {
             // find the matching html caption element
@@ -236,7 +236,7 @@ $(document).ready(()=>{
         ycoordinput.setAttribute("type", "number");
         ycoordinput.setAttribute("min", '0');
         ycoordinput.setAttribute("placeholder", '0');
-        ycoordinput.setAttribute("name","ycoorinput");
+        ycoordinput.setAttribute("name","ycoordlabelinput");
         
         ycoordinput.addEventListener("change", function() {
             // find the matching html caption element
@@ -276,8 +276,9 @@ $(document).ready(()=>{
         textholder.setAttribute("id", captionId);
         textholder.setAttribute("x", "0");
         textholder.setAttribute("y", "0");
-        textholder.setAttribute("width", "100%");
+        textholder.setAttribute("width", "1500");
         textholder.setAttribute("height", "250");
+        textholder.setAttribute("class", "captionObject");
 
         const text = document.createElement("div");
         text.classList.add('captions')
@@ -451,7 +452,7 @@ $(document).ready(()=>{
         heightinput.setAttribute("type", "number");
         heightinput.setAttribute("min", '1500');
         heightinput.setAttribute("placeholder", '1500');
-        heightinput.setAttribute("name","widthinput");
+        heightinput.setAttribute("name","heightinput");
 
         heightinput.addEventListener("change", function(){
             // find the matching html caption element
@@ -459,6 +460,7 @@ $(document).ready(()=>{
             // updpate the text inside once found
             if(matchingCaption)
             {
+                // TODO: type check here and everywhere else that is similar
                 matchingCaption.setAttribute("height", this.value);
             }
         });
@@ -487,7 +489,7 @@ $(document).ready(()=>{
         ycoordinput.setAttribute("type", "number");
         ycoordinput.setAttribute("min", '0');
         ycoordinput.setAttribute("placeholder", '0');
-        ycoordinput.setAttribute("name","ycoorinput");
+        ycoordinput.setAttribute("name","ycoordinput");
 
         ycoordinput.addEventListener("change", function(){
             // find the matching html caption element
@@ -524,8 +526,8 @@ $(document).ready(()=>{
 
         imagesvg.setAttribute("x", "0");
         imagesvg.setAttribute("y", "0");
-        imagesvg.setAttribute("width", "1500px");
-        imagesvg.setAttribute("height", "1000px");
+        imagesvg.setAttribute("width", "1500");
+        imagesvg.setAttribute("height", "1000");
         imagesvg.setAttribute("id", imageId);
         imagesvg.setAttribute("href", "test/moonphasestest.jpg")
 

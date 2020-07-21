@@ -26,3 +26,18 @@
 
 // middleware for testing file uploads
 import 'cypress-file-upload'
+
+Cypress.Commands.add("addTestImage", (imagepath) => {
+    cy.get("#addimagebtn").click()
+
+    cy.fixture(imagepath).then(fileContent => {
+        return Cypress.Blob.base64StringToBlob(fileContent, "image/jpeg")
+    })
+    .then(dataUrl => {
+        cy.get('input[type="file"]').attachFile({
+            fileContent: dataUrl,
+            fileName: imagepath,
+            mimeType: 'image/jpeg'
+        });
+    });
+});

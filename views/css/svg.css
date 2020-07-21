@@ -2,6 +2,7 @@ div.captions {
     font-size: 50px;
     padding: 2px;
     width: auto;
+    height: auto;
     min-width: 250px;
     max-width: none;
     color: black;

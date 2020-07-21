@@ -53,12 +53,12 @@ describe('Editor Page Tests > ', () => {
         // change bg color and check
         cy.get("#figsizeselect").select('2500x2000')
 
-        cy.get("svg#figurecontainer[viewBox='0 0 2500 2000']").should("have.length",1)
+        cy.get("svg#figurecontainer[viewBox='0 0 2500 2000']").should("have.length", 1)
     
         // change bg color and check
         cy.get("#figsizeselect").select('1500x1500')
 
-        cy.get("svg#figurecontainer[viewBox='0 0 2500 2000']").should("have.length",0)
+        cy.get("svg#figurecontainer[viewBox='0 0 2500 2000']").should("have.length", 0)
     });
 
     it("Window Size Changes when the mini button is clicked", () => {
@@ -67,31 +67,5 @@ describe('Editor Page Tests > ', () => {
         cy.get("#edittoolsbox[class='closed']").should("have.length", 0)
         cy.get("#editminibtn").click()
         cy.get("#edittoolsbox").should("have.class", "closed")
-    });
-});
-
-describe("Image Tool Box Tests > ", () => {
-
-    it("Should change image href when image in the input box changes", () => {
-        // adds image object
-        cy.get("#addimagebtn").click()
-
-        cy.fixture('galaxycolor.jpg').then(fileContent => {
-            return Cypress.Blob.base64StringToBlob(fileContent, "image/jpeg")
-        })
-        .then(dataUrl => {
-            cy.get('input[type="file"]').attachFile({
-                fileContent: dataUrl,
-                fileName: 'galaxycolor.jpg',
-                mimeType: 'image/jpeg'
-            });
-        });
-
-        // check that image is not default image
-        cy.get("#figurecontainer > image").should("have.length",1);
-        cy.get("#figurecontainer > image").not("href",'test/moonphasestest.jpg').should("have.length", 1);
-
-        cy.get("#addimagebtn").click()
-        cy.get("#figurecontainer > image[href='test/moonphasestest.jpg']").should("have.length", 1);
     });
 });
