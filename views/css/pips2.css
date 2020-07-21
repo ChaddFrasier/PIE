@@ -1,523 +1,604 @@
-@media only screen and (min-width: 1500px)
-{
-    :root {
-        --main-bg-color: #0A2239;
-        --primary-color: #1D84B5;
-        --secondary-color: #89BFD2;
-        --accent-color: #124A69;
-        --contrast-color: #3E95A3;
-        --bar-gradient: linear-gradient(to top right,rgb(236, 236, 236), rgb(156, 156, 156));
-        --transition-time: 0.125s;
-    }
+:root {
+    --main-bg-color: #0A2239;
+    --primary-color: #1D84B5;
+    --secondary-color: #89BFD2;
+    --accent-color: #124A69;
+    --contrast-color: #3E95A3;
+    --bar-gradient: linear-gradient(to top right,rgb(236, 236, 236), rgb(156, 156, 156));
+    --transition-time: 0.125s;
+}
+
+html {
+    background: var(--main-bg-color);
+    width: 100%;
+    height: auto;
+    color: var(--contrast-color);
+    padding: 0 0px;
+    margin:0;
+}
+
+body {
+    margin: 0;
+    height: 100%;
+}
+
+input, select {
+    cursor: pointer;
+    margin: 3px auto;
+}
+
+.svgimg {
+    width: 25px;
+    height: 100%;
+    margin: 0;
+}
+
+svg > rect {
+    pointer-events: none;
+}
+
+div {
+    border-radius: 1.5px 1.5px;
+}
+
+button.disabled {
+    background: rgba(33, 80, 88, 0.258);
+    pointer-events: none;
+    cursor: auto;
+}
+
+.pieLogo {
+    width: 20%;
+    height: auto;
+    min-width: 200px;
+    max-width: 350px;
+}
+
+.usgsLogo {
+    height: auto;
+    min-width: 175px;
+    max-width: 350px;
+}
+
+.pips2header {
+    width: 100%;
+    height: auto;
+    min-height: 100px;
+    max-height: 175px;
+    display: flex;
+}
+
+.leftcontainer {
+    margin: auto auto auto 0;
+    width: 33.3%;
+}
+
+.centercontainer {
+    margin: auto auto 0;
+    width: auto;
+}
+
+.rightcontainer {
+    margin: auto 0 auto auto;
+    width: 33.3%;
+}
+
+.fileinputfield {
+    width: 100%;
+}
+
+.mainfooter {
+    display: flex;
+    width: 100%;
+    height: 7%;
+    background: var(--bar-gradient);
+    color: var(--accent-color);
+    margin: auto 0 0 0;
+    padding: 0 0 4px 0;
+}
+
+.windowremovebtn {
+    background: transparent;
+    border-radius: 2px 2px;
+    font-size: 10px;
+    padding: 5px;
+    vertical-align: top;
+    margin: 0 0 0 0;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.maincontent {
+    display: flex; 
+    height: auto;
+    min-height: 76vh;
+    max-height: 76vh;
+    width: auto; 
+    margin: 0 0 auto 0;
+    text-align: left;
+    overflow: hidden;
+}
+
+.imageform {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.windoworderingbtn{
+    background: transparent;
+    border-radius: 2px 2px;
+    font-size: 10px;
+    padding: 0;
+    width: auto;
+    min-width: 25px;
+    max-width: 25px;
+    min-height: 25px;
+    vertical-align: top;
+    margin: 0 0 0 0;
+    border: 1px solid transparent;
+    cursor: pointer;
+    pointer-events: visible;
+}
+
+.filetoolsbox {
+    border: 1.5px solid var(--primary-color);
+    width: auto;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 0%;
+    max-height: 100%;
+    background: var(--accent-color);
+    height: 25%;
+    overflow: auto;
+    color: white;
+    padding: 0 1px;
+    transition: all ease-in-out var(--transition-time);
+    -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
+    -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
+    -o-transition: all ease-in-out var(--transition-time); /* Opera */
+    -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
+    margin: 0;
+    resize: vertical;
+}
+
+.dividerline {
+    width: 100%;
+    height: auto;
+    font-size: 20px;
+    min-height: 20px;
+    max-height: 35px;
+    background: var(--secondary-color);
+    border-radius: 2px 2px;
+    margin: 4px 0 auto 0;
+    text-align: center;
+}
+
+.filetoolsbox > input[type="file"] {
+    width: 100%;
+}
+
+label {
+    border-bottom: 1px solid white;
+    font-size: 12px;
+    border-top: 1px solid white;
+    color: white;
+    padding: 2.5px 10px;
+    text-align: center;
+}
+
+.edittoolsbox {
+    border: 1.5px solid var(--primary-color);
+    width: auto;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 0%;
+    max-height: 100%;
+    background: var(--accent-color);
+    height: auto;
+    overflow: auto;
+    color: white;
+    padding: 0 2px;
+    transition: all ease-in-out var(--transition-time);
+    -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
+    -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
+    -o-transition: all ease-in-out var(--transition-time); /* Opera */
+    -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
+    margin: 0;
+    resize: vertical;
+}
+
+.captiontoolsbox {
+    border: 1px solid black;
+    width: auto;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 0%;
+    background: var(--accent-color);
+    max-height: 100%;
+    height: 35%;
+    overflow: auto;
+    padding: 0 2px;
+    transition: all ease-in-out var(--transition-time);
+    -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
+    -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
+    -o-transition: all ease-in-out var(--transition-time); /* Opera */
+    -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
+    margin: 0;
+    resize: vertical;
+}
+
+.textareainputfield {
+    max-width: 100%;
+    font-size: 13px;
+    margin: 0 auto;
+}
+
+.imagetoolsbox {
+    border: 1px solid black;
+    width: auto;
+    min-width: 100%;
+    min-height: 0%;
+    max-height: 100%;
+    background: var(--accent-color);
+    height: 35%;
+    padding: 0 2px;
+    overflow: auto;
+    transition: all ease-in-out var(--transition-time);
+    -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
+    -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
+    -o-transition: all ease-in-out var(--transition-time); /* Opera */
+    -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
+    margin: 0;
+    resize: vertical;
+}
+
+.toolboxminimizebtn {
+    background: transparent;
+    border-radius: 2px 2px;
+    font-size: 10px;
+    vertical-align: top;
+    width: 100%;
+    height: auto;
+    border: 1px solid transparent;
+    box-shadow: 0 2px #999;
+    min-width: 25px;
+    max-width: 35px;
+    min-height: 25px;
+    max-height: 25px;
+    cursor: pointer;
+}
+
+.btnvectorgraphic {
+    width: 25px;
+    height: 100%;
+}
+
+.toolboxaddimagebtn {
+    background: transparent;
+    border-radius: 2px 2px;
+    font-size: 10px;
+    vertical-align: top;
+    width: 100%;
+    height: auto;
+    border: 1px solid transparent;
+    padding: 0;
+    box-shadow: 0 2px #999;
+    min-width: 25px;
+    max-width: 35px;
+    min-height: 25px;
+    max-height: 35px;
+    cursor: pointer;
+}
+
+.toolboxaddcaptionbtn {
+    background: transparent;
+    border-radius: 2px 2px;
+    font-size: 10px;
+    vertical-align: center;
+    width: 100%;
+    height: auto;
+    border: 1px solid transparent;
+    box-shadow: 0 2px #999;
+    padding: 0;
+    min-width: 25px;
+    max-width: 35px;
+    min-height: 25px;
+    max-height: 25px;
+    cursor: pointer;
+}
+
+button:hover {
+    border-color: black;
+}
+
+.exportoptionsbar {
+    text-align: right;
+    width: 100%;
+    overflow: hidden;
+}
+
+.buttongroup {
+    margin: 0 0 0 auto;
+}
+
+.buttongroup > button {
+    background-color: transparent;
+    border-right: 1px solid black;
+    color: white;
+    border-radius: 2px 2px;
+}
+
+.footerbuttongroup {
+    margin: 0 0 0 auto;
+}
+
+.footerbuttongroup > a {
+    background-color: transparent;
+    color: inherit;
+    text-decoration: none;
+    margin: auto 5px auto 5px;
+    padding: 5px;
+    box-shadow: 0 2px var(--contrast-color);
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.footerbuttongroup > a:hover {
+    cursor: pointer;
+    background: rgba(62, 149, 163, 0.24);
+}
+
+svg.imagecontainer {
+    width: auto;
+    height: auto;
+    max-height: 95%;
+    max-width: 80%;
+    padding: 0;
+    margin: 0 auto 0 auto;
+}
+
+.svgholder {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 95%;
+    max-height: 1000px;
+}
+
+.windowminimizebtn {
+    background: transparent;
+    border-radius: 2px 2px;
+    font-size: 10px;
+    padding: 5px 5px;
+    vertical-align: top;
+    margin: 0 0 0 auto;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.windowoptionsbar {
+    background: var(--bar-gradient);
+    text-align: right;
+    width: 100%;
+    padding: 3px 0 0 0;
+    border: 1px solid black;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.windowoptionsbar>h4{
+    font-size: 16px;
+}
+
+.windowoptionsbar>button {
+    font-size: 10px;
+}
+
+.toolscontainer{
+    width: 95%;
+    height: auto;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    transition: all ease-in-out var(--transition-time);
+    -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
+    -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
+    -o-transition: all ease-in-out var(--transition-time); /* Opera */
+    -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
+}
+
+.windowsidebar {
+    background: var(--bar-gradient);
+    border: 2px solid black;
+    width: auto;
+    height: 100%;
+    max-width: 25px;
+    margin: 0 auto 0 0;
+    padding: .25px;
+    min-width: 25px;
+    text-align: center;
+}
+
+.leftfooter {
+    vertical-align: center;
+    margin: auto auto auto 0;
+    width: 33.3%;
+    color: inherit;
+}
+
+.centerfooter {
+    margin: auto;
+    text-align: center;
+    color: inherit;
+    border: 1px solid black;
+    width: auto;
+}
+
+.rightfooter:hover {
+    cursor: pointer;
+}
+
+.rightfooter {  
+    color: inherit;
+    text-align: center;
+    margin: auto 0 auto auto;
+    width: 33.3%;
+}
+
+.closed {
+    height: 0% !important;
+}
+
+.toolboxcontainer.closed {
+    width: 25px !important;
+    min-width: 0% !important;
+}
+
+.toolboxcontainer {
+    background: var(--main-bg-color);
+    color: black;
+    display: flex;
+    height: auto;
+    min-width: 15%;
+    transition: all ease-in-out var(--transition-time);
+    -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
+    -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
+    -o-transition: all ease-in-out var(--transition-time); /* Opera */
+    -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
+    max-height: max-content;
+    margin: 0 2.5px 0 0;
+}
+
+.editbox {
+    margin: 0 auto 0 0;
+    background: var(--primary-color);
+    color: var(--main-bg-color);
+    border: 2px solid black;
+    height: auto;
+    width: auto;
+    text-align: center;
+    min-width: none;
+    max-width: 95%;
+    max-height: max-content;
+    border: 2px solid black;
+    transition: all ease-in-out var(--transition-time);
+    -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
+    -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
+    -o-transition: all ease-in-out var(--transition-time); /* Opera */
+    -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
+}
+
+.pagetitle {
+    margin: 0 auto 0 auto;
+}
+
+.logininputbox {
+    background-color: aquamarine;
+    min-height: 25px;
+    max-height: 100px;
+    min-width: 25em;
+    max-width: 33em;
+}
+
+.inputcontainer {
+    margin: 0 auto 0 auto;
+    text-align: center;
+    width: auto;
+    min-width: 500px;
+    max-width: 75%;
+    height: auto;
+    border: 1px solid black;
+}
+
+/* Small screens */
+@media only screen and (max-width:850px) {
 
     html {
-        width: 100%;
-        overflow-y: hidden;
-        background: var(--main-bg-color);
-        color: var(--contrast-color);
-        padding: 0 0px;
-        margin:0;
-    }
-
-    body {
-        margin: 2px;
-    }
-
-    input, select {
-        cursor: pointer;
-        margin: 3px auto;
-    }
-
-    .svgimg {
-        width: 25px;
-        height: 100%;
-        margin: 0;
-    }
-
-    svg > rect {
-        pointer-events: none;
-    }
-
-    div {
-        border-radius: 1.5px 1.5px;
-    }
-
-    button.disabled {
-        background: rgba(33, 80, 88, 0.258);
-        pointer-events: none;
-        cursor: auto;
-    }
-
-    .primarycolor {
-        color: var(--primary-color);
-    }
-
-    .secondarycolor {
-        color: var(--secondary-color);
-    }
-
-    .accentcolor {
-        color: var(--accent-color);
-    }
-
-    .pieLogo {
-        width: 20%;
-        height: auto;
-        min-width: 200px;
-        max-width: 350px;
-    }
-
-    .usgsLogo {
-        height: auto;
-        min-width: 175px;
-        max-width: 350px;
-    }
-
-    .pips2header {
-        width: 100%;
-        height: auto;
-        min-height: 100px;
-        max-height: 175px;
-        display: flex;
-    }
-
-    .leftcontainer {
-        margin: auto auto auto 0;
-        width: 33.3%;
-    }
-
-    .centercontainer {
-        margin: auto auto 0;
-        width: auto;
-    }
-
-    .rightcontainer {
-        margin: auto 0 auto auto;
-        width: 33.3%;
-    }
-
-    .fileinputfield {
-        width: 100%;
-    }
-
-    .mainfooter {
-        display: flex;
-        width: 100%;
-        height: 7%;
-        background: var(--bar-gradient);
-        color: var(--accent-color);
-        margin: auto 0 0 0;
-        padding: 0 0 4px 0;
-    }
-
-    .windowremovebtn {
-        background: transparent;
-        border-radius: 2px 2px;
-        font-size: 10px;
-        padding: 5px;
-        vertical-align: top;
-        margin: 0 0 0 0;
-        border: 1px solid transparent;
-        cursor: pointer;
+        max-height: none;
+        height: fit-content;
     }
 
     .maincontent {
-        display: flex; 
-        height: auto;
-        min-height: 76vh;
-        max-height: 76vh;
-        width: auto; 
-        margin: 0 0 auto 0;
-        text-align: left;
+        display: block;
+        height: "83%";
+        overflow-y: scroll;
     }
 
-    .imageform {
+    .toolscontainer {
         width: 100%;
-        height: 100%;
-        padding: 0;
-        margin: 0;
-    }
-
-    .windoworderingbtn{
-        background: transparent;
-        border-radius: 2px 2px;
-        font-size: 10px;
-        padding: 0;
-        width: auto;
-        min-width: 25px;
-        max-width: 25px;
-        min-height: 25px;
-        vertical-align: top;
-        margin: 0 0 0 0;
-        border: 1px solid transparent;
-        cursor: pointer;
-        pointer-events: visible;
-    }
-
-    .filetoolsbox {
-        border: 1.5px solid var(--primary-color);
-        width: auto;
-        min-width: 100%;
-        max-width: 100%;
-        min-height: 0%;
-        max-height: 100%;
-        background: var(--accent-color);
-        height: 25%;
-        overflow: auto;
-        color: white;
-        padding: 0 1px;
-        transition: all ease-in-out var(--transition-time);
-        -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
-        -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
-        -o-transition: all ease-in-out var(--transition-time); /* Opera */
-        -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
-        margin: 0;
-        resize: vertical;
-    }
-
-    .dividerline {
-        width: 100%;
-        height: auto;
-        font-size: 20px;
-        min-height: 20px;
-        max-height: 35px;
-        background: var(--secondary-color);
-        border-radius: 2px 2px;
-        margin: 4px 0 auto 0;
-        text-align: center;
-    }
-
-    .filetoolsbox > input[type="file"] {
-        width: 100%;
-    }
-
-    label {
-        border-bottom: 1px solid white;
-        font-size: 12px;
-        border-top: 1px solid white;
-        color: white;
-        padding: 2.5px 10px;
-        text-align: center;
-    }
-
-    .edittoolsbox {
-        border: 1.5px solid var(--primary-color);
-        width: auto;
-        min-width: 100%;
-        max-width: 100%;
-        min-height: 0%;
-        max-height: 100%;
-        background: var(--accent-color);
-        height: 35%;
-        overflow: auto;
-        color: white;
-        padding: 0 2px;
-        transition: all ease-in-out var(--transition-time);
-        -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
-        -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
-        -o-transition: all ease-in-out var(--transition-time); /* Opera */
-        -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
-        margin: 0;
-        resize: vertical;
-    }
-
-    .captiontoolsbox {
-        border: 1px solid black;
-        width: auto;
-        min-width: 100%;
-        max-width: 100%;
-        min-height: 0%;
-        background: var(--accent-color);
-        max-height: 100%;
-        height: 35%;
-        overflow: auto;
-        padding: 0 2px;
-        transition: all ease-in-out var(--transition-time);
-        -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
-        -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
-        -o-transition: all ease-in-out var(--transition-time); /* Opera */
-        -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
-        margin: 0;
-        resize: vertical;
-    }
-
-    .textareainputfield {
-        max-width: 100%;
-        font-size: 13px;
-        margin: 0 auto;
-    }
-
-    .imagetoolsbox {
-        border: 1px solid black;
-        width: auto;
-        min-width: 100%;
-        min-height: 0%;
-        max-height: 100%;
-        background: var(--accent-color);
-        height: 35%;
-        padding: 0 2px;
-        overflow: auto;
-        transition: all ease-in-out var(--transition-time);
-        -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
-        -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
-        -o-transition: all ease-in-out var(--transition-time); /* Opera */
-        -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
-        margin: 0;
-        resize: vertical;
-    }
-
-    .toolboxminimizebtn {
-        background: transparent;
-        border-radius: 2px 2px;
-        font-size: 10px;
-        vertical-align: top;
-        width: 100%;
-        height: auto;
-        border: 1px solid transparent;
-        box-shadow: 0 2px #999;
-        min-width: 25px;
-        max-width: 35px;
-        min-height: 25px;
-        max-height: 25px;
-        cursor: pointer;
-    }
-
-    .btnvectorgraphic {
-        width: 25px;
-        height: 100%;
-    }
-
-    .toolboxaddimagebtn {
-        background: transparent;
-        border-radius: 2px 2px;
-        font-size: 10px;
-        vertical-align: top;
-        width: 100%;
-        height: auto;
-        border: 1px solid transparent;
-        padding: 0;
-        box-shadow: 0 2px #999;
-        min-width: 25px;
-        max-width: 35px;
-        min-height: 25px;
-        max-height: 35px;
-        cursor: pointer;
-    }
-
-    .toolboxaddcaptionbtn {
-        background: transparent;
-        border-radius: 2px 2px;
-        font-size: 10px;
-        vertical-align: center;
-        width: 100%;
-        height: auto;
-        border: 1px solid transparent;
-        box-shadow: 0 2px #999;
-        padding: 0;
-        min-width: 25px;
-        max-width: 35px;
-        min-height: 25px;
-        max-height: 25px;
-        cursor: pointer;
-    }
-
-    button:hover {
-        border-color: black;
-    }
-
-    .exportoptionsbar {
-        text-align: right;
-        width: 100%;
-        overflow: hidden;
-    }
-
-    .buttongroup {
-        margin: 0 0 0 auto;
-    }
-
-    .buttongroup > button {
-        background-color: transparent;
-        border-right: 1px solid black;
-        color: white;
-        border-radius: 2px 2px;
-    }
-
-    .footerbuttongroup {
-        margin: 0 0 0 auto;
-    }
-
-    .footerbuttongroup > a {
-        background-color: transparent;
-        color: inherit;
-        text-decoration: none;
-        margin: auto 5px auto 5px;
-        padding: 5px;
-        box-shadow: 0 2px var(--contrast-color);
-        border-bottom-left-radius: 0px;
-        border-bottom-right-radius: 0px;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
-    }
-
-    .footerbuttongroup > a:hover {
-        cursor: pointer;
-        background: rgba(62, 149, 163, 0.24);
-    }
-
-    svg.imagecontainer {
-        width: auto;
-        height: auto;
-        max-height: 95%;
-        min-width: 80%;
-        padding: 0;
-        margin: 0 auto 0 auto;
-    }
-
-    .windowminimizebtn {
-        background: transparent;
-        border-radius: 2px 2px;
-        font-size: 10px;
-        padding: 5px 5px;
-        vertical-align: top;
-        margin: 0 0 0 auto;
-        border: 1px solid transparent;
-        cursor: pointer;
-    }
-
-    .windowoptionsbar {
-        background: var(--bar-gradient);
-        text-align: right;
-        width: 100%;
-        padding: 3px 0 0 0;
-        border: 1px solid black;
-        overflow: hidden;
-        cursor: pointer;
-    }
-
-    .windowoptionsbar>h4{
-        font-size: 16px;
-    }
-
-    .windowoptionsbar>button {
-        font-size: 10px;
-    }
-
-    .toolscontainer{
-        width: 100%;
-        height: auto;
-        overflow-y: hidden;
-        overflow-x: hidden;
-        transition: all ease-in-out var(--transition-time);
-        -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
-        -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
-        -o-transition: all ease-in-out var(--transition-time); /* Opera */
-        -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
-    }
-
-    .windowsidebar {
-        background: var(--bar-gradient);
-        border: 2px solid black;
-        width: auto;
-        max-width: 25px;
-        margin: 0 auto 0 0;
-        padding: .25px;
-        min-width: 25px;
-        text-align: center;
-    }
-
-    .leftfooter {
-        vertical-align: center;
-        margin: auto auto auto 0;
-        width: 33.3%;
-        color: inherit;
-    }
-
-    .centerfooter {
-        margin: auto;
-        text-align: center;
-        color: inherit;
-        border: 1px solid black;
-        width: auto;
-    }
-
-    .rightfooter:hover {
-        cursor: pointer;
-    }
-
-    .rightfooter {  
-        color: inherit;
-        text-align: center;
-        margin: auto 0 auto auto;
-        width: 33.3%;
-    }
-
-    .closed {
-        height: 0% !important;
-    }
-
-    .toolboxcontainer.closed {
-        width: 0% !important;
-        min-width: 0% !important;
+        height: 300px;
     }
 
     .toolboxcontainer {
-        background: var(--main-bg-color);
-        color: black;
-        display: flex;
-        height: auto;
-        max-width: 15%;
-        min-width: 15%;
-        transition: all ease-in-out var(--transition-time);
-        -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
-        -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
-        -o-transition: all ease-in-out var(--transition-time); /* Opera */
-        -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
-        max-height: max-content;
-        margin: 0 2.5px 0 0;
+        width: 100%;
+        height: 300px;
+    }
+
+    .toolscontainer {
+        overflow-y: scroll;
+        margin: auto auto;
+        max-width: none;
+        text-align: center;
+        height: 300px;
     }
 
     .editbox {
-        margin: 0 auto 0 0;
-        background: var(--primary-color);
-        color: var(--main-bg-color);
-        border: 2px solid black;
+        width: 100%;
+        max-width: none;
+        margin: auto auto;
+        max-height: none;
         height: auto;
-        width: auto;
-        text-align: center;
-        min-width: none;
-        max-width: 95%;
-        max-height: max-content;
-        border: 2px solid black;
-        transition: all ease-in-out var(--transition-time);
-        -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
-        -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
-        -o-transition: all ease-in-out var(--transition-time); /* Opera */
-        -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
     }
 
-    .pagetitle {
-        margin: 0 auto 0 auto;
+    .mainfooter {
+        height: 7%;
+        margin: auto 0 0 0;
     }
 
-    .logininputbox {
-        background-color: aquamarine;
-        min-height: 25px;
-        max-height: 100px;
-        min-width: 25em;
-        max-width: 33em;
+    .leftfooter {
+        font-size: 12px;
     }
 
-    .inputcontainer {
-        margin: 0 auto 0 auto;
-        text-align: center;
-        width: auto;
-        min-width: 500px;
-        max-width: 75%;
-        height: auto;
-        border: 1px solid black;
+    .rightfooter {
+        font-size: 10px;
     }
+
 }
 
+/* Normal screens */
+@media only screen and (min-width: 850px)
+{
+
+    .maincontent {
+        display: flex;
+    }
+
+    .windowoptionsbar>h4{
+        font-size: 18px;
+    }
+
+    .windowoptionsbar>button {
+        font-size: 12px;
+    }
+
+    .dividerline {
+        font-size: 15px;
+    }
+    
+    .filetoolsbox>label {
+        font-size: 15px;
+    }
+
+    .editbox {
+        margin: 0 auto;
+    }
+
+}
+
+/* Very Large Screen screens */
 @media only screen and (min-width:1850px) {
     
     .windowoptionsbar>h4{
@@ -581,11 +662,18 @@
     }
 
     .windowsidebar {
-        min-width: 35px;
-        max-width: 35px;
+        min-width: 36px;
+        max-width: 36px;
+        max-height: none;
+        padding: 0;
     }
 
     .windowsidebar>button {
         font-size: 15px;
     }
+
+    .toolboxcontainer.closed {
+        width: 36px !important;
+        min-width: 0% !important;
+    }    
 }

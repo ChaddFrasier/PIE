@@ -60,15 +60,15 @@ html
                             input#outlineopt(type="radio", value=2, name="mouseactions")
                     h3#tooldivider.dividerline="Vector Layers"
                     //- Objects Section Is below here 
-            //- this is the sidebar of the tool area
-            .windowsidebar
-                button.toolboxminimizebtn='◄'
-                button#addimagebtn.toolboxaddimagebtn
-                    svg.btnvectorgraphic(viewBox="0 0 25 25")
-                        image.svgimg(href="images/add.svg", width="25px", height="25px")
-                button#addcaptionbtn.toolboxaddcaptionbtn
-                    svg.btnvectorgraphic(viewBox="0 0 25 25")
-                        image.svgimg(href="images/text.svg", width="25px", height="25px")
+                //- this is the sidebar of the tool area
+                .windowsidebar
+                    button.toolboxminimizebtn='◄'
+                    button#addimagebtn.toolboxaddimagebtn
+                        svg.btnvectorgraphic(viewBox="0 0 25 25")
+                            image.svgimg(href="images/add.svg", width="25px", height="25px")
+                    button#addcaptionbtn.toolboxaddcaptionbtn
+                        svg.btnvectorgraphic(viewBox="0 0 25 25")
+                            image.svgimg(href="images/text.svg", width="25px", height="25px")
             #editbox.editbox
                 //- Other Options Button Group
                 .exportoptionsbar(style="display:flex;")
@@ -78,15 +78,16 @@ html
                         button='Draft'
                         button='Export'
                 //- svg figure location
-                svg#figurecontainer.imagecontainer(viewBox="0 0 1500 1500", xmlns="http://www.w3.org/2000/svg", version="1.1")
-                    style
-                        include css/svg.css
-    footer.mainfooter
-        .leftfooter
-            .footerbuttongroup
-                a(href="")='About'
-                a(href="")='Contact'
-                a(href="")='FAQ'
-                a(href="https://github.com/ChaddFrasier/PIE/issues")='Report an Issue'
+                .svgholder
+                    svg#figurecontainer.imagecontainer(viewBox="0 0 1500 1500", xmlns="http://www.w3.org/2000/svg", version="1.1", height="100%")
+                        style
+                            include css/svg.css
+        footer.mainfooter
+            .leftfooter
+                .footerbuttongroup
+                    a(href="")='About'
+                    a(href="")='Contact'
+                    a(href="")='FAQ'
+                    a(href="https://github.com/ChaddFrasier/PIE/issues")='Report an Issue'
 
-        h5.rightfooter="Developed by the USGS Astrogeology Science Center"
+            h5.rightfooter="Developed by the USGS Astrogeology Science Center"
