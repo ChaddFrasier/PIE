@@ -121,7 +121,7 @@ button.disabled {
 
 .imageform {
     width: 100%;
-    height: 100%;
+    height: auto;
     padding: 0;
     margin: 0;
 }
@@ -195,8 +195,8 @@ label {
     max-width: 100%;
     min-height: 0%;
     max-height: 100%;
+    height: 40%;
     background: var(--accent-color);
-    height: auto;
     overflow: auto;
     color: white;
     padding: 0 2px;
@@ -369,6 +369,18 @@ svg.imagecontainer {
     max-height: 1000px;
 }
 
+.progressBox {
+    width: 25%;
+    margin:  0 0 0 auto;
+}
+
+.uploadBox {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
 .windowminimizebtn {
     background: transparent;
     border-radius: 2px 2px;
@@ -384,7 +396,7 @@ svg.imagecontainer {
     background: var(--bar-gradient);
     text-align: right;
     width: 100%;
-    padding: 3px 0 0 0;
+    padding: 0px;
     border: 1px solid black;
     overflow: hidden;
     cursor: pointer;
@@ -392,6 +404,8 @@ svg.imagecontainer {
 
 .windowoptionsbar>h4{
     font-size: 16px;
+    vertical-align: middle;
+    margin: auto auto auto 0;
 }
 
 .windowoptionsbar>button {
@@ -577,19 +591,19 @@ svg.imagecontainer {
     }
 
     .windowoptionsbar>h4{
-        font-size: 18px;
+        font-size: 13px;
     }
 
     .windowoptionsbar>button {
-        font-size: 12px;
+        font-size: 11px;
     }
 
     .dividerline {
-        font-size: 15px;
+        font-size: 14px;
     }
     
     .filetoolsbox>label {
-        font-size: 15px;
+        font-size: 13px;
     }
 
     .editbox {

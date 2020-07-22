@@ -21,7 +21,7 @@ html
                 #toolcontainer.toolscontainer
                     h3.dividerline="Tools"
                     .windowoptionsbar(style="display:flex;")
-                        h4(style="margin:0;")="File Tools"
+                        h4="File Tools"
                         button.windowminimizebtn='▲'
                     #filetools.filetoolsbox
                         label(for="figureoutputsize")="Choose an output size"
@@ -35,8 +35,8 @@ html
                         input#backgroundcolor(type="color", name="backgroundcolor")
 
                     .windowoptionsbar(style="display:flex;")
-                        h4(style="margin:0;")="Editing Tools"
-                        button#editminibtn.windowminimizebtn='▲'
+                        h4="Editing Tools"
+                        button#editminibtn.windowminimizebtn='▼'
                     #edittoolsbox.edittoolsbox.closed
                         label(for="northarrowopt")="North Button"
                         br
@@ -49,7 +49,7 @@ html
                         label(for="observerarrowbtn")="Observer Button"
                         br
                         input#observerarrowopt(type="checkbox", value="Observer Arrow")
-                        
+                        br
                         div.radio-group
                             label(for="pencilopt")="Pencil Button"
                             br

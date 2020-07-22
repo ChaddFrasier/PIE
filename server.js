@@ -7,7 +7,18 @@ const multer = require('multer');
 
 /* init the application */
 const app = express();
-const upload = multer();
+
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/uploads/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname)) //Appending extension
+    }
+})
+  
+var upload = multer({ storage: storage });
 
 /* config server */
 // using pug engine
@@ -22,8 +33,13 @@ app.use(compression());
 app.use(bodyParser.json());
 // for parsing application/xwww-
 app.use(bodyParser.urlencoded({extended: true}));
-// allow for multipart form
-app.use(upload.array());
+
+
+// log unknown errors
+app.use(function (err, req, res, next) {
+    console.log('This is the invalid field ->', err.field)
+    next(err)
+  })
 
 /**
  * Used for users login page
@@ -55,6 +71,10 @@ app.post('/', (req, res) => {
         let date = new Date(); 
         res.render('login', {title: 'Login', date: date.toDateString(), emailMessage: 'Please log in with your USGS credentials'});
     }
+});
+
+app.post("/api/isis", upload.single('uploadfile'), function(req, res) {
+    console.log("HEYYYYYYYYYYYYYYYY")
 });
 
 // run the server on port

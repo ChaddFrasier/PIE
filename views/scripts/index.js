@@ -74,7 +74,6 @@ $(document).ready(()=>{
 
         // setup the header of the optionsbar
         header.innerHTML = "Caption Layer";
-        header.style.margin = "0";
 
         // same with the minimize button
         minibtn.classList.add("windowminimizebtn");
@@ -323,7 +322,6 @@ $(document).ready(()=>{
         newoptionsbar.style.display = "flex";
 
         header.innerHTML = "Image Layer";
-        header.style.margin = "0";
 
         minibtn.classList.add("windowminimizebtn");
         minibtn.innerHTML = "▲";
@@ -391,12 +389,16 @@ $(document).ready(()=>{
         filelabel.setAttribute("for", "imageinput");
 
         fileinput.setAttribute("type", "file");
+        fileinput.setAttribute("name", "uploadfile");
         fileinput.setAttribute("id","input"+imageId);
         fileinput.classList.add('fileinputfield')
 
         let form = document.createElement("form");
         form.setAttribute("runat", "server");
         form.setAttribute("class", "imageform");
+        form.setAttribute("method", "post");
+        form.setAttribute("enctype", "multipart/form-data");
+        form.setAttribute("action", "/api/isis");
         form.appendChild(fileinput);
 
         // listener for when the user changes the image of the input field
@@ -422,6 +424,7 @@ $(document).ready(()=>{
             {
                 //TODO: send a very large file over to the node server
                 console.log("SEND IMG TO SERVER AND RECIEVE OMTHING BACK");
+                form.submit();
             }
             else{
                 alert("File Type Not Supported");
@@ -499,9 +502,10 @@ $(document).ready(()=>{
             }
         });
 
+    
         toolsarea.append( 
             filelabel, document.createElement("br"),
-            fileinput, document.createElement("br"), widthlabel, document.createElement("br"), 
+            form, document.createElement("br"), widthlabel, document.createElement("br"), 
             widthinput, document.createElement("br"), heightlabel, document.createElement("br"), 
             heightinput, document.createElement("br"), xcoordlabel, document.createElement("br"),
             xcoordinput, document.createElement("br"), ycoordlabel, 
@@ -583,7 +587,9 @@ function setSVGBackground(svg, color){
 }
 
 /**
- * TODO:
+ * Function: minimizeToolsWindow
+ * Desc: this is used to close and open the tool boxes using the close btn in the optionsbar
+ *      this is a general function so if the html of the tool box area changes so does this
  */
 function minimizeToolsWindow(event) {
     if(event.target.parentElement.nextElementSibling.classList.contains("closed")){
@@ -597,7 +603,8 @@ function minimizeToolsWindow(event) {
 }
 
 /**
- * TODO:
+ * Function: removeToolsWindow
+ * Desc: This function is used to delete the tools window and options bar from the tool box area
  */
 function removeToolsWindow( event )
 {
