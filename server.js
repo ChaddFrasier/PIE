@@ -8,16 +8,19 @@ const multer = require('multer');
 /* init the application */
 const app = express();
 
-
+// init storage object to tell multer what to do
 var storage = multer.diskStorage({
+    // tell multer where the destination is
     destination: function (req, file, cb) {
         cb(null, 'public/uploads/')
     },
+    // tell multer how to name the file
     filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname)) //Appending extension
     }
 })
-  
+
+// set the upload object for multer
 var upload = multer({ storage: storage });
 
 /* config server */
@@ -54,12 +57,14 @@ app.get('/', (req, res) => {
     // res.redirect('/login');
 });
 
+// getting the basic login page
 app.get('/login', (req, res) => {
     console.log(req.url);
     let date = new Date(); 
     res.render('login', {title: 'Login', date: date.toDateString(), emailMessage: 'Please log in with your USGS credentials'});
 });
 
+// posting to / with some user info
 app.post('/', (req, res) => {
     console.log(req.url);
     console.log(req.body);
@@ -73,8 +78,9 @@ app.post('/', (req, res) => {
     }
 });
 
+// api post path for processing tifs and cubes
 app.post("/api/isis", upload.single('uploadfile'), function(req, res) {
-    console.log("HEYYYYYYYYYYYYYYYY")
+    res.sendStatus(200)
 });
 
 // run the server on port
