@@ -422,8 +422,6 @@ $(document).ready(()=>{
             }
             else if( isisregexp.test(this.value))
             {
-                //TODO: send a very large file over to the node server
-                console.log("SEND IMG TO SERVER AND RECIEVE OMTHING BACK");
                 form.submit();
             }
             else{
