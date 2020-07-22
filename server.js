@@ -16,7 +16,7 @@ var storage = multer.diskStorage({
     },
     // tell multer how to name the file
     filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname)) //Appending extension
+        cb(null, new Date().getTime() +"_"+ path.basename(file.originalname))
     }
 })
 
@@ -36,13 +36,6 @@ app.use(compression());
 app.use(bodyParser.json());
 // for parsing application/xwww-
 app.use(bodyParser.urlencoded({extended: true}));
-
-
-// log unknown errors
-app.use(function (err, req, res, next) {
-    console.log('This is the invalid field ->', err.field)
-    next(err)
-  })
 
 /**
  * Used for users login page
@@ -80,7 +73,10 @@ app.post('/', (req, res) => {
 
 // api post path for processing tifs and cubes
 app.post("/api/isis", upload.single('uploadfile'), function(req, res) {
+    
+    console.log("file recieved")
     res.sendStatus(200)
+
 });
 
 // run the server on port

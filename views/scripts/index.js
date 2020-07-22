@@ -422,7 +422,20 @@ $(document).ready(()=>{
             }
             else if( isisregexp.test(this.value))
             {
-                form.submit();
+                event.preventDefault();
+
+                var fd = new FormData(form);
+
+                var xhr = new XMLHttpRequest();
+                
+                xhr.onloadend = function(event) {
+                    // this is an effective way of recieving the response return
+                    console.log(xhr.responseText)
+                }
+
+                xhr.open('POST', "/api/isis", true);
+                xhr.send(fd);
+                return false;
             }
             else{
                 alert("File Type Not Supported");
@@ -460,7 +473,6 @@ $(document).ready(()=>{
             // updpate the text inside once found
             if(matchingCaption && !isNaN(Number(this.value)))
             {
-                // TODO: type check here and everywhere else that is similar
                 matchingCaption.setAttribute("height", Number(this.value));
             }
         });
