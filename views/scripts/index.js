@@ -586,11 +586,9 @@ $(document).ready(()=>{
 
 }); // end of jquery functions
 
-
 /* Helper functions */
-
 /**
- * TODO:
+ * change the background of the svg 
  */
 function setSVGBackground(svg, color){
     svg.style.background = color;
@@ -634,15 +632,15 @@ function removeToolsWindow( event )
 }
 
 /**
- * TODO:
+ * generate a random number and return with prefix
  */
-function randomId( textareafix )
+function randomId( textareaprefix )
 {
-    return textareafix + String( Math.floor((Math.random() * 1000) + 1) );
+    return textareaprefix + String( Math.floor((Math.random() * 1000) + 1) );
 }
 
 /**
- * TODO:
+ * handler for when the user wants to drag an element up or down
  */
 function docucmentMouseOverHandler () {
         if(yDirection == "up") {
@@ -667,7 +665,7 @@ var xDirection = "",
     sensitivity = 50;
  
 /**
- * TODO:
+ * get the mouse direction as a string
  */
 function getMouseDirection(e) {
 
@@ -700,7 +698,7 @@ function getMouseDirection(e) {
 }
 
 /**
- * TODO:
+ * when the mouse is released remove the listeners
  */
 function documentMouseUpListener(){
     try{
@@ -720,7 +718,7 @@ function documentMouseUpListener(){
 }
 
 /**
- * TODO:
+ * shift the object up one slot in the tools location
  */
 function shiftUp(){
     if(upperObject.getAttribute("objectid") )
@@ -740,7 +738,7 @@ function shiftUp(){
 }
 
 /**
- * TODO:
+ * shift the object down one slot in the tools location
  */
 function shiftDown(){
     if(lowerObject)
@@ -760,15 +758,13 @@ function shiftDown(){
 }
 
 /**
- * TODO:
- * @param {*} element 
+ *  move the svg element up to the top of the layers of the svg
  */
 function moveSvgUp( element ){
     element.nextSibling.insertAdjacentElement("afterend", element);
 }
 /**
- * TODO:
- * @param {*} element 
+ *  move the svg element down to the top of the layers of the svg
  */
 function moveSvgDown( element ){
     document.getElementById("figurecontainer").insertBefore(element, element.previousSibling);
