@@ -529,7 +529,6 @@ svg.imagecontainer {
 
 /* Small screens */
 @media only screen and (max-width:900px) {
-
     html {
         max-height: none;
         height: fit-content;
@@ -590,13 +589,11 @@ svg.imagecontainer {
     .rightfooter {
         font-size: 10px;
     }
-
 }
 
 /* Normal screens */
 @media only screen and (min-width: 900px)
 {
-
     .maincontent {
         display: flex;
     }
@@ -620,12 +617,10 @@ svg.imagecontainer {
     .editbox {
         margin: 0 auto;
     }
-
 }
 
 /* Very Large Screen screens */
 @media only screen and (min-width:1900px) {
-    
     .windowoptionsbar>h4{
         font-size: 18px;
     }
