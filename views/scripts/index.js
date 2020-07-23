@@ -5,9 +5,9 @@ var shiftObjects, lowerObject, upperObject = null;
 // start of jquery function
 $(document).ready(()=>{
     // jquery scope variables
-    var svg = document.getElementById("figurecontainer"),
-        bgpicker = document.getElementById("backgroundcolor"),
-        divider = document.getElementById("tooldivider"),
+    var svgContainer = document.getElementById("figurecontainer"),
+        bgPicker = document.getElementById("backgroundcolor"),
+        dividerObject = document.getElementById("tooldivider"),
         selectedObject = null;
     
     // Namespaces for svg ele
@@ -15,7 +15,7 @@ $(document).ready(()=>{
                 svg: "http://www.w3.org/2000/svg"};
 
     // set background right away when page loads
-    setSVGBackground(svg, bgpicker.value);
+    setSVGBackground(svgContainer, bgPicker.value);
 
     /* Show and hide contents of the tool windows works generically so we can add more later */
     $('button.windowminimizebtn').click(function(event) {
@@ -267,8 +267,8 @@ $(document).ready(()=>{
         newoptionsbar.setAttribute("objectid", captionId );
 
         // finish by appending the whole thing
-        divider.insertAdjacentElement("afterend", toolsarea);
-        divider.insertAdjacentElement("afterend", newoptionsbar);
+        dividerObject.insertAdjacentElement("afterend", toolsarea);
+        dividerObject.insertAdjacentElement("afterend", newoptionsbar);
 
         /** Add a caption box in the svg area */
         const textholder = document.createElementNS(NS.svg, "foreignObject");
@@ -292,7 +292,7 @@ $(document).ready(()=>{
 
         // finish by adding them to the document
         textholder.appendChild(text)
-        svg.appendChild(textholder);
+        svgContainer.appendChild(textholder);
 
         getObjectCount(1, "caption");
     });
@@ -536,8 +536,8 @@ $(document).ready(()=>{
         newoptionsbar.setAttribute("objectid", imageId);
     
         // finish by appending the whole thing
-        divider.insertAdjacentElement("afterend", toolsarea);
-        divider.insertAdjacentElement("afterend", newoptionsbar);
+        dividerObject.insertAdjacentElement("afterend", toolsarea);
+        dividerObject.insertAdjacentElement("afterend", newoptionsbar);
 
         imagesvg.setAttribute("x", "0");
         imagesvg.setAttribute("y", "0");
@@ -546,7 +546,7 @@ $(document).ready(()=>{
         imagesvg.setAttribute("id", imageId);
         imagesvg.setAttribute("href", "test/moonphasestest.jpg")
 
-        svg.appendChild(imagesvg);
+        svgContainer.appendChild(imagesvg);
 
         getObjectCount(1, "image");
     });
@@ -555,7 +555,7 @@ $(document).ready(()=>{
     // TODO: need to finish changing the svg boxes and stuff when these are changed
     $('#figsizeselect').on("change", (event) => {
         let tmp = event.target.value.split("x");
-        svg.setAttribute("viewBox", "0 0 " + tmp[0] + ' ' + tmp[1]);
+        svgContainer.setAttribute("viewBox", "0 0 " + tmp[0] + ' ' + tmp[1]);
     });
 
     /**
@@ -563,7 +563,7 @@ $(document).ready(()=>{
      * will be visible when exported
      */
     $('#backgroundcolor').on("change", () => {
-        setSVGBackground(svg, bgpicker.value)
+        setSVGBackground(svgContainer, bgPicker.value)
     });
 
     /** Annotation buttons */
@@ -666,7 +666,7 @@ function removeToolsWindow( event )
         toolcontainer.removeChild(captiontoolsbar); 
         toolcontainer.removeChild(toolsbox); 
         svgcontainer.removeChild(captionsvg);
-        getObjectCount(-1 , objecttypeof(captionsvg.id));
+        getObjectCount(-1 , typeofObject(captionsvg.id));
     }
 }
 
@@ -812,8 +812,8 @@ function moveSvgDown( element ){
 /**
  * stores and retrieves object count for me
  */
-var imageCount = 0;
-var captionCount = 0;
+var imageCount = 0,
+    captionCount = 0;
 /**
  * @function objectCount
  * @description arg explained below and what it does
@@ -851,11 +851,15 @@ function getObjectCount( inc=0, objecttype="both" ) {
     }
 }
 
-function objecttypeof(testString) {
+/**
+ * @function typeofObject
+ * @description this function uses regexp to check and see if a string fits on of the object prefixes
+ * @param {string to test} testString 
+ */
+function typeofObject(testString) {
     let imagereexp = new RegExp('^image[0-9]*')
     let captionreexp = new RegExp('^caption[0-9]*')
 
-    console.log(testString)
     if(imagereexp.test(testString)){
         return "image";
     }
