@@ -528,7 +528,7 @@ svg.imagecontainer {
 }
 
 /* Small screens */
-@media only screen and (max-width:850px) {
+@media only screen and (max-width:900px) {
 
     html {
         max-height: none;
@@ -537,13 +537,24 @@ svg.imagecontainer {
 
     .maincontent {
         display: block;
-        height: "83%";
+        height: 83%;
         overflow-y: scroll;
     }
 
-    .toolscontainer {
-        width: 100%;
-        height: 300px;
+    .windowoptionsbar>h4{
+        font-size: 11px;
+    }
+
+    .windowoptionsbar>button {
+        font-size: 9px;
+    }
+
+    .dividerline {
+        font-size: 12px;
+    }
+    
+    .filetoolsbox>label {
+        font-size: 11px;
     }
 
     .toolboxcontainer {
@@ -583,7 +594,7 @@ svg.imagecontainer {
 }
 
 /* Normal screens */
-@media only screen and (min-width: 850px)
+@media only screen and (min-width: 900px)
 {
 
     .maincontent {
@@ -613,7 +624,7 @@ svg.imagecontainer {
 }
 
 /* Very Large Screen screens */
-@media only screen and (min-width:1850px) {
+@media only screen and (min-width:1900px) {
     
     .windowoptionsbar>h4{
         font-size: 18px;
