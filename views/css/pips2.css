@@ -17,6 +17,16 @@ html {
     margin:0;
 }
 
+.iconbtn {
+    background: linear-gradient(bottom left to top right, rgb(190, 190, 190), rgb(119, 119, 119));
+}
+
+
+.selecting {
+    cursor: grab;
+}
+
+
 body {
     margin: 0;
     height: 100%;

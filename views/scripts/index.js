@@ -7,7 +7,8 @@ $(document).ready(()=>{
     // jquery scope variables
     var svg = document.getElementById("figurecontainer"),
         bgpicker = document.getElementById("backgroundcolor"),
-        divider = document.getElementById("tooldivider");
+        divider = document.getElementById("tooldivider"),
+        selectedObject = null;
     
     // Namespaces for svg ele
     var NS = {xhtml:"http://www.w3.org/1999/xhtml",
@@ -292,6 +293,8 @@ $(document).ready(()=>{
         // finish by adding them to the document
         textholder.appendChild(text)
         svg.appendChild(textholder);
+
+        getObjectCount(1, "caption");
     });
     
     /** handler for adding anothe image to the svg */
@@ -544,6 +547,8 @@ $(document).ready(()=>{
         imagesvg.setAttribute("href", "test/moonphasestest.jpg")
 
         svg.appendChild(imagesvg);
+
+        getObjectCount(1, "image");
     });
 
 
@@ -565,23 +570,56 @@ $(document).ready(()=>{
 
     // TODO: add the north arrow stuff here
     $('#northarrowopt').on("mouseup", (event) => {
-        let checkbox = event.target;
+        let btn = event.target;
 
-        console.log("ADD AND REMOVE NORTH ICON")
+        if( getObjectCount(0,"image") != 0)
+        {
+            if(selectedObject){
+                selectedObject = null;
+             }
+             else {
+                 selectedObject = "THIS IS A FAKE OBJECT";
+             }
+        }
+        else{
+            alert("There Must be an image in the figure to attach a North Arrow");
+        }
     });
     
     // TODO: add sun azimuthal stuff here
     $('#sunarrowopt').on("mouseup", (event) => {
-        let checkbox = event.target;
+        let btn = event.target;
 
-        console.log("ADD AND REMOVE SUN ICON")
+        if( getObjectCount(0,"image") != 0)
+        {
+            if(selectedObject){
+                selectedObject = null;
+             }
+             else {
+                 selectedObject = "THIS IS A FAKE OBJECT";
+             }
+        }
+        else{
+            alert("There Must be an image in the figure to attach a Sun Arrow");
+        }
     });
     
     // TODO: add observer stuff here
     $('#observerarrowopt').on("mouseup", (event) => {
-        let observer = event.target;
+        let btn = event.target;
 
-        console.log("ADD AND REMOVE OBSERVER ICON")
+        if( getObjectCount(0,"image") != 0)
+        {
+            if(selectedObject){
+                selectedObject = null;
+             }
+             else {
+                 selectedObject = "THIS IS A FAKE OBJECT";
+             }
+        }
+        else{
+            alert("There Must be an image in the figure to attach an Observer Arrow");
+        }
     });
 
 }); // end of jquery functions
@@ -628,6 +666,7 @@ function removeToolsWindow( event )
         toolcontainer.removeChild(captiontoolsbar); 
         toolcontainer.removeChild(toolsbox); 
         svgcontainer.removeChild(captionsvg);
+        getObjectCount(-1 , objecttypeof(captionsvg.id));
     }
 }
 
@@ -768,4 +807,60 @@ function moveSvgUp( element ){
  */
 function moveSvgDown( element ){
     document.getElementById("figurecontainer").insertBefore(element, element.previousSibling);
+}
+
+/**
+ * stores and retrieves object count for me
+ */
+var imageCount = 0;
+var captionCount = 0;
+/**
+ * @function objectCount
+ * @description arg explained below and what it does
+ * @param {0: return the current count,
+ *         1: return the current count after addition of new element, 
+ *         -1: return the current count after deletion of some element} inc 
+ */
+function getObjectCount( inc=0, objecttype="both" ) {
+    switch(objecttype){
+        case "image":
+            switch( inc ) {
+                case 1: 
+                    return ++imageCount;
+                case -1:
+                    return --imageCount;
+                default:
+                    return imageCount;
+            }
+            break;
+        case "caption":
+            switch( inc ) {
+                case 1: 
+                    return ++captionCount;
+                case -1:
+                    return --captionCount;
+                default:
+                    return captionCount;
+        
+            }
+        case "both":
+            return captionCount + imageCount
+
+        default:
+            console.log("FAILS")
+    }
+}
+
+function objecttypeof(testString) {
+    let imagereexp = new RegExp('^image[0-9]*')
+    let captionreexp = new RegExp('^caption[0-9]*')
+
+    console.log(testString)
+    if(imagereexp.test(testString)){
+        return "image";
+    }
+
+    if(captionreexp.test(testString)){
+        return "caption";
+    }
 }
