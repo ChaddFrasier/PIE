@@ -23,7 +23,7 @@ body {
 }
 
 input, select {
-    cursor: pointer;
+    cursor: auto;
     margin: 3px auto;
 }
 
@@ -105,7 +105,6 @@ button.disabled {
     vertical-align: top;
     margin: 0 0 0 0;
     border: 1px solid transparent;
-    cursor: pointer;
 }
 
 .maincontent {
@@ -138,7 +137,6 @@ button.disabled {
     vertical-align: top;
     margin: 0 0 0 0;
     border: 1px solid transparent;
-    cursor: pointer;
     pointer-events: visible;
 }
 
@@ -173,6 +171,7 @@ button.disabled {
     border-radius: 2px 2px;
     margin: 4px 0 auto 0;
     text-align: center;
+    cursor: default;
 }
 
 .filetoolsbox > input[type="file"] {
@@ -267,7 +266,6 @@ label {
     max-width: 35px;
     min-height: 25px;
     max-height: 25px;
-    cursor: pointer;
 }
 
 .btnvectorgraphic {
@@ -289,7 +287,6 @@ label {
     max-width: 35px;
     min-height: 25px;
     max-height: 35px;
-    cursor: pointer;
 }
 
 .toolboxaddcaptionbtn {
@@ -306,7 +303,6 @@ label {
     max-width: 35px;
     min-height: 25px;
     max-height: 25px;
-    cursor: pointer;
 }
 
 button:hover {
@@ -348,7 +344,7 @@ button:hover {
 }
 
 .footerbuttongroup > a:hover {
-    cursor: pointer;
+    cursor: default;
     background: rgba(62, 149, 163, 0.24);
 }
 
@@ -389,7 +385,7 @@ svg.imagecontainer {
     vertical-align: top;
     margin: 0 0 0 auto;
     border: 1px solid transparent;
-    cursor: pointer;
+    cursor: auto;
 }
 
 .windowoptionsbar {
@@ -399,12 +395,13 @@ svg.imagecontainer {
     padding: 0px;
     border: 1px solid black;
     overflow: hidden;
-    cursor: pointer;
+    cursor: auto;
 }
 
 .windowoptionsbar>h4{
     font-size: 16px;
     vertical-align: middle;
+    cursor: default;
     margin: auto auto auto 0;
 }
 
