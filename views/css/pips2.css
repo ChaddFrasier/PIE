@@ -361,6 +361,10 @@ label.text {
     resize: vertical;
 }
 
+button.selected {
+    background: rgba(255, 163, 163, 0.5);
+}
+
 .captiontoolsbox {
     border: 1px solid black;
     width: auto;
@@ -378,6 +382,7 @@ label.text {
     -o-transition: all ease-in-out var(--transition-time); /* Opera */
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
     margin: 0;
+    color: white;
     resize: vertical;
 }
 
@@ -390,6 +395,7 @@ label.text {
 .imagetoolsbox {
     border: 1px solid black;
     width: auto;
+    color: white;
     min-width: 100%;
     min-height: 0%;
     max-height: 100%;
@@ -424,6 +430,11 @@ label.text {
 .btnvectorgraphic {
     width: 25px;
     height: 100%;
+    pointer-events: none;
+}
+
+.btnvectorgraphic>g {
+    pointer-events: inherit;
 }
 
 .toolboxaddimagebtn {

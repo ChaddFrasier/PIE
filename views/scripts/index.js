@@ -1,14 +1,13 @@
 // GLOABALS
 // only used to track which menu item is being moved and where it should move to
-var shiftObjects, lowerObject, upperObject = null;
+var shiftObjects, lowerObject, upperObject, selectedObject = null;
 
 // start of jquery function
 $(document).ready(()=>{
     // jquery scope variables
     var svgContainer = document.getElementById("figurecontainer"),
         bgPicker = document.getElementById("backgroundcolor"),
-        dividerObject = document.getElementById("tooldivider"),
-        selectedObject = null;
+        dividerObject = document.getElementById("tooldivider");
     
     // Namespaces for svg ele
     var NS = {xhtml:"http://www.w3.org/1999/xhtml",
@@ -569,17 +568,24 @@ $(document).ready(()=>{
     /** Annotation buttons */
 
     // TODO: add the north arrow stuff here
-    $('#northarrowopt').on("mouseup", (event) => {
+    $('#northarrowopt').on("mousedown", (event) => {
         let btn = event.target;
 
         if( getObjectCount(0,"image") != 0)
         {
             if(selectedObject){
                 selectedObject = null;
-             }
-             else {
-                 selectedObject = "THIS IS A FAKE OBJECT";
-             }
+            }
+            else {
+                btn.classList.add("selected")
+                document.addEventListener("mouseup", setElement)
+
+                
+                // selectedObject should be not null now
+                if(selectedObject){
+                    console.log("CORECR OBJECT HAS BEEN SAVED TO GLOBAL")
+                }
+            }
         }
         else{
             alert("There Must be an image in the figure to attach a North Arrow");
@@ -587,17 +593,25 @@ $(document).ready(()=>{
     });
     
     // TODO: add sun azimuthal stuff here
-    $('#sunarrowopt').on("mouseup", (event) => {
+    $('#sunarrowopt').on("mousedown", (event) => {
         let btn = event.target;
+
+        console.log(btn)
 
         if( getObjectCount(0,"image") != 0)
         {
             if(selectedObject){
                 selectedObject = null;
-             }
-             else {
-                 selectedObject = "THIS IS A FAKE OBJECT";
-             }
+            }
+            else {
+                btn.classList.add("selected")
+                document.addEventListener("mouseup", setElement)
+
+                // selectedObject should be not null now
+                if(selectedObject){
+                    console.log("CORECR OBJECT HAS BEEN SAVED TO GLOBAL")
+                }
+            }
         }
         else{
             alert("There Must be an image in the figure to attach a Sun Arrow");
@@ -605,8 +619,10 @@ $(document).ready(()=>{
     });
     
     // TODO: add observer stuff here
-    $('#observerarrowopt').on("mouseup", (event) => {
+    $('#observerarrowopt').on("mousedown", (event) => {
         let btn = event.target;
+
+        console.log(btn)
 
         if( getObjectCount(0,"image") != 0)
         {
@@ -614,7 +630,13 @@ $(document).ready(()=>{
                 selectedObject = null;
              }
              else {
-                 selectedObject = "THIS IS A FAKE OBJECT";
+                btn.classList.add("selected")
+                document.addEventListener("mouseup", setElement)
+
+                // selectedObject should be not null now
+                if(selectedObject){
+                    console.log("CORECR OBJECT HAS BEEN SAVED TO GLOBAL")
+                }
              }
         }
         else{
@@ -832,7 +854,6 @@ function getObjectCount( inc=0, objecttype="both" ) {
                 default:
                     return imageCount;
             }
-            break;
         case "caption":
             switch( inc ) {
                 case 1: 
@@ -867,4 +888,49 @@ function typeofObject(testString) {
     if(captionreexp.test(testString)){
         return "caption";
     }
+}
+
+function setElement( event ) {
+    let btn = document.getElementsByClassName("selected")[0];
+    if(typeofObject(event.target.id) == "image")
+    {
+        // set element
+        selectedObject = event.target;
+    }
+    else if(btn != event.target)
+    {
+        alert("CANNOT ADD ICON TO THIS ELEMENT");
+    }
+
+    // remove the current listener
+    this.removeEventListener("mouseup", setElement)
+    btn.classList.remove("selected")
+
+    /* call the drawing function with the type of image that can
+     be found fron the btn and on the selectedObject*/
+    if(selectedObject){
+        let iconType;
+        if( btn.id.indexOf("north") > -1)
+        {
+            iconType = "north";    
+        }
+        else if(btn.id.indexOf("sun") > -1)
+        {
+            iconType = "sun";
+        }
+        else if( btn.id.indexOf("observer") > -1)
+        {
+            iconType = "observer";
+        }
+        else
+        {
+            console.log("Unknown Object ID" + btn.id);
+        }
+        drawSvgIcon( selectedObject, iconType )
+    }
+}
+
+function drawSvgIcon( el, icontype )
+{
+    console.log("WORDS");
 }
