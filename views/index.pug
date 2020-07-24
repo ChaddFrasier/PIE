@@ -25,13 +25,13 @@ html
                         h4="File Tools"
                         button.windowminimizebtn='▲'
                     #filetools.filetoolsbox
-                        label(for="figureoutputsize")="Choose an output size"
+                        label.text(for="figureoutputsize")="Choose an output size"
                         br
                         select#figsizeselect
                             each figsize in ["1500x1500", "2500x2000"]
                                 option(value=fidsize) #{figsize}
                         br
-                        label(for="backgroundcolor")="Select a background color"
+                        label.text(for="backgroundcolor")="Select a background color"
                         br
                         input#backgroundcolor(type="color", name="backgroundcolor")
 
@@ -39,44 +39,52 @@ html
                         h4="Editing Tools"
                         button#editminibtn.windowminimizebtn='▼'
                     #edittoolsbox.edittoolsbox.closed
-                        label(for="northarrowopt")="North Button"
+                        label.text(for="northarrowopt")="North Button"
                         br
-                        //-TODO:
                         button#northarrowopt(type="button")
                             svg.btnvectorgraphic(viewBox="0 0 25 25")
-                                g(width=25, height=25, stroke-width="1")
+                                g#northgroup(width=25, height=25, stroke-width="1")
                                     path(d="M12.5 0 L20 15 L12.5 9 L12.5 0", fill="black", stroke="black")
                                     path(d="M12.5 0 L5 15 L12.5 9 L12.5 0", fill="white", stroke="black")
                                     text(x="8.5",y="22", width="10px", height="8px", stroke="black", stroke-width="0.25")="N"
                         br
-                        label(for="sunarrowbtn")="Sun Button"
+                        label.text(for="sunarrowbtn")="Sun Button"
                         br
-                        //-TODO:
                         button#sunarrowopt(type="button")
                             svg.btnvectorgraphic(viewBox="0 0 25 25")
                                 g#sungroup(width=25, height=25)
                                         circle(r="11", cx="12.5", cy="12.5", fill="transparent", stroke-width="2", stroke="black")      
                                         circle(r="4", cx="12.5", cy="12.5", fill="black")
                         br
-                        label(for="observerarrowbtn")="Observer Button"
+                        label.text(for="observerarrowbtn")="Observer Button"
                         br
                         //-TODO:
                         button#observerarrowopt(type="button")
                             svg.btnvectorgraphic(viewBox="0 0 25 25")
-                                g(width=25, height=25, stroke-width="2")
-                                    path(d="M0 12.5 c11.5 6 8.5 10 25 0", fill="transparent", stroke="black")
-                                    path(d="M0 12.5 c11.5 -6 8.5 -10 25 0", fill="transparent", stroke="black")
-                                    ellipse(cx="12.5", cy="12.5", rx="4", ry="5", stroke="black", fill="transparent")
+                                g#observergroup(width=25, height=25, stroke-width="2")
+                                    path#outerEyeLine(d="M0 12.5 c11.5 -6 9 -10 25 0 c-11.5 6 -9 10 -25 0", fill="transparent", stroke="black")
+                                    path(d="M5 10 L3 5", fill="transparent", stroke="black")
+                                    path(d="M20 10 L22 5", fill="transparent", stroke="black")
+                                    path(d="M12.5 8 L12.5 2", fill="transparent", stroke="black")
+                                    path(d="M8 7 L7 3", fill="transparent", stroke="black")
+                                    path(d="M17 7 L17 3", fill="transparent", stroke="black")
+                                    ellipse(cx="12.5", cy="12.5", rx="5", ry="6", stroke="black", fill="transparent")
                                     circle(cx="12.5" cy="12.5", stroke="black",stroke-width="1",  r="2")
                         br
-                        div.radio-group
-                            label(for="pencilopt")="Pencil Button"
-                            br
-                            input#pencilopt(type="radio", value=1, name="mouseactions")
-                            br
-                            label(for="outlineopt")="Outline Button"
-                            br
-                            input#outlineopt(type="radio", value=2, name="mouseactions")
+                        label="Pencil Button"
+                        br
+                        label.rocker.rocker-small(for="pencilopt")
+                            input#pencilopt(type="checkbox", name="pencilswitch")
+                            span.switch-left="On"
+                            span.switch-right="Off"
+                        br
+                        label.text="Outline Box"
+                        br
+                        label.rocker.rocker-small(for="outlineopt")
+                            input#outlineopt(type="checkbox", name="outlineswitch")
+                            span.switch-left="On"
+                            span.switch-right="Off"
+
                     h3#tooldivider.dividerline="Vector Layers"
                     //- Objects Section Is below here 
                 //- this is the sidebar of the tool area
