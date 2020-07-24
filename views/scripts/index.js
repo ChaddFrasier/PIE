@@ -1,13 +1,14 @@
 // GLOABALS
 // only used to track which menu item is being moved and where it should move to
-var shiftObjects, lowerObject, upperObject, selectedObject = null;
+var shiftObjects, lowerObject, upperObject, selectedObject, svgContainer = null;
 
 // start of jquery function
 $(document).ready(()=>{
     // jquery scope variables
-    var svgContainer = document.getElementById("figurecontainer"),
-        bgPicker = document.getElementById("backgroundcolor"),
+    var bgPicker = document.getElementById("backgroundcolor"),
         dividerObject = document.getElementById("tooldivider");
+
+    svgContainer = document.getElementById("figurecontainer");
     
     // Namespaces for svg ele
     var NS = {xhtml:"http://www.w3.org/1999/xhtml",
@@ -246,6 +247,11 @@ $(document).ready(()=>{
             }
         });
 
+        let divider2 = document.createElement("h3");
+        divider2.classList.add("dividerline");
+        divider2.setAttribute("id", "innerdivider");
+        divider2.innerHTML = "Icon Tools";
+
         // append all the elements to the tool box
         toolsarea.append( 
             textlabel, document.createElement("br"), textinput,
@@ -253,7 +259,7 @@ $(document).ready(()=>{
             widthinput, document.createElement("br"), heightlabel, 
             document.createElement("br"), heightinput, document.createElement("br"),
             xcoordlabel, document.createElement("br"), xcoordinput, document.createElement("br"),
-            ycoordlabel, document.createElement("br"), ycoordinput 
+            ycoordlabel, document.createElement("br"), ycoordinput, divider2
         );
 
         // set caption id on all input elements
@@ -514,6 +520,10 @@ $(document).ready(()=>{
             }
         });
 
+        let divider2 = document.createElement("h3");
+        divider2.classList.add("dividerline");
+        divider2.setAttribute("id", "innerdivider");
+        divider2.innerHTML = "Icon Tools";
     
         toolsarea.append( 
             filelabel, document.createElement("br"),
@@ -521,9 +531,8 @@ $(document).ready(()=>{
             widthinput, document.createElement("br"), heightlabel, document.createElement("br"), 
             heightinput, document.createElement("br"), xcoordlabel, document.createElement("br"),
             xcoordinput, document.createElement("br"), ycoordlabel, 
-            document.createElement("br"), ycoordinput, document.createElement("br")
+            document.createElement("br"), ycoordinput, document.createElement("br"), divider2
         );
-
 
         // set caption id on all input elements
         toolsarea.childNodes.forEach(element => {
@@ -550,8 +559,7 @@ $(document).ready(()=>{
         getObjectCount(1, "image");
     });
 
-
-    // TODO: need to finish changing the svg boxes and stuff when these are changed
+    // TODO: commennt
     $('#figsizeselect').on("change", (event) => {
         let tmp = event.target.value.split("x");
         svgContainer.setAttribute("viewBox", "0 0 " + tmp[0] + ' ' + tmp[1]);
@@ -577,14 +585,8 @@ $(document).ready(()=>{
                 selectedObject = null;
             }
             else {
-                btn.classList.add("selected")
-                document.addEventListener("mouseup", setElement)
-
-                
-                // selectedObject should be not null now
-                if(selectedObject){
-                    console.log("CORECR OBJECT HAS BEEN SAVED TO GLOBAL")
-                }
+                btn.classList.add("selected");
+                document.addEventListener("mouseup", setElement);
             }
         }
         else{
@@ -596,21 +598,14 @@ $(document).ready(()=>{
     $('#sunarrowopt').on("mousedown", (event) => {
         let btn = event.target;
 
-        console.log(btn)
-
         if( getObjectCount(0,"image") != 0)
         {
             if(selectedObject){
                 selectedObject = null;
             }
             else {
-                btn.classList.add("selected")
-                document.addEventListener("mouseup", setElement)
-
-                // selectedObject should be not null now
-                if(selectedObject){
-                    console.log("CORECR OBJECT HAS BEEN SAVED TO GLOBAL")
-                }
+                btn.classList.add("selected");
+                document.addEventListener("mouseup", setElement);
             }
         }
         else{
@@ -622,21 +617,14 @@ $(document).ready(()=>{
     $('#observerarrowopt').on("mousedown", (event) => {
         let btn = event.target;
 
-        console.log(btn)
-
         if( getObjectCount(0,"image") != 0)
         {
             if(selectedObject){
                 selectedObject = null;
              }
              else {
-                btn.classList.add("selected")
-                document.addEventListener("mouseup", setElement)
-
-                // selectedObject should be not null now
-                if(selectedObject){
-                    console.log("CORECR OBJECT HAS BEEN SAVED TO GLOBAL")
-                }
+                btn.classList.add("selected");
+                document.addEventListener("mouseup", setElement);
              }
         }
         else{
@@ -688,6 +676,18 @@ function removeToolsWindow( event )
         toolcontainer.removeChild(captiontoolsbar); 
         toolcontainer.removeChild(toolsbox); 
         svgcontainer.removeChild(captionsvg);
+
+        try{
+            svgcontainer.removeChild(document.getElementById("northIcon-" + captionsvg.id));
+        }catch(err){}
+
+        try{
+            svgcontainer.removeChild(document.getElementById("sunIcon-" + captionsvg.id));
+        }catch(err){}
+        
+        try{
+            svgcontainer.removeChild(document.getElementById("observerIcon-" + captionsvg.id));
+        }catch(err){}
         getObjectCount(-1 , typeofObject(captionsvg.id));
     }
 }
@@ -801,7 +801,8 @@ function shiftUp(){
 /**
  * shift the object down one slot in the tools location
  */
-function shiftDown(){
+function shiftDown()
+{
     if(lowerObject)
     {
         shiftObjects.reverse().forEach(domElement => {
@@ -821,13 +822,16 @@ function shiftDown(){
 /**
  *  move the svg element up to the top of the layers of the svg
  */
-function moveSvgUp( element ){
+function moveSvgUp( element )
+{
     element.nextSibling.insertAdjacentElement("afterend", element);
 }
+
 /**
  *  move the svg element down to the top of the layers of the svg
  */
-function moveSvgDown( element ){
+function moveSvgDown( element )
+{
     document.getElementById("figurecontainer").insertBefore(element, element.previousSibling);
 }
 
@@ -836,6 +840,7 @@ function moveSvgDown( element ){
  */
 var imageCount = 0,
     captionCount = 0;
+
 /**
  * @function objectCount
  * @description arg explained below and what it does
@@ -843,7 +848,8 @@ var imageCount = 0,
  *         1: return the current count after addition of new element, 
  *         -1: return the current count after deletion of some element} inc 
  */
-function getObjectCount( inc=0, objecttype="both" ) {
+function getObjectCount( inc=0, objecttype="both" ) 
+{
     switch(objecttype){
         case "image":
             switch( inc ) {
@@ -877,7 +883,8 @@ function getObjectCount( inc=0, objecttype="both" ) {
  * @description this function uses regexp to check and see if a string fits on of the object prefixes
  * @param {string to test} testString 
  */
-function typeofObject(testString) {
+function typeofObject(testString) 
+{
     let imagereexp = new RegExp('^image[0-9]*')
     let captionreexp = new RegExp('^caption[0-9]*')
 
@@ -890,7 +897,12 @@ function typeofObject(testString) {
     }
 }
 
-function setElement( event ) {
+/**
+ * 
+ * @param {*} event 
+ */
+function setElement( event ) 
+{
     let btn = document.getElementsByClassName("selected")[0];
     if(typeofObject(event.target.id) == "image")
     {
@@ -926,24 +938,48 @@ function setElement( event ) {
         {
             console.log("Unknown Object ID" + btn.id);
         }
+        
+        // draw the icon
+        drawSvgIcon( selectedObject, iconType );
 
-        drawSvgIcon( selectedObject, iconType )
+        // after drawing svg icon is finished remove the object
+        selectedObject = null;
     }
 }
 
-function drawSvgIcon( el, icontype )
+/**
+ * 
+ * @param {*} icontype 
+ */
+function drawSvgIcon( image, icontype )
 {
+    let icongroup = null;
     switch (icontype) {
         case "north":
-            console.log("THIS IS WHERE WE DRAW THE NORTH ICON")
+            icongroup = document.getElementById("northgroup").cloneNode(true);
+            icongroup.setAttribute("objectid", image.id);
+            icongroup.setAttribute("id", "northIcon-" + image.id);
+            icongroup.style.scale = "10";
+
+            svgContainer.appendChild(icongroup);
             break;
     
         case "sun":
-            console.log("THIS IS WHERE WE DRAW THE SUN ICON")
+            icongroup = document.getElementById("sungroup").cloneNode(true);
+            icongroup.setAttribute("objectid", image.id);
+            icongroup.setAttribute("id", "sunIcon-" + image.id);
+            icongroup.style.scale = "10";
+
+            svgContainer.appendChild(icongroup);
             break;
     
         case "observer":
-            console.log("THIS IS WHERE WE DRAW THE OBSERVER ICON")
+            icongroup = document.getElementById("observergroup").cloneNode(true);
+            icongroup.setAttribute("objectid", image.id);
+            icongroup.setAttribute("id", "observerIcon-" + image.id);
+            icongroup.style.scale = "10";
+
+            svgContainer.appendChild(icongroup);
             break;
 
         default:
@@ -951,6 +987,172 @@ function drawSvgIcon( el, icontype )
             break;
     }
 
-    // after drawing svg icon is finished remove the object
-    selectedObject = null;
+    let imagetoolbox = findImageToolbox(selectedObject.id, document.getElementsByClassName("imagetoolsbox"));
+    // draw the tool box based on the icon type
+    drawToolbox(imagetoolbox, icontype, icongroup.id);
+}
+
+/**
+ * 
+ * @param {*} toolbox 
+ * @param {*} icontype 
+ */
+function drawToolbox(toolbox, icontype, iconId)
+{
+    switch (icontype) {
+        case "north":
+            let iconscaleinput = document.createElement("input");
+            let iconmaincolorinput = document.createElement("input");
+            let iconaccentcolorinput = document.createElement("input");
+            let scalelabel = document.createElement("label");
+            let maincolorlabel = document.createElement("label");
+            let accentcolorlabel = document.createElement("label");
+            let icontoolbox = document.createElement("div");
+
+            iconscaleinput.setAttribute("type", "number");
+            iconscaleinput.setAttribute( "objectid", iconId );
+
+            maincolorlabel.innerHTML = "Main Color";
+            accentcolorlabel.innerHTML = "Secondary Color";
+            scalelabel.innerHTML = "North Scale";
+
+            iconmaincolorinput.setAttribute("type", "color");
+            iconmaincolorinput.setAttribute( "objectid", iconId );
+
+            iconaccentcolorinput.setAttribute("type", "color");
+            iconaccentcolorinput.setAttribute( "objectid", iconId );
+            iconaccentcolorinput.value = "#ffffff"
+
+            iconscaleinput.addEventListener("change", updateIconScale)
+            iconmaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)})
+            iconaccentcolorinput.addEventListener("change", function(event){updateIconColor(event, 1)})
+
+            icontoolbox.classList.add("icontoolbox");
+
+            icontoolbox.append( scalelabel, document.createElement("br"), iconscaleinput, document.createElement("br"),
+            maincolorlabel, document.createElement("br"), iconmaincolorinput, document.createElement("br"),
+            accentcolorlabel, document.createElement("br"), iconaccentcolorinput );
+        
+            toolbox.append(icontoolbox, document.createElement("br"));
+            break;
+    
+        case "sun":
+            let suniconscaleinput = document.createElement("input");
+            let suniconmaincolorinput = document.createElement("input");
+            let suniconaccentcolorinput = document.createElement("input");
+            let sunscalelabel = document.createElement("label");
+            let sunmaincolorlabel = document.createElement("label");
+            let sunaccentcolorlabel = document.createElement("label");
+            let sunicontoolbox = document.createElement("div");
+
+            suniconscaleinput.setAttribute("type", "number");
+            suniconscaleinput.setAttribute( "objectid", iconId );
+
+            sunmaincolorlabel.innerHTML = "Sun Main Color";
+            sunaccentcolorlabel.innerHTML = "Sun Secondary Color";
+            sunscalelabel.innerHTML = "Sun Scale";
+
+            suniconmaincolorinput.setAttribute("type", "color");
+            suniconmaincolorinput.setAttribute( "objectid", iconId );
+
+            suniconaccentcolorinput.setAttribute("type", "color");
+            suniconaccentcolorinput.setAttribute( "objectid", iconId );
+            suniconaccentcolorinput.value = "transparent";
+
+            suniconscaleinput.addEventListener("change", updateIconScale)
+            suniconmaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)})
+            suniconaccentcolorinput.addEventListener("change", function(event){updateIconColor(event, 1)})
+
+            sunicontoolbox.classList.add("icontoolbox");
+
+            sunicontoolbox.append( sunscalelabel, document.createElement("br"), suniconscaleinput, document.createElement("br"),
+            sunmaincolorlabel, document.createElement("br"), suniconmaincolorinput, document.createElement("br"),
+            sunaccentcolorlabel, document.createElement("br"), suniconaccentcolorinput );
+        
+            toolbox.append(sunicontoolbox, document.createElement("br"));
+            break;
+    
+        case "observer":
+            let obsiconscaleinput = document.createElement("input");
+            let obsiconmaincolorinput = document.createElement("input");
+            let obsiconaccentcolorinput = document.createElement("input");
+            let obsscalelabel = document.createElement("label");
+            let obsmaincolorlabel = document.createElement("label");
+            let obsaccentcolorlabel = document.createElement("label");
+            let obsicontoolbox = document.createElement("div");
+
+            obsiconscaleinput.setAttribute("type", "number");
+            obsiconscaleinput.setAttribute( "objectid", iconId );
+
+            obsmaincolorlabel.innerHTML = "Observer Main Color";
+            obsaccentcolorlabel.innerHTML = "Observer Secondary Color";
+            obsscalelabel.innerHTML = "Observer Scale";
+
+            obsiconmaincolorinput.setAttribute("type", "color");
+            obsiconmaincolorinput.setAttribute( "objectid", iconId );
+
+            obsiconaccentcolorinput.setAttribute("type", "color");
+            obsiconaccentcolorinput.setAttribute( "objectid", iconId );
+            obsiconaccentcolorinput.value = "#ffffff"
+
+            obsiconscaleinput.addEventListener("change", updateIconScale)
+            obsiconmaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)})
+            obsiconaccentcolorinput.addEventListener("change", function(event){updateIconColor(event, 1)})
+
+            obsicontoolbox.classList.add("icontoolbox");
+
+            obsicontoolbox.append( obsscalelabel, document.createElement("br"), obsiconscaleinput, document.createElement("br"),
+            obsmaincolorlabel, document.createElement("br"), obsiconmaincolorinput, document.createElement("br"),
+            obsaccentcolorlabel, document.createElement("br"), obsiconaccentcolorinput );
+        
+            toolbox.append(obsicontoolbox, document.createElement("br"));
+            break;
+
+        default:
+            console.log("UHHH OHH this is wrong");
+            break;
+    }
+}
+
+/**
+ * 
+ * @param {*} id 
+ * @param {*} array 
+ */
+//TODO: this could be simplified
+function findImageToolbox( id, array )
+{
+    for(index in array){
+        if(array[index].attributes.objectid.value == id){
+            return array[index];
+        }
+    }
+}
+
+function updateIconScale( event )
+{
+    let icon = document.getElementById(event.target.attributes.objectid.value);
+
+    let inputvalue = Number(event.target.value);
+    if( !isNaN(inputvalue) )
+    {
+        icon.style.scale = inputvalue;
+    }
+}
+
+
+function updateIconColor( event , colorid)
+{
+    let icon = document.getElementById(event.target.attributes.objectid.value);
+
+    let inputvalue = event.target.value;
+
+    switch(colorid){
+        case 0:
+            console.log("This is where we change the main color");
+            break;
+        case 1:
+            console.log("This is where we change the Secondary color");
+            break;
+    }
 }

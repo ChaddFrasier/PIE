@@ -299,7 +299,7 @@ button.disabled {
     min-width: 100%;
     max-width: 100%;
     min-height: 0%;
-    max-height: 100%;
+    max-height: 96%;
     background: var(--accent-color);
     height: 25%;
     overflow: auto;
@@ -392,13 +392,29 @@ button.selected {
     margin: 0 auto;
 }
 
+.icontoolbox {
+    width: 100%;
+    background: var(--contrast-color);
+    height: auto;
+}
+
+.imagetoolsbox>.dividerline {
+    width: 75%;
+    margin: 0 auto 0 auto;
+}
+
+.captiontoolsbox>.dividerline {
+    width: 75%;
+    margin: 0 auto 0 auto;
+}
+
 .imagetoolsbox {
     border: 1px solid black;
     width: auto;
     color: white;
     min-width: 100%;
     min-height: 0%;
-    max-height: 100%;
+    max-height: 200px;
     background: var(--accent-color);
     height: 35%;
     padding: 0 2px;
