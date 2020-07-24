@@ -55,7 +55,7 @@ html {
   }
   
   .rocker-small {
-    font-size: 0.5em; /* Sizes the switch */
+    font-size: 18px; /* Sizes the switch */
     margin: 1em;
   }
   
@@ -679,6 +679,13 @@ svg.imagecontainer {
 
 /* Small screens */
 @media only screen and (max-width:900px) {
+
+    
+    .rocker-small {
+        font-size: 0.5em; /* Sizes the switch */
+        margin: 1em;
+    }
+
     html {
         max-height: none;
         height: fit-content;
@@ -744,6 +751,11 @@ svg.imagecontainer {
 /* Normal screens */
 @media only screen and (min-width: 900px)
 {
+    
+    .rocker-small {
+        font-size: 15px; /* Sizes the switch */
+        margin: 1em;
+    }
     .maincontent {
         display: flex;
     }
@@ -771,6 +783,12 @@ svg.imagecontainer {
 
 /* Very Large Screen screens */
 @media only screen and (min-width:1900px) {
+
+    
+    .rocker-small {
+        font-size: 18px; /* Sizes the switch */
+        margin: 1em;
+    }
     .windowoptionsbar>h4{
         font-size: 18px;
     }
