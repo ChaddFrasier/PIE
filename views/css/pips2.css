@@ -101,7 +101,7 @@ html {
   .switch-right {
     right: 0.5em;
     bottom: 0;
-    background-color: #bd5757;
+    background-color: var(--main-bg-color);
     color: #fff;
   }
   
@@ -127,7 +127,7 @@ html {
   }
   
   input:checked + .switch-left {
-    background-color: #0084d0;
+    background-color: var(--primary-color);
     color: #fff;
     bottom: 0px;
     left: 0.5em;
@@ -679,7 +679,6 @@ svg.imagecontainer {
 
 /* Small screens */
 @media only screen and (max-width:900px) {
-
     
     .rocker-small {
         font-size: 0.5em; /* Sizes the switch */
