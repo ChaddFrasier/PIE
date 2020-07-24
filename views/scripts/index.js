@@ -926,11 +926,31 @@ function setElement( event ) {
         {
             console.log("Unknown Object ID" + btn.id);
         }
+
         drawSvgIcon( selectedObject, iconType )
     }
 }
 
 function drawSvgIcon( el, icontype )
 {
-    console.log("WORDS");
+    switch (icontype) {
+        case "north":
+            console.log("THIS IS WHERE WE DRAW THE NORTH ICON")
+            break;
+    
+        case "sun":
+            console.log("THIS IS WHERE WE DRAW THE SUN ICON")
+            break;
+    
+        case "observer":
+            console.log("THIS IS WHERE WE DRAW THE OBSERVER ICON")
+            break;
+
+        default:
+            console.log("UHHH OHH this is wrong")
+            break;
+    }
+
+    // after drawing svg icon is finished remove the object
+    selectedObject = null;
 }
