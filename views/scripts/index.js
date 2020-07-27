@@ -164,6 +164,7 @@ $(document).ready(()=>{
             textlabel = document.createElement("label");
 
         toolsarea.classList.add("captiontoolsbox");
+        toolsarea.setAttribute("id", "captiontoolsbox-"+captionId);
         toolsarea.setAttribute("objectid", captionId);
         textlabel.innerHTML = "Caption Text:  ";
         textlabel.setAttribute("for", "captiontextinput");
@@ -394,6 +395,7 @@ $(document).ready(()=>{
        /** End */
 
         toolsarea.classList.add("imagetoolsbox");
+        toolsarea.setAttribute("id", "imagetoolsbox-"+imageId);
         toolsarea.setAttribute("objectid", imageId);
         filelabel.innerHTML = "Choose a file: ";
         filelabel.setAttribute("for", "imageinput");
@@ -955,16 +957,20 @@ function setElement( event )
  */
 function drawSvgIcon( image, icontype, event )
 {
-    let icongroup = null;
+    let icongroup = null,
+        pt = null,
+        svgP = null,
+        newX = 0,
+        newY = 0;
     switch (icontype) {
         case "north":
 
-            var pt = svgContainer.createSVGPoint();
+            pt = svgContainer.createSVGPoint();
 
             pt.x = event.clientX;
             pt.y = event.clientY;
 
-            var svgP = pt.matrixTransform(svgContainer.getScreenCTM().inverse());
+            svgP = pt.matrixTransform(svgContainer.getScreenCTM().inverse());
 
             icongroup = document.getElementById("northgroup").cloneNode(true);
             icongroup.setAttribute("objectid", image.id);
@@ -973,28 +979,53 @@ function drawSvgIcon( image, icontype, event )
 
             console.log("Mouse was released at pixel: " + svgP.x + "," + svgP.y);
 
-            // this places the box top left at the mouse
-            icongroup.style.transform = translateString(svgP.x/Number(icongroup.style.scale), svgP.y/Number(icongroup.style.scale));
-
+            // set the location of the icon to where the mouse was released
+            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 25 );
+            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 25 );
+    
+            icongroup.style.transform = translateString( newX, newY);
             svgContainer.appendChild(icongroup);
 
             break;
     
         case "sun":
+            pt = svgContainer.createSVGPoint();
+
+            pt.x = event.clientX;
+            pt.y = event.clientY;
+
+            svgP = pt.matrixTransform(svgContainer.getScreenCTM().inverse());
+
             icongroup = document.getElementById("sungroup").cloneNode(true);
             icongroup.setAttribute("objectid", image.id);
             icongroup.setAttribute("id", "sunIcon-" + image.id);
             icongroup.style.scale = "10";
 
+            // TODO: copy idea for north icon here for the sun
+            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 25 );
+            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 25 );
+    
+            icongroup.style.transform = translateString( newX, newY);
             svgContainer.appendChild(icongroup);
             break;
     
         case "observer":
+            pt = svgContainer.createSVGPoint();
+
+            pt.x = event.clientX;
+            pt.y = event.clientY;
+
+            svgP = pt.matrixTransform(svgContainer.getScreenCTM().inverse());
+
             icongroup = document.getElementById("observergroup").cloneNode(true);
             icongroup.setAttribute("objectid", image.id);
             icongroup.setAttribute("id", "observerIcon-" + image.id);
             icongroup.style.scale = "10";
 
+            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 25 );
+            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 25 );
+    
+            icongroup.style.transform = translateString( newX, newY);
             svgContainer.appendChild(icongroup);
             break;
 
@@ -1024,9 +1055,28 @@ function drawToolbox(toolbox, icontype, iconId)
             let maincolorlabel = document.createElement("label");
             let accentcolorlabel = document.createElement("label");
             let icontoolbox = document.createElement("div");
+            let iconoptionbar = document.createElement("div");
+            let iconoptionheader = document.createElement("h4");
+            let deletebtn = document.createElement("button");
+
+            iconoptionbar.setAttribute("class", 'windowoptionsbar');
+            iconoptionbar.style.display = "flex";
+
+            iconoptionheader.innerHTML = "North Icon";
+
+            // same for delete as minimize
+            deletebtn.classList.add("windowremovebtn");
+                deletebtn.innerHTML = "&times";
+                deletebtn.addEventListener( "click", function(event) {
+                removeIconWindow(event);
+            });
+
+            iconoptionbar.append(iconoptionheader, document.createElement("br"), deletebtn);
+            iconoptionbar.setAttribute("objectid", iconId);
 
             iconscaleinput.setAttribute("type", "number");
             iconscaleinput.setAttribute( "objectid", iconId );
+            icontoolbox.setAttribute( "objectid", iconId );
 
             maincolorlabel.innerHTML = "Main Color";
             accentcolorlabel.innerHTML = "Secondary Color";
@@ -1049,7 +1099,7 @@ function drawToolbox(toolbox, icontype, iconId)
             maincolorlabel, document.createElement("br"), iconmaincolorinput, document.createElement("br"),
             accentcolorlabel, document.createElement("br"), iconaccentcolorinput );
         
-            toolbox.append(icontoolbox, document.createElement("br"));
+            toolbox.append(iconoptionbar,icontoolbox);
             break;
     
         case "sun":
@@ -1060,6 +1110,24 @@ function drawToolbox(toolbox, icontype, iconId)
             let sunmaincolorlabel = document.createElement("label");
             let sunaccentcolorlabel = document.createElement("label");
             let sunicontoolbox = document.createElement("div");
+            let sunoptionbar = document.createElement("div");
+            let sunoptionheader = document.createElement("h4");
+            let deletebtn1 = document.createElement("button");
+
+            sunoptionbar.setAttribute("class", 'windowoptionsbar');
+            sunoptionbar.style.display = "flex";
+
+            sunoptionheader.innerHTML = "Sun Icon";
+
+            // same for delete as minimize
+            deletebtn1.classList.add("windowremovebtn");
+                deletebtn1.innerHTML = "&times";
+                deletebtn1.addEventListener( "click", function(event) {
+                removeIconWindow(event);
+            });
+
+            sunoptionbar.append(sunoptionheader, document.createElement("br"), deletebtn1);
+            sunoptionbar.setAttribute("objectid", iconId);
 
             suniconscaleinput.setAttribute("type", "number");
             suniconscaleinput.setAttribute( "objectid", iconId );
@@ -1085,7 +1153,7 @@ function drawToolbox(toolbox, icontype, iconId)
             sunmaincolorlabel, document.createElement("br"), suniconmaincolorinput, document.createElement("br"),
             sunaccentcolorlabel, document.createElement("br"), suniconaccentcolorinput );
         
-            toolbox.append(sunicontoolbox, document.createElement("br"));
+            toolbox.append(sunoptionbar, sunicontoolbox);
             break;
     
         case "observer":
@@ -1096,6 +1164,24 @@ function drawToolbox(toolbox, icontype, iconId)
             let obsmaincolorlabel = document.createElement("label");
             let obsaccentcolorlabel = document.createElement("label");
             let obsicontoolbox = document.createElement("div");
+            let obsoptionbar = document.createElement("div");
+            let obsoptionheader = document.createElement("h4");
+            let deletebtn2 = document.createElement("button");
+
+            obsoptionbar.setAttribute("class", 'windowoptionsbar');
+            obsoptionbar.style.display = "flex";
+
+            obsoptionheader.innerHTML = "Observer Icon";
+
+            // same for delete as minimize
+            deletebtn2.classList.add("windowremovebtn");
+            deletebtn2.innerHTML = "&times";
+            deletebtn2.addEventListener( "click", function(event) {
+                removeIconWindow(event);
+            });
+
+            obsoptionbar.append(obsoptionheader, document.createElement("br"), deletebtn2);
+            obsoptionbar.setAttribute("objectid", iconId);
 
             obsiconscaleinput.setAttribute("type", "number");
             obsiconscaleinput.setAttribute( "objectid", iconId );
@@ -1121,7 +1207,7 @@ function drawToolbox(toolbox, icontype, iconId)
             obsmaincolorlabel, document.createElement("br"), obsiconmaincolorinput, document.createElement("br"),
             obsaccentcolorlabel, document.createElement("br"), obsiconaccentcolorinput );
         
-            toolbox.append(obsicontoolbox, document.createElement("br"));
+            toolbox.append(obsoptionbar, obsicontoolbox);
             break;
 
         default:
@@ -1156,6 +1242,25 @@ function updateIconScale( event )
     }
 }
 
+function removeIconWindow( event )
+{
+    if(event.target.parentElement.attributes.objectid.value)
+    {
+        // remove the current options bar, its next child and the caption matching the same id
+        let icontoolsbar = event.target.parentElement;
+        let toolsbox = icontoolsbar.nextElementSibling;
+        let iconsvg = document.getElementById(icontoolsbar.attributes.objectid.value);
+
+        let imagetoolbox = document.getElementById("imagetoolsbox-"+iconsvg.attributes.objectid.value);
+
+        console.log(imagetoolbox)
+
+        imagetoolbox.removeChild(icontoolsbar); 
+        imagetoolbox.removeChild(toolsbox); 
+        svgContainer.removeChild(iconsvg);
+
+    }
+}
 
 function updateIconColor( event , colorid)
 {
@@ -1175,4 +1280,8 @@ function updateIconColor( event , colorid)
 
 function translateString(x, y) {
     return "translate("+ Number(x).toFixed(0)+"px,"+Number(y).toFixed(0)+"px)"
+}
+
+function getScaledPoint( p, scale, objectWidth) {
+    return (p-(objectWidth*scale)/2)/scale;
 }
