@@ -1,6 +1,11 @@
-// GLOABALS
+// GLOABALs
 // only used to track which menu item is being moved and where it should move to
 var shiftObjects, lowerObject, upperObject, selectedObject, svgContainer = null;
+
+
+// Namespaces for svg ele
+var NS = {xhtml:"http://www.w3.org/1999/xhtml",
+            svg: "http://www.w3.org/2000/svg"};
 
 // start of jquery function
 $(document).ready(()=>{
@@ -10,9 +15,6 @@ $(document).ready(()=>{
 
     svgContainer = document.getElementById("figurecontainer");
     
-    // Namespaces for svg ele
-    var NS = {xhtml:"http://www.w3.org/1999/xhtml",
-                svg: "http://www.w3.org/2000/svg"};
 
     // set background right away when page loads
     setSVGBackground(svgContainer, bgPicker.value);
@@ -940,7 +942,7 @@ function setElement( event )
         }
         
         // draw the icon
-        drawSvgIcon( selectedObject, iconType );
+        drawSvgIcon( selectedObject, iconType, event );
 
         // after drawing svg icon is finished remove the object
         selectedObject = null;
@@ -951,17 +953,31 @@ function setElement( event )
  * 
  * @param {*} icontype 
  */
-function drawSvgIcon( image, icontype )
+function drawSvgIcon( image, icontype, event )
 {
     let icongroup = null;
     switch (icontype) {
         case "north":
+
+            var pt = svgContainer.createSVGPoint();
+
+            pt.x = event.clientX;
+            pt.y = event.clientY;
+
+            var svgP = pt.matrixTransform(svgContainer.getScreenCTM().inverse());
+
             icongroup = document.getElementById("northgroup").cloneNode(true);
             icongroup.setAttribute("objectid", image.id);
             icongroup.setAttribute("id", "northIcon-" + image.id);
             icongroup.style.scale = "10";
 
+            console.log("Mouse was released at pixel: " + svgP.x + "," + svgP.y);
+
+            // this places the box top left at the mouse
+            icongroup.style.transform = translateString(svgP.x/Number(icongroup.style.scale), svgP.y/Number(icongroup.style.scale));
+
             svgContainer.appendChild(icongroup);
+
             break;
     
         case "sun":
@@ -1155,4 +1171,8 @@ function updateIconColor( event , colorid)
             console.log("This is where we change the Secondary color");
             break;
     }
+}
+
+function translateString(x, y) {
+    return "translate("+ Number(x).toFixed(0)+"px,"+Number(y).toFixed(0)+"px)"
 }

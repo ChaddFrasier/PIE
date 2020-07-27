@@ -779,7 +779,7 @@ svg.imagecontainer {
 {
     
     .rocker-small {
-        font-size: 15px; /* Sizes the switch */
+        font-size: 0.75em; /* Sizes the switch */
         margin: 1em;
     }
     .maincontent {
@@ -812,7 +812,7 @@ svg.imagecontainer {
 
     
     .rocker-small {
-        font-size: 18px; /* Sizes the switch */
+        font-size: 0.50em; /* Sizes the switch */
         margin: 1em;
     }
     .windowoptionsbar>h4{
