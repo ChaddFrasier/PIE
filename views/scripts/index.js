@@ -1,30 +1,41 @@
-// GLOABALs
+// GLOABALS
 // only used to track which menu item is being moved and where it should move to
-var shiftObjects, lowerObject, upperObject, selectedObject, svgContainer = null;
-
-
-// Namespaces for svg ele
+var shiftObjects,
+    lowerObject, 
+    upperObject, 
+    selectedObject, 
+    svgContainer = null;
+// Namespaces for svg
 var NS = {xhtml:"http://www.w3.org/1999/xhtml",
             svg: "http://www.w3.org/2000/svg"};
 
-// start of jquery function
+/**
+ * @function document.ready()
+ * @description Function that runs when the page is done loading
+ */
 $(document).ready(()=>{
-    // jquery scope variables
+    // local jquery variables
     var bgPicker = document.getElementById("backgroundcolor"),
         dividerObject = document.getElementById("tooldivider");
 
+    // get the global figure element
     svgContainer = document.getElementById("figurecontainer");
     
-
     // set background right away when page loads
     setSVGBackground(svgContainer, bgPicker.value);
 
-    /* Show and hide contents of the tool windows works generically so we can add more later */
+    /** 
+     * @function .windowminimizebtn.click()
+     * @description Show and hide contents of the tool windows works generically so we can add more later
+     */
     $('button.windowminimizebtn').click(function(event) {
         minimizeToolsWindow(event);
     });
     
-    // close tools window if the title bar is clicked
+    /** 
+     * @function .windowoptionsbar.click()
+     * @description Hide and show the toolbox if the option bar is clicked
+     */
     $(".windowoptionsbar").on("click", function(event) {
         let btn = event.target.lastElementChild;
         if( btn ){
@@ -32,12 +43,19 @@ $(document).ready(()=>{
         }
     });
 
-    /** simple redirect for when the user clicks the usgs atrogeology in the footer */
+    /** 
+     * @function .rightfooter.click()
+     * @description Show and hide contents of the tool windows works generically so we can add more later
+     */
     $('.rightfooter').click(() => {
         window.open("https://www.usgs.gov/centers/astrogeology-science-center", '_blank');
     });
 
-    /** handler for the whole tool window mini button */
+
+    /** 
+     * @function .toolboxminimizebtn.click() 
+     * @description handler for the whole tool window mini button
+     */
     $('.toolboxminimizebtn').click(function(event) {
         let toolbox = document.getElementById('toolbox'),
             imgbtn = document.getElementById('addimagebtn'),
@@ -60,7 +78,10 @@ $(document).ready(()=>{
         }
     });
 
-    /** handler for button to add caption to svg */
+    /**
+     * @function button.toolboxaddcaptionbtn.click()
+     * @description adds all caption elements to the svg and menu
+     */
     $('button.toolboxaddcaptionbtn').click(() => {
 
         // used for identifying the tool box for each caption in the image 
@@ -95,7 +116,6 @@ $(document).ready(()=>{
         });
 
         /** Dyncamic layer buttoon requires more work*/
-
         // set the class css and the svg button graphic
         layerbtn.classList.add("windoworderingbtn");
         layerbtn.innerHTML = "<svg viewBox='0 0 100 100' width='100%' height='100%' style='padding:1px' >"+
@@ -163,15 +183,17 @@ $(document).ready(()=>{
             ycoordinput = document.createElement("input"),
             textlabel = document.createElement("label");
 
+        // set attributes and classes
         toolsarea.classList.add("captiontoolsbox");
         toolsarea.setAttribute("id", "captiontoolsbox-"+captionId);
         toolsarea.setAttribute("objectid", captionId);
-        textlabel.innerHTML = "Caption Text:  ";
+        textlabel.innerHTML = "Caption Text: ";
         textlabel.setAttribute("for", "captiontextinput");
         textinput.setAttribute("name","captiontextinput");
         textinput.setAttribute("placeholder", "Type your caption here")
         textinput.classList.add('textareainputfield')
 
+        // ass the keyup listener to update the text input
         textinput.addEventListener("keyup", function(){
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value+"text" );
@@ -182,6 +204,10 @@ $(document).ready(()=>{
             }
         });
 
+
+        /**
+         * Do the same general idea for the text input on all the input to follow here
+         */
         widthlabel.innerHTML = "Width of Caption: ";
         widthlabel.setAttribute("for", "widthinput");
         widthinput.setAttribute("type", "number");
@@ -305,7 +331,10 @@ $(document).ready(()=>{
         getObjectCount(1, "caption");
     });
     
-    /** handler for adding anothe image to the svg */
+    /**
+     * @function button.toolboxaddimagebtn.click()
+     * @description add the image to the svg and the toolbox stuff
+     */
     $('button.toolboxaddimagebtn').click(() => {
 
         // used for identifying the tool box for each caption in the image 
@@ -328,7 +357,7 @@ $(document).ready(()=>{
             ycoordinput = document.createElement("input"),
             imagesvg = document.createElementNS(NS.svg, "image");
 
-        
+        // set the class for the options bar
         newoptionsbar.classList.add("windowoptionsbar");
         newoptionsbar.style.display = "flex";
 
@@ -415,38 +444,46 @@ $(document).ready(()=>{
 
         // listener for when the user changes the image of the input field
         fileinput.onchange = function(event){
+            // use regexp to test the acceptable file types and handle either way
             let imgregexp = new RegExp("^.*\.(png|PNG|jpg|JPG|SVG|svg)");
             let isisregexp = new RegExp("^.*\.(CUB|cub|tif|TIF)");
 
             if(imgregexp.test(this.value))
             {
+                // read a simple image file and display
                 if(this.files && this.files[0])
                 {
                     var reader = new FileReader();
 
                     // occurs after readAsDataURL
                     reader.onload = function(e) {
-                    $('#'+imageId).attr('href', e.target.result);
+                        // use jquery to update the image source
+                        $('#'+imageId).attr('href', e.target.result);
                     }
-                    
-                    reader.readAsDataURL(this.files[0]); // convert to base64 string
+
+                    // convert to base64 string
+                    reader.readAsDataURL(this.files[0]);
                 }
             }
             else if( isisregexp.test(this.value))
             {
+                // prevent page default submit
                 event.preventDefault();
-
+                // create a form data and request object to call the server
                 var fd = new FormData(form);
-
                 var xhr = new XMLHttpRequest();
                 
+                // when the requests load handle the response
                 xhr.onloadend = function(event) {
                     // this is an effective way of recieving the response return
                     console.log(xhr.responseText)
                 }
 
+                // open the request and send the data
                 xhr.open('POST', "/api/isis", true);
                 xhr.send(fd);
+
+                // prevent propigation with non-true return
                 return false;
             }
             else{
@@ -563,14 +600,18 @@ $(document).ready(()=>{
         getObjectCount(1, "image");
     });
 
-    // TODO: commennt
+    /**
+     * @function figsizeselect.onchange
+     * @description changes the viewbox setting of the output figure
+     */
     $('#figsizeselect').on("change", (event) => {
         let tmp = event.target.value.split("x");
         svgContainer.setAttribute("viewBox", "0 0 " + tmp[0] + ' ' + tmp[1]);
     });
 
     /**
-     * Changes the background color of the editing area.
+     * @function backgroundcolor.onchange
+     * @description Changes the background color of the editing area.
      * will be visible when exported
      */
     $('#backgroundcolor').on("change", () => {
@@ -579,7 +620,10 @@ $(document).ready(()=>{
 
     /** Annotation buttons */
 
-    // TODO: add the north arrow stuff here
+    /**
+     * @function northarrowopt.onmousedown
+     * @description this function starts the drag and drop logic for the north icon
+     */
     $('#northarrowopt').on("mousedown", (event) => {
         let btn = event.target;
 
@@ -598,7 +642,10 @@ $(document).ready(()=>{
         }
     });
     
-    // TODO: add sun azimuthal stuff here
+    /**
+     * @function sunarrowopt.onmousedown
+     * @description this function starts the drag and drop logic for the sun icon
+     */
     $('#sunarrowopt').on("mousedown", (event) => {
         let btn = event.target;
 
@@ -617,7 +664,10 @@ $(document).ready(()=>{
         }
     });
     
-    // TODO: add observer stuff here
+    /**
+     * @function observerharrowopt.onmousedown
+     * @description this function starts the drag and drop logic for observer icon
+     */
     $('#observerarrowopt').on("mousedown", (event) => {
         let btn = event.target;
 
@@ -640,15 +690,19 @@ $(document).ready(()=>{
 
 /* Helper functions */
 /**
- * change the background of the svg 
+ * @function setSVGBackground
+ * @param {Node} svg 
+ * @param {string} color 
+ * @description just changes the background of the specified element
  */
 function setSVGBackground(svg, color){
     svg.style.background = color;
 }
 
 /**
- * Function: minimizeToolsWindow
- * Desc: this is used to close and open the tool boxes using the close btn in the optionsbar
+ * @function minimizeToolsWindow
+ * @param {_Event} event
+ * @description this is used to close and open the tool boxes using the close btn in the optionsbar
  *      this is a general function so if the html of the tool box area changes so does this
  */
 function minimizeToolsWindow(event) {
@@ -663,8 +717,9 @@ function minimizeToolsWindow(event) {
 }
 
 /**
- * Function: removeToolsWindow
- * Desc: This function is used to delete the tools window and options bar from the tool box area
+ * @function: removeToolsWindow
+ * @param {_Event} event
+ * @desc: This function is used to delete the tools window and options bar from the tool box area
  */
 function removeToolsWindow( event )
 {
@@ -697,7 +752,9 @@ function removeToolsWindow( event )
 }
 
 /**
- * generate a random number and return with prefix
+ * @function randomId
+ * @param {string} textareaprefix
+ * @description generate a random number and return with prefix
  */
 function randomId( textareaprefix )
 {
@@ -705,7 +762,8 @@ function randomId( textareaprefix )
 }
 
 /**
- * handler for when the user wants to drag an element up or down
+ * @function docucmentMouseOverHandler
+ * @description handler for when the user wants to drag an element up or down calls the shift functions respectivly
  */
 function docucmentMouseOverHandler () {
         if(yDirection == "up") {
@@ -730,7 +788,9 @@ var xDirection = "",
     sensitivity = 50;
  
 /**
- * get the mouse direction as a string
+ * @function getMouseDirection
+ * @param {_MouseEvent} e
+ * @description get the mouse direction as a string relative to the sensitivity level set globally
  */
 function getMouseDirection(e) {
 
@@ -763,7 +823,8 @@ function getMouseDirection(e) {
 }
 
 /**
- * when the mouse is released remove the listeners
+ * @function documentMouseUpListener
+ * @description when the mouse is released remove the listeners
  */
 function documentMouseUpListener(){
     try{
@@ -783,7 +844,8 @@ function documentMouseUpListener(){
 }
 
 /**
- * shift the object up one slot in the tools location
+ * @function shiftUp
+ * @description shift the object up one slot in the tools location
  */
 function shiftUp(){
     if(upperObject.getAttribute("objectid") )
@@ -803,7 +865,8 @@ function shiftUp(){
 }
 
 /**
- * shift the object down one slot in the tools location
+ * @function shiftDown
+ * @description shift the object down one slot in the tools location
  */
 function shiftDown()
 {
@@ -821,10 +884,13 @@ function shiftDown()
         shiftObjects = null;
         yDirection = "";
     }
+
 }
 
 /**
- *  move the svg element up to the top of the layers of the svg
+ * @function moveSvgUp
+ * @param {Node} element
+ * @description move the svg element up to the top of the layers of the svg
  */
 function moveSvgUp( element )
 {
@@ -832,7 +898,9 @@ function moveSvgUp( element )
 }
 
 /**
- *  move the svg element down to the top of the layers of the svg
+ * @function moveSvgUp
+ * @param {Node} element
+ * @description move the svg element down to the top of the layers of the svg
  */
 function moveSvgDown( element )
 {
@@ -847,10 +915,8 @@ var imageCount = 0,
 
 /**
  * @function objectCount
- * @description arg explained below and what it does
- * @param {0: return the current count,
- *         1: return the current count after addition of new element, 
- *         -1: return the current count after deletion of some element} inc 
+ * @param {number} inc - 0: show the current count, 1: add 1 to the count then return, -1: remove 1 from count then return
+ * @description arg explained below and what it does 
  */
 function getObjectCount( inc=0, objecttype="both" ) 
 {
@@ -884,8 +950,8 @@ function getObjectCount( inc=0, objecttype="both" )
 
 /**
  * @function typeofObject
+ * @param {string} testString
  * @description this function uses regexp to check and see if a string fits on of the object prefixes
- * @param {string to test} testString 
  */
 function typeofObject(testString) 
 {
@@ -902,8 +968,9 @@ function typeofObject(testString)
 }
 
 /**
- * 
- * @param {*} event 
+ * @function setElement
+ * @param {_Event} event 
+ * @description set the current element that the mouse dropped over
  */
 function setElement( event ) 
 {
@@ -952,8 +1019,11 @@ function setElement( event )
 }
 
 /**
- * 
- * @param {*} icontype 
+ * @function drawSvgIcon
+ * @param {Node} image 
+ * @param {string} icontype 
+ * @param {_Event} event
+ * @description this function draws the svg icons over the svg figure image where the mouse drop occured
  */
 function drawSvgIcon( image, icontype, event )
 {
@@ -1001,7 +1071,6 @@ function drawSvgIcon( image, icontype, event )
             icongroup.setAttribute("id", "sunIcon-" + image.id);
             icongroup.style.scale = "10";
 
-            // TODO: copy idea for north icon here for the sun
             newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 25 );
             newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 25 );
     
@@ -1040,9 +1109,11 @@ function drawSvgIcon( image, icontype, event )
 }
 
 /**
- * 
- * @param {*} toolbox 
- * @param {*} icontype 
+ * @function drawToolbox
+ * @param {Node} toolbox 
+ * @param {string} icontype 
+ * @param {string} iconId
+ * @description draws tool boxes for each icon, this method allows for more than 1 of each icon
  */
 function drawToolbox(toolbox, icontype, iconId)
 {
@@ -1217,11 +1288,14 @@ function drawToolbox(toolbox, icontype, iconId)
 }
 
 /**
+ * @function findImageToolbox
+ * @param {string} id 
+ * @param {NodeList} array 
+ * @description find the element with the id in the array
  * 
- * @param {*} id 
- * @param {*} array 
+ * //TODO: this could be simplified
+ * 
  */
-//TODO: this could be simplified
 function findImageToolbox( id, array )
 {
     for(index in array){
@@ -1231,6 +1305,11 @@ function findImageToolbox( id, array )
     }
 }
 
+/**
+ * @function updateIconScale
+ * @param {_Event} event 
+ * @description change the scale of the icon at the target
+ */
 function updateIconScale( event )
 {
     let icon = document.getElementById(event.target.attributes.objectid.value);
@@ -1242,6 +1321,12 @@ function updateIconScale( event )
     }
 }
 
+
+/**
+ * @function removeIconWindow
+ * @param {_Event} event 
+ * @description remove the icon tool box and the icon svg element
+ */
 function removeIconWindow( event )
 {
     if(event.target.parentElement.attributes.objectid.value)
@@ -1262,6 +1347,12 @@ function removeIconWindow( event )
     }
 }
 
+/**
+ * @function updateIconColor
+ * @param {_Event} event 
+ * @param {string} colorid
+ * @description update the color of the object at the target
+ */
 function updateIconColor( event , colorid)
 {
     let icon = document.getElementById(event.target.attributes.objectid.value);
@@ -1278,10 +1369,23 @@ function updateIconColor( event , colorid)
     }
 }
 
+/**
+ * @function translateString
+ * @param {number} x 
+ * @param {number} y 
+ * @description returns a string for of the x,y point as a translate() command
+ */
 function translateString(x, y) {
     return "translate("+ Number(x).toFixed(0)+"px,"+Number(y).toFixed(0)+"px)"
 }
 
+/**
+ * @function getScaledPoint
+ * @param {number} p 
+ * @param {number} scale 
+ * @param {number} objectWidth 
+ * @description move the point over half the scaled width and then divide by the scale again 
+ */
 function getScaledPoint( p, scale, objectWidth) {
     return (p-(objectWidth*scale)/2)/scale;
 }
