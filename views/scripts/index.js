@@ -181,7 +181,25 @@ $(document).ready(()=>{
             xcoordinput = document.createElement("input"),
             ycoordlabel = document.createElement("label"),
             ycoordinput = document.createElement("input"),
-            textlabel = document.createElement("label");
+            textlabel = document.createElement("label"),
+            captiontextcolorinput = document.createElement("input"),
+            captiontextcolorlabel = document.createElement("label"),
+            captionbackgroundcolorinput = document.createElement("input"),
+            captionbackgroundcolorlabel = document.createElement("label");
+
+        captiontextcolorlabel.setAttribute("objectid", captionId);
+        captiontextcolorinput.setAttribute("objectid", captionId);
+
+        captiontextcolorinput.setAttribute("type", "color");
+
+        captiontextcolorlabel.innerHTML = "Font Color"
+
+        captionbackgroundcolorlabel.setAttribute("objectid", captionId);
+        captionbackgroundcolorinput.setAttribute("objectid", captionId);
+
+        captionbackgroundcolorinput.setAttribute("type", "color");
+
+        captionbackgroundcolorlabel.innerHTML = "Box Color"
 
         // set attributes and classes
         toolsarea.classList.add("captiontoolsbox");
@@ -276,10 +294,13 @@ $(document).ready(()=>{
             }
         });
 
-        let divider2 = document.createElement("h3");
-        divider2.classList.add("dividerline");
-        divider2.setAttribute("id", "innerdivider");
-        divider2.innerHTML = "Icon Tools";
+        captiontextcolorinput.addEventListener("change", function(event){
+            updateCaptionTextColor( event.target.value , event.target.attributes.objectid.value);
+        });
+
+        captionbackgroundcolorinput.addEventListener("change", function(event){
+            updateCaptionBoxColor( event.target.value , event.target.attributes.objectid.value);
+        });
 
         // append all the elements to the tool box
         toolsarea.append( 
@@ -288,7 +309,9 @@ $(document).ready(()=>{
             widthinput, document.createElement("br"), heightlabel, 
             document.createElement("br"), heightinput, document.createElement("br"),
             xcoordlabel, document.createElement("br"), xcoordinput, document.createElement("br"),
-            ycoordlabel, document.createElement("br"), ycoordinput, divider2
+            ycoordlabel, document.createElement("br"), ycoordinput, document.createElement("br"), captiontextcolorlabel,
+            document.createElement("br"), captiontextcolorinput, document.createElement("br"), captionbackgroundcolorlabel,
+            document.createElement("br"), captionbackgroundcolorinput
         );
 
         // set caption id on all input elements
@@ -1549,4 +1572,14 @@ function translateString(x, y) {
  */
 function getScaledPoint( p, scale, objectWidth) {
     return (p-(objectWidth*scale)/2)/scale;
+}
+
+function updateCaptionTextColor ( color, objectid )
+{
+    document.getElementById(objectid).firstChild.style.color = color;
+}
+
+function updateCaptionBoxColor ( color, objectid )
+{
+    document.getElementById(objectid).firstChild.style.background = color;
 }
