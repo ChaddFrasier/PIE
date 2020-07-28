@@ -1209,10 +1209,12 @@ function drawToolbox(toolbox, icontype, iconId)
 
             suniconmaincolorinput.setAttribute("type", "color");
             suniconmaincolorinput.setAttribute( "objectid", iconId );
+            suniconmaincolorinput.value = "#ffffff";
+
 
             suniconaccentcolorinput.setAttribute("type", "color");
             suniconaccentcolorinput.setAttribute( "objectid", iconId );
-            suniconaccentcolorinput.value = "transparent";
+            suniconaccentcolorinput.value = "#000000";
 
             suniconscaleinput.addEventListener("change", updateIconScale)
             suniconmaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)})
@@ -1263,10 +1265,11 @@ function drawToolbox(toolbox, icontype, iconId)
 
             obsiconmaincolorinput.setAttribute("type", "color");
             obsiconmaincolorinput.setAttribute( "objectid", iconId );
+            obsiconmaincolorinput.value = "#ffffff"
 
             obsiconaccentcolorinput.setAttribute("type", "color");
             obsiconaccentcolorinput.setAttribute( "objectid", iconId );
-            obsiconaccentcolorinput.value = "#ffffff"
+            obsiconaccentcolorinput.value = "#000000"
 
             obsiconscaleinput.addEventListener("change", updateIconScale)
             obsiconmaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)})
@@ -1362,10 +1365,79 @@ function updateIconColor( event , colorid)
     switch(colorid){
         case 0:
             console.log("This is where we change the main color");
+            changeIconColor(colorid, inputvalue, icon);
             break;
         case 1:
             console.log("This is where we change the Secondary color");
+            changeIconColor(colorid, inputvalue, icon);
+
             break;
+    }
+}
+
+/**
+ * @function changeIconColor
+ * @param {number} colorid 
+ * @param {string} colorval 
+ * @param {Object} icon 
+ */
+function changeIconColor( colorid, colorval, icon)
+{
+    switch(colorid){
+        case 0:
+            // change main color
+            if(icon.id.indexOf("north") > -1 )
+            {
+                // change all three children of the north icon
+                changeColorsOfChildren(icon.childNodes, colorval, "stroke", "fill", "fill stroke");
+            }
+            else if(icon.id.indexOf("sun") > -1 )
+            {
+                // change the primary of the sun icon
+                changeColorsOfChildren(icon.childNodes, colorval, "stroke", "fill stroke");
+
+            }
+            else if(icon.id.indexOf("observer") > -1 )
+            {
+                // change the primary of the observer icon
+                changeColorsOfChildren(icon.childNodes, colorval, "stroke", "stroke", "stroke", "stroke",
+                 "stroke", "stroke", "stroke", "fill");
+            }
+
+            break;
+        case 1:
+            // change secondary color
+            icon.childNodes.forEach(el => {
+                if(icon.id.indexOf("north") > -1 )
+                {
+                    // change the secondary of the north icon
+                    changeColorsOfChildren(icon.childNodes, colorval,"fill", "stroke", "");
+                }
+                else if(icon.id.indexOf("sun") > -1 )
+                {
+                    // change the secondary of the sun icon
+                    changeColorsOfChildren(icon.childNodes, colorval, "fill", "");
+                }
+                else if(icon.id.indexOf("observer") > -1 )
+                {
+                    // change the secondary of the observer icon
+                    changeColorsOfChildren(icon.childNodes, colorval, "fill", "fill", "fill", "fill",
+                        "fill", "fill", "fill", "stroke");
+                }
+            });
+            break;    
+    }
+}
+
+function changeColorsOfChildren( children, color , ...order )
+{
+    for (let index = 0; index < children.length; index++) {
+        const element = children[index];
+        const commandArr = order[index].split(" ");
+
+        commandArr.forEach(attribute => {
+            element.setAttribute(attribute.trim(), color);
+        });
     }
 }
 

@@ -449,6 +449,10 @@ button.selected {
     pointer-events: none;
 }
 
+button#northarrowopt, button#sunarrowopt, button#observerarrowopt  {
+    background-color: transparent;    
+}
+
 .btnvectorgraphic>g {
     pointer-events: inherit;
 }
