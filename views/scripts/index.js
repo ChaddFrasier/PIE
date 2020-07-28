@@ -1364,13 +1364,10 @@ function updateIconColor( event , colorid)
 
     switch(colorid){
         case 0:
-            console.log("This is where we change the main color");
             changeIconColor(colorid, inputvalue, icon);
             break;
         case 1:
-            console.log("This is where we change the Secondary color");
             changeIconColor(colorid, inputvalue, icon);
-
             break;
     }
 }
@@ -1389,7 +1386,7 @@ function changeIconColor( colorid, colorval, icon)
             if(icon.id.indexOf("north") > -1 )
             {
                 // change all three children of the north icon
-                changeColorsOfChildren(icon.childNodes, colorval, "stroke", "fill", "fill stroke");
+                changeColorsOfChildren(icon.childNodes, colorval, "fill stroke", "stroke", "fill");
             }
             else if(icon.id.indexOf("sun") > -1 )
             {
@@ -1411,7 +1408,7 @@ function changeIconColor( colorid, colorval, icon)
                 if(icon.id.indexOf("north") > -1 )
                 {
                     // change the secondary of the north icon
-                    changeColorsOfChildren(icon.childNodes, colorval,"fill", "stroke", "");
+                    changeColorsOfChildren(icon.childNodes, colorval, "", "fill", "stroke");
                 }
                 else if(icon.id.indexOf("sun") > -1 )
                 {
@@ -1436,7 +1433,11 @@ function changeColorsOfChildren( children, color , ...order )
         const commandArr = order[index].split(" ");
 
         commandArr.forEach(attribute => {
-            element.setAttribute(attribute.trim(), color);
+            if(attribute != "")
+            {
+                console.log(attribute)
+                element.setAttribute(attribute.trim(), color);
+            }
         });
     }
 }
