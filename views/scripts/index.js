@@ -1129,6 +1129,10 @@ function drawToolbox(toolbox, icontype, iconId)
             let iconoptionbar = document.createElement("div");
             let iconoptionheader = document.createElement("h4");
             let deletebtn = document.createElement("button");
+            let northicontranslatex = document.createElement("input");
+            let northicontranslatexlabel = document.createElement("label");
+            let northicontranslatey = document.createElement("input");
+            let northicontranslateylabel = document.createElement("label");
 
             iconoptionbar.setAttribute("class", 'windowoptionsbar');
             iconoptionbar.style.display = "flex";
@@ -1160,15 +1164,31 @@ function drawToolbox(toolbox, icontype, iconId)
             iconaccentcolorinput.setAttribute( "objectid", iconId );
             iconaccentcolorinput.value = "#ffffff"
 
+            northicontranslatex.setAttribute("type", "number");
+            northicontranslatex.setAttribute( "objectid", iconId );
+            northicontranslatex.setAttribute( "min", "0" );
+
+            northicontranslatey.setAttribute("type", "number");
+            northicontranslatey.setAttribute( "objectid", iconId );
+            northicontranslatey.setAttribute( "min", "1" );
+
+            northicontranslateylabel.innerHTML = "Translate Y Position";
+            northicontranslatexlabel.innerHTML = "Translate X Position";
+
             iconscaleinput.addEventListener("change", updateIconScale)
             iconmaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)})
             iconaccentcolorinput.addEventListener("change", function(event){updateIconColor(event, 1)})
+            
+            northicontranslatex.addEventListener("change", function(event){updateIconPosition(event, 0)})
+            northicontranslatey.addEventListener("change", function(event){updateIconPosition(event, 1)})
 
             icontoolbox.classList.add("icontoolbox");
 
             icontoolbox.append( scalelabel, document.createElement("br"), iconscaleinput, document.createElement("br"),
             maincolorlabel, document.createElement("br"), iconmaincolorinput, document.createElement("br"),
-            accentcolorlabel, document.createElement("br"), iconaccentcolorinput );
+            accentcolorlabel, document.createElement("br"), iconaccentcolorinput, document.createElement("br"), northicontranslatexlabel,
+            document.createElement("br"), northicontranslatex, document.createElement("br"), northicontranslateylabel,
+            document.createElement("br"), northicontranslatey );
         
             toolbox.append(iconoptionbar,icontoolbox);
             break;
@@ -1287,6 +1307,38 @@ function drawToolbox(toolbox, icontype, iconId)
         default:
             console.log("UHHH OHH this is wrong");
             break;
+    }
+}
+
+function updateIconPosition(event, attrId)
+{
+    let object = document.getElementById(event.target.attributes.objectid.value);
+
+    console.log(object.style.transform)
+
+    if(attrId == 0 ) {
+        object.style.transform = updateTranslate(object.style.transform, "x", Number(event.target.value));
+    }
+    else if(attrId == 1 )
+    {
+        object.style.transform = updateTranslate(object.style.transform, "y", Number(event.target.value));
+    }
+}
+
+function updateTranslate ( translateString, attr, value )
+{
+    // quick fix for unknown javascript 0px error that changes the transform string
+    value = (value == 0) ? 1 : value;
+
+    if( attr == "x" )
+    {
+        let y = translateString.split(",")[1];
+        return String("translate("+String(value)+"px,"+y);
+    }
+    else if( attr == "y" )
+    {
+        let x = translateString.split(",")[0];
+        return String(x+", "+ String(value) + "px)");
     }
 }
 
