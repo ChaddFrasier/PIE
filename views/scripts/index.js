@@ -1204,6 +1204,10 @@ function drawToolbox(toolbox, icontype, iconId)
             let sunoptionbar = document.createElement("div");
             let sunoptionheader = document.createElement("h4");
             let deletebtn1 = document.createElement("button");
+            let sunicontranslatex = document.createElement("input");
+            let sunicontranslatexlabel = document.createElement("label");
+            let sunicontranslatey = document.createElement("input");
+            let sunicontranslateylabel = document.createElement("label");
 
             sunoptionbar.setAttribute("class", 'windowoptionsbar');
             sunoptionbar.style.display = "flex";
@@ -1216,6 +1220,17 @@ function drawToolbox(toolbox, icontype, iconId)
                 deletebtn1.addEventListener( "click", function(event) {
                 removeIconWindow(event);
             });
+
+            sunicontranslatex.setAttribute("type", "number");
+            sunicontranslatex.setAttribute( "objectid", iconId );
+            sunicontranslatex.setAttribute( "min", "0" );
+
+            sunicontranslatey.setAttribute("type", "number");
+            sunicontranslatey.setAttribute( "objectid", iconId );
+            sunicontranslatey.setAttribute( "min", "1" );
+
+            sunicontranslateylabel.innerHTML = "Translate Y Position";
+            sunicontranslatexlabel.innerHTML = "Translate X Position";
 
             sunoptionbar.append(sunoptionheader, document.createElement("br"), deletebtn1);
             sunoptionbar.setAttribute("objectid", iconId);
@@ -1231,7 +1246,6 @@ function drawToolbox(toolbox, icontype, iconId)
             suniconmaincolorinput.setAttribute( "objectid", iconId );
             suniconmaincolorinput.value = "#ffffff";
 
-
             suniconaccentcolorinput.setAttribute("type", "color");
             suniconaccentcolorinput.setAttribute( "objectid", iconId );
             suniconaccentcolorinput.value = "#000000";
@@ -1240,11 +1254,15 @@ function drawToolbox(toolbox, icontype, iconId)
             suniconmaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)})
             suniconaccentcolorinput.addEventListener("change", function(event){updateIconColor(event, 1)})
 
+            sunicontranslatex.addEventListener("change", function(event){updateIconPosition(event, 0)})
+            sunicontranslatey.addEventListener("change", function(event){updateIconPosition(event, 1)})
+
             sunicontoolbox.classList.add("icontoolbox");
 
             sunicontoolbox.append( sunscalelabel, document.createElement("br"), suniconscaleinput, document.createElement("br"),
             sunmaincolorlabel, document.createElement("br"), suniconmaincolorinput, document.createElement("br"),
-            sunaccentcolorlabel, document.createElement("br"), suniconaccentcolorinput );
+            sunaccentcolorlabel, document.createElement("br"), suniconaccentcolorinput, document.createElement("br"), sunicontranslatexlabel, document.createElement("br"),
+            sunicontranslatex, document.createElement("br"), sunicontranslateylabel, document.createElement("br"), sunicontranslatey );
         
             toolbox.append(sunoptionbar, sunicontoolbox);
             break;
@@ -1260,6 +1278,10 @@ function drawToolbox(toolbox, icontype, iconId)
             let obsoptionbar = document.createElement("div");
             let obsoptionheader = document.createElement("h4");
             let deletebtn2 = document.createElement("button");
+            let obsicontranslatex = document.createElement("input");
+            let obsicontranslatexlabel = document.createElement("label");
+            let obsicontranslatey = document.createElement("input");
+            let obsicontranslateylabel = document.createElement("label");
 
             obsoptionbar.setAttribute("class", 'windowoptionsbar');
             obsoptionbar.style.display = "flex";
@@ -1272,6 +1294,17 @@ function drawToolbox(toolbox, icontype, iconId)
             deletebtn2.addEventListener( "click", function(event) {
                 removeIconWindow(event);
             });
+
+            obsicontranslatex.setAttribute("type", "number");
+            obsicontranslatex.setAttribute( "objectid", iconId );
+            obsicontranslatex.setAttribute( "min", "0" );
+
+            obsicontranslatey.setAttribute("type", "number");
+            obsicontranslatey.setAttribute( "objectid", iconId );
+            obsicontranslatey.setAttribute( "min", "1" );
+
+            obsicontranslateylabel.innerHTML = "Translate Y Position";
+            obsicontranslatexlabel.innerHTML = "Translate X Position";
 
             obsoptionbar.append(obsoptionheader, document.createElement("br"), deletebtn2);
             obsoptionbar.setAttribute("objectid", iconId);
@@ -1295,11 +1328,16 @@ function drawToolbox(toolbox, icontype, iconId)
             obsiconmaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)})
             obsiconaccentcolorinput.addEventListener("change", function(event){updateIconColor(event, 1)})
 
+            obsicontranslatex.addEventListener("change", function(event){updateIconPosition(event, 0)})
+            obsicontranslatey.addEventListener("change", function(event){updateIconPosition(event, 1)})
+
             obsicontoolbox.classList.add("icontoolbox");
 
             obsicontoolbox.append( obsscalelabel, document.createElement("br"), obsiconscaleinput, document.createElement("br"),
             obsmaincolorlabel, document.createElement("br"), obsiconmaincolorinput, document.createElement("br"),
-            obsaccentcolorlabel, document.createElement("br"), obsiconaccentcolorinput );
+            obsaccentcolorlabel, document.createElement("br"), obsiconaccentcolorinput, document.createElement("br"), obsicontranslatexlabel, 
+            document.createElement("br"), obsicontranslatex, document.createElement("br"), obsicontranslateylabel, 
+            document.createElement("br"), obsicontranslatey );
         
             toolbox.append(obsoptionbar, obsicontoolbox);
             break;
@@ -1313,8 +1351,6 @@ function drawToolbox(toolbox, icontype, iconId)
 function updateIconPosition(event, attrId)
 {
     let object = document.getElementById(event.target.attributes.objectid.value);
-
-    console.log(object.style.transform)
 
     if(attrId == 0 ) {
         object.style.transform = updateTranslate(object.style.transform, "x", Number(event.target.value));
