@@ -16,7 +16,8 @@ var NS = {xhtml:"http://www.w3.org/1999/xhtml",
 $(document).ready(()=>{
     // local jquery variables
     var bgPicker = document.getElementById("backgroundcolor"),
-        dividerObject = document.getElementById("tooldivider");
+        dividerObject = document.getElementById("tooldivider"),
+        PencilFlag = false;
 
     // get the global figure element
     svgContainer = document.getElementById("figurecontainer");
@@ -30,6 +31,31 @@ $(document).ready(()=>{
      */
     $('button.windowminimizebtn').click(function(event) {
         minimizeToolsWindow(event);
+    });
+
+    $('#penciloptbtn').click( function( event ) {
+        if(PencilFlag)
+        {
+            // cancel the drawing functionality
+            console.log("TURN OFF DRAWING");
+            event.target.classList.remove("drawing");
+            document.getElementById("editbox").classList.remove("drawing");
+
+            changeButtonActivation("enable");
+
+        }
+        else
+        {
+            // start the draeing functionality
+            console.log("TURN ON DRAWING");
+            event.target.classList.add("drawing");
+            document.getElementById("editbox").classList.add("drawing");
+
+            changeButtonActivation("disable");
+            
+        }
+
+        PencilFlag = !(PencilFlag)
     });
     
     /** 
@@ -1068,13 +1094,13 @@ function drawSvgIcon( image, icontype, event )
             icongroup = document.getElementById("northgroup").cloneNode(true);
             icongroup.setAttribute("objectid", image.id);
             icongroup.setAttribute("id", "northIcon-" + image.id);
-            icongroup.style.scale = "10";
+            icongroup.style.scale = "1";
 
             console.log("Mouse was released at pixel: " + svgP.x + "," + svgP.y);
 
             // set the location of the icon to where the mouse was released
-            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 25 );
-            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 25 );
+            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 480 );
+            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 480 );
     
             icongroup.style.transform = translateString( newX, newY);
             svgContainer.appendChild(icongroup);
@@ -1112,10 +1138,10 @@ function drawSvgIcon( image, icontype, event )
             icongroup = document.getElementById("observergroup").cloneNode(true);
             icongroup.setAttribute("objectid", image.id);
             icongroup.setAttribute("id", "observerIcon-" + image.id);
-            icongroup.style.scale = "10";
+            icongroup.style.scale = "1";
 
-            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 25 );
-            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 25 );
+            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 480 );
+            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 480 );
     
             icongroup.style.transform = translateString( newX, newY);
             svgContainer.appendChild(icongroup);
@@ -1334,6 +1360,9 @@ function drawToolbox(toolbox, icontype, iconId)
 
             obsiconscaleinput.setAttribute("type", "number");
             obsiconscaleinput.setAttribute( "objectid", iconId );
+            obsiconscaleinput.setAttribute("step", "0.01");
+            obsiconscaleinput.setAttribute("value", "1.00");
+            obsiconscaleinput.setAttribute("min", "0.25");
 
             obsmaincolorlabel.innerHTML = "Observer Main Color";
             obsaccentcolorlabel.innerHTML = "Observer Secondary Color";
@@ -1497,7 +1526,7 @@ function changeIconColor( colorid, colorval, icon)
             if(icon.id.indexOf("north") > -1 )
             {
                 // change all three children of the north icon
-                changeColorsOfChildren(icon.childNodes, colorval, "fill stroke", "stroke", "fill");
+                changeColorsOfChildren(icon.childNodes, colorval, "fill", "fill");
             }
             else if(icon.id.indexOf("sun") > -1 )
             {
@@ -1508,8 +1537,7 @@ function changeIconColor( colorid, colorval, icon)
             else if(icon.id.indexOf("observer") > -1 )
             {
                 // change the primary of the observer icon
-                changeColorsOfChildren(icon.childNodes, colorval, "stroke", "stroke", "stroke", "stroke",
-                 "stroke", "stroke", "stroke", "fill");
+                changeColorsOfChildren(icon.childNodes, colorval, "fill", "fill");
             }
 
             break;
@@ -1519,7 +1547,7 @@ function changeIconColor( colorid, colorval, icon)
                 if(icon.id.indexOf("north") > -1 )
                 {
                     // change the secondary of the north icon
-                    changeColorsOfChildren(icon.childNodes, colorval, "", "fill", "stroke");
+                    changeColorsOfChildren(icon.childNodes, colorval, "stroke", "stroke");
                 }
                 else if(icon.id.indexOf("sun") > -1 )
                 {
@@ -1529,8 +1557,7 @@ function changeIconColor( colorid, colorval, icon)
                 else if(icon.id.indexOf("observer") > -1 )
                 {
                     // change the secondary of the observer icon
-                    changeColorsOfChildren(icon.childNodes, colorval, "fill", "fill", "fill", "fill",
-                        "fill", "fill", "fill", "stroke");
+                    changeColorsOfChildren(icon.childNodes, colorval, "stroke", "stroke");
                 }
             });
             break;    
@@ -1551,6 +1578,26 @@ function changeColorsOfChildren( children, color , ...order )
             }
         });
     }
+}
+
+
+function changeButtonActivation( code )
+{
+    if(code == "enable")
+    {
+        document.getElementById("northarrowopt").classList.remove("disabled");
+        document.getElementById("observerarrowopt").classList.remove("disabled");
+        document.getElementById("sunarrowopt").classList.remove("disabled");
+        document.getElementById("outlinebtnopt").classList.remove("disabled");
+    }
+    else if(code == "disable")
+    {
+        document.getElementById("northarrowopt").classList.add("disabled");
+        document.getElementById("observerarrowopt").classList.add("disabled");
+        document.getElementById("sunarrowopt").classList.add("disabled");
+        document.getElementById("outlinebtnopt").classList.add("disabled");
+    }
+    
 }
 
 /**
