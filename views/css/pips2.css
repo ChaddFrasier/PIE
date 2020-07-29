@@ -183,7 +183,7 @@ input, select {
 .svgimg {
     width: 25px;
     height: 100%;
-    margin: 0;
+    margin: 0 auto;
 }
 
 svg > rect {
