@@ -50,6 +50,19 @@ app.get('/', (req, res) => {
     // res.redirect('/login');
 });
 
+/**
+ * Used for taling about the project
+ */
+app.get('/about', (req, res) => {
+    console.log(req.url);
+    console.log(req.body);
+
+    res.render('about');
+
+    // render basic pug file
+    // res.redirect('/login');
+});
+
 // getting the basic login page
 app.get('/login', (req, res) => {
     console.log(req.url);
@@ -73,7 +86,7 @@ app.post('/', (req, res) => {
 
 // api post path for processing tifs and cubes
 app.post("/api/isis", upload.single('uploadfile'), function(req, res) {
-    
+
     console.log("file recieved")
     res.sendStatus(200)
 

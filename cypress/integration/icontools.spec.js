@@ -52,13 +52,13 @@ describe("Icon Tests > ", () => {
             .invoke("val", testcolor)
             .trigger("change")
 
-        cy.get('svg#figureContainer>g>text').should("have.attr", "fill", testcolor);
+        cy.get('svg#figureContainer>g>path').first().should("have.attr", "fill", testcolor);
 
         cy.get(".icontoolbox>input[type='color']").last()
             .invoke("val", testcolor)
             .trigger("change")
         
-        cy.get('svg#figureContainer>g>text').should("have.attr", "stroke", testcolor);
+        cy.get('svg#figureContainer>g>path').first().should("have.attr", "stroke", testcolor);
 
     });
 

@@ -17,6 +17,43 @@ html {
     margin:0;
 }
 
+.gdalimage {
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    max-height: 100px;
+    max-width: 100px;
+}
+
+.basicpageheader {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.map {
+    background: green;
+    width: 100%;
+}
+
+.basicpagecontent {
+    text-align: left;
+    padding: 10px;
+    background-color: rgba(0,0,0,.1);
+    max-width: 1000px;
+    margin: auto;
+}
+
+.mainaboutbox {
+    margin: 0 auto;
+    padding: 5px;
+    min-width: 45%;
+    height: auto;
+    width: auto;
+    text-align: center;
+    background: var(--accent-color);
+    color: var(--contrast-color);
+}
+
 .iconbtn {
     background: linear-gradient(bottom left to top right, rgb(190, 190, 190), rgb(119, 119, 119));
     padding: 4px 0;
