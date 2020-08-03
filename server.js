@@ -4,6 +4,8 @@ const path = require('path');
 const compression = require('compression');
 const bodyParser = require('body-parser');
 const multer = require('multer');
+const fs = require('fs');
+const { spawn } = require('child_process');
 
 /* init the application */
 const app = express();
@@ -19,6 +21,16 @@ var storage = multer.diskStorage({
         cb(null, new Date().getTime() +"_"+ path.basename(file.originalname))
     }
 })
+
+fs.readdir(path.join(__dirname, "public", "uploads"), function(err, files){
+    if(err){console.log(err); return;}
+    files.forEach(filename => {
+        fs.unlink(path.join(__dirname, "public", "uploads", filename), function() {
+            console.log("Removed " + filename)
+
+        });
+    });
+});
 
 // set the upload object for multer
 var upload = multer({ storage: storage });
@@ -40,24 +52,58 @@ app.use(bodyParser.urlencoded({extended: true}));
 /**
  * Used for users login page
  */
-app.get('/', (req, res) => {
+app.get(['/', '/index.html'], (req, res) => {
     console.log(req.url);
-    console.log(req.body);
 
-    res.render('index', {usgsEmail:"test@usgs.gov", usgsPassword:"password"});
+    // get the pow job id
+    let jobid = req.query.pow;
+
+    if( jobid )
+    {
+        console.log("pow connection")
+
+        res.render('index', {pow: req.query.pow});
+    }
+    else
+    {
+        res.render('index');
+    }
 
     // render basic pug file
     // res.redirect('/login');
 });
 
 /**
+ * Used for talking about the project
+ */
+app.get(['/about', '/about.html'], (req, res) => {
+    console.log(req.url);
+
+    res.render('about');
+});
+
+/**
  * Used for taling about the project
  */
-app.get('/about', (req, res) => {
+app.get('/contact', (req, res) => {
     console.log(req.url);
     console.log(req.body);
 
-    res.render('about');
+    res.render('contact');
+
+    // render basic pug file
+    // res.redirect('/login');
+});
+
+
+/**
+ * Used for taling about the project
+ */
+app.get('/faq', (req, res) => {
+    console.log(req.url);
+    console.log(req.body);
+
+    res.render('faq');
 
     // render basic pug file
     // res.redirect('/login');
@@ -87,11 +133,46 @@ app.post('/', (req, res) => {
 // api post path for processing tifs and cubes
 app.post("/api/isis", upload.single('uploadfile'), function(req, res) {
 
-    console.log("file recieved")
-    res.sendStatus(200)
+    console.log("file recieved: " + req.file.filename)
+    var child = spawn("gdal_translate", ["-of", "JPEG", "-scale", "-outsize", "20%",  "20%", path.join(__dirname, "public", "uploads", req.file.filename), path.join(__dirname, "public", "uploads", getNewImageName(req.file.filename, "jpg"))])
+    
+    child.stdout.on("data", data => {
+        console.log(`stdout: ${data}`);
+    });
+    
+    child.stderr.on("data", data => {
+        console.log(`stderr: ${data}`);
+    });
+    
+    child.on('error', (error) => {
+        console.log(`error: ${error.message}`);
+        res.sendStatus("500");
+    });
+    
+    child.on("close", code => {
+        console.log(`child process exited with code ${code}`);
+        if( code == 0)
+        {
+            var file = fs.createReadStream(path.join(__dirname, "public","uploads", getNewImageName(req.file.filename, "jpg")))
 
+            file.pipe(res);
+
+            file.on("data", (chunk) => {
+                
+            });
+
+            res.sendStatus(200)
+        }
+    });
 });
 
 // run the server on port
 const port = 8080;
 app.listen(port, () => console.log(`Listening for connection at http://localhost:${port}`));
+
+function getNewImageName( filename, ext )
+{
+    let tmp = filename.split(".")
+    tmp[tmp.length-1] = ext;
+    return tmp.join(".");
+}
