@@ -14,7 +14,9 @@ function writeContent(){
     providng a much simplier user interface given by ArcGIS and similar applications. PIE specifically focuses on \
     GeoTIFF and ISIS Cube products because it it intentded for use by planetary scientists."),
         String("Use the Image Button to add ISIS cubes, GeoTIFFs, or still images to the figure <br/> \
-        <pre>THIS IS A SPECIAL INSTRUCTION BOX</pre>")];
+        <pre>1. Find a planetary product with <a class='descanchor', href='https://pilot.wr.usgs.gov/'>PILOT</a>.\
+        </pre>-<pre>2. Select the POW export function in PILOT.</pre>-<pre>3. Select the proper POW configuration.\
+        </pre>-<pre>4. Navigate to the link that is given to you when POW finished processing your files.</pre><br/>")];
 
     let contentPrefix = "aboutcontent";
     contentArr.forEach(string => {
