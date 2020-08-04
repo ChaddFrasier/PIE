@@ -9,13 +9,13 @@ html
 
     body
         header.pips2header 
-            .leftcontainer
+            a.leftcontainer(href="https://www.usgs.gov/centers/astrogeology-science-center", target='_blank')
                 img(src="/images/usgsLogo.png", alt="HeaderLogo", class="usgsLogo")
             .centercontainer(style="text-align:center")
-                img(src="/images/piedark.png", alt="PIElogo", class="pieLogo")
+                img(src="/images/pieFuture.png", alt="PIElogo", class="titleLogo")
             .rightcontainer(style="text-align:right")
                 img.headerimage(src="/images/LRO_0.png", alt="lroLogo")
-                img.headerimage(src="/images/nasa-logo.png", alt="NasaLogo")
+                img.headerimage(src="/images/pdslogo.png", alt="PSDLogo")
         span.maincontent
             //- Tool Box Section 
             #toolbox.toolboxcontainer
@@ -134,7 +134,7 @@ html
         footer.mainfooter
             .leftfooter
                 .footerbuttongroup
-                    a(href="/about")='About PIE'
+                    a(href="/about")='How To'
                     a(href="/contact")='Contact Us'
                     a(href="/faq")='FAQ'
 

@@ -9,26 +9,26 @@ html
 
     body
         header.pips2header 
-            .leftcontainer
+            a.leftcontainer(href="https://www.usgs.gov/centers/astrogeology-science-center", target='_blank')
                 img(src="/images/usgsLogo.png", alt="HeaderLogo", class="usgsLogo")
             a.centercontainer(style="text-align:center; text-decoration: none;", href="/")
-                img(src="/images/piedark.png", alt="PIElogo", class="pieLogo")
+                img(src="/images/pieFuture.png", alt="PIElogo", class="titleLogo")
             .rightcontainer(style="text-align:right")
                 img.pilotimage(src="/images/pilot-logo.png", alt="pilotlogo")
                 img.gdalimage(src="/images/GDALLogo.svg", alt="GdalLogo")
         span.maincontent
-            .mainaboutbox
+            .mainaboutbox(style="overflow-y:auto;width:90%")
                 h2.basicpageheader="Planetary Image Editor"
                 #aboutcontent1.basicpagecontent
-                h2.basicpageHeadert="Purpose"
+                h2.basicpageheader="Purpose"
                 #aboutcontent2.basicpagecontent
-                h2.basicpageHeadert="How to Use"
+                h2.basicpageheader="How to Use"
                 #aboutcontent3.basicpagecontent
             
         footer.mainfooter
             .leftfooter
                 .footerbuttongroup
-                    a(href="")='About PIE'
+                    a(href="")='How To'
                     a(href="/contact")='Contact Us'
                     a(href="/faq")='FAQ'
 

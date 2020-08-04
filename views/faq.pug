@@ -5,29 +5,23 @@ html
             include css/pips2.css
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js", type="text/javascript")
         
-
     body
         header.pips2header 
-            .leftcontainer
+            a.leftcontainer(href="https://www.usgs.gov/centers/astrogeology-science-center", target='_blank')
                 img(src="/images/usgsLogo.png", alt="HeaderLogo", class="usgsLogo")
             a.centercontainer(style="text-align:center; text-decoration: none;", href="/")
-                img(src="/images/piedark.png", alt="PIElogo", class="pieLogo")
+                img(src="/images/pieFuture.png", alt="FAQTitle", class="titleLogo")
             .rightcontainer(style="text-align:right")
-                img.gdalimage(src="/images/gitlogo.png", alt="gitLogo")
+                img.gdalimage(src="/images/question.png", alt="question")
         span.maincontent
             .mainaboutbox
-                h2.basicpageheader="Planetary Image Editor"
+                h2.basicpageheader="Frequently Ask Questions"
                 #aboutcontent1.basicpagecontent
-                h2.basicpageHeadert="Purpose"
-                #aboutcontent2.basicpagecontent
-                h2.basicpageHeadert="How to Use"
-                #aboutcontent3.basicpagecontent
-
-            
+        br
         footer.mainfooter
             .leftfooter
                 .footerbuttongroup
-                    a(href="/about")='About PIE'
+                    a(href="/about")='How To'
                     a(href="/contact")='Contact Us'
                     a(href="")='FAQ'
 
