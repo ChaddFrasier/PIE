@@ -71,15 +71,6 @@ $(document).ready(()=>{
     });
 
     /** 
-     * @function .rightfooter.click()
-     * @description Show and hide contents of the tool windows works generically so we can add more later
-     */
-    $('.rightfooter').click(() => {
-        window.open("https://www.usgs.gov/centers/astrogeology-science-center", '_blank');
-    });
-
-
-    /** 
      * @function .toolboxminimizebtn.click() 
      * @description handler for the whole tool window mini button
      */
