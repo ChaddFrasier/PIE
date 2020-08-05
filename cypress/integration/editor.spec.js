@@ -89,4 +89,33 @@ describe('Editor Page Tests > ', () => {
         // check that it is closed
         cy.get("#edittoolsbox").should("have.class", "closed")
     });
+
+    it("Navigate to 'Getting Started'", () => {
+        // should be closed when the mini button is clicked
+        cy.get(".footerbuttongroup>a").first().click();
+
+        cy.get("title").should("have.html", "Get Started");
+    });
+
+    it("Navigate to 'FAQ'", () => {
+        // should be closed when the mini button is clicked
+        cy.get(".footerbuttongroup>a").last().click();
+
+        cy.get("title").should("have.html", "FAQ");
+    });
+
+    it("Navigate to 'Contact Us'", () => {
+        // should be closed when the mini button is clicked
+        cy.get(".footerbuttongroup>a").first().next().click();
+
+        cy.get("title").should("have.html", "Contact Us");
+
+        cy.get(".pips2Header > a.centercontainer").click();
+    });
+
+    it("Navigate to 'USGS Astro Home'", () => {
+        
+        cy.get(".pips2Header > a.leftcontainer").click();
+    });
+
 });
