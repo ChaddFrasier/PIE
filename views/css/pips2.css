@@ -32,6 +32,22 @@ html {
     color: var(--secondary-color);
 }
 
+i>b {
+    font-size: 1.25em;
+}
+
+.pilotstepsimage {
+    width: 80%;
+    height: auto;
+    min-width: 750px;
+    max-width: 1500px;
+    margin: .5em auto;
+}
+
+.pilotstepsimage-sm {
+ width: 40% !important;
+}
+
 .gdalimage {
     margin: 0 auto;
     width: 100%;
@@ -59,11 +75,21 @@ html {
 }
 
 .basicpagecontent {
-    text-align: left;
-    padding: 10px;
     background-color: rgba(0,0,0,.1);
+    padding: 1em;
+
+}
+
+.basicpagecontent > pre {
+    padding: 10px;
     max-width: none;
+    background-color: rgba(255, 255, 255, 0.1);
     margin: auto;
+    text-align: left;
+}
+
+.basicpagecontent > img {
+    text-align: center !important;
 }
 
 .mainaboutbox {
@@ -72,10 +98,11 @@ html {
     padding: 1em;
     min-width: 45em;
     height: auto;
-    width: auto;
     text-align: center;
     background: var(--accent-color);
     color: var(--contrast-color);
+    width:100%;
+    overflow-y: auto;
 }
 
 .iconbtn {
@@ -131,6 +158,8 @@ div {
 button.disabled {
     background: transparent !important;
     pointer-events: none;
+    box-shadow: none !important;
+    border: none;
     cursor: auto;
 }
 
@@ -150,8 +179,8 @@ button.disabled {
 .pips2header {
     width: 100%;
     height: auto;
-    min-height: 15%;
-    max-height: 20%;
+    min-height: 6em;
+    max-height: 6em;
     display: flex;
 }
 
@@ -161,8 +190,9 @@ button.disabled {
 }
 
 .centercontainer {
-    margin: auto auto 0;
+    margin: auto auto;
     width: auto;
+    height:auto;
 }
 
 .rightcontainer {
@@ -196,11 +226,11 @@ button.disabled {
 
 .maincontent {
     display: flex; 
-    height: auto;
-    min-height: 76vh;
-    max-height: 76vh;
+    height: 38em;
+    min-height: none;
+    max-height: none;
     width: auto; 
-    margin: 0 0 auto 0;
+    margin: 1em 0 auto 0;
     text-align: left;
     overflow: hidden;
 }
@@ -256,6 +286,7 @@ button.disabled {
     max-height: 35px;
     background: var(--secondary-color);
     border-radius: 2px 2px;
+    box-shadow: 0px -5px var(--contrast-color);
     margin: 4px 0 auto 0;
     text-align: center;
     cursor: default;
@@ -363,14 +394,13 @@ button.selected {
 }
 
 .toolboxminimizebtn {
-    background: transparent;
+    background: var(--bar-gradient);
     border-radius: 2px 2px;
     font-size: 10px;
     vertical-align: top;
     width: 100%;
     height: auto;
-    border: 1px solid transparent;
-    box-shadow: 0 2px #999;
+    box-shadow: 2px 2px rgb(177, 177, 177);
     min-width: 25px;
     max-width: 35px;
     min-height: 25px;
@@ -393,15 +423,14 @@ button#northarrowopt, button#sunarrowopt, button#observerarrowopt  {
 }
 
 .toolboxaddimagebtn {
-    background: transparent;
+    background: var(--bar-gradient);
     border-radius: 2px 2px;
     font-size: 10px;
     vertical-align: top;
     width: 100%;
     height: auto;
-    border: 1px solid transparent;
     padding: 0;
-    box-shadow: 0 2px #999;
+    box-shadow: 2px 2px rgb(177, 177, 177);
     min-width: 25px;
     max-width: 35px;
     min-height: 25px;
@@ -409,14 +438,13 @@ button#northarrowopt, button#sunarrowopt, button#observerarrowopt  {
 }
 
 .toolboxaddcaptionbtn {
-    background: transparent;
+    background: var(--bar-gradient);
     border-radius: 2px 2px;
     font-size: 10px;
-    vertical-align: center;
+    vertical-align: top;
     width: 100%;
     height: auto;
-    border: 1px solid transparent;
-    box-shadow: 0 2px #999;
+    box-shadow: 2px 2px rgb(177, 177, 177);
     padding: 0;
     min-width: 25px;
     max-width: 35px;
@@ -531,6 +559,8 @@ svg.imagecontainer {
 .toolscontainer{
     width: 95%;
     height: auto;
+    border: 2px solid var(--contrast-color);
+    border-top: 0px solid var(--contrast-color);
     overflow-y: hidden;
     overflow-x: hidden;
     transition: all ease-in-out var(--transition-time);
@@ -541,15 +571,20 @@ svg.imagecontainer {
 }
 
 .windowsidebar {
-    background: var(--bar-gradient);
-    border: 2px solid black;
+    background: transparent;
+    border: none;
     width: auto;
     height: 100%;
     max-width: 25px;
     margin: 0 auto 0 0;
-    padding: .25px;
-    min-width: 25px;
+    padding: .5px;
+    min-width: 2em;
     text-align: center;
+}
+
+.windowsidebar > button:hover {
+    border: none;
+    box-shadow: 1px 1px rgb(170, 167, 167);
 }
 
 .leftfooter {
@@ -579,7 +614,7 @@ svg.imagecontainer {
 }
 
 .toolboxcontainer.closed {
-    width: 25px !important;
+    width: 1em !important;
     min-width: 0% !important;
 }
 
@@ -641,11 +676,6 @@ svg.imagecontainer {
 
 /* Small screens */
 @media only screen and (max-width:900px) {
-    
-    .rocker-small {
-        font-size: 0.5em; /* Sizes the switch */
-        margin: 1em;
-    }
 
     html {
         max-height: none;
@@ -654,9 +684,9 @@ svg.imagecontainer {
 
     .maincontent {
         display: block;
-        height: 83%;
         overflow-y: scroll;
     }
+
 
     .windowoptionsbar>h4{
         font-size: 11px;
@@ -696,7 +726,8 @@ svg.imagecontainer {
     }
 
     .mainfooter {
-        height: 7%;
+        height: 6em;
+        position: relative;;
         margin: auto 0 0 0;
     }
 
@@ -713,10 +744,6 @@ svg.imagecontainer {
 @media only screen and (min-width: 900px)
 {
     
-    .rocker-small {
-        font-size: 0.75em; /* Sizes the switch */
-        margin: 1em;
-    }
     .maincontent {
         display: flex;
     }
@@ -746,10 +773,6 @@ svg.imagecontainer {
 @media only screen and (min-width:1900px) {
 
     
-    .rocker-small {
-        font-size: 0.50em; /* Sizes the switch */
-        margin: 1em;
-    }
     .windowoptionsbar>h4{
         font-size: 18px;
     }
@@ -803,11 +826,6 @@ svg.imagecontainer {
         margin: auto 0 0 0;
         padding: 0;
         height: 5%;
-    }
-
-    .maincontent {
-        min-height: 86vh;
-        max-height: 86vh;
     }
 
     .windowsidebar {
