@@ -59,7 +59,7 @@ i>b {
 .basicfaqcontent {
     display: flex;
     background-color: rgba(0,0,0,.1);
-    padding: .5em;
+    padding: 0;
 }
 
 .answerBox {
@@ -72,7 +72,7 @@ i>b {
 
 .descBox {
     width: 75%;
-    margin: 0 auto;
+    margin: 0 0 0 auto;
     background: rgba(0, 0, 0, 0.1);
     text-align: left;
     padding: 10px 5px;

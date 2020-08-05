@@ -1086,7 +1086,7 @@ function drawSvgIcon( image, icontype, event )
             icongroup = document.getElementById("northgroup").cloneNode(true);
             icongroup.setAttribute("objectid", image.id);
             icongroup.setAttribute("id", "northIcon-" + image.id);
-            icongroup.style.scale = "1";
+            icongroup.style.scale = "0.5";
 
             console.log("Mouse was released at pixel: " + svgP.x + "," + svgP.y);
 
@@ -1110,10 +1110,10 @@ function drawSvgIcon( image, icontype, event )
             icongroup = document.getElementById("sungroup").cloneNode(true);
             icongroup.setAttribute("objectid", image.id);
             icongroup.setAttribute("id", "sunIcon-" + image.id);
-            icongroup.style.scale = "10";
+            icongroup.style.scale = "0.5";
 
-            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 25 );
-            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 25 );
+            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 512 );
+            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 512 );
     
             icongroup.style.transform = translateString( newX, newY);
             svgContainer.appendChild(icongroup);
@@ -1130,7 +1130,7 @@ function drawSvgIcon( image, icontype, event )
             icongroup = document.getElementById("observergroup").cloneNode(true);
             icongroup.setAttribute("objectid", image.id);
             icongroup.setAttribute("id", "observerIcon-" + image.id);
-            icongroup.style.scale = "1";
+            icongroup.style.scale = "0.5";
 
             newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 480 );
             newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 480 );
@@ -1146,7 +1146,7 @@ function drawSvgIcon( image, icontype, event )
 
     let imagetoolbox = findImageToolbox(selectedObject.id, document.getElementsByClassName("imagetoolsbox"));
     // draw the tool box based on the icon type
-    drawToolbox(imagetoolbox, icontype, icongroup.id);
+    drawToolbox(imagetoolbox, icontype, icongroup.id, newX.toFixed(0), newY.toFixed(0));
 }
 
 /**
@@ -1154,9 +1154,11 @@ function drawSvgIcon( image, icontype, event )
  * @param {Node} toolbox 
  * @param {string} icontype 
  * @param {string} iconId
+ * @param {string} transX 
+ * @param {string} transY
  * @description draws tool boxes for each icon, this method allows for more than 1 of each icon
  */
-function drawToolbox(toolbox, icontype, iconId)
+function drawToolbox(toolbox, icontype, iconId, transX, transY)
 {
     switch (icontype) {
         case "north":
@@ -1193,6 +1195,8 @@ function drawToolbox(toolbox, icontype, iconId)
             iconscaleinput.setAttribute("type", "number");
             iconscaleinput.setAttribute( "objectid", iconId );
             icontoolbox.setAttribute( "objectid", iconId );
+            iconscaleinput.setAttribute("step", "0.01");
+            iconscaleinput.value = 0.5
 
             maincolorlabel.innerHTML = "Main Color";
             accentcolorlabel.innerHTML = "Secondary Color";
@@ -1200,10 +1204,11 @@ function drawToolbox(toolbox, icontype, iconId)
 
             iconmaincolorinput.setAttribute("type", "color");
             iconmaincolorinput.setAttribute( "objectid", iconId );
+            iconmaincolorinput.value = "#ffffff";
 
             iconaccentcolorinput.setAttribute("type", "color");
             iconaccentcolorinput.setAttribute( "objectid", iconId );
-            iconaccentcolorinput.value = "#ffffff"
+            iconaccentcolorinput.value = "#000000"
 
             northicontranslatex.setAttribute("type", "number");
             northicontranslatex.setAttribute( "objectid", iconId );
@@ -1212,6 +1217,8 @@ function drawToolbox(toolbox, icontype, iconId)
             northicontranslatey.setAttribute("type", "number");
             northicontranslatey.setAttribute( "objectid", iconId );
             northicontranslatey.setAttribute( "min", "1" );
+            northicontranslatex.value = transX;
+            northicontranslatey.value = transY;
 
             northicontranslateylabel.innerHTML = "Translate Y Position";
             northicontranslatexlabel.innerHTML = "Translate X Position";
@@ -1270,6 +1277,9 @@ function drawToolbox(toolbox, icontype, iconId)
             sunicontranslatey.setAttribute( "objectid", iconId );
             sunicontranslatey.setAttribute( "min", "1" );
 
+            sunicontranslatex.value = transX;
+            sunicontranslatey.value = transY;
+
             sunicontranslateylabel.innerHTML = "Translate Y Position";
             sunicontranslatexlabel.innerHTML = "Translate X Position";
 
@@ -1278,6 +1288,8 @@ function drawToolbox(toolbox, icontype, iconId)
 
             suniconscaleinput.setAttribute("type", "number");
             suniconscaleinput.setAttribute( "objectid", iconId );
+            suniconscaleinput.value = "1";
+            suniconscaleinput.setAttribute("step", "0.01")
 
             sunmaincolorlabel.innerHTML = "Sun Main Color";
             sunaccentcolorlabel.innerHTML = "Sun Secondary Color";
@@ -1356,17 +1368,20 @@ function drawToolbox(toolbox, icontype, iconId)
             obsiconscaleinput.setAttribute("value", "1.00");
             obsiconscaleinput.setAttribute("min", "0.25");
 
+            obsicontranslatex.value = transX;
+            obsicontranslatey.value = transY;
+
             obsmaincolorlabel.innerHTML = "Observer Main Color";
             obsaccentcolorlabel.innerHTML = "Observer Secondary Color";
             obsscalelabel.innerHTML = "Observer Scale";
 
             obsiconmaincolorinput.setAttribute("type", "color");
             obsiconmaincolorinput.setAttribute( "objectid", iconId );
-            obsiconmaincolorinput.value = "#ffffff"
+            obsiconmaincolorinput.value = "#000000"
 
             obsiconaccentcolorinput.setAttribute("type", "color");
             obsiconaccentcolorinput.setAttribute( "objectid", iconId );
-            obsiconaccentcolorinput.value = "#000000"
+            obsiconaccentcolorinput.value = "#ffffff"
 
             obsiconscaleinput.addEventListener("change", updateIconScale)
             obsiconmaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)})
@@ -1523,13 +1538,13 @@ function changeIconColor( colorid, colorval, icon)
             else if(icon.id.indexOf("sun") > -1 )
             {
                 // change the primary of the sun icon
-                changeColorsOfChildren(icon.childNodes, colorval, "stroke", "fill stroke");
+                changeColorsOfChildren(icon.childNodes, colorval, "stroke", "fill");
 
             }
             else if(icon.id.indexOf("observer") > -1 )
             {
                 // change the primary of the observer icon
-                changeColorsOfChildren(icon.childNodes, colorval, "fill", "fill");
+                changeColorsOfChildren(icon.childNodes, colorval, "fill", "fill", "fill", "fill", "fill", "fill");
             }
 
             break;
@@ -1544,12 +1559,12 @@ function changeIconColor( colorid, colorval, icon)
                 else if(icon.id.indexOf("sun") > -1 )
                 {
                     // change the secondary of the sun icon
-                    changeColorsOfChildren(icon.childNodes, colorval, "fill", "");
+                    changeColorsOfChildren(icon.childNodes, colorval, "fill", "stroke");
                 }
                 else if(icon.id.indexOf("observer") > -1 )
                 {
                     // change the secondary of the observer icon
-                    changeColorsOfChildren(icon.childNodes, colorval, "stroke", "stroke");
+                    changeColorsOfChildren(icon.childNodes, colorval, "stroke", "stroke", "stroke", "stroke", "stroke", "stroke");
                 }
             });
             break;    
