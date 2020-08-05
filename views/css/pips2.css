@@ -56,6 +56,22 @@ i>b {
     max-width: 100px;
 }
 
+.basicfaqcontent {
+    display: flex;
+    background-color: rgba(0,0,0,.1);
+    padding: 1em;
+}
+
+.answerBox {
+    width: auto;
+    min-width: 10em;
+}
+
+.descBox {
+    width: 75%;
+    margin: 0 auto;
+}
+
 .pilotimage {
     margin: 0 auto;
     width: 100%;
@@ -100,7 +116,7 @@ i>b {
     height: auto;
     text-align: center;
     background: var(--accent-color);
-    color: var(--contrast-color);
+    color: var(--primary-color);
     width:100%;
     overflow-y: auto;
 }
