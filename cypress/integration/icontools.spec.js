@@ -41,7 +41,7 @@ describe("Icon Tests > ", () => {
         cy.get('svg#figureContainer>g').should("have.length", 3);
     });
 
-    it("Test if icon color changes when change color runs in the tool box of each icon", ()=>{
+    it("Test if north icon color changes when change color runs in the tool box", ()=>{
         
         let testcolor = "#1d84b5";
         cy.get("#northarrowopt").trigger("mousedown");
@@ -61,5 +61,74 @@ describe("Icon Tests > ", () => {
         cy.get('svg#figureContainer>g>path').first().should("have.attr", "stroke", testcolor);
 
     });
+
+    it("Test that the sun icon colors change accordingly", ()=>{
+        let testcolor = "#1d84b5";
+        cy.get("#sunarrowopt").trigger("mousedown");
+        cy.get("svg>image").last().trigger("mouseup");
+        cy.get('svg#figureContainer>g').should("have.length", 1);
+
+        cy.get(".icontoolbox>input[type='color']").first()
+            .invoke("val", testcolor)
+            .trigger("change")
+
+        cy.get('svg#figureContainer>g>circle').first().should("have.attr", "stroke", testcolor);
+
+        cy.get(".icontoolbox>input[type='color']").last()
+            .invoke("val", testcolor)
+            .trigger("change")
+        
+        cy.get('svg#figureContainer>g>circle').first().should("have.attr", "fill", testcolor);
+    });
+
+    
+    it("Test that the observer icon colors change accordingly", ()=>{
+        
+        let testcolor = "#1d84b5";
+        cy.get("#observerarrowopt").trigger("mousedown");
+        cy.get("svg>image").last().trigger("mouseup");
+        cy.get('svg#figureContainer>g').should("have.length", 1);
+
+        cy.get(".icontoolbox>input[type='color']").first()
+            .invoke("val", testcolor)
+            .trigger("change")
+
+        cy.get('svg#figureContainer>g>circle').first().should("have.attr", "fill", testcolor);
+
+        cy.get(".icontoolbox>input[type='color']").last()
+            .invoke("val", testcolor)
+            .trigger("change")
+        
+        cy.get('svg#figureContainer>g>circle').first().should("have.attr", "stroke", testcolor);
+     });
+
+     it("Test that the observer icon translates when changes occur", ()=>{
+        
+        cy.get("#observerarrowopt").trigger("mousedown");
+        cy.get("svg>image").last().trigger("mouseup");
+        cy.get('svg#figureContainer>g').should("have.length", 1);
+
+        cy.get(".icontoolbox>input[type='number']")
+            .eq(1).clear()
+            .type('1100{enter}')
+
+        cy.get('svg#figureContainer>g').then( icongroup => {
+            if( icongroup.attr("style").indexOf("translate(2200") <= -1 )
+            {
+                throw new Error("Should contain a translate of x/scale")
+            }
+        });
+
+        cy.get(".icontoolbox>input[type='number']")
+            .eq(2).clear()
+            .type('1100{enter}')
+
+        cy.get('svg#figureContainer>g').then( icongroup => {
+            if( icongroup.attr("style").indexOf("translate(2200px, 2200") <= -1 )
+            {
+                throw new Error("Should contain a translate of y/scale")
+            }
+        });
+     });
 
 });

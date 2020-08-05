@@ -117,5 +117,23 @@ describe('Editor Page Tests > ', () => {
         
         cy.get(".pips2Header > a.leftcontainer").click();
     });
+    
+    it("Test that the pencil button disables other buttons", () => {
+        
+        cy.get("#editminibtn").click();
+        cy.get("#penciloptbtn").click();
+
+        cy.get("#northarrowopt").should("have.attr", "class", 'disabled');
+        cy.get("#sunarrowopt").should("have.attr", "class", 'disabled');
+        cy.get("#observerarrowopt").should("have.attr", "class", 'disabled');
+        cy.get("#outlinebtnopt").should("have.attr", "class", 'disabled');
+
+        cy.get("#penciloptbtn").click();
+
+        cy.get("#northarrowopt").should("have.attr", "class", '');
+        cy.get("#sunarrowopt").should("have.attr", "class", '');
+        cy.get("#observerarrowopt").should("have.attr", "class", '');
+        cy.get("#outlinebtnopt").should("have.attr", "class", '');
+    });
 
 });
