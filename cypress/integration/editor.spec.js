@@ -89,4 +89,51 @@ describe('Editor Page Tests > ', () => {
         // check that it is closed
         cy.get("#edittoolsbox").should("have.class", "closed")
     });
+
+    it("Navigate to 'Getting Started'", () => {
+        // should be closed when the mini button is clicked
+        cy.get(".footerbuttongroup>a").first().click();
+
+        cy.get("title").should("have.html", "Get Started");
+    });
+
+    it("Navigate to 'FAQ'", () => {
+        // should be closed when the mini button is clicked
+        cy.get(".footerbuttongroup>a").last().click();
+
+        cy.get("title").should("have.html", "FAQ");
+    });
+
+    it("Navigate to 'Contact Us'", () => {
+        // should be closed when the mini button is clicked
+        cy.get(".footerbuttongroup>a").first().next().click();
+
+        cy.get("title").should("have.html", "Contact Us");
+
+        cy.get(".pips2Header > a.centercontainer").click();
+    });
+
+    it("Navigate to 'USGS Astro Home'", () => {
+        
+        cy.get(".pips2Header > a.leftcontainer").click();
+    });
+    
+    it("Test that the pencil button disables other buttons", () => {
+        
+        cy.get("#editminibtn").click();
+        cy.get("#penciloptbtn").click();
+
+        cy.get("#northarrowopt").should("have.attr", "class", 'disabled');
+        cy.get("#sunarrowopt").should("have.attr", "class", 'disabled');
+        cy.get("#observerarrowopt").should("have.attr", "class", 'disabled');
+        cy.get("#outlinebtnopt").should("have.attr", "class", 'disabled');
+
+        cy.get("#penciloptbtn").click();
+
+        cy.get("#northarrowopt").should("have.attr", "class", '');
+        cy.get("#sunarrowopt").should("have.attr", "class", '');
+        cy.get("#observerarrowopt").should("have.attr", "class", '');
+        cy.get("#outlinebtnopt").should("have.attr", "class", '');
+    });
+
 });

@@ -17,6 +17,161 @@ html {
     margin:0;
 }
 
+.linklist > a {
+    color: var(--contrast-color);
+    margin: auto auto;
+    font-size: large;
+}
+
+.linklist {
+    display: block;
+    text-align: center;
+}
+
+.desclist {
+    display: block;
+    text-align: left;
+    height: 100%;
+}
+
+.linklist > a:visited {
+    color: var(--secondary-color);
+}
+
+i>b {
+    font-size: 1.25em;
+}
+
+.pilotstepsimage {
+    width: 80%;
+    height: auto;
+    min-width: 750px;
+    max-width: 1500px;
+    margin: .5em auto;
+}
+
+.pilotstepsimage-sm {
+ width: 40% !important;
+}
+
+.gdalimage {
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    max-height: 100px;
+    max-width: 100px;
+}
+
+.basicfaqcontent {
+    display: flex;
+    background-color: rgba(0,0,0,.1);
+    padding: 0;
+}
+
+.answerBox {
+    width: auto;
+    min-width: 10em;
+    margin: auto;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.descBox {
+    width: 75%;
+    margin: 0 0 0 auto;
+    background: rgba(0, 0, 0, 0.1);
+    text-align: left;
+    padding: 10px 5px;
+}
+
+.pilotimage {
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    max-height: 100px;
+    max-width: 100px;
+}
+
+.basicpageheader {
+    margin: 0 auto;
+    text-align: left;
+}
+
+.map {
+    background: green;
+    width: 100%;
+}
+
+.basicpagecontent {
+    background-color: rgba(0,0,0,.1);
+    padding: 1em;
+
+}
+
+.basicpagecontent > pre {
+    padding: 10px;
+    max-width: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin: auto;
+    text-align: left;
+}
+
+.basicpagecontent > pre > pre {
+    padding: 10px;
+    max-width: none;
+    background-color: rgba(0, 0, 0, 0.1);
+    margin: auto;
+    text-align: left;
+}
+
+.basicpagecontent > pre >img {
+    text-align: center;
+}
+
+.basicpagecontent > img {
+    text-align: center !important;
+}
+
+.mainaboutbox {
+    margin: 0 auto;
+    text-align: left;
+    padding: 1em;
+    min-width: 45em;
+    height: auto;
+    text-align: center;
+    background: var(--accent-color);
+    color: var(--primary-color);
+    width:100%;
+    overflow-y: auto;
+}
+
+.iconbtn {
+    background: linear-gradient(bottom left to top right, rgb(190, 190, 190), rgb(119, 119, 119));
+    padding: 4px 0;
+}
+
+.headerimage {
+    max-width: 100px;
+    max-height: 100px;
+}
+
+a.descanchor, a.descanchor:visited, a.descanchor:active   {
+    color: var(--primary-color);
+}
+
+.selecting {
+    cursor: grab;
+}
+
+.drawing:hover {
+    cursor: url("images/pencil.png"), auto !important;
+}
+
+
+button.drawing {
+    background: transparent;
+}
+
 body {
     margin: 0;
     height: 100%;
@@ -24,13 +179,12 @@ body {
 
 input, select {
     cursor: auto;
-    margin: 3px auto;
 }
 
 .svgimg {
     width: 25px;
     height: 100%;
-    margin: 0;
+    margin: 0 auto;
 }
 
 svg > rect {
@@ -42,16 +196,18 @@ div {
 }
 
 button.disabled {
-    background: rgba(33, 80, 88, 0.258);
+    background: transparent !important;
     pointer-events: none;
+    box-shadow: none !important;
+    border: none;
     cursor: auto;
 }
 
-.pieLogo {
-    width: 20%;
+.titleLogo {
+    width: 100%;
     height: auto;
-    min-width: 200px;
-    max-width: 350px;
+    max-height: 110px;
+    min-height: 100px;
 }
 
 .usgsLogo {
@@ -63,8 +219,8 @@ button.disabled {
 .pips2header {
     width: 100%;
     height: auto;
-    min-height: 100px;
-    max-height: 175px;
+    min-height: 15%;
+    max-height: 15%;
     display: flex;
 }
 
@@ -74,8 +230,9 @@ button.disabled {
 }
 
 .centercontainer {
-    margin: auto auto 0;
+    margin: auto auto;
     width: auto;
+    height:auto;
 }
 
 .rightcontainer {
@@ -90,11 +247,11 @@ button.disabled {
 .mainfooter {
     display: flex;
     width: 100%;
-    height: 7%;
+    height: 6%;
     background: var(--bar-gradient);
     color: var(--accent-color);
-    margin: auto 0 0 0;
-    padding: 0 0 4px 0;
+    bottom: 0;
+    position: fixed;
 }
 
 .windowremovebtn {
@@ -109,11 +266,9 @@ button.disabled {
 
 .maincontent {
     display: flex; 
-    height: auto;
-    min-height: 76vh;
-    max-height: 76vh;
+    height: 81%;
     width: auto; 
-    margin: 0 0 auto 0;
+    margin: 0 0 0 0;
     text-align: left;
     overflow: hidden;
 }
@@ -146,7 +301,7 @@ button.disabled {
     min-width: 100%;
     max-width: 100%;
     min-height: 0%;
-    max-height: 100%;
+    max-height: 96%;
     background: var(--accent-color);
     height: 25%;
     overflow: auto;
@@ -169,6 +324,7 @@ button.disabled {
     max-height: 35px;
     background: var(--secondary-color);
     border-radius: 2px 2px;
+    box-shadow: 0px -5px var(--contrast-color);
     margin: 4px 0 auto 0;
     text-align: center;
     cursor: default;
@@ -178,7 +334,7 @@ button.disabled {
     width: 100%;
 }
 
-label {
+label.text {
     border-bottom: 1px solid white;
     font-size: 12px;
     border-top: 1px solid white;
@@ -208,6 +364,10 @@ label {
     resize: vertical;
 }
 
+button.selected {
+    background: rgba(255, 163, 163, 0.5);
+}
+
 .captiontoolsbox {
     border: 1px solid black;
     width: auto;
@@ -225,6 +385,7 @@ label {
     -o-transition: all ease-in-out var(--transition-time); /* Opera */
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
     margin: 0;
+    color: white;
     resize: vertical;
 }
 
@@ -234,12 +395,29 @@ label {
     margin: 0 auto;
 }
 
+.icontoolbox {
+    width: 100%;
+    background: var(--contrast-color);
+    height: auto;
+}
+
+.imagetoolsbox>.dividerline {
+    width: 75%;
+    margin: 0 auto 0 auto;
+}
+
+.captiontoolsbox>.dividerline {
+    width: 75%;
+    margin: 0 auto 0 auto;
+}
+
 .imagetoolsbox {
     border: 1px solid black;
     width: auto;
+    color: white;
     min-width: 100%;
     min-height: 0%;
-    max-height: 100%;
+    max-height: 200px;
     background: var(--accent-color);
     height: 35%;
     padding: 0 2px;
@@ -254,14 +432,13 @@ label {
 }
 
 .toolboxminimizebtn {
-    background: transparent;
+    background: var(--bar-gradient);
     border-radius: 2px 2px;
     font-size: 10px;
     vertical-align: top;
     width: 100%;
     height: auto;
-    border: 1px solid transparent;
-    box-shadow: 0 2px #999;
+    box-shadow: 2px 2px rgb(177, 177, 177);
     min-width: 25px;
     max-width: 35px;
     min-height: 25px;
@@ -271,18 +448,27 @@ label {
 .btnvectorgraphic {
     width: 25px;
     height: 100%;
+    pointer-events: none;
+}
+
+
+button#northarrowopt, button#sunarrowopt, button#observerarrowopt  {
+    background: var(--bar-gradient);    
+}
+
+.btnvectorgraphic>g {
+    pointer-events: inherit;
 }
 
 .toolboxaddimagebtn {
-    background: transparent;
+    background: var(--bar-gradient);
     border-radius: 2px 2px;
     font-size: 10px;
     vertical-align: top;
     width: 100%;
     height: auto;
-    border: 1px solid transparent;
     padding: 0;
-    box-shadow: 0 2px #999;
+    box-shadow: 2px 2px rgb(177, 177, 177);
     min-width: 25px;
     max-width: 35px;
     min-height: 25px;
@@ -290,14 +476,13 @@ label {
 }
 
 .toolboxaddcaptionbtn {
-    background: transparent;
+    background: var(--bar-gradient);
     border-radius: 2px 2px;
     font-size: 10px;
-    vertical-align: center;
+    vertical-align: top;
     width: 100%;
     height: auto;
-    border: 1px solid transparent;
-    box-shadow: 0 2px #999;
+    box-shadow: 2px 2px rgb(177, 177, 177);
     padding: 0;
     min-width: 25px;
     max-width: 35px;
@@ -412,6 +597,8 @@ svg.imagecontainer {
 .toolscontainer{
     width: 95%;
     height: auto;
+    border: 2px solid var(--contrast-color);
+    border-top: 0px solid var(--contrast-color);
     overflow-y: hidden;
     overflow-x: hidden;
     transition: all ease-in-out var(--transition-time);
@@ -422,15 +609,20 @@ svg.imagecontainer {
 }
 
 .windowsidebar {
-    background: var(--bar-gradient);
-    border: 2px solid black;
+    background: transparent;
+    border: none;
     width: auto;
     height: 100%;
     max-width: 25px;
     margin: 0 auto 0 0;
-    padding: .25px;
-    min-width: 25px;
+    padding: .5px;
+    min-width: 2em;
     text-align: center;
+}
+
+.windowsidebar > button:hover {
+    border: none;
+    box-shadow: 1px 1px rgb(170, 167, 167);
 }
 
 .leftfooter {
@@ -448,10 +640,6 @@ svg.imagecontainer {
     width: auto;
 }
 
-.rightfooter:hover {
-    cursor: pointer;
-}
-
 .rightfooter {  
     color: inherit;
     text-align: center;
@@ -464,7 +652,7 @@ svg.imagecontainer {
 }
 
 .toolboxcontainer.closed {
-    width: 25px !important;
+    width: 1em !important;
     min-width: 0% !important;
 }
 
@@ -526,6 +714,7 @@ svg.imagecontainer {
 
 /* Small screens */
 @media only screen and (max-width:900px) {
+
     html {
         max-height: none;
         height: fit-content;
@@ -533,9 +722,9 @@ svg.imagecontainer {
 
     .maincontent {
         display: block;
-        height: 83%;
         overflow-y: scroll;
     }
+
 
     .windowoptionsbar>h4{
         font-size: 11px;
@@ -575,7 +764,8 @@ svg.imagecontainer {
     }
 
     .mainfooter {
-        height: 7%;
+        height: 4%;
+        position: relative;;
         margin: auto 0 0 0;
     }
 
@@ -591,6 +781,7 @@ svg.imagecontainer {
 /* Normal screens */
 @media only screen and (min-width: 900px)
 {
+    
     .maincontent {
         display: flex;
     }
@@ -618,6 +809,8 @@ svg.imagecontainer {
 
 /* Very Large Screen screens */
 @media only screen and (min-width:1900px) {
+
+    
     .windowoptionsbar>h4{
         font-size: 18px;
     }
@@ -671,11 +864,6 @@ svg.imagecontainer {
         margin: auto 0 0 0;
         padding: 0;
         height: 5%;
-    }
-
-    .maincontent {
-        min-height: 86vh;
-        max-height: 86vh;
     }
 
     .windowsidebar {
