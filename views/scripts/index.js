@@ -983,9 +983,6 @@ function getObjectCount( inc=0, objecttype="both" )
             }
         case "both":
             return captionCount + imageCount
-
-        default:
-            console.log("FAILS")
     }
 }
 
