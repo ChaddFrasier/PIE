@@ -1357,7 +1357,7 @@ function drawToolbox(toolbox, icontype, iconId, transX, transY)
             obsiconscaleinput.setAttribute("type", "number");
             obsiconscaleinput.setAttribute( "objectid", iconId );
             obsiconscaleinput.setAttribute("step", "0.01");
-            obsiconscaleinput.setAttribute("value", "1.00");
+            obsiconscaleinput.setAttribute("value", "0.5");
             obsiconscaleinput.setAttribute("min", "0.25");
 
             obsicontranslatex.value = (transX*0.5);
@@ -1412,16 +1412,13 @@ function updateIconPosition(event, attrId)
     }
 }
 
-function getWidth ( bbox )
-{
-    return bbox.width * bbox.scale;
-}
-
-function getHeight ( bbox )
-{
-    return bbox.height * bbox.scale;
-}
-
+/**
+ * 
+ * @param {string} translateStr 
+ * @param {string} attr 
+ * @param {number} value 
+ * @param {number} scale 
+ */
 function updateTranslate ( translateStr, attr, value, scale )
 {
     // quick fix for unknown javascript 0px error that changes the transform string
@@ -1431,13 +1428,13 @@ function updateTranslate ( translateStr, attr, value, scale )
     {
         let y = parseInt(translateStr.split(",")[1]);
 
-        return String("translate("+ value/scale+"px,"+y+"px");
+        return String("translate("+ value/scale+"px, "+y+"px");
     }
     else if( attr == "y" )
     {
         let x = parseInt(translateStr.split("translate(")[1].split(",")[0]);
 
-        return String("translate("+ x + "px," + value/scale + "px")
+        return String("translate("+ x + "px, " + value/scale + "px")
     }
 }
 
