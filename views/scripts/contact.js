@@ -1,14 +1,16 @@
 
 function writeContent(){
     const contentArr = [
-        String("This product was designed by the USGS Astrogeology science Center under the direction of \
-        Laszlo Kestay and with assistance from the POW development team. All contact can be directed to our \
-        <a class='descanchor' href='https://github.com/ChaddFrasier/PIE/issues',target='_blank'>GitHub</a> Page. \
-        Please file an issue with the appropriatte tag for the type of post you are making.<pre><u>Examples:</u></pre> \
-        <pre><u><b>Bug</b></u> → Problem found.</pre><pre><u><b>Discussion/Question</b></u> → Ask about something.</pre><pre>Etc.</pre>"),
-        String("<div class='linklist'><a href='https://github.com/ChaddFrasier/PIE' , target='_blank'>Planetary Image Editor (PIE) Code</a><br/>\
-        <a href='https://www.usgs.gov/centers/astrogeology-science-center/about', target='_blank'>USGS Astrogeology</a><br/>\
-        <a href='https://astrocloud.wr.usgs.gov/', target='_blank'>Processing On the Web (POW)</a><br/>\
+        String("<pre><i><b>All contact can be directed to our <a class='descanchor' href='https://github.com/ChaddFrasier/PIE/issues',target='_blank'>GitHub</a> Page. \
+        <br>Please file an issue with the label that best fits your topic.</b></i></pre>\
+        <pre><pre><u>How to file an issue:</u></pre> \
+        <pre><u><b>1. Click New Issue </b></u><br><img class='pilotstepsimage' src='images/newissue1.png'></pre>\
+        <pre><u><b>2. Set Label(s)</b></u><br><img src='images/newissue2.png' class='pilotstepsimage'/></pre>\
+        <pre><u><b>3. Fill out remaining fields</b></u><br> <img src='images/newissue3.png' class='pilotstepsimage'/></pre></pre>"),
+        String("<div class='linklist'>\
+        <a href='https://github.com/ChaddFrasier/PIE' , target='_blank'>Planetary Image Editor (PIE) Code</a><br/>\
+        <a href='https://www.usgs.gov/centers/astrogeology-science-center/about', target='_blank'>USGS Astrogeology\
+        </a><br/><a href='https://astrocloud.wr.usgs.gov/', target='_blank'>Processing On the Web (POW)</a><br/>\
         <a href='https://pilot.wr.usgs.gov/', target='_blank'>Planetary Image LOcator Tool (PILOT)</a><br/>\
         <a href='https://isis.astrogeology.usgs.gov/index.html', target='_blank'>Integrated Software for Imagers and Spectrometers (ISIS)</a></div>")];
 
