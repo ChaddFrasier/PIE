@@ -2,9 +2,6 @@
 
 function writeContent(){
     const contentArr = [
-        String("<div style='text-align:left'>PIE allows you to create publication ready figures much faster than similar products while \
-        providng a much simplier user interface given by ArcGIS and similar applications. PIE specifically focuses on \
-        GeoTIFF and ISIS Cube products because it it intentded for use by planetary scientists.</div>"),
         String(" \
         <pre>1. <i><b>Navigate to <a class='descanchor', href='https://pilot.wr.usgs.gov/'>PILOT</a></b></i>.\
         </pre><br/><pre>2. <i><b>Select</b></i> the <i><b>Planetary Body</b></i> you would like to search within.</pre><img alt='pilotimage1' class='pilotstepsimage' \

@@ -20,6 +20,7 @@ html {
 .linklist > a {
     color: var(--contrast-color);
     margin: auto auto;
+    font-size: large;
 }
 
 .linklist {
@@ -27,6 +28,11 @@ html {
     text-align: center;
 }
 
+.desclist {
+    display: block;
+    text-align: left;
+    height: 100%;
+}
 
 .linklist > a:visited {
     color: var(--secondary-color);
