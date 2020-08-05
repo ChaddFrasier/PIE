@@ -1069,26 +1069,18 @@ function setElement( event )
 function drawSvgIcon( image, icontype, event )
 {
     let icongroup = null,
-        pt = null,
         svgP = null,
         newX = 0,
         newY = 0;
     switch (icontype) {
         case "north":
 
-            pt = svgContainer.createSVGPoint();
-
-            pt.x = event.clientX;
-            pt.y = event.clientY;
-
-            svgP = pt.matrixTransform(svgContainer.getScreenCTM().inverse());
+            svgP = getSVGPoint( event.clientX, event.clientY)
 
             icongroup = document.getElementById("northgroup").cloneNode(true);
             icongroup.setAttribute("objectid", image.id);
             icongroup.setAttribute("id", "northIcon-" + image.id);
             icongroup.style.scale = "0.5";
-
-            console.log("Mouse was released at pixel: " + svgP.x + "," + svgP.y);
 
             // set the location of the icon to where the mouse was released
             newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 480 );
@@ -1100,12 +1092,8 @@ function drawSvgIcon( image, icontype, event )
             break;
     
         case "sun":
-            pt = svgContainer.createSVGPoint();
-
-            pt.x = event.clientX;
-            pt.y = event.clientY;
-
-            svgP = pt.matrixTransform(svgContainer.getScreenCTM().inverse());
+            
+            svgP = getSVGPoint(event.clientX, event.clientY)
 
             icongroup = document.getElementById("sungroup").cloneNode(true);
             icongroup.setAttribute("objectid", image.id);
@@ -1120,23 +1108,20 @@ function drawSvgIcon( image, icontype, event )
             break;
     
         case "observer":
-            pt = svgContainer.createSVGPoint();
 
-            pt.x = event.clientX;
-            pt.y = event.clientY;
-
-            svgP = pt.matrixTransform(svgContainer.getScreenCTM().inverse());
+            svgP = getSVGPoint(event.clientX, event.clientY)
 
             icongroup = document.getElementById("observergroup").cloneNode(true);
             icongroup.setAttribute("objectid", image.id);
             icongroup.setAttribute("id", "observerIcon-" + image.id);
             icongroup.style.scale = "0.5";
 
-            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 480 );
-            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 480 );
+            svgContainer.appendChild(icongroup);
+
+            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 512 );
+            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 512 );
     
             icongroup.style.transform = translateString( newX, newY);
-            svgContainer.appendChild(icongroup);
             break;
 
         default:
@@ -1147,6 +1132,16 @@ function drawSvgIcon( image, icontype, event )
     let imagetoolbox = findImageToolbox(selectedObject.id, document.getElementsByClassName("imagetoolsbox"));
     // draw the tool box based on the icon type
     drawToolbox(imagetoolbox, icontype, icongroup.id, newX.toFixed(0), newY.toFixed(0));
+}
+
+function getSVGPoint( x, y )
+{
+    pt = svgContainer.createSVGPoint();
+
+    pt.x = Number(x);
+    pt.y = Number(y);
+
+    return pt.matrixTransform(svgContainer.getScreenCTM().inverse());
 }
 
 /**
@@ -1217,8 +1212,8 @@ function drawToolbox(toolbox, icontype, iconId, transX, transY)
             northicontranslatey.setAttribute("type", "number");
             northicontranslatey.setAttribute( "objectid", iconId );
             northicontranslatey.setAttribute( "min", "1" );
-            northicontranslatex.value = transX;
-            northicontranslatey.value = transY;
+            northicontranslatex.value = (transX*0.5);
+            northicontranslatey.value = (transY*0.5);
 
             northicontranslateylabel.innerHTML = "Translate Y Position";
             northicontranslatexlabel.innerHTML = "Translate X Position";
@@ -1277,9 +1272,6 @@ function drawToolbox(toolbox, icontype, iconId, transX, transY)
             sunicontranslatey.setAttribute( "objectid", iconId );
             sunicontranslatey.setAttribute( "min", "1" );
 
-            sunicontranslatex.value = transX;
-            sunicontranslatey.value = transY;
-
             sunicontranslateylabel.innerHTML = "Translate Y Position";
             sunicontranslatexlabel.innerHTML = "Translate X Position";
 
@@ -1288,12 +1280,15 @@ function drawToolbox(toolbox, icontype, iconId, transX, transY)
 
             suniconscaleinput.setAttribute("type", "number");
             suniconscaleinput.setAttribute( "objectid", iconId );
-            suniconscaleinput.value = "1";
+            suniconscaleinput.value = "0.5";
             suniconscaleinput.setAttribute("step", "0.01")
 
             sunmaincolorlabel.innerHTML = "Sun Main Color";
             sunaccentcolorlabel.innerHTML = "Sun Secondary Color";
             sunscalelabel.innerHTML = "Sun Scale";
+               
+            sunicontranslatex.value = (transX*0.5);
+            sunicontranslatey.value = (transY*0.5);
 
             suniconmaincolorinput.setAttribute("type", "color");
             suniconmaincolorinput.setAttribute( "objectid", iconId );
@@ -1316,7 +1311,7 @@ function drawToolbox(toolbox, icontype, iconId, transX, transY)
             sunmaincolorlabel, document.createElement("br"), suniconmaincolorinput, document.createElement("br"),
             sunaccentcolorlabel, document.createElement("br"), suniconaccentcolorinput, document.createElement("br"), sunicontranslatexlabel, document.createElement("br"),
             sunicontranslatex, document.createElement("br"), sunicontranslateylabel, document.createElement("br"), sunicontranslatey );
-        
+
             toolbox.append(sunoptionbar, sunicontoolbox);
             break;
     
@@ -1368,8 +1363,8 @@ function drawToolbox(toolbox, icontype, iconId, transX, transY)
             obsiconscaleinput.setAttribute("value", "1.00");
             obsiconscaleinput.setAttribute("min", "0.25");
 
-            obsicontranslatex.value = transX;
-            obsicontranslatey.value = transY;
+            obsicontranslatex.value = (transX*0.5);
+            obsicontranslatey.value = (transY*0.5);
 
             obsmaincolorlabel.innerHTML = "Observer Main Color";
             obsaccentcolorlabel.innerHTML = "Observer Secondary Color";
@@ -1410,30 +1405,42 @@ function drawToolbox(toolbox, icontype, iconId, transX, transY)
 function updateIconPosition(event, attrId)
 {
     let object = document.getElementById(event.target.attributes.objectid.value);
+    if( attrId == 0 ) {
 
-    if(attrId == 0 ) {
-        object.style.transform = updateTranslate(object.style.transform, "x", Number(event.target.value));
+        object.style.transform = updateTranslate(object.style.transform, "x", Number(event.target.value), object.style.scale);
     }
-    else if(attrId == 1 )
+    else if( attrId == 1 )
     {
-        object.style.transform = updateTranslate(object.style.transform, "y", Number(event.target.value));
+        object.style.transform = updateTranslate(object.style.transform, "y", Number(event.target.value), object.style.scale);
     }
 }
 
-function updateTranslate ( translateString, attr, value )
+function getWidth ( bbox )
+{
+    return bbox.width * bbox.scale;
+}
+
+function getHeight ( bbox )
+{
+    return bbox.height * bbox.scale;
+}
+
+function updateTranslate ( translateStr, attr, value, scale )
 {
     // quick fix for unknown javascript 0px error that changes the transform string
     value = (value == 0) ? 1 : value;
 
     if( attr == "x" )
     {
-        let y = translateString.split(",")[1];
-        return String("translate("+String(value)+"px,"+y);
+        let y = parseInt(translateStr.split(",")[1]);
+
+        return String("translate("+ value/scale+"px,"+y+"px");
     }
     else if( attr == "y" )
     {
-        let x = translateString.split(",")[0];
-        return String(x+", "+ String(value) + "px)");
+        let x = parseInt(translateStr.split("translate(")[1].split(",")[0]);
+
+        return String("translate("+ x + "px," + value/scale + "px")
     }
 }
 
@@ -1487,8 +1494,6 @@ function removeIconWindow( event )
         let iconsvg = document.getElementById(icontoolsbar.attributes.objectid.value);
 
         let imagetoolbox = document.getElementById("imagetoolsbox-"+iconsvg.attributes.objectid.value);
-
-        console.log(imagetoolbox)
 
         imagetoolbox.removeChild(icontoolsbar); 
         imagetoolbox.removeChild(toolsbox); 
@@ -1580,7 +1585,6 @@ function changeColorsOfChildren( children, color , ...order )
         commandArr.forEach(attribute => {
             if(attribute != "")
             {
-                console.log(attribute)
                 element.setAttribute(attribute.trim(), color);
             }
         });
@@ -1624,8 +1628,8 @@ function translateString(x, y) {
  * @param {number} objectWidth 
  * @description move the point over half the scaled width and then divide by the scale again 
  */
-function getScaledPoint( p, scale, objectWidth) {
-    return (p-(objectWidth*scale)/2)/scale;
+function getScaledPoint( p, scale, objectDim) {
+    return (p-(objectDim*scale)/2)/scale;
 }
 
 function updateCaptionTextColor ( color, objectid )
