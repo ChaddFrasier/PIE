@@ -102,7 +102,7 @@ describe("Icon Tests > ", () => {
         cy.get('svg#figureContainer>g>circle').first().should("have.attr", "stroke", testcolor);
      });
 
-     it("Test that the observer icon translates when changes occur", ()=>{
+    it("Test that the observer icon translates when changes occur", ()=>{
         
         cy.get("#observerarrowopt").trigger("mousedown");
         cy.get("svg>image").last().trigger("mouseup");
@@ -129,6 +129,28 @@ describe("Icon Tests > ", () => {
                 throw new Error("Should contain a translate of y/scale")
             }
         });
-     });
+    });
 
+    
+    it("Test that the observer icon scale changed the translate", ()=>{
+        var oldTransform;
+        
+        cy.get("#observerarrowopt").trigger("mousedown");
+        cy.get("svg>image").last().trigger("mouseup");
+
+        cy.get('svg#figureContainer>g').then( icongroup => {
+            oldTransform = icongroup.css("transform")
+        });
+
+        cy.get(".icontoolbox>input[type='number']")
+            .first().clear()
+            .type('0.25{enter}')
+
+        cy.get('svg#figureContainer>g').then( icongroup => {
+            if( icongroup.css("transform").indexOf(oldTransform) > -1 )
+            {
+                throw new Error("Should change the translate when scale changes")
+            }
+        });
+    })
 });
