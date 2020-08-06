@@ -43,7 +43,6 @@ $(document).ready(()=>{
             document.getElementById("editbox").classList.remove("drawing");
 
             changeButtonActivation("enable");
-
         }
         else
         {
@@ -53,7 +52,6 @@ $(document).ready(()=>{
             document.getElementById("editbox").classList.add("drawing");
 
             changeButtonActivation("disable");
-            
         }
 
         PencilFlag = !(PencilFlag)
@@ -209,12 +207,10 @@ $(document).ready(()=>{
         captiontextcolorinput.setAttribute("objectid", captionId);
 
         captiontextcolorinput.setAttribute("type", "color");
-
         captiontextcolorlabel.innerHTML = "Font Color"
 
         captionbackgroundcolorlabel.setAttribute("objectid", captionId);
         captionbackgroundcolorinput.setAttribute("objectid", captionId);
-
         captionbackgroundcolorinput.setAttribute("type", "color");
 
         captionbackgroundcolorlabel.innerHTML = "Box Color"
@@ -758,9 +754,9 @@ function minimizeToolsWindow(event) {
 }
 
 /**
- * @function: removeToolsWindow
+ * @function removeToolsWindow
  * @param {_Event} event
- * @desc: This function is used to delete the tools window and options bar from the tool box area
+ * @description This function is used to delete the tools window and options bar from the tool box area
  */
 function removeToolsWindow( event )
 {
@@ -770,9 +766,9 @@ function removeToolsWindow( event )
         let captiontoolsbar = event.target.parentElement;
         let toolsbox = captiontoolsbar.nextElementSibling;
         let captionsvg = document.getElementById(event.target.parentElement.attributes.objectid.value);
-
         let toolcontainer = document.getElementById('toolcontainer');
         let svgcontainer = document.getElementById('figurecontainer');
+
         toolcontainer.removeChild(captiontoolsbar); 
         toolcontainer.removeChild(toolsbox); 
         svgcontainer.removeChild(captionsvg);
@@ -788,6 +784,8 @@ function removeToolsWindow( event )
         try{
             svgcontainer.removeChild(document.getElementById("observerIcon-" + captionsvg.id));
         }catch(err){}
+
+        // update the count
         getObjectCount(-1 , typeofObject(captionsvg.id));
     }
 }
@@ -1131,6 +1129,11 @@ function drawSvgIcon( image, icontype, event )
     drawToolbox(imagetoolbox, icontype, icongroup.id, newX.toFixed(0), newY.toFixed(0));
 }
 
+/**
+ * @function getSVGPoint
+ * @param {number} x - x translate
+ * @param {number} y - y translate
+ */
 function getSVGPoint( x, y )
 {
     pt = svgContainer.createSVGPoint();
@@ -1146,8 +1149,8 @@ function getSVGPoint( x, y )
  * @param {Node} toolbox 
  * @param {string} icontype 
  * @param {string} iconId
- * @param {string} transX 
- * @param {string} transY
+ * @param {number} transX 
+ * @param {number} transY
  * @description draws tool boxes for each icon, this method allows for more than 1 of each icon
  */
 function drawToolbox(toolbox, icontype, iconId, transX, transY)
@@ -1399,6 +1402,12 @@ function drawToolbox(toolbox, icontype, iconId, transX, transY)
     }
 }
 
+/**
+ * @function updateIconPosition
+ * @param {_Event} event - event for the change
+ * @param {number} attrId - a number to tell you either x or y 
+ * @description helps update the location of the icon group
+ */
 function updateIconPosition(event, attrId)
 {
     let object = document.getElementById(event.target.attributes.objectid.value);
@@ -1413,11 +1422,12 @@ function updateIconPosition(event, attrId)
 }
 
 /**
- * 
- * @param {string} translateStr 
- * @param {string} attr 
- * @param {number} value 
- * @param {number} scale 
+ * @function updateTranslate
+ * @param {string} translateStr - translate string for the translate
+ * @param {string} attr - the attribute to update
+ * @param {number} value - the new value
+ * @param {number} scale - the current scale
+ * @description update just one part of the translate. either x or y
  */
 function updateTranslate ( translateStr, attr, value, scale )
 {
@@ -1449,8 +1459,10 @@ function updateTranslate ( translateStr, attr, value, scale )
  */
 function findImageToolbox( id, array )
 {
-    for(index in array){
-        if(array[index].attributes.objectid.value == id){
+    for(index in array)
+    {
+        if(array[index].attributes.objectid.value == id)
+        {
             return array[index];
         }
     }
@@ -1458,24 +1470,46 @@ function findImageToolbox( id, array )
 
 /**
  * @function updateIconScale
- * @param {_Event} event 
+ * @param {_Event} event - event that started the function
  * @description change the scale of the icon at the target
  */
 function updateIconScale( event )
 {
     let icon = document.getElementById(event.target.attributes.objectid.value);
-
     let inputvalue = Number(event.target.value);
+
     if( !isNaN(inputvalue) )
     {
+        let oldscale = icon.style.scale
         icon.style.scale = inputvalue;
+
+        // reset the location of the image
+        icon.style.transform = rescaleIcon(oldscale, icon.style.scale, icon.style.transform)
     }
+}
+
+/**
+ * @function rescaleIcon
+ * @param {number} oldscale - old scale (used to unscale the icon before setting new scale)
+ * @param {number} scale - new scale 
+ * @param {string} translate - the transform string that only has translate
+ * @description unscale the current translate and then rescale with the new value
+ */
+function rescaleIcon (oldscale, scale, translate)
+{
+    let x = parseInt(translate.split(',')[0].split("translate(")[1])
+    let y = parseInt(translate.split(',')[1]);
+
+    x = x*oldscale/scale;
+    y = y*oldscale/scale;
+
+    return translateString(x, y);
 }
 
 
 /**
  * @function removeIconWindow
- * @param {_Event} event 
+ * @param {_Event} event - the click event that started it
  * @description remove the icon tool box and the icon svg element
  */
 function removeIconWindow( event )
@@ -1492,20 +1526,18 @@ function removeIconWindow( event )
         imagetoolbox.removeChild(icontoolsbar); 
         imagetoolbox.removeChild(toolsbox); 
         svgContainer.removeChild(iconsvg);
-
     }
 }
 
 /**
  * @function updateIconColor
- * @param {_Event} event 
- * @param {string} colorid
+ * @param {_Event} event - the event object
+ * @param {string} colorid - denoted 0 primmary color and 1 secondary color
  * @description update the color of the object at the target
  */
-function updateIconColor( event , colorid)
+function updateIconColor( event , colorid )
 {
     let icon = document.getElementById(event.target.attributes.objectid.value);
-
     let inputvalue = event.target.value;
 
     switch(colorid){
@@ -1520,11 +1552,11 @@ function updateIconColor( event , colorid)
 
 /**
  * @function changeIconColor
- * @param {number} colorid 
- * @param {string} colorval 
- * @param {Object} icon 
+ * @param {number} colorid - the id of the color, denoted primary and secondary as 0,1 respectivley
+ * @param {string} colorval - the new color
+ * @param {Node} icon - the icon element
  */
-function changeIconColor( colorid, colorval, icon)
+function changeIconColor( colorid, colorval, icon )
 {
     switch(colorid){
         case 0:
@@ -1565,29 +1597,54 @@ function changeIconColor( colorid, colorval, icon)
                     // change the secondary of the observer icon
                     changeColorsOfChildren(icon.childNodes, colorval, "stroke", "stroke", "stroke", "stroke", "stroke", "stroke");
                 }
-            });
-            break;    
+            });   
     }
 }
 
+/**
+ * @function changeColorsOfChildren
+ * @param {NodeList} children - HTMLElementCollection holding all layers of the icon
+ * @param {string} color - the new color
+ * @param  {...any} order - any number of strings that represents the elements to change of the svg element "stroke" and/or "fill"
+ * @description change color of the children using the order objects to tell what attributes to change on the children. child[i].order[i] = color
+  */
 function changeColorsOfChildren( children, color , ...order )
 {
-    for (let index = 0; index < children.length; index++) {
-        const element = children[index];
-        const commandArr = order[index].split(" ");
 
-        commandArr.forEach(attribute => {
-            if(attribute != "")
-            {
-                element.setAttribute(attribute.trim(), color);
-            }
-        });
+    // error if number of order of children dont match
+    if(children.length != order.length)
+    {
+        console.error("Error: order array must match length of children array");
+    }
+    else
+    {
+        // loop over all children
+        for (let index = 0; index < children.length; index++) {
+
+            // get current element and command
+            let element = children[index];
+            let commandArr = order[index].split(" ");
+
+            // for each command
+            commandArr.forEach(attribute => {
+                if(attribute != "")
+                {
+                    element.setAttribute(attribute.trim(), color);
+                }
+            });
+        }
     }
 }
 
 
+/**
+ * @function changeButtonActivation
+ * @param {string} code - either "enable", or "disable" 
+ * @description disabled the buttons when the pencil icon is hit
+ */
 function changeButtonActivation( code )
 {
+    // enable or disable buttons depending on code
     if(code == "enable")
     {
         document.getElementById("northarrowopt").classList.remove("disabled");
@@ -1607,31 +1664,65 @@ function changeButtonActivation( code )
 
 /**
  * @function translateString
- * @param {number} x 
- * @param {number} y 
+ * @param {number} x - the x value in pixels
+ * @param {number} y - the y value in pixels
  * @description returns a string for of the x,y point as a translate() command
  */
-function translateString(x, y) {
+function translateString( x, y ) {
     return "translate("+ Number(x).toFixed(0)+"px,"+Number(y).toFixed(0)+"px)"
 }
 
 /**
  * @function getScaledPoint
- * @param {number} p 
- * @param {number} scale 
- * @param {number} objectWidth 
+ * @param {number} p - the point that we need to scale
+ * @param {number} scale - the new scale of the image
+ * @param {number} objectDim - the object dimension, either width or height
  * @description move the point over half the scaled width and then divide by the scale again 
  */
-function getScaledPoint( p, scale, objectDim) {
+function getScaledPoint( p, scale, objectDim ) {
     return (p-(objectDim*scale)/2)/scale;
 }
 
+/**
+ * @function updateCaptionTextColor
+ * @param {string} color - color to change to
+ * @param {string} objectid - the id of the object to find
+ * @description change capton text color
+ */
 function updateCaptionTextColor ( color, objectid )
 {
-    document.getElementById(objectid).firstChild.style.color = color;
+    // get object
+    let obj = document.getElementById(objectid);
+
+    // change color if it is valid; error otherwise
+    if( obj )
+    {
+        obj.firstChild.style.color = color;
+    }
+    else
+    {
+        console.error("Error: Cannot Find Id for object in function updateCaptionTextColor")
+    }
 }
 
+/**
+ * @function updateCaptionBoxColor
+ * @param {string} color - color code for to change to
+ * @param {string} objectid - the object id that we are trying to change 
+ * @description change caption background color
+ */
 function updateCaptionBoxColor ( color, objectid )
 {
-    document.getElementById(objectid).firstChild.style.background = color;
+    // get object
+    let obj = document.getElementById(objectid);
+
+    //change color if its valid throw error otherwise
+    if ( obj )
+    {
+        obj.firstChild.style.background = color;
+    }
+    else
+    {
+        console.error("Error: Cannot Find Id for object in function updateCaptionBoxColor")
+    }
 }
