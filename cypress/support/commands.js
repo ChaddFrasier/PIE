@@ -35,7 +35,6 @@ import 'cypress-file-upload'
 Cypress.Commands.add("addTestImage", (imagepath) => {
     cy.get("#addimagebtn").click()
 
-    // TODO: fail if the path is none existant
     cy.fixture(imagepath).then(fileContent => {
         // convert the image data into a blob
         return Cypress.Blob.base64StringToBlob(fileContent, "image/jpeg")
