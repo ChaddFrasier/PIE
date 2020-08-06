@@ -1468,8 +1468,26 @@ function updateIconScale( event )
     let inputvalue = Number(event.target.value);
     if( !isNaN(inputvalue) )
     {
+        let oldscale = icon.style.scale
         icon.style.scale = inputvalue;
+
+        // TODO: must reset the location of the image
+        icon.style.transform = rescaleIcon(oldscale, icon.style.scale, icon.style.transform)
     }
+}
+
+function rescaleIcon (oldscale, scale, translate)
+{
+    let x = parseInt(translate.split(',')[0].split("translate(")[1])
+    let y = parseInt(translate.split(',')[1])
+
+    console.log(x)
+    console.log(y)
+
+    x = x*oldscale/scale;
+    y = y*oldscale/scale;
+
+    return translateString(x, y);
 }
 
 
