@@ -698,8 +698,11 @@ $(document).ready(()=>{
      * @description changes the viewbox setting of the output figure
      */
     $('#figsizeselect').on("change", (event) => {
+        // update the svgContainer size
         let tmp = event.target.value.split("x")
         svgContainer.setAttribute("viewBox", "0 0 " + tmp[0] + ' ' + tmp[1])
+
+        updateUILimits( tmp[0], tmp[1] )
     })
 
     /**
@@ -1762,6 +1765,13 @@ function removeIconWindow( event )
     }
 }
 
+function removeMarker( markerString )
+{
+    document.getElementById("figdefs").removeChild( 
+        document.getElementById( markerString.split('url("#')[1].replace('")',"") )
+        )
+}
+
 function removeLineWindow( event )
 {
     if( event.target.parentElement.attributes.objectid.value )
@@ -1774,6 +1784,11 @@ function removeLineWindow( event )
         toolsbox.parentElement.removeChild( toolsbar )
         toolsbox.parentElement.removeChild( toolsbox )
         svgContainer.removeChild( linesvg )
+
+        if( linesvg.style.markerEnd != "" )
+        {
+            removeMarker(linesvg.style.markerEnd)
+        }
     }
 }
 
@@ -2126,10 +2141,25 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 
     linecolorinput.addEventListener("change", function(event)
     {
+        let lineelement = document.getElementById( this.attributes.objectid.value )
         // Update color when the color changes
-        document.getElementById( this.attributes.objectid.value).setAttribute("stroke", this.value )
+        lineelement.setAttribute("stroke", this.value )
 
-        // TODO: if the line has a ending, we need to create a clone of the ending character to change the color
+        let markerid = lineelement.style.markerEnd.split('url("#')[1].replace('")','')
+
+        console.log(markerid)
+
+        let newMarker = document.getElementById( markerid )
+
+        // set attributes for new marker
+        newMarker.setAttribute("id", objectid + "-marker")
+        newMarker.firstChild.setAttribute("fill", this.value)
+        newMarker.setAttribute("markerWidth", lineelement.getAttribute("stroke-width")/2)
+        newMarker.setAttribute("markerHeight", lineelement.getAttribute("stroke-width")/2)
+        lineelement.style.markerEnd = `url("#${newMarker.getAttribute("id")}")`
+
+        // add the new marker
+        document.getElementById("figdefs").appendChild(newMarker)
     })
 
     //  outer toolbox info
@@ -2297,20 +2327,23 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         // if the object exists
         if( object )
         {
+            let line = document.getElementById(lineheadinput.attributes.objectid.value)
+
             // switch on the option
             switch( event.target.value )
             {
                 case "arrow":
-                    object.style.markerEnd = "url(#arrowhead)"
+                    createMarker(line.style.markerEnd, line.id, "arrow")
                     break
                 case "square":
-                    object.style.markerEnd = "url(#squarehead)"
+                    createMarker(object.style.markerEnd, line.id, "square" )
                     break
                 case "circle":
-                    object.style.markerEnd = "url(#circlehead)"
+                    createMarker(object.style.markerEnd, line.id, "circle" )
                     break
                 default:
                     object.style.markerEnd = "";
+                    document.getElementById("figdefs").removeChild(document.getElementById(line.id+"-marker"))
             }
         }
         else
@@ -2352,5 +2385,53 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 
     document.getElementById("toolcontainer").append(lineoptionbar, linetoolbox)
 }
-
  /** End Draw Functions */
+
+function updateUILimits ( newW, newH )
+{
+    console.log(`The new figure width is ${newW} and the new figure height is ${newH}`)
+}
+
+function createMarker( markerString, lineid, headcode )
+{
+    if( markerString.indexOf(lineid) > -1)
+    {
+        console.log("CUSTOM STRING HAS BEEN FOUND")
+        let marker = document.getElementById(lineid+"-marker")
+        let line = document.getElementById(lineid)
+
+        if(marker)
+        {
+            marker.innerHTML = document.getElementById(headcode+"head").innerHTML
+            marker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )
+        }
+        else
+        {
+            console.error("Failed to find marker by id " + lineid)
+        }
+    }
+    else
+    {
+        // create a new marker from the skeletons
+        let marker = document.getElementById(headcode+"head")
+        let line = document.getElementById(lineid)
+
+        if( marker )
+        {
+            // shift marker variable to a new node
+            let newmarker = marker.cloneNode(true)
+
+            // set new attributes
+            newmarker.setAttribute( "id", lineid + "-marker" )
+            newmarker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )
+            newmarker.setAttribute("markerWidth", line.getAttribute("stroke-width")/2)
+            newmarker.setAttribute("markerHeight", line.getAttribute("stroke-width")/2)
+
+            // append the new marker
+            document.getElementById("figdefs").appendChild(newmarker)
+
+            // set line marker end
+            line.style.markerEnd = `url(#${newmarker.id})`
+        }
+    }
+}
