@@ -57,7 +57,6 @@ $(document).ready(()=>{
             // add event listener for click on svg
             svgContainer.addEventListener("mousedown", drawMouseDownListener )
         }
-
         PencilFlag = !(PencilFlag)
     })
     
@@ -231,7 +230,7 @@ $(document).ready(()=>{
         textinput.setAttribute("placeholder", "Type your caption here")
         textinput.classList.add('textareainputfield')
 
-        // ass the keyup listener to update the text input
+        // pass the keyup listener to update the text input
         textinput.addEventListener("keyup", function(){
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value+"text" )
@@ -259,7 +258,15 @@ $(document).ready(()=>{
             // updpate the text inside once found
             if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("width", Number(this.value))
+                if( Number(this.value) < Number(this.getAttribute("min")) )
+                {
+                    matchingCaption.setAttribute("width", Number(this.getAttribute("min")))
+                    this.value = Number(this.getAttribute("min"))
+                }
+                else
+                {
+                    matchingCaption.setAttribute("width", Number(this.value))
+                }
             }
         })
 
@@ -276,7 +283,15 @@ $(document).ready(()=>{
             // updpate the text inside once found
             if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("height", Number(this.value))
+                if( Number(this.value) < Number(this.getAttribute("min")) )
+                {
+                    matchingCaption.setAttribute("height", Number(this.getAttribute("min")))
+                    this.value = Number(this.getAttribute("min"))
+                }
+                else
+                {
+                    matchingCaption.setAttribute("height", Number(this.value))
+                }
             }
         })
 
@@ -293,7 +308,15 @@ $(document).ready(()=>{
             // updpate the text inside once found
             if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("x", Number(this.value))
+                if( Number(this.value) < Number(this.getAttribute("min")) )
+                {
+                    matchingCaption.setAttribute("x", Number(this.getAttribute("min")))
+                    this.value = Number(this.getAttribute("min"))
+                }
+                else
+                {
+                    matchingCaption.setAttribute("x", Number(this.value))
+                }
             }
         })
         
@@ -310,7 +333,15 @@ $(document).ready(()=>{
             // updpate the text inside once found
             if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("y", Number(this.value))
+                if( Number(this.value) < Number(this.getAttribute("min")) )
+                {
+                    matchingCaption.setAttribute("y", Number(this.getAttribute("min")))
+                    this.value = Number(this.getAttribute("min"))
+                }
+                else
+                {
+                    matchingCaption.setAttribute("y", Number(this.value))
+                }
             }
         })
 
@@ -566,7 +597,7 @@ $(document).ready(()=>{
         widthlabel.innerHTML = "Width of Image: "
         widthlabel.setAttribute("for", "widthinput")
         widthinput.setAttribute("type", "number")
-        widthinput.setAttribute("min", '1500')
+        widthinput.setAttribute("min", '750')
         widthinput.value = '1500'
         widthinput.setAttribute("name","widthinput")
 
@@ -576,7 +607,15 @@ $(document).ready(()=>{
             // updpate the text inside once found
             if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("width", Number(this.value))
+                if( Number(this.value) < Number(this.getAttribute("min")) )
+                {
+                    matchingCaption.setAttribute("width", Number(this.getAttribute("min")))
+                    this.value = Number(this.getAttribute("min"))
+                }
+                else
+                {
+                    matchingCaption.setAttribute("width", Number(this.value))
+                }
             }
         })
 
@@ -584,7 +623,7 @@ $(document).ready(()=>{
         heightlabel.innerHTML = "Height of Image: "
         heightlabel.setAttribute("for", "heightinput")
         heightinput.setAttribute("type", "number")
-        heightinput.setAttribute("min", '1000')
+        heightinput.setAttribute("min", '450')
         heightinput.value = 1000
         heightinput.setAttribute("name","heightinput")
 
@@ -594,7 +633,15 @@ $(document).ready(()=>{
             // updpate the text inside once found
             if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("height", Number(this.value))
+                if( Number(this.value) < Number(this.getAttribute("min")) )
+                {
+                    matchingCaption.setAttribute("height", Number(this.getAttribute("min")))
+                    this.value = Number(this.getAttribute("min"))
+                }
+                else
+                {
+                    matchingCaption.setAttribute("height", Number(this.value))
+                }
             }
         })
         
@@ -612,7 +659,15 @@ $(document).ready(()=>{
             // updpate the text inside once found
             if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("x", Number(this.value))
+                if( Number(this.value) < Number(this.getAttribute("min")) )
+                {
+                    matchingCaption.setAttribute("x", Number(this.getAttribute("min")))
+                    this.value = Number(this.getAttribute("min"))
+                }
+                else
+                {
+                    matchingCaption.setAttribute("x", Number(this.value))
+                }
             }
         })
         
@@ -630,7 +685,15 @@ $(document).ready(()=>{
             // updpate the text inside once found
             if(matchingCaption && !isNaN(Number(this.value)))
             {
-                matchingCaption.setAttribute("y", Number(this.value))
+                if( Number(this.value) < Number(this.getAttribute("min")) )
+                {
+                    matchingCaption.setAttribute("y", Number(this.getAttribute("min")))
+                    this.value = Number(this.getAttribute("min"))
+                }
+                else
+                {
+                    matchingCaption.setAttribute("y", Number(this.value))
+                }
             }
         })
 
@@ -2121,7 +2184,15 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     linex1input.addEventListener("change", function(event)
     {
         // perform line movements
-        document.getElementById( this.attributes.objectid.value).setAttribute("x1", this.value )
+        if( Number(this.getAttribute("min")) > Number(this.value) )
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("x1", Number(this.getAttribute("min")) )
+            this.value = Number(this.getAttribute("min"))
+        }
+        else
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("x1", this.value )
+        }
     })
 
     // input y1 fields
@@ -2135,7 +2206,16 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     liney1input.addEventListener("change", function(event)
     {
         // y1 translate input
-        document.getElementById( this.attributes.objectid.value).setAttribute("y1", this.value )
+        // perform line movements
+        if( Number(this.getAttribute("min")) > Number(this.value) )
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("y1", Number(this.getAttribute("min")) )
+            this.value = Number(this.getAttribute("min"))
+        }
+        else
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("y1", this.value )
+        }
 
     })
 
@@ -2150,7 +2230,15 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     linewidthinput.addEventListener("change", function(event)
     {
         // line width setting
-        document.getElementById( this.attributes.objectid.value).setAttribute("stroke-width", this.value )
+        if( Number(this.getAttribute("min")) > Number(this.value) )
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("stroke-width", Number(this.getAttribute("min")) )
+            this.value = Number(this.getAttribute("min"))
+        }
+        else
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("stroke-width", this.value )
+        }
 
     })
 
@@ -2293,7 +2381,15 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     linex2input.addEventListener("change", function(event)
     {
         // x2 translate attribute
-        document.getElementById( this.attributes.objectid.value).setAttribute("x2", this.value )
+        if( Number(this.getAttribute("min")) > Number(this.value) )
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("x2", Number(this.getAttribute("min")) )
+            this.value = Number(this.getAttribute("min"))
+        }
+        else
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("x2", this.value )
+        }
     })
 
 
@@ -2309,7 +2405,15 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     liney2input.addEventListener("change", function(event)
     {
         // line y2 attribute
-        document.getElementById( this.attributes.objectid.value).setAttribute("y2", this.value )
+        if( Number(this.getAttribute("min")) > Number(this.value) )
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("y2", Number(this.getAttribute("min")) )
+            this.value = Number(this.getAttribute("min"))
+        }
+        else
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("y2", this.value )
+        }
     })
 
     // input line ender select elements
