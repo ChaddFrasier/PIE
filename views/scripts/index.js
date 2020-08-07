@@ -242,7 +242,6 @@ $(document).ready(()=>{
             }
         })
 
-
         /**
          * Do the same general idea for the text input on all the input to follow here
          */
@@ -250,7 +249,7 @@ $(document).ready(()=>{
         widthlabel.setAttribute("for", "widthinput")
         widthinput.setAttribute("type", "number")
         widthinput.setAttribute("min", '500')
-        widthinput.setAttribute("max", '1500') //TODO: should update with figure size
+        widthinput.setAttribute("max", 'none')
         widthinput.value = 1500
         widthinput.setAttribute("name","widthlabelinput")
 
@@ -1275,6 +1274,8 @@ function drawSvgIcon( image, icontype, event )
  * @function createSVGPoint
  * @param {number} x - x translate
  * @param {number} y - y translate
+ * @description this function creates a svg point from the svgContainer matrix and transforms it into the client space.
+ *  This is used to get the pixel in the svg that was clicked when dropping icons on screen
  */
 function createSVGPoint( x, y )
 {
@@ -1765,6 +1766,11 @@ function removeIconWindow( event )
     }
 }
 
+/**
+ * @function removeMarker
+ * @param {string} markerString - raw string in the form of url("#<id>")
+ * @description this function removes the given marker string fromn the defs section inn the svg
+ */
 function removeMarker( markerString )
 {
     document.getElementById("figdefs").removeChild( 
@@ -1772,6 +1778,11 @@ function removeMarker( markerString )
         )
 }
 
+/**
+ * @function removeLineWindow
+ * @param {_Event} event - click event on the button
+ * @description remove the line objects and tools
+ */
 function removeLineWindow( event )
 {
     if( event.target.parentElement.attributes.objectid.value )
@@ -1781,10 +1792,12 @@ function removeLineWindow( event )
         let toolsbox = toolsbar.nextElementSibling
         let linesvg = document.getElementById( toolsbar.attributes.objectid.value )
 
+        // remove all elements
         toolsbox.parentElement.removeChild( toolsbar )
         toolsbox.parentElement.removeChild( toolsbox )
         svgContainer.removeChild( linesvg )
 
+        // remove marker if there is one
         if( linesvg.style.markerEnd != "" )
         {
             removeMarker(linesvg.style.markerEnd)
@@ -1995,7 +2008,6 @@ function updateCaptionBoxColor ( color, objectid )
 /**
  * Draw Function 
  */
-
 function drawMouseDownListener( event )
 {
     // prevent defaults to stop dragging
@@ -2065,6 +2077,16 @@ function drawMouseDownListener( event )
     svgContainer.appendChild(line)
 }
 
+/**
+ * @function createLineToolBox
+ * @param {strng} objectid - the id of the line
+ * @param {number} x1 - the x value of the head of the line
+ * @param {number} y1 - the y value of the head of the line
+ * @param {number} x2 - thex value of the taial of the line
+ * @param {number} y2 - the y value of the tail of the line
+ * @param {number} strokeWidth - the stroke-width of the line
+ * @description create the toolbox for the given line
+ */
 function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 {
     let linex1input = document.createElement("input")
@@ -2358,6 +2380,10 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         document.createElement("br"),
         linecolorinput,
         document.createElement("br"),
+        lineheadinputlabel,
+        document.createElement("br"),
+        lineheadinput,
+        document.createElement("br"),
         widthlabel,
         document.createElement("br"),
         linewidthinput,        
@@ -2376,11 +2402,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         document.createElement("br"),
         liney2inputlabel,
         document.createElement("br"),
-        liney2input,
-        document.createElement("br"),
-        lineheadinputlabel,
-        document.createElement("br"),
-        lineheadinput
+        liney2input
     )
 
     document.getElementById("toolcontainer").append(lineoptionbar, linetoolbox)
@@ -2392,17 +2414,28 @@ function updateUILimits ( newW, newH )
     console.log(`The new figure width is ${newW} and the new figure height is ${newH}`)
 }
 
+/**
+ * @function createMarker
+ * @param {string} markerString - raw string from markerEnd
+ * @param {string} lineid - the id of the line object
+ * @param {string} headcode - string telling the type of head icon
+ * @description create and remove markers for customizing lines
+ */
 function createMarker( markerString, lineid, headcode )
 {
+    // check if the current line already has a marker object
     if( markerString.indexOf(lineid) > -1)
     {
-        console.log("CUSTOM STRING HAS BEEN FOUND")
+        // get the marker and line
         let marker = document.getElementById(lineid+"-marker")
         let line = document.getElementById(lineid)
 
+        // if the marker exists
         if(marker)
         {
+            // set the innerHTML of the line marker to the inner html of the new head icon using the skeletons
             marker.innerHTML = document.getElementById(headcode+"head").innerHTML
+            // set the new color of the marker
             marker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )
         }
         else
