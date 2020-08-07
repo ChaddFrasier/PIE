@@ -38,20 +38,24 @@ $(document).ready(()=>{
         if(PencilFlag)
         {
             // cancel the drawing functionality
-            console.log("TURN OFF DRAWING")
             event.target.classList.remove("drawing")
             document.getElementById("editbox").classList.remove("drawing")
 
             changeButtonActivation("enable")
+
+            // remove draw listeners
+            svgContainer.removeEventListener("mousedown", drawMouseDownListener)
         }
         else
         {
             // start the draeing functionality
-            console.log("TURN ON DRAWING")
             event.target.classList.add("drawing")
             document.getElementById("editbox").classList.add("drawing")
 
             changeButtonActivation("disable")
+
+            // add event listener for click on svg
+            svgContainer.addEventListener("mousedown", drawMouseDownListener )
         }
 
         PencilFlag = !(PencilFlag)
@@ -208,10 +212,12 @@ $(document).ready(()=>{
 
         captiontextcolorinput.setAttribute("type", "color")
         captiontextcolorlabel.innerHTML = "Font Color"
+        captiontextcolorinput.value ="#000"
 
         captionbackgroundcolorlabel.setAttribute("objectid", captionId)
         captionbackgroundcolorinput.setAttribute("objectid", captionId)
         captionbackgroundcolorinput.setAttribute("type", "color")
+        captionbackgroundcolorinput.value = "#d3d3d3"
 
         captionbackgroundcolorlabel.innerHTML = "Box Color"
 
@@ -243,8 +249,9 @@ $(document).ready(()=>{
         widthlabel.innerHTML = "Width of Caption: "
         widthlabel.setAttribute("for", "widthinput")
         widthinput.setAttribute("type", "number")
-        widthinput.setAttribute("min", '100')
-        widthinput.setAttribute("placeholder", '100')
+        widthinput.setAttribute("min", '500')
+        widthinput.setAttribute("max", '1500') //TODO: should update with figure size
+        widthinput.value = 1500
         widthinput.setAttribute("name","widthlabelinput")
 
         widthinput.addEventListener("change", function() {
@@ -261,8 +268,8 @@ $(document).ready(()=>{
         heightlabel.setAttribute("for", "widthinput")
 
         heightinput.setAttribute("type", "number")
-        heightinput.setAttribute("min", '150')
-        heightinput.setAttribute("placeholder", '150')
+        heightinput.setAttribute("min", '100')
+        heightinput.value = 100
         heightinput.setAttribute("name","heightlabelinput")
         heightinput.addEventListener("change", function() {
             // find the matching html caption element
@@ -278,7 +285,7 @@ $(document).ready(()=>{
         xcoordlabel.setAttribute("for", "widthinput")
         xcoordinput.setAttribute("type", "number")
         xcoordinput.setAttribute("min", '0')
-        xcoordinput.setAttribute("placeholder", '0')
+        xcoordinput.value = 0
         xcoordinput.setAttribute("name","xcoordlabelinput")
 
         xcoordinput.addEventListener("change", function() {
@@ -295,7 +302,7 @@ $(document).ready(()=>{
         ycoordlabel.setAttribute("for", "ycoordinput")
         ycoordinput.setAttribute("type", "number")
         ycoordinput.setAttribute("min", '0')
-        ycoordinput.setAttribute("placeholder", '0')
+        ycoordinput.value = '0'
         ycoordinput.setAttribute("name","ycoordlabelinput")
         
         ycoordinput.addEventListener("change", function() {
@@ -322,6 +329,14 @@ $(document).ready(()=>{
             document.createElement("br"),
             textinput,
             document.createElement("br"),
+            captiontextcolorlabel,
+            document.createElement("br"),
+            captiontextcolorinput,
+            document.createElement("br"),
+            captionbackgroundcolorlabel,
+            document.createElement("br"),
+            captionbackgroundcolorinput,
+            document.createElement("br"),
             widthlabel,
             document.createElement("br"),
             widthinput,
@@ -336,15 +351,7 @@ $(document).ready(()=>{
             document.createElement("br"),
             ycoordlabel,
             document.createElement("br"),
-            ycoordinput,
-            document.createElement("br"),
-            captiontextcolorlabel,
-            document.createElement("br"),
-            captiontextcolorinput,
-            document.createElement("br"),
-            captionbackgroundcolorlabel,
-            document.createElement("br"),
-            captionbackgroundcolorinput
+            ycoordinput
         )
 
         // set caption id on all input elements
@@ -373,7 +380,7 @@ $(document).ready(()=>{
         textholder.setAttribute("x", "0")
         textholder.setAttribute("y", "0")
         textholder.setAttribute("width", "1500")
-        textholder.setAttribute("height", "250")
+        textholder.setAttribute("height", "100")
         textholder.setAttribute("class", "captionObject")
 
         const text = document.createElement("div")
@@ -381,9 +388,8 @@ $(document).ready(()=>{
         text.setAttribute("id", captionId + "text")
         text.setAttribute("x", "0")
         text.setAttribute("y", "0")
-        text.setAttribute("width","auto")
-        text.setAttribute("height","auto")
-        text.setAttribute("fill","red")
+        text.setAttribute("width", "100%")
+        text.setAttribute("height", "100%")
         
         text.innerHTML = "This is the caption"
 
@@ -562,7 +568,7 @@ $(document).ready(()=>{
         widthlabel.setAttribute("for", "widthinput")
         widthinput.setAttribute("type", "number")
         widthinput.setAttribute("min", '1500')
-        widthinput.setAttribute("placeholder", '1500')
+        widthinput.value = '1500'
         widthinput.setAttribute("name","widthinput")
 
         widthinput.addEventListener("change", function(){
@@ -577,10 +583,10 @@ $(document).ready(()=>{
 
         // height input field
         heightlabel.innerHTML = "Height of Image: "
-        heightlabel.setAttribute("for", "widthinput")
+        heightlabel.setAttribute("for", "heightinput")
         heightinput.setAttribute("type", "number")
-        heightinput.setAttribute("min", '1500')
-        heightinput.setAttribute("placeholder", '1500')
+        heightinput.setAttribute("min", '1000')
+        heightinput.value = 1000
         heightinput.setAttribute("name","heightinput")
 
         heightinput.addEventListener("change", function(){
@@ -595,10 +601,10 @@ $(document).ready(()=>{
         
         // x coordinate input string
         xcoordlabel.innerHTML = "X Coordinate: "
-        xcoordlabel.setAttribute("for", "widthinput")
+        xcoordlabel.setAttribute("for", "xcoordinput")
         xcoordinput.setAttribute("type", "number")
         xcoordinput.setAttribute("min", '0')
-        xcoordinput.setAttribute("placeholder", '0')
+        xcoordinput.value = 0
         xcoordinput.setAttribute("name","xcoordinput")
 
         xcoordinput.addEventListener("change", function(){
@@ -616,7 +622,7 @@ $(document).ready(()=>{
         ycoordlabel.setAttribute("for", "ycoordinput")
         ycoordinput.setAttribute("type", "number")
         ycoordinput.setAttribute("min", '0')
-        ycoordinput.setAttribute("placeholder", '0')
+        ycoordinput.value = 0
         ycoordinput.setAttribute("name","ycoordinput")
 
         ycoordinput.addEventListener("change", function(){
@@ -1186,7 +1192,7 @@ function drawSvgIcon( image, icontype, event )
     {
         case "north":
             // get svg transformed point
-            svgP = getSVGPoint( event.clientX, event.clientY)
+            svgP = createSVGPoint( event.clientX, event.clientY)
 
             // set group attributes for svg
             icongroup = document.getElementById("northgroup").cloneNode(true)
@@ -1207,7 +1213,7 @@ function drawSvgIcon( image, icontype, event )
     
         case "sun":
             // get svg transformed point
-            svgP = getSVGPoint(event.clientX, event.clientY)
+            svgP = createSVGPoint(event.clientX, event.clientY)
 
             // set group attributes for svg
             icongroup = document.getElementById("sungroup").cloneNode(true)
@@ -1228,7 +1234,7 @@ function drawSvgIcon( image, icontype, event )
     
         case "observer":
             // get svg transformed point
-            svgP = getSVGPoint(event.clientX, event.clientY)
+            svgP = createSVGPoint(event.clientX, event.clientY)
 
             // set group attributes for svg
             icongroup = document.getElementById("observergroup").cloneNode(true)
@@ -1263,11 +1269,11 @@ function drawSvgIcon( image, icontype, event )
 }
 
 /**
- * @function getSVGPoint
+ * @function createSVGPoint
  * @param {number} x - x translate
  * @param {number} y - y translate
  */
-function getSVGPoint( x, y )
+function createSVGPoint( x, y )
 {
     // create a svg point on screen
     let pt = svgContainer.createSVGPoint()
@@ -1756,6 +1762,21 @@ function removeIconWindow( event )
     }
 }
 
+function removeLineWindow( event )
+{
+    if( event.target.parentElement.attributes.objectid.value )
+    {
+        // remove the current options bar, its next child and the caption matching the same id
+        let toolsbar = event.target.parentElement
+        let toolsbox = toolsbar.nextElementSibling
+        let linesvg = document.getElementById( toolsbar.attributes.objectid.value )
+
+        toolsbox.parentElement.removeChild( toolsbar )
+        toolsbox.parentElement.removeChild( toolsbox )
+        svgContainer.removeChild( linesvg )
+    }
+}
+
 /**
  * @function updateIconColor
  * @param {_Event} event - the event object
@@ -1955,3 +1976,381 @@ function updateCaptionBoxColor ( color, objectid )
         console.error( "Error: Cannot Find Id for object in function updateCaptionBoxColor" )
     }
 }
+
+/**
+ * Draw Function 
+ */
+
+function drawMouseDownListener( event )
+{
+    // prevent defaults to stop dragging
+    event.preventDefault()
+
+    let line = document.createElementNS( NS.svg, "line" ),
+        lineId = randomId("line");
+
+    // get transformed svg point where click occured
+    let svgP = createSVGPoint( event.clientX, event.clientY )
+
+    // set line attributes
+    line.setAttribute( "x1", svgP.x )
+    line.setAttribute( "y1", svgP.y )
+    line.setAttribute( "stroke", "white" )
+    line.setAttribute( "id", lineId )
+    line.setAttribute( "stroke-width", "10" )
+    line.setAttribute( "x2", svgP.x )
+    line.setAttribute( "y2", svgP.y )
+
+    // create the inner draw listener
+    function endDraw( event )
+    {
+        let svgP = createSVGPoint( event.clientX, event.clientY )
+        // calculate distance or length of the line
+        let linedist = Math.sqrt( 
+                Math.pow( svgP.x - Number(line.getAttribute("x1")), 2 ) 
+                + Math.pow( svgP.y - Number(line.getAttribute("y1")), 2 )
+                )
+        if( linedist > 50 )
+        {
+            // update the position
+            line.setAttribute( "x2", svgP.x )
+            line.setAttribute( "y2", svgP.y )
+
+            // must add tool box because this is a valid line
+            createLineToolBox( lineId, line.getAttribute("x1"), line.getAttribute("y1"), svgP.x, svgP.y, line.getAttribute('stroke-width') )
+        }
+        else
+        {
+            svgContainer.removeChild(line)
+            // no need to add tool box
+            alert("Your line was too short please draw a larger line")
+        }
+
+        document.getElementById("penciloptbtn").click()
+        svgContainer.removeEventListener( "mousemove", updateUI )
+        svgContainer.removeEventListener( "mouseup", endDraw )
+    }
+
+    // sets the end of the line to where the mouse is
+    svgContainer.addEventListener( "mouseup", endDraw )
+
+    // set the update function
+    function updateUI ( event )
+    {
+        let svgP = createSVGPoint( event.clientX, event.clientY )
+
+        line.setAttribute( "x2", svgP.x )
+        line.setAttribute( "y2", svgP.y )
+    }
+
+    // event listener for mousemove
+    svgContainer.addEventListener( "mousemove", updateUI )
+
+    // put the line on the svg image
+    svgContainer.appendChild(line)
+}
+
+function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
+{
+    let linex1input = document.createElement("input")
+    let linex1inputlabel = document.createElement("label")
+    let liney1input = document.createElement("input")
+    let liney1inputlabel = document.createElement("label")
+    let widthlabel = document.createElement("label")
+    let linewidthinput = document.createElement("input")
+    let colorlabel = document.createElement("label")
+    let linecolorinput = document.createElement("input")
+    let linetoolbox = document.createElement("div")
+    let lineoptionbar = document.createElement("div")
+    let lineoptionheader = document.createElement("h4")
+    let deletebtn = document.createElement("button")
+    let minibtn = document.createElement("button")
+    let layerbtn = document.createElement("button")
+    let linex2input = document.createElement("input")
+    let linex2inputlabel = document.createElement("label")
+    let liney2input = document.createElement("input")
+    let liney2inputlabel = document.createElement("label")
+    let lineheadinput = document.createElement("select")
+    let lineheadinputlabel = document.createElement("label")
+
+    // input x1 fields
+    linex1input.setAttribute( "objectid", objectid )
+    linex1inputlabel.setAttribute( "objectid", objectid )
+    linex1input.setAttribute( "type", "number" )
+    linex1input.setAttribute( "min", "0" )
+    linex1inputlabel.innerHTML = "Line Head X Coordinate"
+    linex1input.value = parseFloat(x1).toFixed(0)
+
+    linex1input.addEventListener("change", function(event)
+    {
+        // perform line movements
+        document.getElementById( this.attributes.objectid.value).setAttribute("x1", this.value )
+    })
+
+    // input y1 fields
+    liney1input.setAttribute("objectid", objectid)
+    liney1inputlabel.setAttribute("objectid", objectid)
+    liney1inputlabel.innerHTML = "Line Head Y Coordinate"
+    liney1input.setAttribute("type", "number")
+    liney1input.setAttribute("min", "0")
+    liney1input.value = parseFloat(y1).toFixed(0)
+
+    liney1input.addEventListener("change", function(event)
+    {
+        // y1 translate input
+        document.getElementById( this.attributes.objectid.value).setAttribute("y1", this.value )
+
+    })
+
+    // input line width fields
+    widthlabel.setAttribute("objectid", objectid)
+    linewidthinput.setAttribute("objectid", objectid)
+    widthlabel.innerHTML = "Line Thickness"
+    linewidthinput.setAttribute("type", "number")
+    linewidthinput.setAttribute("min", "10")
+    linewidthinput.value = strokeWidth
+
+    linewidthinput.addEventListener("change", function(event)
+    {
+        // line width setting
+        document.getElementById( this.attributes.objectid.value).setAttribute("stroke-width", this.value )
+
+    })
+
+    // input line color fields
+    colorlabel.setAttribute("objectid", objectid)
+    linecolorinput.setAttribute("objectid", objectid)
+    colorlabel.innerHTML = "Line Color"
+    linecolorinput.setAttribute("type", "color")
+    linecolorinput.value = "#ffffff"
+
+    linecolorinput.addEventListener("change", function(event)
+    {
+        // Update color when the color changes
+        document.getElementById( this.attributes.objectid.value).setAttribute("stroke", this.value )
+
+        // TODO: if the line has a ending, we need to create a clone of the ending character to change the color
+    })
+
+    //  outer toolbox info
+    linetoolbox.setAttribute("objectid", objectid)
+    lineoptionbar.setAttribute("objectid", objectid)
+    lineoptionheader.setAttribute("objectid", objectid)
+    linetoolbox.classList.add("linetoolsbox")
+    linetoolbox.setAttribute("id", "linetoolsbox-" + objectid)
+
+    // options bar stuff
+    lineoptionbar.setAttribute("class", 'windowoptionsbar')
+    lineoptionbar.style.display = "flex"
+    lineoptionheader.innerHTML = "Line Icon"
+
+    // same with the minimize button
+    minibtn.classList.add("windowminimizebtn")
+    minibtn.innerHTML = "▲"
+
+    // cant forget the event handler for the minimize btn
+    minibtn.addEventListener( "click", function(event) {
+        minimizeToolsWindow(event)
+    })
+
+    // same for delete as minimize
+    deletebtn.classList.add("windowremovebtn")
+    deletebtn.setAttribute("objectid", objectid)
+    deletebtn.innerHTML = "&times"
+
+    // set event listener to remove north icon
+    deletebtn.addEventListener( "click", function(event) {
+        //delete a line
+        removeLineWindow(event)
+    })
+
+    deletebtn.setAttribute("objectid", objectid)
+
+    /** Dyncamic layer buttoon requires more work*/
+    // set the class css and the svg button graphic
+    layerbtn.classList.add("windoworderingbtn")
+    layerbtn.innerHTML = "<svg viewBox='0 0 100 100' width='100%' height='100%' style='padding:1px' >"+
+                        "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
+                        "<rect x='30' y='10' width='50' height='10' fill='black' rx='5'/>"+
+                        "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
+                        "<rect x='30' y='41' width='50' height='10' fill='black' rx='5'/>" + 
+                        "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
+                        "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
+    
+    // main handler for the dragging functionality
+    layerbtn.addEventListener("mousedown", function(event) {
+        // capture the start y when the click happens
+        oldY = event.pageY
+
+        // add the listeners for removing the drag functions
+        layerbtn.addEventListener("mouseup", documentMouseUpListener, layerbtn)
+        document.addEventListener("mousemove", getMouseDirection, false)
+
+        // try to find the element to put things above
+        try{
+            // ** I know to look for this because the structure of the layer browser. ** could be simplified in the future
+            upperObject = (event.target.parentElement.parentElement.previousSibling.previousSibling) ?
+            event.target.parentElement.parentElement.previousElementSibling.previousSibling :
+            null; 
+        }catch{
+            upperObject = null
+        }
+        // the element to put things below
+        try{
+            lowerObject = event.target.parentElement.parentElement.nextSibling.nextSibling.nextSibling
+        }
+        catch{
+            lowerObject = null
+        }
+        // objects that need to shift
+        try{
+            // get current targets parentElement for shifting
+            shiftObjects = [event.target.parentElement.parentElement, event.target.parentElement.parentElement.nextSibling]
+        }catch{
+            shiftObjects = null
+        }
+
+        // drag function
+        document.addEventListener("mousemove", docucmentMouseOverHandler)
+    })
+
+    // add the window lister to remove active dragging
+    window.addEventListener("mousedown", () => {
+        window.addEventListener("mouseup", documentMouseUpListener, layerbtn)
+    })
+    /** End Dragging */
+
+
+    // set aptions bar nodes
+    lineoptionbar.append( 
+        lineoptionheader, 
+        minibtn,
+        deletebtn,
+        layerbtn
+    )
+
+    //  x2 input fields
+    linex2input.setAttribute("objectid", objectid)
+    linex2inputlabel.setAttribute("objectid", objectid)
+    linex2inputlabel.innerHTML = "Line Tail X Coordinate"
+    linex2input.setAttribute("min", "0")
+    linex2input.setAttribute("type", "number")
+
+    linex2input.value = parseFloat(x2).toFixed(0)
+
+    linex2input.addEventListener("change", function(event)
+    {
+        // x2 translate attribute
+        document.getElementById( this.attributes.objectid.value).setAttribute("x2", this.value )
+    })
+
+
+    // input y2 fields
+    liney2input.setAttribute("objectid", objectid)
+    liney2inputlabel.setAttribute("objectid", objectid)
+    liney2inputlabel.innerHTML = "Line Tail Y Coordinate"
+    liney2input.setAttribute("min", "0")
+    liney2input.setAttribute("type", "number")
+
+    liney2input.value = parseFloat(y2).toFixed(0)
+
+    liney2input.addEventListener("change", function(event)
+    {
+        // line y2 attribute
+        document.getElementById( this.attributes.objectid.value).setAttribute("y2", this.value )
+    })
+
+    // input line ender select elements
+    let optionarrow = document.createElement("option"),
+        optionsquare = document.createElement("option"),
+        optioncircle = document.createElement("option"),
+        optionnone = document.createElement("option");
+
+    lineheadinput.setAttribute("objectid", objectid)
+    lineheadinputlabel.setAttribute("objectid", objectid)
+    lineheadinputlabel.innerHTML = "Line Head"
+
+    // set the options for the input
+    optionarrow.innerHTML = "None"
+    optionarrow.setAttribute("value", "none")
+
+    optionarrow.innerHTML = "Arrow Head"
+    optionarrow.setAttribute("value", "arrow")
+    
+    optionsquare.innerHTML = "Square Head"
+    optionsquare.setAttribute("value", "square")
+    
+    optioncircle.innerHTML = "Circle Head"
+    optioncircle.setAttribute("value", "circle")
+
+    lineheadinput.append(
+        optionnone,
+        optionarrow,
+        optioncircle,
+        optionsquare
+    )
+
+    lineheadinput.addEventListener("change", function(event) {
+        
+        let object = document.getElementById(event.target.attributes.objectid.value)
+
+        // if the object exists
+        if( object )
+        {
+            // switch on the option
+            switch( event.target.value )
+            {
+                case "arrow":
+                    object.style.markerEnd = "url(#arrowhead)"
+                    break
+                case "square":
+                    object.style.markerEnd = "url(#squarehead)"
+                    break
+                case "circle":
+                    object.style.markerEnd = "url(#circlehead)"
+                    break
+                default:
+                    object.style.markerEnd = "";
+            }
+        }
+        else
+        {
+            console.error("Error: Cannot find object with objectid" + event.target.attributes.objectid.value)
+        }
+    })
+
+    // append the objects
+    linetoolbox.append(
+        colorlabel,
+        document.createElement("br"),
+        linecolorinput,
+        document.createElement("br"),
+        widthlabel,
+        document.createElement("br"),
+        linewidthinput,        
+        document.createElement("br"),
+        linex1inputlabel,
+        document.createElement("br"),
+        linex1input,
+        document.createElement("br"),
+        liney1inputlabel,
+        document.createElement("br"),
+        liney1input,
+        document.createElement("br"),
+        linex2inputlabel,
+        document.createElement("br"),
+        linex2input,
+        document.createElement("br"),
+        liney2inputlabel,
+        document.createElement("br"),
+        liney2input,
+        document.createElement("br"),
+        lineheadinputlabel,
+        document.createElement("br"),
+        lineheadinput
+    )
+
+    document.getElementById("toolcontainer").append(lineoptionbar, linetoolbox)
+}
+
+ /** End Draw Functions */
