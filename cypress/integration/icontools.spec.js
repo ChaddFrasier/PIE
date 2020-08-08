@@ -1,5 +1,5 @@
 describe("Icon Tests > ", () => {
-
+    // add the image and open the edit frame
     beforeEach(()=> {
         cy.visit('/');
 
@@ -7,111 +7,142 @@ describe("Icon Tests > ", () => {
         cy.get("#editminibtn").click();
     });
 
-
     it("Icon is added to SVG when dragged and dropped on an image", ()=>{
-        
+        // mousedown and hold
         cy.get("#northarrowopt").trigger("mousedown");
+        
+        // release the mouse over the image location doesnt matter
         cy.get("svg>image").last().trigger("mouseup");
 
+        // test that the icon grounp is there
         cy.get('svg#figureContainer>g').should("have.length", 1)
     });
 
     it("Icon is not added when there is no image to select", ()=>{
-        
+        // remove the image
         cy.get(".windowremovebtn").click();
+        
+        // try to add the icon
         cy.get("#northarrowopt").trigger("mousedown");
         cy.get("svg#figureContainer").trigger("mouseup");
 
+        // should not exist
         cy.get('svg#figureContainer>g').should("not.exist")
     });
 
     it("Test if all three icons can be added", ()=>{
-        
+        // add the icon
         cy.get("#northarrowopt").trigger("mousedown");
         cy.get("svg>image").last().trigger("mouseup", {clientX:1000, clientY: 300});
-        cy.get('svg#figureContainer>g').should("have.length", 1);
-        
+      
+        // add the sun icon
         cy.get("#sunarrowopt").trigger("mousedown");
         cy.get("svg>image").last().trigger("mouseup", {clientX:1000, clientY: 400});
+        
+        // test that there is two icons
         cy.get('svg#figureContainer>g').should("have.length", 2);
 
+        // add another icon
         cy.get("#observerarrowopt").trigger("mousedown");
         cy.get("svg>image").last().trigger("mouseup");
 
+        // test for all 3 icons
         cy.get('svg#figureContainer>g').should("have.length", 3);
     });
 
     it("Test if north icon color changes when change color runs in the tool box", ()=>{
         
+        // make color variable
         let testcolor = "#1d84b5";
+        
+        // add the icon 
         cy.get("#northarrowopt").trigger("mousedown");
         cy.get("svg>image").last().trigger("mouseup");
-        cy.get('svg#figureContainer>g').should("have.length", 1);
-
+        
+        // change the value of the color input
         cy.get(".icontoolbox>input[type='color']").first()
             .invoke("val", testcolor)
             .trigger("change")
 
+        // test that the fill of the path is the test var
         cy.get('svg#figureContainer>g>path').first().should("have.attr", "fill", testcolor);
 
+        // change secondary color
         cy.get(".icontoolbox>input[type='color']").last()
             .invoke("val", testcolor)
             .trigger("change")
         
+        // test secondary color
         cy.get('svg#figureContainer>g>path').first().should("have.attr", "stroke", testcolor);
 
     });
 
     it("Test that the sun icon colors change accordingly", ()=>{
+        // set test var
         let testcolor = "#1d84b5";
+        
+        // add icon
         cy.get("#sunarrowopt").trigger("mousedown");
         cy.get("svg>image").last().trigger("mouseup");
         cy.get('svg#figureContainer>g').should("have.length", 1);
 
+        // change color
         cy.get(".icontoolbox>input[type='color']").first()
             .invoke("val", testcolor)
             .trigger("change")
 
+        // test color primary
         cy.get('svg#figureContainer>g>circle').first().should("have.attr", "stroke", testcolor);
 
+        // secondary color
         cy.get(".icontoolbox>input[type='color']").last()
             .invoke("val", testcolor)
             .trigger("change")
         
+        // test secondary color
         cy.get('svg#figureContainer>g>circle').first().should("have.attr", "fill", testcolor);
     });
 
     
     it("Test that the observer icon colors change accordingly", ()=>{
-        
+        // test var
         let testcolor = "#1d84b5";
+        
+        // add icon
         cy.get("#observerarrowopt").trigger("mousedown");
         cy.get("svg>image").last().trigger("mouseup");
         cy.get('svg#figureContainer>g').should("have.length", 1);
 
+        // change primary color
         cy.get(".icontoolbox>input[type='color']").first()
             .invoke("val", testcolor)
             .trigger("change")
 
+        // test primary color
         cy.get('svg#figureContainer>g>circle').first().should("have.attr", "fill", testcolor);
 
+        // change secondary color
         cy.get(".icontoolbox>input[type='color']").last()
             .invoke("val", testcolor)
             .trigger("change")
         
+        // test change color
         cy.get('svg#figureContainer>g>circle').first().should("have.attr", "stroke", testcolor);
-     });
+    });
 
     it("Test that the observer icon translates when changes occur", ()=>{
         
+        // add icon
         cy.get("#observerarrowopt").trigger("mousedown");
         cy.get("svg>image").last().trigger("mouseup");
         cy.get('svg#figureContainer>g').should("have.length", 1);
 
+        // test location x
         cy.get(".icontoolbox>input[type='number']")
             .eq(1).clear()
             .type('1100{enter}')
 
+        // find the group and check the inner style, throw an error to stop
         cy.get('svg#figureContainer>g').then( icongroup => {
             if( icongroup.attr("style").indexOf("translate(2200") <= -1 )
             {
@@ -119,10 +150,12 @@ describe("Icon Tests > ", () => {
             }
         });
 
+        // test location y
         cy.get(".icontoolbox>input[type='number']")
             .eq(2).clear()
             .type('1100{enter}')
 
+        // find the group and check the inner style, throw an error to stop
         cy.get('svg#figureContainer>g').then( icongroup => {
             if( icongroup.attr("style").indexOf("translate(2200px, 2200") <= -1 )
             {
@@ -133,19 +166,24 @@ describe("Icon Tests > ", () => {
 
     
     it("Test that the observer icon scale changed the translate", ()=>{
-        var oldTransform;
+        // set blank var
+        let oldTransform;
         
+        // add icon
         cy.get("#observerarrowopt").trigger("mousedown");
         cy.get("svg>image").last().trigger("mouseup");
 
+        // save old transform
         cy.get('svg#figureContainer>g').then( icongroup => {
             oldTransform = icongroup.css("transform")
         });
 
+        // change scale
         cy.get(".icontoolbox>input[type='number']")
             .first().clear()
             .type('0.25{enter}')
 
+        // test that the translate changes when the scale changes
         cy.get('svg#figureContainer>g').then( icongroup => {
             if( icongroup.css("transform").indexOf(oldTransform) > -1 )
             {
