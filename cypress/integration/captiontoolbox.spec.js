@@ -24,11 +24,11 @@ describe("Caption Tool Box Tests > ", () => {
 
         // check that the caption is there with presets
         cy.get("#figurecontainer>.captionObject").should("have.attr", "width", "1500")
-        cy.get("#figurecontainer>.captionObject").should("have.attr", "height", "250")
+        cy.get("#figurecontainer>.captionObject").should("have.attr", "height", "100")
         
         // change the contents of the input
-        cy.get(".captiontoolsbox>input[name='widthlabelinput']").type("1850{enter}")    
-        cy.get(".captiontoolsbox>input[name='heightlabelinput']").type("1850{enter}")    
+        cy.get(".captiontoolsbox>input[name='widthlabelinput']").clear().type("1850{enter}")    
+        cy.get(".captiontoolsbox>input[name='heightlabelinput']").clear().type("1850{enter}")    
         
         // check that the new entry is the new dimensions 
         cy.get("#figurecontainer>.captionObject").should("have.attr", "width", "1850")
@@ -66,11 +66,11 @@ describe("Caption Tool Box Tests > ", () => {
         cy.get('#addcaptionbtn').click()
 
         // change the contents of the input
-        cy.get(".captiontoolsbox>input[name='widthlabelinput']").type("dafjsg{enter}")    
-        cy.get(".captiontoolsbox>input[name='heightlabelinput']").type("heaufgwy{enter}")    
+        cy.get(".captiontoolsbox>input[name='widthlabelinput']").clear().type("dafjsg{enter}")    
+        cy.get(".captiontoolsbox>input[name='heightlabelinput']").clear().type("heaufgwy{enter}")    
        
-        cy.get("#figurecontainer>.captionObject").should("have.attr", "width", "1500")
-        cy.get("#figurecontainer>.captionObject").should("have.attr", "height", "250")
+        cy.get("#figurecontainer>.captionObject").should("have.attr", "width", "500")
+        cy.get("#figurecontainer>.captionObject").should("have.attr", "height", "100")
     });
 
     it("Should change the caption x and y when the caption x and y is NaN", () => {

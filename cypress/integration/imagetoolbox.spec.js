@@ -26,8 +26,8 @@ describe("Image Tool Box Tests > ", () => {
         cy.get("#figurecontainer>image").should("have.attr", "height", "1000")
         
         // change width and height of the image
-        cy.get("input[name='widthinput']").type("1850{enter}")    
-        cy.get("input[name='heightinput']").type("1850{enter}")    
+        cy.get("input[name='widthinput']").clear().type("1850{enter}")    
+        cy.get("input[name='heightinput']").clear().type("1850{enter}")    
         
         // check for the peoper change in the svg
         cy.get("#figurecontainer>image").should("have.attr", "width", "1850")
@@ -43,8 +43,8 @@ describe("Image Tool Box Tests > ", () => {
         cy.get("#figurecontainer>image").should("have.attr", "y", "0")
         
         // type the new dimensions and then check for svg element change
-        cy.get("input[name='xcoordinput']").type("1850{enter}")    
-        cy.get("input[name='ycoordinput']").type("1850{enter}")    
+        cy.get("input[name='xcoordinput']").clear().type("1850{enter}")    
+        cy.get("input[name='ycoordinput']").clear().type("1850{enter}")    
         cy.get("#figurecontainer>image").should("have.attr", "x", "1850")
         cy.get("#figurecontainer>image").should("have.attr", "y", "1850")
     });
@@ -65,8 +65,8 @@ describe("Image Tool Box Tests > ", () => {
         cy.get('#addimagebtn').click()
 
         // change the contents of the input
-        cy.get(".imagetoolsbox>input[name='xcoordinput']").type("dafjsg{enter}")    
-        cy.get(".imagetoolsbox>input[name='ycoordinput']").type("heaufgwy{enter}")    
+        cy.get(".imagetoolsbox>input[name='xcoordinput']").clear().type("dafjsg{enter}")    
+        cy.get(".imagetoolsbox>input[name='ycoordinput']").clear().type("heaufgwy{enter}")    
        
         cy.get("#figurecontainer>image").should("have.attr", "x", "0")
         cy.get("#figurecontainer>image").should("have.attr", "y", "0")
@@ -77,10 +77,10 @@ describe("Image Tool Box Tests > ", () => {
         cy.get('#addimagebtn').click()
 
         // change the contents of the input
-        cy.get(".imagetoolsbox>input[name='widthinput']").type("dafjsg{enter}")    
-        cy.get(".imagetoolsbox>input[name='heightinput']").type("heaufgwy{enter}")    
+        cy.get(".imagetoolsbox>input[name='widthinput']").clear().type("dafjsg{enter}")    
+        cy.get(".imagetoolsbox>input[name='heightinput']").clear().type("heaufgwy{enter}")    
        
-        cy.get("#figurecontainer>image").should("have.attr", "width", "1500")
-        cy.get("#figurecontainer>image").should("have.attr", "height", "1000")
+        cy.get("#figurecontainer>image").should("have.attr", "width", "750")
+        cy.get("#figurecontainer>image").should("have.attr", "height", "450")
     });
 });
