@@ -104,30 +104,33 @@ describe('Editor Page Tests > ', () => {
         cy.get("title").should("have.html", "FAQ");
     });
 
-    it("Navigate to 'Contact Us'", () => {
+    it("Navigate to 'Contact Us' and back to index.html", () => {
         // should be closed when the mini button is clicked
         cy.get(".footerbuttongroup>a").first().next().click();
-
+        
+        // check for proper page header
         cy.get("title").should("have.html", "Contact Us");
 
+        // navigate home
         cy.get(".pips2Header > a.centercontainer").click();
+
+        // test for home
+        cy.get("title").should("have.html", "PIE");
     });
 
-    it("Navigate to 'USGS Astro Home'", () => {
-        
-        cy.get(".pips2Header > a.leftcontainer").click();
-    });
-    
     it("Test that the pencil button disables other buttons", () => {
         
+        // open the mini button and clikc the penicl button
         cy.get("#editminibtn").click();
         cy.get("#penciloptbtn").click();
 
+        // test that the UI disables all the buttons
         cy.get("#northarrowopt").should("have.attr", "class", 'disabled');
         cy.get("#sunarrowopt").should("have.attr", "class", 'disabled');
         cy.get("#observerarrowopt").should("have.attr", "class", 'disabled');
         cy.get("#outlinebtnopt").should("have.attr", "class", 'disabled');
 
+        // test that it turn back on
         cy.get("#penciloptbtn").click();
 
         cy.get("#northarrowopt").should("have.attr", "class", '');
