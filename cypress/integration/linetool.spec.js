@@ -34,4 +34,48 @@ describe("Line Tests > ", () => {
            }
         })
     })
+
+    it("Test that line x and y for head and tail both work", ()=> {        
+        cy.get("input[type='number']").eq(1)
+        .clear()
+            .type("1000{enter}")
+            .trigger("change")
+
+        cy.get("line").should("have.attr", "x1", 1000)
+
+        cy.get("input[type='number']").eq(2)
+        .clear()
+            .type("250{enter}")
+            .trigger("change")
+
+        cy.get("line").should("have.attr", "y1", 250)
+
+        cy.get("input[type='number']").eq(3)
+        .clear()
+            .type("100{enter}")
+            .trigger("change")
+
+        cy.get("line").should("have.attr", "x2", 100)
+
+        cy.get("input[type='number']").eq(4)
+        .clear()
+            .type("400{enter}")
+            .trigger("change")
+
+        cy.get("line").should("have.attr", "y2", 400)
+    })
+
+    it("Test that the removing the line element remove function is working", ()=> {        
+        cy.get("input[type='number']").eq(1)
+        .clear()
+            .type("1000{enter}")
+            .trigger("change")
+
+
+        cy.get(".windowremovebtn").first()
+            .click()
+
+        cy.get("line").should("not.exist")
+        cy.get(".linetoolsbox").should("not.exist")
+    })
 })
