@@ -598,7 +598,7 @@ $(document).ready(()=>{
         widthlabel.setAttribute("for", "widthinput")
         widthinput.setAttribute("type", "number")
         widthinput.setAttribute("min", '750')
-        widthinput.value = '1500'
+        widthinput.value = 1500
         widthinput.setAttribute("name","widthinput")
 
         widthinput.addEventListener("change", function(){
@@ -2255,21 +2255,24 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         // Update color when the color changes
         lineelement.setAttribute("stroke", this.value )
 
-        let markerid = lineelement.style.markerEnd.split('url("#')[1].replace('")','')
+        try{
+            let markerid = lineelement.style.markerEnd.split('#')[1].replace('")','')
 
-        console.log(markerid)
-
-        let newMarker = document.getElementById( markerid )
-
-        // set attributes for new marker
-        newMarker.setAttribute("id", objectid + "-marker")
-        newMarker.firstChild.setAttribute("fill", this.value)
-        newMarker.setAttribute("markerWidth", lineelement.getAttribute("stroke-width")/2)
-        newMarker.setAttribute("markerHeight", lineelement.getAttribute("stroke-width")/2)
-        lineelement.style.markerEnd = `url("#${newMarker.getAttribute("id")}")`
-
-        // add the new marker
-        document.getElementById("figdefs").appendChild(newMarker)
+            let newMarker = document.getElementById( markerid )
+    
+            // set attributes for new marker
+            newMarker.setAttribute("id", objectid + "-marker")
+            newMarker.firstChild.setAttribute("fill", this.value)
+            newMarker.setAttribute("markerWidth", lineelement.getAttribute("stroke-width")/2)
+            newMarker.setAttribute("markerHeight", lineelement.getAttribute("stroke-width")/2)
+            lineelement.style.markerEnd = `url("#${newMarker.getAttribute("id")}")`
+    
+            // add the new marker
+            document.getElementById("figdefs").appendChild(newMarker)
+        
+        }catch(err){
+            console.error("Line Has No Head")
+        }
     })
 
     //  outer toolbox info
