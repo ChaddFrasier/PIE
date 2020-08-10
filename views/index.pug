@@ -37,8 +37,8 @@ html
 
                     .windowoptionsbar(style="display:flex;")
                         h4="Editing Tools"
-                        button#editminibtn.windowminimizebtn='▼'
-                    #edittoolsbox.edittoolsbox.closed
+                        button#editminibtn.windowminimizebtn='▲'
+                    #edittoolsbox.edittoolsbox
                         label.text(for="northarrowopt")="North Button"
                         br
                         button#northarrowopt(type="button")
@@ -117,10 +117,10 @@ html
                     button.toolboxminimizebtn='◄'
                     button#addimagebtn.toolboxaddimagebtn
                         svg.btnvectorgraphic(viewBox="0 0 24 24")
-                            image.svgimg(href="images/addPlanetImage.svg", width="25px", height="25px")
+                            image.svgimg(href="images/addPlanetImage.svg", width="27px", height="27px")
                     button#addcaptionbtn.toolboxaddcaptionbtn
                         svg.btnvectorgraphic(viewBox="0 0 27 27")
-                            image.svgimg(href="images/addCaptionImage.svg", width="25px", height="25px")
+                            image.svgimg(href="images/addCaptionImage.svg", width="27px", height="27px")
             #editbox.editbox
                 //- Other Options Button Group
                 .exportoptionsbar(style="display:flex;")
