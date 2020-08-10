@@ -18,7 +18,8 @@ $(document).ready(()=>{
     // local jquery variables
     var bgPicker = document.getElementById("backgroundcolor"),
         dividerObject = document.getElementById("tooldivider"),
-        PencilFlag = false;
+        PencilFlag = false,
+        OutlineFlag = false;
 
     // get the global figure element
     svgContainer = document.getElementById("figurecontainer")
@@ -41,7 +42,7 @@ $(document).ready(()=>{
             event.target.classList.remove("drawing")
             document.getElementById("editbox").classList.remove("drawing")
 
-            changeButtonActivation("enable")
+            changeButtonActivation("enable", 0)
 
             // remove draw listeners
             svgContainer.removeEventListener("mousedown", drawMouseDownListener)
@@ -52,12 +53,39 @@ $(document).ready(()=>{
             event.target.classList.add("drawing")
             document.getElementById("editbox").classList.add("drawing")
 
-            changeButtonActivation("disable")
+            changeButtonActivation("disable", 0)
 
             // add event listener for click on svg
             svgContainer.addEventListener("mousedown", drawMouseDownListener )
         }
         PencilFlag = !(PencilFlag)
+    })
+
+    $('#outlinebtnopt').click( function( event ) {
+        if(OutlineFlag)
+        {
+            // cancel the drawing functionality
+            document.getElementById("editbox").classList.remove("outlining")
+            event.target.classList.remove("outlining")
+
+            changeButtonActivation("enable", 1)
+
+            // remove draw listeners
+            svgContainer.removeEventListener("mousedown", console.log("RUN LISTENER"))
+        }
+        else
+        {
+            // start the drawing functionality
+            document.getElementById("editbox").classList.add("outlining")
+            event.target.classList.add("outlining")
+
+
+            changeButtonActivation("disable", 1)
+
+            // add event listener for click on svg
+            svgContainer.addEventListener("mousedown", console.log("TURN ON") )
+        }
+        OutlineFlag = !(OutlineFlag)
     })
     
     /** 
@@ -65,11 +93,16 @@ $(document).ready(()=>{
      * @description Hide and show the toolbox if the option bar is clicked
      */
     $(".windowoptionsbar").on("click", function(event) {
-        let btn = event.target.lastElementChild
+        optionsAction(event.target)
+    })
+
+    function optionsAction( target )
+    {
+        let btn = console.log(target.querySelector("button"))
         if( btn ){
             btn.click()
         }
-    })
+    }
 
     /** 
      * @function .toolboxminimizebtn.click() 
@@ -1084,7 +1117,7 @@ function shiftDown()
     // check for an object below
     if( lowerObject )
     {
-        // TODO: what am i doing
+        // Reset the order of the edit box elemets
         shiftObjects.reverse().forEach(domElement => {
             lowerObject.insertAdjacentElement("afterend", domElement)
         })
@@ -1263,11 +1296,11 @@ function drawSvgIcon( image, icontype, event )
             icongroup = document.getElementById("northgroup").cloneNode(true)
             icongroup.setAttribute("objectid", image.id)
             icongroup.setAttribute("id", "northIcon-" + image.id)
-            icongroup.style.scale = "0.5"
+            icongroup.style.scale = "5"
 
             // set the location of the icon to where the mouse was released
-            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 480 )
-            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 480 )
+            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 25 )
+            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 25 )
 
             // set translate
             icongroup.style.transform = translateString( newX, newY)
@@ -1418,8 +1451,8 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             iconscaleinput.setAttribute("type", "number")
             iconscaleinput.setAttribute("objectid", iconId)
             icontoolbox.setAttribute("objectid", iconId)
-            iconscaleinput.setAttribute("step", "0.01")
-            iconscaleinput.value = 0.5
+            iconscaleinput.setAttribute("step", ".25")
+            iconscaleinput.value = 5
 
             // labels for north
             maincolorlabel.innerHTML = "Main Color"
@@ -1442,9 +1475,9 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             northicontranslatey.setAttribute("objectid", iconId)
             northicontranslatey.setAttribute("min", "1")
 
-            // set translate value
-            northicontranslatex.value = (transX*0.5).toFixed(0)
-            northicontranslatey.value = (transY*0.5).toFixed(0)
+            // set translate value based on icon scale and fix to integer
+            northicontranslatex.value = (transX*5).toFixed(0)
+            northicontranslatey.value = (transY*5).toFixed(0)
 
             // set translate labels
             northicontranslateylabel.innerHTML = "Translate Y Position"
@@ -1783,6 +1816,8 @@ function updateIconScale( event )
         let oldscale = icon.style.scale
         icon.style.scale = inputvalue
 
+        console.log(oldscale)
+
         // reset the location of the image
         icon.style.transform = rescaleIcon( oldscale, icon.style.scale, icon.style.transform )
     }
@@ -1905,7 +1940,7 @@ function changeIconColor( colorid, colorval, icon )
             if( icon.id.indexOf( "north" ) > -1 )
             {
                 // change all three children of the north icon
-                changeColorsOfChildren( icon.childNodes, colorval, "fill", "fill" )
+                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "fill", "stroke" )
             }
             else if( icon.id.indexOf( "sun" ) > -1 )
             {
@@ -1923,7 +1958,7 @@ function changeIconColor( colorid, colorval, icon )
             if( icon.id.indexOf( "north" ) > -1 )
             {
                 // change the secondary of the north icon
-                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "stroke" )
+                changeColorsOfChildren( icon.childNodes, colorval, "fill", "stroke", "fill" )
             }
             else if( icon.id.indexOf( "sun" ) > -1 )
             {
@@ -1978,22 +2013,45 @@ function changeColorsOfChildren( children, color , ...order )
  * @param {string} code - either "enable", or "disable" 
  * @description disabled the buttons when the pencil icon is hit
  */
-function changeButtonActivation( code )
+function changeButtonActivation( ActivationCode, code )
 {
-    // enable or disable buttons depending on code
-    if( code == "enable" )
+    switch( code ) 
     {
-        document.getElementById( "northarrowopt" ).classList.remove( "disabled" )
-        document.getElementById( "observerarrowopt" ).classList.remove( "disabled" )
-        document.getElementById( "sunarrowopt" ).classList.remove( "disabled" )
-        document.getElementById( "outlinebtnopt" ).classList.remove( "disabled" )
-    }
-    else if( code == "disable" )
-    {
-        document.getElementById( "northarrowopt" ).classList.add( "disabled" )
-        document.getElementById( "observerarrowopt" ).classList.add( "disabled" )
-        document.getElementById( "sunarrowopt" ).classList.add( "disabled" )
-        document.getElementById( "outlinebtnopt" ).classList.add( "disabled" )
+        case 0:
+            // enable or disable buttons depending on code
+            if( ActivationCode == "enable" )
+            {
+                document.getElementById( "northarrowopt" ).classList.remove( "disabled" )
+                document.getElementById( "observerarrowopt" ).classList.remove( "disabled" )
+                document.getElementById( "sunarrowopt" ).classList.remove( "disabled" )
+                document.getElementById( "outlinebtnopt" ).classList.remove( "disabled" )
+            }
+            else if( ActivationCode == "disable" )
+            {
+                document.getElementById( "northarrowopt" ).classList.add( "disabled" )
+                document.getElementById( "observerarrowopt" ).classList.add( "disabled" )
+                document.getElementById( "sunarrowopt" ).classList.add( "disabled" )
+                document.getElementById( "outlinebtnopt" ).classList.add( "disabled" )
+            }
+            break
+        
+        case 1:
+            // enable or disable buttons depending on code
+            if( ActivationCode == "enable" )
+            {
+                document.getElementById( "northarrowopt" ).classList.remove( "disabled" )
+                document.getElementById( "observerarrowopt" ).classList.remove( "disabled" )
+                document.getElementById( "sunarrowopt" ).classList.remove( "disabled" )
+                document.getElementById( "penciloptbtn" ).classList.remove( "disabled" )
+            }
+            else if( ActivationCode == "disable" )
+            {
+                document.getElementById( "northarrowopt" ).classList.add( "disabled" )
+                document.getElementById( "observerarrowopt" ).classList.add( "disabled" )
+                document.getElementById( "sunarrowopt" ).classList.add( "disabled" )
+                document.getElementById( "penciloptbtn" ).classList.add( "disabled" )
+            }
+            break
     }
 }
 
