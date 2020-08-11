@@ -71,7 +71,7 @@ $(document).ready(()=>{
             changeButtonActivation("enable", 1)
 
             // remove draw listeners
-            svgContainer.removeEventListener("mousedown", console.log("RUN LISTENER"))
+            svgContainer.removeEventListener("mousedown", drawBoxMouseDownListener )
         }
         else
         {
@@ -83,7 +83,7 @@ $(document).ready(()=>{
             changeButtonActivation("disable", 1)
 
             // add event listener for click on svg
-            svgContainer.addEventListener("mousedown", console.log("TURN ON") )
+            svgContainer.addEventListener("mousedown", drawBoxMouseDownListener )
         }
         OutlineFlag = !(OutlineFlag)
     })
@@ -2675,4 +2675,383 @@ function optionsAction( target )
     if( btn && btn.nodeName == "BUTTON" ){
         btn.click()
     }
+}
+
+/**
+ * @function drawBoxMouseDownListener
+ * @param {_Event} event - the click event
+ * @description drawing a box
+ */
+function drawBoxMouseDownListener( event )
+{
+    // prevent defaults to stop dragging
+    event.preventDefault()
+
+    let rect = document.createElementNS( NS.svg, "rect" ),
+        rectId = randomId("rect"),
+        startClickX, startClickY;
+
+    // get transformed svg point where click occured
+    let svgP = createSVGPoint( event.clientX, event.clientY )
+
+    startClickX = svgP.x
+    startClickY = svgP.y
+
+    // set rectangle attributes
+    rect.setAttribute( "x", svgP.x )
+    rect.setAttribute( "y", svgP.y )
+    rect.setAttribute( "stroke", "#ffffff" )
+    rect.setAttribute( "fill", "transparent" )
+    rect.setAttribute( "id", rectId )
+    rect.setAttribute( "stroke-width", "10" )
+    rect.setAttribute( "height", 20 )
+    rect.setAttribute( "width", 20 )
+
+    // create the inner outline draw listener
+    function endBoxDraw( event )
+        {
+            document.getElementById("outlinebtnopt").click()
+            svgContainer.removeEventListener( "mousemove", updateBoxUI )
+            svgContainer.removeEventListener( "mouseup", endBoxDraw )
+
+            // create the toolbox when the rect finished being drawn by the user
+            createOutlineToolbox( 
+                rectId, 
+                rect.getAttribute("x"),
+                rect.getAttribute("y"),
+                rect.getAttribute("width"),
+                rect.getAttribute("height"),
+                rect.getAttribute("stroke"))
+        }
+
+    // sets the end of the line to where the mouse is
+    svgContainer.addEventListener( "mouseup", endBoxDraw )
+
+    // set the update function
+    function updateBoxUI ( event )
+    {
+            let svgP = createSVGPoint( event.clientX, event.clientY )
+
+            // if newx is lt startclick X  + left 20px 
+            if( svgP.x < startClickX - 20 )
+            {
+                // newx = mouse location
+                rect.setAttribute("x", svgP.x)
+                // new width = startlocation - mouseX
+                rect.setAttribute("width", startClickX - svgP.x)
+            }
+            else if( svgP.x > startClickX + 20 )
+            {
+                // calculate difference in x values to get width
+                rect.setAttribute("x", startClickX)
+                rect.setAttribute("width", svgP.x - Number(rect.getAttribute("x")) )
+            }
+
+            // check if the new y is less than the start point
+            if( svgP.y < startClickY - 20)
+            {
+                // update the new x location
+                rect.setAttribute("y", svgP.y)
+                rect.setAttribute("height", startClickY - svgP.y)
+            }
+            else if( svgP.y > startClickY + 20 )
+            {
+                rect.setAttribute("y", startClickY)
+                rect.setAttribute("height", svgP.y - Number(rect.getAttribute("y")) )
+            }
+    }
+
+    // event listener for mousemove
+    svgContainer.addEventListener( "mousemove", updateBoxUI )
+
+    // put the line on the svg image
+    svgContainer.appendChild(rect)
+}
+
+/**
+ * @function createOutlineToolBox
+ * @param {string} objectid - the id of the rectangle svg element
+ * @param {number} rectX - the x of the rect 
+ * @param {number} rectY - the y of the rect
+ * @param {number} rectW - the width of the rect
+ * @param {number} rectH - the height of the rect
+ * @param {string} strokeColor - color code
+ * @description draw and add the input fields to the document
+ */
+function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColor )
+{
+    let rectxinput = document.createElement("input")
+    let rectxinputlabel = document.createElement("label")
+    let rectyinput = document.createElement("input")
+    let rectyinputlabel = document.createElement("label")
+    let strokewidthinput = document.createElement("input")
+    let strokewidthinputlabel = document.createElement("label")
+    let rectwidthlabel = document.createElement("label")
+    let rectwidthinput = document.createElement("input")
+    let rectheightlabel = document.createElement("label")
+    let rectheightinput = document.createElement("input")
+    let rectcolorlabel = document.createElement("label")
+    let rectcolorinput = document.createElement("input")
+    let recttoolbox = document.createElement("div")
+    let rectoptionbar = document.createElement("div")
+    let rectoptionheader = document.createElement("h4")
+    let deletebtn = document.createElement("button")
+    let minibtn = document.createElement("button")
+    let layerbtn = document.createElement("button")
+
+    // event listener for clicking options bar to close
+    rectoptionbar.addEventListener("click", function( event ){
+        optionsAction(event.target)
+    })
+
+    // input x field and label
+    rectxinput.setAttribute( "objectid", objectid )
+    rectxinputlabel.setAttribute( "objectid", objectid )
+    rectxinput.setAttribute( "type", "number" )
+    rectxinput.setAttribute( "min", "0" )
+    rectxinputlabel.innerHTML = "X Coordinate"
+    rectxinput.value = parseFloat(rectX).toFixed(0)
+
+    rectxinput.addEventListener("change", function(event)
+    {
+        // perform line movements
+        if( Number(this.getAttribute("min")) > Number(this.value) )
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("x", Number(this.getAttribute("min")) )
+            this.value = Number(this.getAttribute("min"))
+        }
+        else
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("x", this.value )
+        }
+    })
+
+    // input y node attributes
+    rectyinput.setAttribute("objectid", objectid)
+    rectyinputlabel.setAttribute("objectid", objectid)
+    rectyinputlabel.innerHTML = "Y Coordinate"
+    rectyinput.setAttribute("type", "number")
+    rectyinput.setAttribute("min", "0")
+    rectyinput.value = parseFloat(rectY).toFixed(0)
+
+    rectyinput.addEventListener("change", function(event)
+    {
+        if( Number(this.getAttribute("min")) > Number(this.value) )
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("y", Number(this.getAttribute("min")) )
+            this.value = Number(this.getAttribute("min"))
+        }
+        else
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("y", this.value )
+        }
+
+    })
+
+    // input rect width
+    rectwidthlabel.setAttribute("objectid", objectid)
+    rectwidthinput.setAttribute("objectid", objectid)
+    rectwidthlabel.innerHTML = "Box Width"
+    rectwidthinput.setAttribute("type", "number")
+    rectwidthinput.setAttribute("min", "20")
+    rectwidthinput.value = rectW
+
+    rectwidthinput.addEventListener("change", function(event)
+    {
+        if( Number(this.getAttribute("min")) > Number(this.value) )
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("width", Number(this.getAttribute("min")) )
+            this.value = Number(this.getAttribute("min"))
+        }
+        else
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("width", this.value )
+        }
+    })
+
+    // input line height
+    rectheightlabel.setAttribute("objectid", objectid)
+    rectheightinput.setAttribute("objectid", objectid)
+    rectheightlabel.innerHTML = "Box Height"
+    rectheightinput.setAttribute("type", "number")
+    rectheightinput.setAttribute("min", "20")
+    rectheightinput.value = rectH
+
+    rectheightinput.addEventListener("change", function(event)
+    {
+        // line width setting
+        if( Number(this.getAttribute("min")) > Number(this.value) )
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("height", Number(this.getAttribute("min")) )
+            this.value = Number(this.getAttribute("min"))
+        }
+        else
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("height", this.value )
+        }
+    })
+
+
+    // stroke width node attributes
+    strokewidthinputlabel.setAttribute("objectid", objectid)
+    strokewidthinput.setAttribute("objectid", objectid)
+    strokewidthinputlabel.innerHTML = "Box Height"
+    strokewidthinput.setAttribute("type", "number")
+    strokewidthinput.setAttribute("min", "10")
+    strokewidthinput.value = 10
+
+    strokewidthinput.addEventListener("change", function(event)
+    {
+        // line width setting
+        if( Number(this.getAttribute("min")) > Number(this.value) )
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("stroke-width", Number(this.getAttribute("min")) )
+            this.value = Number(this.getAttribute("min"))
+        }
+        else
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("stroke-width", this.value )
+        }
+    })
+
+    // input outline color fields
+    rectcolorlabel.setAttribute("objectid", objectid)
+    rectcolorinput.setAttribute("objectid", objectid)
+    rectcolorlabel.innerHTML = "Box Color"
+    rectcolorinput.setAttribute("type", "color")
+    rectcolorinput.value = strokeColor
+
+    rectcolorinput.addEventListener("change", function(event)
+    {
+        let rect = document.getElementById( this.attributes.objectid.value )
+        // Update color when the color changes
+        rect.setAttribute("stroke", this.value )
+    })
+
+    //  outer toolbox info
+    recttoolbox.setAttribute("objectid", objectid)
+    rectoptionbar.setAttribute("objectid", objectid)
+    rectoptionheader.setAttribute("objectid", objectid)
+    recttoolbox.classList.add("linetoolsbox")
+    recttoolbox.setAttribute("id", "linetoolsbox-" + objectid)
+
+    // options bar stuff
+    rectoptionbar.setAttribute("class", 'windowoptionsbar')
+    rectoptionbar.style.display = "flex"
+
+    rectoptionheader.innerHTML = "Outline Icon"
+
+    // same with the minimize button
+    minibtn.classList.add("windowminimizebtn")
+    minibtn.innerHTML = "▲"
+
+    // cant forget the event handler for the minimize btn
+    minibtn.addEventListener( "click", function(event) {
+        minimizeToolsWindow(event)
+    })
+
+    // same for delete as minimize
+    deletebtn.classList.add("windowremovebtn")
+    deletebtn.setAttribute("objectid", objectid)
+    deletebtn.innerHTML = "&times"
+
+    // set event listener to remove north icon
+    deletebtn.addEventListener( "click", function(event) {
+        //delete a line
+        removeLineWindow(event)
+    })
+
+    deletebtn.setAttribute("objectid", objectid)
+
+    /** Dyncamic layer buttoon requires more work*/
+    // set the class css and the svg button graphic
+    layerbtn.classList.add("windoworderingbtn")
+    layerbtn.innerHTML = "<svg viewBox='0 0 100 100' width='100%' height='100%' style='padding:1px' >"+
+                        "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
+                        "<rect x='30' y='10' width='50' height='10' fill='black' rx='5'/>"+
+                        "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
+                        "<rect x='30' y='41' width='50' height='10' fill='black' rx='5'/>" + 
+                        "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
+                        "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
+    
+    // main handler for the dragging functionality
+    layerbtn.addEventListener("mousedown", function(event) {
+        // capture the start y when the click happens
+        oldY = event.pageY
+
+        // add the listeners for removing the drag functions
+        layerbtn.addEventListener("mouseup", documentMouseUpListener, layerbtn)
+        document.addEventListener("mousemove", getMouseDirection, false)
+
+        // try to find the element to put things above
+        try{
+            // ** I know to look for this because the structure of the layer browser. ** could be simplified in the future
+            upperObject = (event.target.parentElement.parentElement.previousSibling.previousSibling) ?
+            event.target.parentElement.parentElement.previousElementSibling.previousSibling :
+            null; 
+        }catch{
+            upperObject = null
+        }
+        // the element to put things below
+        try{
+            lowerObject = event.target.parentElement.parentElement.nextSibling.nextSibling.nextSibling
+        }
+        catch{
+            lowerObject = null
+        }
+        // objects that need to shift
+        try{
+            // get current targets parentElement for shifting
+            shiftObjects = [event.target.parentElement.parentElement, event.target.parentElement.parentElement.nextSibling]
+        }catch{
+            shiftObjects = null
+        }
+
+        // drag function
+        document.addEventListener("mousemove", docucmentMouseOverHandler)
+    })
+
+    // add the window lister to remove active dragging
+    window.addEventListener("mousedown", () => {
+        window.addEventListener("mouseup", documentMouseUpListener, layerbtn)
+    })
+    /** End Dragging */
+
+
+    // set aptions bar nodes
+    rectoptionbar.append( 
+        rectoptionheader, 
+        minibtn,
+        deletebtn,
+        layerbtn
+    )
+
+    // append the objects
+    recttoolbox.append(
+        rectxinputlabel,
+        document.createElement("br"),
+        rectxinput,
+        document.createElement("br"),
+        rectyinputlabel,
+        document.createElement("br"),
+        rectyinput,
+        document.createElement("br"),
+        rectwidthlabel,
+        document.createElement("br"),
+        rectwidthinput,
+        document.createElement("br"),
+        rectheightlabel,
+        document.createElement("br"),
+        rectheightinput,
+        document.createElement("br"),
+        rectcolorlabel,
+        document.createElement("br"),
+        rectcolorinput,
+        document.createElement("br"),
+        strokewidthinputlabel,
+        document.createElement("br"),
+        strokewidthinput   
+    )
+
+    document.getElementById("toolcontainer").append(rectoptionbar, recttoolbox)
 }
