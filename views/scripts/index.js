@@ -96,14 +96,6 @@ $(document).ready(()=>{
         optionsAction(event.target)
     })
 
-    function optionsAction( target )
-    {
-        let btn = console.log(target.querySelector("button"))
-        if( btn ){
-            btn.click()
-        }
-    }
-
     /** 
      * @function .toolboxminimizebtn.click() 
      * @description handler for the whole tool window mini button
@@ -148,6 +140,11 @@ $(document).ready(()=>{
         newoptionsbar.classList.add("windowoptionsbar")
         newoptionsbar.style.display = "flex"
 
+        newoptionsbar.addEventListener("click", function ( event )
+        {
+            optionsAction(event.target)
+        })
+
         // setup the header of the optionsbar
         header.innerHTML = "Caption Layer"
 
@@ -186,6 +183,8 @@ $(document).ready(()=>{
             // add the listeners for removing the drag functions
             layerbtn.addEventListener("mouseup", documentMouseUpListener, layerbtn)
             document.addEventListener("mousemove", getMouseDirection, false)
+            document.getElementById("toolcontainer").classList.add("hand")
+            
 
             // try to find the element to put things above
             try{
@@ -492,6 +491,12 @@ $(document).ready(()=>{
         // set the class for the options bar
         newoptionsbar.classList.add("windowoptionsbar")
         newoptionsbar.style.display = "flex"
+
+        newoptionsbar.addEventListener("click", function ( event )
+        {
+            optionsAction(event.target)
+        })
+
         header.innerHTML = "Image Layer"
 
         // setup minimize button
@@ -1063,6 +1068,8 @@ function getMouseDirection( e )
  */
 function documentMouseUpListener()
 {
+    document.getElementById("toolcontainer").classList.remove("hand")
+
     // try to set the mouse events for the dragging
     try{
         document.removeEventListener("mousemove", docucmentMouseOverHandler)
@@ -1428,6 +1435,12 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             // options bar stuff
             iconoptionbar.setAttribute("class", 'windowoptionsbar')
             iconoptionbar.style.display = "flex"
+
+            iconoptionbar.addEventListener("click", function ( event )
+            {
+                optionsAction(event.target)
+            })
+
             iconoptionheader.innerHTML = "North Icon"
 
             // same for delete as minimize
@@ -1536,7 +1549,14 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             // options bar stuff
             sunoptionbar.setAttribute("class", 'windowoptionsbar')
             sunoptionbar.style.display = "flex"
+
+            sunoptionbar.addEventListener("click", function ( event )
+            {
+                optionsAction(event.target)
+            })
+
             sunoptionheader.innerHTML = "Sun Icon"
+
 
             // same for delete as minimize
             deletebtn1.classList.add("windowremovebtn")
@@ -1641,6 +1661,12 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             // Set Options bar stuff
             obsoptionbar.setAttribute("class", 'windowoptionsbar')
             obsoptionbar.style.display = "flex"
+
+            obsoptionbar.addEventListener("click", function ( event )
+            {
+                optionsAction(event.target)
+            })
+            
             obsoptionheader.innerHTML = "Observer Icon"
 
             // same for delete as minimize
@@ -1815,8 +1841,6 @@ function updateIconScale( event )
     {
         let oldscale = icon.style.scale
         icon.style.scale = inputvalue
-
-        console.log(oldscale)
 
         // reset the location of the image
         icon.style.transform = rescaleIcon( oldscale, icon.style.scale, icon.style.transform )
@@ -2231,6 +2255,10 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     let lineheadinput = document.createElement("select")
     let lineheadinputlabel = document.createElement("label")
 
+    lineoptionbar.addEventListener("click", function( event ){
+        optionsAction(event.target)
+    })
+
     // input x1 fields
     linex1input.setAttribute( "objectid", objectid )
     linex1inputlabel.setAttribute( "objectid", objectid )
@@ -2343,6 +2371,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     // options bar stuff
     lineoptionbar.setAttribute("class", 'windowoptionsbar')
     lineoptionbar.style.display = "flex"
+
     lineoptionheader.innerHTML = "Line Icon"
 
     // same with the minimize button
@@ -2631,5 +2660,19 @@ function createMarker( markerString, lineid, headcode )
             // set line marker end
             line.style.markerEnd = `url(#${newmarker.id})`
         }
+    }
+}
+
+/**
+ * @function optionsAction
+ * @param {Node} target - the target of the  click event 
+ * @description click the second element in the node
+ */
+function optionsAction( target )
+{
+    let btn = target.childNodes[1]
+
+    if( btn && btn.nodeType == "button" ){
+        btn.click()
     }
 }
