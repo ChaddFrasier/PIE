@@ -2670,9 +2670,9 @@ function createMarker( markerString, lineid, headcode )
  */
 function optionsAction( target )
 {
-    let btn = target.childNodes[1]
+    let btn = target.firstChild.nextSibling
 
-    if( btn && btn.nodeType == "button" ){
+    if( btn && btn.nodeName == "BUTTON" ){
         btn.click()
     }
 }
