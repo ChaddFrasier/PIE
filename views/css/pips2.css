@@ -28,6 +28,28 @@ html {
     text-align: center;
 }
 
+.credidation  {
+    color: var(--accent-color);
+    font-size: 10px;
+}
+
+.credidation > a {
+    color: var(--accent-color);
+}
+
+.credidation > a:hover {
+    cursor: default;
+}
+
+.outlining:hover {
+    cursor: crosshair;
+}
+
+.outlining {
+    cursor: crosshair;
+    background: transparent;
+}
+
 .desclist {
     display: block;
     text-align: left;
@@ -163,13 +185,12 @@ a.descanchor, a.descanchor:visited, a.descanchor:active   {
     cursor: grab;
 }
 
-.drawing:hover {
-    cursor: url("images/pencil.png"), auto !important;
+.drawing {
+    background: transparent;
 }
 
-
-button.drawing {
-    background: transparent;
+.drawing:hover{
+    cursor: url("images/pencil.svg"), auto !important;
 }
 
 body {
@@ -219,8 +240,8 @@ button.disabled {
 .pips2header {
     width: 100%;
     height: auto;
-    min-height: 15%;
-    max-height: 15%;
+    min-height: 16%;
+    max-height: 16%;
     display: flex;
 }
 
@@ -608,6 +629,7 @@ svg.imagecontainer {
     vertical-align: middle;
     cursor: default;
     margin: auto auto auto 0;
+    pointer-events: none;
 }
 
 .windowoptionsbar>button {
