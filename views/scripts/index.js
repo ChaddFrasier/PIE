@@ -2151,7 +2151,9 @@ function updateCaptionBoxColor ( color, objectid )
 }
 
 /**
- * Draw Function 
+ * @function drawMouseDownListener
+ * @param {_Event} event - click event
+ * @description drawing line on the svg while dragging
  */
 function drawMouseDownListener( event )
 {
