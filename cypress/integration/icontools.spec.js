@@ -56,7 +56,7 @@ describe("Icon Tests > ", () => {
         
         // add the icon 
         cy.get("#northarrowopt").trigger("mousedown");
-        cy.get("svg>image").last().trigger("mouseup");
+        cy.get("#figurecontainer").trigger("mouseup");
         
         // change the value of the color input
         cy.get(".icontoolbox>input[type='color']").first()
