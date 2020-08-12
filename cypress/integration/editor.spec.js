@@ -74,12 +74,6 @@ describe('Editor Page Tests > ', () => {
     });
 
     it("Window Size Changes when the mini button is clicked", () => {
-        // should be closed when the mini button is clicked
-        cy.get("#edittoolsbox").should("have.class", "closed")
-
-        // click the button again
-        cy.get("#editminibtn").click()
-
         // check that there is no closed tool box
         cy.get("#edittoolsbox[class='closed']").should("have.length", 0)
         
@@ -121,7 +115,6 @@ describe('Editor Page Tests > ', () => {
     it("Test that the pencil button disables other buttons", () => {
         
         // open the mini button and clikc the penicl button
-        cy.get("#editminibtn").click();
         cy.get("#penciloptbtn").click();
 
         // test that the UI disables all the buttons

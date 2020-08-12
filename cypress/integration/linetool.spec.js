@@ -4,8 +4,6 @@ describe("Line Tests > ", () => {
     beforeEach(()=> {
         cy.visit('/');
 
-        cy.get("#editminibtn").click();
-
         // Click pencil and draw  a line
         cy.get("#penciloptbtn").click();
 

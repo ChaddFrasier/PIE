@@ -242,7 +242,7 @@ $(document).ready(()=>{
         captiontextcolorinput.setAttribute("objectid", captionId)
 
         captiontextcolorinput.setAttribute("type", "color")
-        captiontextcolorlabel.innerHTML = "Font Color"
+        captiontextcolorlabel.innerHTML = "Font Color: "
         captiontextcolorinput.value ="#000"
 
         captionbackgroundcolorlabel.setAttribute("objectid", captionId)
@@ -250,7 +250,7 @@ $(document).ready(()=>{
         captionbackgroundcolorinput.setAttribute("type", "color")
         captionbackgroundcolorinput.value = "#d3d3d3"
 
-        captionbackgroundcolorlabel.innerHTML = "Box Color"
+        captionbackgroundcolorlabel.innerHTML = "Background Color: "
 
         // set attributes and classes
         toolsarea.classList.add("captiontoolsbox")
@@ -276,7 +276,7 @@ $(document).ready(()=>{
         /**
          * Do the same general idea for the text input on all the input to follow here
          */
-        widthlabel.innerHTML = "Width of Caption: "
+        widthlabel.innerHTML = "Caption Width: "
         widthlabel.setAttribute("for", "widthinput")
         widthinput.setAttribute("type", "number")
         widthinput.setAttribute("min", '500')
@@ -302,7 +302,7 @@ $(document).ready(()=>{
             }
         })
 
-        heightlabel.innerHTML = "Height of Caption: "
+        heightlabel.innerHTML = "Caption Height: "
         heightlabel.setAttribute("for", "widthinput")
 
         heightinput.setAttribute("type", "number")
@@ -327,7 +327,7 @@ $(document).ready(()=>{
             }
         })
 
-        xcoordlabel.innerHTML = "X Coordinate: "
+        xcoordlabel.innerHTML = "Caption X: "
         xcoordlabel.setAttribute("for", "widthinput")
         xcoordinput.setAttribute("type", "number")
         xcoordinput.setAttribute("min", '0')
@@ -352,7 +352,7 @@ $(document).ready(()=>{
             }
         })
         
-        ycoordlabel.innerHTML = "Y Coordinate: "
+        ycoordlabel.innerHTML = "Caption Y: "
         ycoordlabel.setAttribute("for", "ycoordinput")
         ycoordinput.setAttribute("type", "number")
         ycoordinput.setAttribute("min", '0')
@@ -566,7 +566,7 @@ $(document).ready(()=>{
         toolsarea.setAttribute("objectid", imageId)
        
         // file input attributes
-        filelabel.innerHTML = "Choose a file: "
+        filelabel.innerHTML = "Upload an Image: "
         filelabel.setAttribute("for", "imageinput")
         fileinput.setAttribute("type", "file")
         fileinput.setAttribute("name", "uploadfile")
@@ -632,7 +632,7 @@ $(document).ready(()=>{
         }
 
         // width input field
-        widthlabel.innerHTML = "Width of Image: "
+        widthlabel.innerHTML = "Image Width: "
         widthlabel.setAttribute("for", "widthinput")
         widthinput.setAttribute("type", "number")
         widthinput.setAttribute("min", '750')
@@ -658,7 +658,7 @@ $(document).ready(()=>{
         })
 
         // height input field
-        heightlabel.innerHTML = "Height of Image: "
+        heightlabel.innerHTML = "Image Height: "
         heightlabel.setAttribute("for", "heightinput")
         heightinput.setAttribute("type", "number")
         heightinput.setAttribute("min", '450')
@@ -684,7 +684,7 @@ $(document).ready(()=>{
         })
         
         // x coordinate input string
-        xcoordlabel.innerHTML = "X Coordinate: "
+        xcoordlabel.innerHTML = "Image X: "
         xcoordlabel.setAttribute("for", "xcoordinput")
         xcoordinput.setAttribute("type", "number")
         xcoordinput.setAttribute("min", '0')
@@ -710,7 +710,7 @@ $(document).ready(()=>{
         })
         
         // y coordinate input strings
-        ycoordlabel.innerHTML = "Y Coordinate: "
+        ycoordlabel.innerHTML = "Image Y: "
         ycoordlabel.setAttribute("for", "ycoordinput")
         ycoordinput.setAttribute("type", "number")
         ycoordinput.setAttribute("min", '0')
@@ -1324,11 +1324,11 @@ function drawSvgIcon( image, icontype, event )
             icongroup = document.getElementById("sungroup").cloneNode(true)
             icongroup.setAttribute("objectid", image.id)
             icongroup.setAttribute("id", "sunIcon-" + image.id)
-            icongroup.style.scale = "0.5"
+            icongroup.style.scale = "5"
 
             // set the location of the icon to where the mouse was released
-            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 512 )
-            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 512 )
+            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 24 )
+            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 24 )
     
             // set translate
             icongroup.style.transform = translateString( newX, newY )
@@ -1345,11 +1345,11 @@ function drawSvgIcon( image, icontype, event )
             icongroup = document.getElementById("observergroup").cloneNode(true)
             icongroup.setAttribute("objectid", image.id)
             icongroup.setAttribute("id", "observerIcon-" + image.id)
-            icongroup.style.scale = "0.5"
+            icongroup.style.scale = "5"
 
             // set the location of the icon to where the mouse was released
-            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 512 )
-            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 512 )
+            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 24 )
+            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 24 )
         
             if( !isNaN(newX) && !isNaN(newY))
             {
@@ -1464,13 +1464,14 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             iconscaleinput.setAttribute("type", "number")
             iconscaleinput.setAttribute("objectid", iconId)
             icontoolbox.setAttribute("objectid", iconId)
-            iconscaleinput.setAttribute("step", ".25")
+            iconscaleinput.setAttribute("step", 0.5)
+            iconscaleinput.setAttribute("min", 1)
             iconscaleinput.value = 5
 
             // labels for north
-            maincolorlabel.innerHTML = "Main Color"
-            accentcolorlabel.innerHTML = "Secondary Color"
-            scalelabel.innerHTML = "North Scale"
+            maincolorlabel.innerHTML = "North Main Color: "
+            accentcolorlabel.innerHTML = "North Secondary Color: "
+            scalelabel.innerHTML = "North Scale: "
 
             // both color input fields
             iconmaincolorinput.setAttribute("type", "color")
@@ -1489,12 +1490,12 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             northicontranslatey.setAttribute("min", "1")
 
             // set translate value based on icon scale and fix to integer
-            northicontranslatex.value = (transX*5).toFixed(0)
-            northicontranslatey.value = (transY*5).toFixed(0)
+            northicontranslatex.value = (transX*iconscaleinput.value).toFixed(0)
+            northicontranslatey.value = (transY*iconscaleinput.value).toFixed(0)
 
             // set translate labels
-            northicontranslateylabel.innerHTML = "Translate Y Position"
-            northicontranslatexlabel.innerHTML = "Translate X Position"
+            northicontranslateylabel.innerHTML = "North Y: "
+            northicontranslatexlabel.innerHTML = "North X: "
 
             // set event listeners
             iconscaleinput.addEventListener("change", updateIconScale)
@@ -1576,8 +1577,8 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             sunicontranslatey.setAttribute("min", "1")
 
             // set label input
-            sunicontranslateylabel.innerHTML = "Translate Y Position"
-            sunicontranslatexlabel.innerHTML = "Translate X Position"
+            sunicontranslateylabel.innerHTML = "Sun Y: "
+            sunicontranslatexlabel.innerHTML = "Sun X: "
 
             // append optionsbar stuff
             sunoptionbar.append(sunoptionheader, document.createElement("br"), deletebtn1)
@@ -1586,17 +1587,18 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             // scale input fields
             suniconscaleinput.setAttribute("type", "number")
             suniconscaleinput.setAttribute( "objectid", iconId )
-            suniconscaleinput.value = "0.5"
-            suniconscaleinput.setAttribute("step", "0.01")
+            suniconscaleinput.value = "5"
+            suniconscaleinput.setAttribute("min", 1)
+            suniconscaleinput.setAttribute("step", "0.5")
 
             // labels for input fields
-            sunmaincolorlabel.innerHTML = "Sun Main Color"
-            sunaccentcolorlabel.innerHTML = "Sun Secondary Color"
-            sunscalelabel.innerHTML = "Sun Scale"
+            sunmaincolorlabel.innerHTML = "Sun Main Color: "
+            sunaccentcolorlabel.innerHTML = "Sun Secondary Color: "
+            sunscalelabel.innerHTML = "Sun Scale: "
 
             // set translate value
-            sunicontranslatex.value = (transX*0.5).toFixed(0)
-            sunicontranslatey.value = (transY*0.5).toFixed(0)
+            sunicontranslatex.value = (transX*suniconscaleinput.value).toFixed(0)
+            sunicontranslatey.value = (transY*suniconscaleinput.value).toFixed(0)
 
             // main color input
             suniconmaincolorinput.setAttribute("type", "color")
@@ -1687,22 +1689,23 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             obsicontranslatey.setAttribute("min", "1")
 
             // set start values for label and value of translate
-            obsicontranslateylabel.innerHTML = "Translate Y Position"
-            obsicontranslatexlabel.innerHTML = "Translate X Position"
-            obsicontranslatex.value = (transX*0.5).toFixed(0)
-            obsicontranslatey.value = (transY*0.5).toFixed(0)
+            obsicontranslateylabel.innerHTML = "Observer Y: "
+            obsicontranslatexlabel.innerHTML = "Observer X: "
 
             // scale input field
             obsiconscaleinput.setAttribute("type", "number")
             obsiconscaleinput.setAttribute("objectid", iconId)
-            obsiconscaleinput.setAttribute("step", "0.01")
-            obsiconscaleinput.setAttribute("value", "0.5")
-            obsiconscaleinput.setAttribute("min", "0.25")
+            obsiconscaleinput.setAttribute("step", "0.5")
+            obsiconscaleinput.setAttribute("value", 5)
+            obsiconscaleinput.setAttribute("min", "1")
+
+            obsicontranslatex.value = (transX*obsiconscaleinput.value).toFixed(0)
+            obsicontranslatey.value = (transY*obsiconscaleinput.value).toFixed(0)
 
             // create labels
-            obsmaincolorlabel.innerHTML = "Observer Main Color"
-            obsaccentcolorlabel.innerHTML = "Observer Secondary Color"
-            obsscalelabel.innerHTML = "Observer Scale"
+            obsmaincolorlabel.innerHTML = "Observer Main Color: "
+            obsaccentcolorlabel.innerHTML = "Observer Secondary Color: "
+            obsscalelabel.innerHTML = "Observer Scale: "
 
             // primary color input
             obsiconmaincolorinput.setAttribute("type", "color")
@@ -1969,12 +1972,12 @@ function changeIconColor( colorid, colorval, icon )
             else if( icon.id.indexOf( "sun" ) > -1 )
             {
                 // change the primary of the sun icon
-                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "fill" )
+                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "fill", "stroke" )
             }
             else if( icon.id.indexOf( "observer" ) > -1 )
             {
                 // change the primary of the observer icon
-                changeColorsOfChildren( icon.childNodes, colorval, "fill", "fill", "fill", "fill", "fill", "fill" )
+                changeColorsOfChildren( icon.childNodes, colorval, "fill", "fill", "fill", "fill", "fill" )
             }
             break
         case 1:
@@ -1987,12 +1990,12 @@ function changeIconColor( colorid, colorval, icon )
             else if( icon.id.indexOf( "sun" ) > -1 )
             {
                 // change the secondary of the sun icon
-                changeColorsOfChildren( icon.childNodes, colorval, "fill", "stroke" )
+                changeColorsOfChildren( icon.childNodes, colorval, "fill", "stroke", "fill" )
             }
             else if( icon.id.indexOf( "observer" ) > -1 )
             {
                 // change the secondary of the observer icon
-                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "stroke", "stroke", "stroke", "stroke", "stroke" )
+                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "stroke", "stroke", "stroke", "stroke" )
             }
     }
 }
@@ -2266,7 +2269,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     linex1inputlabel.setAttribute( "objectid", objectid )
     linex1input.setAttribute( "type", "number" )
     linex1input.setAttribute( "min", "0" )
-    linex1inputlabel.innerHTML = "Line Head X Coordinate"
+    linex1inputlabel.innerHTML = "Line Start-Point X: "
     linex1input.value = parseFloat(x1).toFixed(0)
 
     linex1input.addEventListener("change", function(event)
@@ -2286,7 +2289,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     // input y1 fields
     liney1input.setAttribute("objectid", objectid)
     liney1inputlabel.setAttribute("objectid", objectid)
-    liney1inputlabel.innerHTML = "Line Head Y Coordinate"
+    liney1inputlabel.innerHTML = "Line Start-Point Y: "
     liney1input.setAttribute("type", "number")
     liney1input.setAttribute("min", "0")
     liney1input.value = parseFloat(y1).toFixed(0)
@@ -2310,7 +2313,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     // input line width fields
     widthlabel.setAttribute("objectid", objectid)
     linewidthinput.setAttribute("objectid", objectid)
-    widthlabel.innerHTML = "Line Thickness"
+    widthlabel.innerHTML = "Line Thickness: "
     linewidthinput.setAttribute("type", "number")
     linewidthinput.setAttribute("min", "10")
     linewidthinput.value = strokeWidth
@@ -2333,7 +2336,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     // input line color fields
     colorlabel.setAttribute("objectid", objectid)
     linecolorinput.setAttribute("objectid", objectid)
-    colorlabel.innerHTML = "Line Color"
+    colorlabel.innerHTML = "Line Color: "
     linecolorinput.setAttribute("type", "color")
     linecolorinput.value = "#ffffff"
 
@@ -2344,20 +2347,32 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         lineelement.setAttribute("stroke", this.value )
 
         try{
-            let markerid = lineelement.style.markerEnd.split('#')[1].replace('")','')
+            let markerEndid = lineelement.style.markerEnd.split('#')[1].replace('")','')
+            let markerStartid = lineelement.style.markerStart.split('#')[1].replace('")','')
 
-            let newMarker = document.getElementById( markerid )
-    
-            // set attributes for new marker
-            newMarker.setAttribute("id", objectid + "-marker")
-            newMarker.firstChild.setAttribute("fill", this.value)
-            newMarker.setAttribute("markerWidth", lineelement.getAttribute("stroke-width")/2)
-            newMarker.setAttribute("markerHeight", lineelement.getAttribute("stroke-width")/2)
-            lineelement.style.markerEnd = `url("#${newMarker.getAttribute("id")}")`
-    
-            // add the new marker
-            document.getElementById("figdefs").appendChild(newMarker)
-        
+            if( markerEndid )
+            {
+                let newEndMarker = document.getElementById( markerEndid )
+                // set attributes for new marker
+                newEndMarker.setAttribute("id", objectid + "-marker")
+                newEndMarker.firstChild.setAttribute("fill", this.value)
+                lineelement.style.markerEnd = `url("#${newEndMarker.getAttribute("id")}")`
+
+                // add the new marker
+                document.getElementById("figdefs").appendChild(newEndMarker)
+            }
+
+            if( markerStartid )
+            {
+                let newStartMarker = document.getElementById( markerStartid )
+                // set attributes for new marker
+                newStartMarker.setAttribute("id", objectid + "-markerEnd")
+                newStartMarker.firstChild.setAttribute("fill", this.value)
+                lineelement.style.markerStart = `url("#${newStartMarker.getAttribute("id")}")`
+
+                // add the new marker
+                document.getElementById("figdefs").appendChild(newStartMarker)
+            }
         }catch(err){
             console.error("Line Has No Head")
         }
@@ -2454,8 +2469,8 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 
 
     // set aptions bar nodes
-    lineoptionbar.append( 
-        lineoptionheader, 
+    lineoptionbar.append(
+        lineoptionheader,
         minibtn,
         deletebtn,
         layerbtn
@@ -2464,7 +2479,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     //  x2 input fields
     linex2input.setAttribute("objectid", objectid)
     linex2inputlabel.setAttribute("objectid", objectid)
-    linex2inputlabel.innerHTML = "Line Tail X Coordinate"
+    linex2inputlabel.innerHTML = "Line End-Point X: "
     linex2input.setAttribute("min", "0")
     linex2input.setAttribute("type", "number")
 
@@ -2488,7 +2503,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     // input y2 fields
     liney2input.setAttribute("objectid", objectid)
     liney2inputlabel.setAttribute("objectid", objectid)
-    liney2inputlabel.innerHTML = "Line Tail Y Coordinate"
+    liney2inputlabel.innerHTML = "Line End-Point Y"
     liney2input.setAttribute("min", "0")
     liney2input.setAttribute("type", "number")
 
@@ -2516,7 +2531,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 
     lineheadinput.setAttribute("objectid", objectid)
     lineheadinputlabel.setAttribute("objectid", objectid)
-    lineheadinputlabel.innerHTML = "Line Head"
+    lineheadinputlabel.innerHTML = "Line End-Point Head: "
 
     // set the options for the input
     optionarrow.innerHTML = "None"
@@ -2551,13 +2566,13 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
             switch( event.target.value )
             {
                 case "arrow":
-                    createMarker(line.style.markerEnd, line.id, "arrow")
+                    createMarker(line.style.markerEnd, line.id, "arrow", 0 )
                     break
                 case "square":
-                    createMarker(object.style.markerEnd, line.id, "square" )
+                    createMarker(object.style.markerEnd, line.id, "square", 0 )
                     break
                 case "circle":
-                    createMarker(object.style.markerEnd, line.id, "circle" )
+                    createMarker(object.style.markerEnd, line.id, "circle", 0 )
                     break
                 default:
                     object.style.markerEnd = "";
@@ -2570,6 +2585,45 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         }
     })
 
+
+    let linetailheadinput = lineheadinput.cloneNode(true)
+    let linetailheadinputlabel = lineheadinputlabel.cloneNode(true)
+
+    linetailheadinputlabel.innerHTML = "Line Start-Point Head: "
+
+    linetailheadinput.addEventListener("change", function(event) {
+        
+        let object = document.getElementById(event.target.attributes.objectid.value)
+
+        // if the object exists
+        if( object )
+        {
+            let line = document.getElementById(linetailheadinput.attributes.objectid.value)
+
+            // switch on the option
+            switch( event.target.value )
+            {
+                case "arrow":
+                    createMarker(line.style.markerStart, line.id, "arrow", 1 )
+                    break
+                case "square":
+                    createMarker(object.style.markerStart, line.id, "square", 1 )
+                    break
+                case "circle":
+                    createMarker(object.style.markerStart, line.id, "circle", 1 )
+                    break
+                default:
+                    object.style.markerStart = "";
+                    document.getElementById("figdefs").removeChild(document.getElementById(line.id+"-markerEnd"))
+            }
+        }
+        else
+        {
+            console.error("Error: Cannot find object with objectid" + event.target.attributes.objectid.value)
+        }
+    })
+
+
     // append the objects
     linetoolbox.append(
         colorlabel,
@@ -2579,6 +2633,10 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         lineheadinputlabel,
         document.createElement("br"),
         lineheadinput,
+        document.createElement("br"),
+        linetailheadinputlabel,
+        document.createElement("br"),
+        linetailheadinput,
         document.createElement("br"),
         widthlabel,
         document.createElement("br"),
@@ -2615,52 +2673,104 @@ function updateUILimits ( newW, newH )
  * @param {string} markerString - raw string from markerEnd
  * @param {string} lineid - the id of the line object
  * @param {string} headcode - string telling the type of head icon
+ * @param {number} endCode - the code to tell what end of the line to place the marker
  * @description create and remove markers for customizing lines
  */
-function createMarker( markerString, lineid, headcode )
+function createMarker( markerString, lineid, headcode, endCode )
 {
-    // check if the current line already has a marker object
-    if( markerString.indexOf(lineid) > -1)
+    if( endCode == 0 )
     {
-        // get the marker and line
-        let marker = document.getElementById(lineid+"-marker")
-        let line = document.getElementById(lineid)
-
-        // if the marker exists
-        if(marker)
+        // check if the current line already has a marker object
+        if( markerString.indexOf(lineid) > -1)
         {
-            // set the innerHTML of the line marker to the inner html of the new head icon using the skeletons
-            marker.innerHTML = document.getElementById(headcode+"head").innerHTML
-            // set the new color of the marker
-            marker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )
+            // get the marker and line
+            let marker = document.getElementById(lineid+"-marker")
+            let line = document.getElementById(lineid)
+
+            // if the marker exists
+            if(marker)
+            {
+                // set the innerHTML of the line marker to the inner html of the new head icon using the skeletons
+                marker.innerHTML = document.getElementById(headcode+"head").innerHTML
+                // set the new color of the marker
+                marker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )
+            }
+            else
+            {
+                console.error("Failed to find marker by id " + lineid)
+            }
         }
         else
         {
-            console.error("Failed to find marker by id " + lineid)
+            // create a new marker from the skeletons
+            let marker = document.getElementById(headcode+"head")
+            let line = document.getElementById(lineid)
+
+            if( marker )
+            {
+                // shift marker variable to a new node
+                let newmarker = marker.cloneNode(true)
+
+                // set new attributes
+                newmarker.setAttribute( "id", lineid + "-marker" )
+                newmarker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )
+                newmarker.setAttribute("markerWidth", line.getAttribute("stroke-width")/2)
+                newmarker.setAttribute("markerHeight", line.getAttribute("stroke-width")/2)
+
+                // append the new marker
+                document.getElementById("figdefs").appendChild(newmarker)
+
+                // set line marker end
+                line.style.markerEnd = `url(#${newmarker.id})`
+            }
         }
     }
     else
     {
-        // create a new marker from the skeletons
-        let marker = document.getElementById(headcode+"head")
-        let line = document.getElementById(lineid)
-
-        if( marker )
+            // check if the current line already has a marker object
+        if( markerString.indexOf(lineid+"-markerEnd") > -1)
         {
-            // shift marker variable to a new node
-            let newmarker = marker.cloneNode(true)
+            // get the marker and line
+            let marker = document.getElementById(lineid+"-markerEnd")
+            let line = document.getElementById(lineid)
 
-            // set new attributes
-            newmarker.setAttribute( "id", lineid + "-marker" )
-            newmarker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )
-            newmarker.setAttribute("markerWidth", line.getAttribute("stroke-width")/2)
-            newmarker.setAttribute("markerHeight", line.getAttribute("stroke-width")/2)
+            // if the marker exists
+            if(marker)
+            {
+                // set the innerHTML of the line marker to the inner html of the new head icon using the skeletons
+                marker.innerHTML = document.getElementById(headcode+"head").innerHTML
+                // set the new color of the marker
+                marker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )
+            }
+            else
+            {
+                console.error("Failed to find marker by id " + lineid)
+            }
+        }
+        else
+        {
+            // create a new marker from the skeletons
+            let marker = document.getElementById(headcode+"head")
+            let line = document.getElementById(lineid)
 
-            // append the new marker
-            document.getElementById("figdefs").appendChild(newmarker)
+            if( marker )
+            {
+                // shift marker variable to a new node
+                let newmarker = marker.cloneNode(true)
 
-            // set line marker end
-            line.style.markerEnd = `url(#${newmarker.id})`
+                // set new attributes
+                newmarker.setAttribute( "id", lineid + "-markerEnd" )
+                newmarker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )
+                newmarker.setAttribute("markerWidth", line.getAttribute("stroke-width")/2)
+                newmarker.setAttribute("orient", "auto-start-reverse")
+                newmarker.setAttribute("markerHeight", line.getAttribute("stroke-width")/2)
+
+                // append the new marker
+                document.getElementById("figdefs").appendChild(newmarker)
+
+                // set line marker end
+                line.style.markerStart = `url(#${newmarker.id})`
+            }
         }
     }
 }
@@ -2811,7 +2921,7 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     rectxinputlabel.setAttribute( "objectid", objectid )
     rectxinput.setAttribute( "type", "number" )
     rectxinput.setAttribute( "min", "0" )
-    rectxinputlabel.innerHTML = "X Coordinate"
+    rectxinputlabel.innerHTML = "Outline X: "
     rectxinput.value = parseFloat(rectX).toFixed(0)
 
     rectxinput.addEventListener("change", function(event)
@@ -2831,7 +2941,7 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     // input y node attributes
     rectyinput.setAttribute("objectid", objectid)
     rectyinputlabel.setAttribute("objectid", objectid)
-    rectyinputlabel.innerHTML = "Y Coordinate"
+    rectyinputlabel.innerHTML = "Outline Y: "
     rectyinput.setAttribute("type", "number")
     rectyinput.setAttribute("min", "0")
     rectyinput.value = parseFloat(rectY).toFixed(0)
@@ -2853,7 +2963,7 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     // input rect width
     rectwidthlabel.setAttribute("objectid", objectid)
     rectwidthinput.setAttribute("objectid", objectid)
-    rectwidthlabel.innerHTML = "Box Width"
+    rectwidthlabel.innerHTML = "Outline Width: "
     rectwidthinput.setAttribute("type", "number")
     rectwidthinput.setAttribute("min", "20")
     rectwidthinput.value = rectW
@@ -2874,7 +2984,7 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     // input line height
     rectheightlabel.setAttribute("objectid", objectid)
     rectheightinput.setAttribute("objectid", objectid)
-    rectheightlabel.innerHTML = "Box Height"
+    rectheightlabel.innerHTML = "Outline Height: "
     rectheightinput.setAttribute("type", "number")
     rectheightinput.setAttribute("min", "20")
     rectheightinput.value = rectH
@@ -2897,7 +3007,7 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     // stroke width node attributes
     strokewidthinputlabel.setAttribute("objectid", objectid)
     strokewidthinput.setAttribute("objectid", objectid)
-    strokewidthinputlabel.innerHTML = "Box Height"
+    strokewidthinputlabel.innerHTML = "Outline Thickness: "
     strokewidthinput.setAttribute("type", "number")
     strokewidthinput.setAttribute("min", "10")
     strokewidthinput.value = 10
@@ -2919,7 +3029,7 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     // input outline color fields
     rectcolorlabel.setAttribute("objectid", objectid)
     rectcolorinput.setAttribute("objectid", objectid)
-    rectcolorlabel.innerHTML = "Box Color"
+    rectcolorlabel.innerHTML = "Outline Color: "
     rectcolorinput.setAttribute("type", "color")
     rectcolorinput.value = strokeColor
 
