@@ -10,8 +10,6 @@ describe("Line Tests > ", () => {
         cy.get("#figurecontainer").trigger("mousedown", {clientX:415, clientY: 209})
         .trigger("mousemove", {clientX: 638, clientY: 452})
         .trigger("mouseup", {clientX: 704, clientY: 507})
-    
-
     })
 
     it("Test that the color input changes color of line and marker", ()=> {
