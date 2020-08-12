@@ -28,6 +28,19 @@ html {
     text-align: center;
 }
 
+.hand  {
+    cursor: grabbing !important;
+}
+
+.outlining:hover {
+    cursor: crosshair;
+}
+
+.outlining {
+    cursor: crosshair;
+    background: transparent;
+}
+
 .desclist {
     display: block;
     text-align: left;
@@ -163,13 +176,12 @@ a.descanchor, a.descanchor:visited, a.descanchor:active   {
     cursor: grab;
 }
 
-.drawing:hover {
-    cursor: url("images/pencil.png"), auto !important;
+.drawing {
+    background: transparent;
 }
 
-
-button.drawing {
-    background: transparent;
+.drawing:hover{
+    cursor: url("images/pencil.svg"), auto !important;
 }
 
 body {
@@ -219,8 +231,8 @@ button.disabled {
 .pips2header {
     width: 100%;
     height: auto;
-    min-height: 15%;
-    max-height: 15%;
+    min-height: 16%;
+    max-height: 16%;
     display: flex;
 }
 
@@ -278,6 +290,11 @@ button.disabled {
     height: auto;
     padding: 0;
     margin: 0;
+}
+
+
+.windoworderingbtn:hover {
+    cursor: grab;
 }
 
 .windoworderingbtn{
@@ -510,6 +527,14 @@ button#northarrowopt, button#sunarrowopt, button#observerarrowopt  {
     max-height: 25px;
 }
 
+button.disabled {
+    background: rgba(0, 0, 0, 0.35) !important;
+    pointer-events: none;
+    border: none;
+    cursor: auto;
+}
+
+
 button:hover {
     border-color: black;
 }
@@ -608,6 +633,7 @@ svg.imagecontainer {
     vertical-align: middle;
     cursor: default;
     margin: auto auto auto 0;
+    pointer-events: none;
 }
 
 .windowoptionsbar>button {

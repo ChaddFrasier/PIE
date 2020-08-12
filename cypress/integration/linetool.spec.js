@@ -4,16 +4,12 @@ describe("Line Tests > ", () => {
     beforeEach(()=> {
         cy.visit('/');
 
-        cy.get("#editminibtn").click();
-
         // Click pencil and draw  a line
         cy.get("#penciloptbtn").click();
 
         cy.get("#figurecontainer").trigger("mousedown", {clientX:415, clientY: 209})
         .trigger("mousemove", {clientX: 638, clientY: 452})
         .trigger("mouseup", {clientX: 704, clientY: 507})
-    
-
     })
 
     it("Test that the color input changes color of line and marker", ()=> {

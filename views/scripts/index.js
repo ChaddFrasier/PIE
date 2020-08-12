@@ -18,7 +18,8 @@ $(document).ready(()=>{
     // local jquery variables
     var bgPicker = document.getElementById("backgroundcolor"),
         dividerObject = document.getElementById("tooldivider"),
-        PencilFlag = false;
+        PencilFlag = false,
+        OutlineFlag = false;
 
     // get the global figure element
     svgContainer = document.getElementById("figurecontainer")
@@ -41,7 +42,7 @@ $(document).ready(()=>{
             event.target.classList.remove("drawing")
             document.getElementById("editbox").classList.remove("drawing")
 
-            changeButtonActivation("enable")
+            changeButtonActivation("enable", 0)
 
             // remove draw listeners
             svgContainer.removeEventListener("mousedown", drawMouseDownListener)
@@ -52,12 +53,39 @@ $(document).ready(()=>{
             event.target.classList.add("drawing")
             document.getElementById("editbox").classList.add("drawing")
 
-            changeButtonActivation("disable")
+            changeButtonActivation("disable", 0)
 
             // add event listener for click on svg
             svgContainer.addEventListener("mousedown", drawMouseDownListener )
         }
         PencilFlag = !(PencilFlag)
+    })
+
+    $('#outlinebtnopt').click( function( event ) {
+        if(OutlineFlag)
+        {
+            // cancel the drawing functionality
+            document.getElementById("editbox").classList.remove("outlining")
+            event.target.classList.remove("outlining")
+
+            changeButtonActivation("enable", 1)
+
+            // remove draw listeners
+            svgContainer.removeEventListener("mousedown", drawBoxMouseDownListener )
+        }
+        else
+        {
+            // start the drawing functionality
+            document.getElementById("editbox").classList.add("outlining")
+            event.target.classList.add("outlining")
+
+
+            changeButtonActivation("disable", 1)
+
+            // add event listener for click on svg
+            svgContainer.addEventListener("mousedown", drawBoxMouseDownListener )
+        }
+        OutlineFlag = !(OutlineFlag)
     })
     
     /** 
@@ -65,10 +93,7 @@ $(document).ready(()=>{
      * @description Hide and show the toolbox if the option bar is clicked
      */
     $(".windowoptionsbar").on("click", function(event) {
-        let btn = event.target.lastElementChild
-        if( btn ){
-            btn.click()
-        }
+        optionsAction(event.target)
     })
 
     /** 
@@ -115,6 +140,11 @@ $(document).ready(()=>{
         newoptionsbar.classList.add("windowoptionsbar")
         newoptionsbar.style.display = "flex"
 
+        newoptionsbar.addEventListener("click", function ( event )
+        {
+            optionsAction(event.target)
+        })
+
         // setup the header of the optionsbar
         header.innerHTML = "Caption Layer"
 
@@ -153,6 +183,8 @@ $(document).ready(()=>{
             // add the listeners for removing the drag functions
             layerbtn.addEventListener("mouseup", documentMouseUpListener, layerbtn)
             document.addEventListener("mousemove", getMouseDirection, false)
+            document.getElementById("toolcontainer").classList.add("hand")
+            
 
             // try to find the element to put things above
             try{
@@ -210,7 +242,7 @@ $(document).ready(()=>{
         captiontextcolorinput.setAttribute("objectid", captionId)
 
         captiontextcolorinput.setAttribute("type", "color")
-        captiontextcolorlabel.innerHTML = "Font Color"
+        captiontextcolorlabel.innerHTML = "Font Color: "
         captiontextcolorinput.value ="#000"
 
         captionbackgroundcolorlabel.setAttribute("objectid", captionId)
@@ -218,7 +250,7 @@ $(document).ready(()=>{
         captionbackgroundcolorinput.setAttribute("type", "color")
         captionbackgroundcolorinput.value = "#d3d3d3"
 
-        captionbackgroundcolorlabel.innerHTML = "Box Color"
+        captionbackgroundcolorlabel.innerHTML = "Background Color: "
 
         // set attributes and classes
         toolsarea.classList.add("captiontoolsbox")
@@ -244,7 +276,7 @@ $(document).ready(()=>{
         /**
          * Do the same general idea for the text input on all the input to follow here
          */
-        widthlabel.innerHTML = "Width of Caption: "
+        widthlabel.innerHTML = "Caption Width: "
         widthlabel.setAttribute("for", "widthinput")
         widthinput.setAttribute("type", "number")
         widthinput.setAttribute("min", '500')
@@ -270,7 +302,7 @@ $(document).ready(()=>{
             }
         })
 
-        heightlabel.innerHTML = "Height of Caption: "
+        heightlabel.innerHTML = "Caption Height: "
         heightlabel.setAttribute("for", "widthinput")
 
         heightinput.setAttribute("type", "number")
@@ -295,7 +327,7 @@ $(document).ready(()=>{
             }
         })
 
-        xcoordlabel.innerHTML = "X Coordinate: "
+        xcoordlabel.innerHTML = "Caption X: "
         xcoordlabel.setAttribute("for", "widthinput")
         xcoordinput.setAttribute("type", "number")
         xcoordinput.setAttribute("min", '0')
@@ -320,7 +352,7 @@ $(document).ready(()=>{
             }
         })
         
-        ycoordlabel.innerHTML = "Y Coordinate: "
+        ycoordlabel.innerHTML = "Caption Y: "
         ycoordlabel.setAttribute("for", "ycoordinput")
         ycoordinput.setAttribute("type", "number")
         ycoordinput.setAttribute("min", '0')
@@ -459,6 +491,12 @@ $(document).ready(()=>{
         // set the class for the options bar
         newoptionsbar.classList.add("windowoptionsbar")
         newoptionsbar.style.display = "flex"
+
+        newoptionsbar.addEventListener("click", function ( event )
+        {
+            optionsAction(event.target)
+        })
+
         header.innerHTML = "Image Layer"
 
         // setup minimize button
@@ -528,7 +566,7 @@ $(document).ready(()=>{
         toolsarea.setAttribute("objectid", imageId)
        
         // file input attributes
-        filelabel.innerHTML = "Choose a file: "
+        filelabel.innerHTML = "Upload an Image: "
         filelabel.setAttribute("for", "imageinput")
         fileinput.setAttribute("type", "file")
         fileinput.setAttribute("name", "uploadfile")
@@ -594,7 +632,7 @@ $(document).ready(()=>{
         }
 
         // width input field
-        widthlabel.innerHTML = "Width of Image: "
+        widthlabel.innerHTML = "Image Width: "
         widthlabel.setAttribute("for", "widthinput")
         widthinput.setAttribute("type", "number")
         widthinput.setAttribute("min", '750')
@@ -620,7 +658,7 @@ $(document).ready(()=>{
         })
 
         // height input field
-        heightlabel.innerHTML = "Height of Image: "
+        heightlabel.innerHTML = "Image Height: "
         heightlabel.setAttribute("for", "heightinput")
         heightinput.setAttribute("type", "number")
         heightinput.setAttribute("min", '450')
@@ -646,7 +684,7 @@ $(document).ready(()=>{
         })
         
         // x coordinate input string
-        xcoordlabel.innerHTML = "X Coordinate: "
+        xcoordlabel.innerHTML = "Image X: "
         xcoordlabel.setAttribute("for", "xcoordinput")
         xcoordinput.setAttribute("type", "number")
         xcoordinput.setAttribute("min", '0')
@@ -672,7 +710,7 @@ $(document).ready(()=>{
         })
         
         // y coordinate input strings
-        ycoordlabel.innerHTML = "Y Coordinate: "
+        ycoordlabel.innerHTML = "Image Y: "
         ycoordlabel.setAttribute("for", "ycoordinput")
         ycoordinput.setAttribute("type", "number")
         ycoordinput.setAttribute("min", '0')
@@ -1030,6 +1068,8 @@ function getMouseDirection( e )
  */
 function documentMouseUpListener()
 {
+    document.getElementById("toolcontainer").classList.remove("hand")
+
     // try to set the mouse events for the dragging
     try{
         document.removeEventListener("mousemove", docucmentMouseOverHandler)
@@ -1084,7 +1124,7 @@ function shiftDown()
     // check for an object below
     if( lowerObject )
     {
-        // TODO: what am i doing
+        // Reset the order of the edit box elemets
         shiftObjects.reverse().forEach(domElement => {
             lowerObject.insertAdjacentElement("afterend", domElement)
         })
@@ -1263,11 +1303,11 @@ function drawSvgIcon( image, icontype, event )
             icongroup = document.getElementById("northgroup").cloneNode(true)
             icongroup.setAttribute("objectid", image.id)
             icongroup.setAttribute("id", "northIcon-" + image.id)
-            icongroup.style.scale = "0.5"
+            icongroup.style.scale = "5"
 
             // set the location of the icon to where the mouse was released
-            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 480 )
-            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 480 )
+            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 25 )
+            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 25 )
 
             // set translate
             icongroup.style.transform = translateString( newX, newY)
@@ -1284,11 +1324,11 @@ function drawSvgIcon( image, icontype, event )
             icongroup = document.getElementById("sungroup").cloneNode(true)
             icongroup.setAttribute("objectid", image.id)
             icongroup.setAttribute("id", "sunIcon-" + image.id)
-            icongroup.style.scale = "0.5"
+            icongroup.style.scale = "5"
 
             // set the location of the icon to where the mouse was released
-            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 512 )
-            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 512 )
+            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 24 )
+            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 24 )
     
             // set translate
             icongroup.style.transform = translateString( newX, newY )
@@ -1305,11 +1345,11 @@ function drawSvgIcon( image, icontype, event )
             icongroup = document.getElementById("observergroup").cloneNode(true)
             icongroup.setAttribute("objectid", image.id)
             icongroup.setAttribute("id", "observerIcon-" + image.id)
-            icongroup.style.scale = "0.5"
+            icongroup.style.scale = "5"
 
             // set the location of the icon to where the mouse was released
-            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 512 )
-            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 512 )
+            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 24 )
+            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 24 )
         
             if( !isNaN(newX) && !isNaN(newY))
             {
@@ -1395,6 +1435,12 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             // options bar stuff
             iconoptionbar.setAttribute("class", 'windowoptionsbar')
             iconoptionbar.style.display = "flex"
+
+            iconoptionbar.addEventListener("click", function ( event )
+            {
+                optionsAction(event.target)
+            })
+
             iconoptionheader.innerHTML = "North Icon"
 
             // same for delete as minimize
@@ -1418,13 +1464,14 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             iconscaleinput.setAttribute("type", "number")
             iconscaleinput.setAttribute("objectid", iconId)
             icontoolbox.setAttribute("objectid", iconId)
-            iconscaleinput.setAttribute("step", "0.01")
-            iconscaleinput.value = 0.5
+            iconscaleinput.setAttribute("step", 0.5)
+            iconscaleinput.setAttribute("min", 1)
+            iconscaleinput.value = 5
 
             // labels for north
-            maincolorlabel.innerHTML = "Main Color"
-            accentcolorlabel.innerHTML = "Secondary Color"
-            scalelabel.innerHTML = "North Scale"
+            maincolorlabel.innerHTML = "North Main Color: "
+            accentcolorlabel.innerHTML = "North Secondary Color: "
+            scalelabel.innerHTML = "North Scale: "
 
             // both color input fields
             iconmaincolorinput.setAttribute("type", "color")
@@ -1442,13 +1489,13 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             northicontranslatey.setAttribute("objectid", iconId)
             northicontranslatey.setAttribute("min", "1")
 
-            // set translate value
-            northicontranslatex.value = (transX*0.5).toFixed(0)
-            northicontranslatey.value = (transY*0.5).toFixed(0)
+            // set translate value based on icon scale and fix to integer
+            northicontranslatex.value = (transX*iconscaleinput.value).toFixed(0)
+            northicontranslatey.value = (transY*iconscaleinput.value).toFixed(0)
 
             // set translate labels
-            northicontranslateylabel.innerHTML = "Translate Y Position"
-            northicontranslatexlabel.innerHTML = "Translate X Position"
+            northicontranslateylabel.innerHTML = "North Y: "
+            northicontranslatexlabel.innerHTML = "North X: "
 
             // set event listeners
             iconscaleinput.addEventListener("change", updateIconScale)
@@ -1503,7 +1550,14 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             // options bar stuff
             sunoptionbar.setAttribute("class", 'windowoptionsbar')
             sunoptionbar.style.display = "flex"
+
+            sunoptionbar.addEventListener("click", function ( event )
+            {
+                optionsAction(event.target)
+            })
+
             sunoptionheader.innerHTML = "Sun Icon"
+
 
             // same for delete as minimize
             deletebtn1.classList.add("windowremovebtn")
@@ -1523,8 +1577,8 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             sunicontranslatey.setAttribute("min", "1")
 
             // set label input
-            sunicontranslateylabel.innerHTML = "Translate Y Position"
-            sunicontranslatexlabel.innerHTML = "Translate X Position"
+            sunicontranslateylabel.innerHTML = "Sun Y: "
+            sunicontranslatexlabel.innerHTML = "Sun X: "
 
             // append optionsbar stuff
             sunoptionbar.append(sunoptionheader, document.createElement("br"), deletebtn1)
@@ -1533,17 +1587,18 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             // scale input fields
             suniconscaleinput.setAttribute("type", "number")
             suniconscaleinput.setAttribute( "objectid", iconId )
-            suniconscaleinput.value = "0.5"
-            suniconscaleinput.setAttribute("step", "0.01")
+            suniconscaleinput.value = "5"
+            suniconscaleinput.setAttribute("min", 1)
+            suniconscaleinput.setAttribute("step", "0.5")
 
             // labels for input fields
-            sunmaincolorlabel.innerHTML = "Sun Main Color"
-            sunaccentcolorlabel.innerHTML = "Sun Secondary Color"
-            sunscalelabel.innerHTML = "Sun Scale"
+            sunmaincolorlabel.innerHTML = "Sun Main Color: "
+            sunaccentcolorlabel.innerHTML = "Sun Secondary Color: "
+            sunscalelabel.innerHTML = "Sun Scale: "
 
             // set translate value
-            sunicontranslatex.value = (transX*0.5).toFixed(0)
-            sunicontranslatey.value = (transY*0.5).toFixed(0)
+            sunicontranslatex.value = (transX*suniconscaleinput.value).toFixed(0)
+            sunicontranslatey.value = (transY*suniconscaleinput.value).toFixed(0)
 
             // main color input
             suniconmaincolorinput.setAttribute("type", "color")
@@ -1608,6 +1663,12 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             // Set Options bar stuff
             obsoptionbar.setAttribute("class", 'windowoptionsbar')
             obsoptionbar.style.display = "flex"
+
+            obsoptionbar.addEventListener("click", function ( event )
+            {
+                optionsAction(event.target)
+            })
+            
             obsoptionheader.innerHTML = "Observer Icon"
 
             // same for delete as minimize
@@ -1628,22 +1689,23 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             obsicontranslatey.setAttribute("min", "1")
 
             // set start values for label and value of translate
-            obsicontranslateylabel.innerHTML = "Translate Y Position"
-            obsicontranslatexlabel.innerHTML = "Translate X Position"
-            obsicontranslatex.value = (transX*0.5).toFixed(0)
-            obsicontranslatey.value = (transY*0.5).toFixed(0)
+            obsicontranslateylabel.innerHTML = "Observer Y: "
+            obsicontranslatexlabel.innerHTML = "Observer X: "
 
             // scale input field
             obsiconscaleinput.setAttribute("type", "number")
             obsiconscaleinput.setAttribute("objectid", iconId)
-            obsiconscaleinput.setAttribute("step", "0.01")
-            obsiconscaleinput.setAttribute("value", "0.5")
-            obsiconscaleinput.setAttribute("min", "0.25")
+            obsiconscaleinput.setAttribute("step", "0.5")
+            obsiconscaleinput.setAttribute("value", 5)
+            obsiconscaleinput.setAttribute("min", "1")
+
+            obsicontranslatex.value = (transX*obsiconscaleinput.value).toFixed(0)
+            obsicontranslatey.value = (transY*obsiconscaleinput.value).toFixed(0)
 
             // create labels
-            obsmaincolorlabel.innerHTML = "Observer Main Color"
-            obsaccentcolorlabel.innerHTML = "Observer Secondary Color"
-            obsscalelabel.innerHTML = "Observer Scale"
+            obsmaincolorlabel.innerHTML = "Observer Main Color: "
+            obsaccentcolorlabel.innerHTML = "Observer Secondary Color: "
+            obsscalelabel.innerHTML = "Observer Scale: "
 
             // primary color input
             obsiconmaincolorinput.setAttribute("type", "color")
@@ -1905,17 +1967,17 @@ function changeIconColor( colorid, colorval, icon )
             if( icon.id.indexOf( "north" ) > -1 )
             {
                 // change all three children of the north icon
-                changeColorsOfChildren( icon.childNodes, colorval, "fill", "fill" )
+                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "fill", "stroke" )
             }
             else if( icon.id.indexOf( "sun" ) > -1 )
             {
                 // change the primary of the sun icon
-                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "fill" )
+                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "fill", "stroke" )
             }
             else if( icon.id.indexOf( "observer" ) > -1 )
             {
                 // change the primary of the observer icon
-                changeColorsOfChildren( icon.childNodes, colorval, "fill", "fill", "fill", "fill", "fill", "fill" )
+                changeColorsOfChildren( icon.childNodes, colorval, "fill", "fill", "fill", "fill", "fill" )
             }
             break
         case 1:
@@ -1923,17 +1985,17 @@ function changeIconColor( colorid, colorval, icon )
             if( icon.id.indexOf( "north" ) > -1 )
             {
                 // change the secondary of the north icon
-                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "stroke" )
+                changeColorsOfChildren( icon.childNodes, colorval, "fill", "stroke", "fill" )
             }
             else if( icon.id.indexOf( "sun" ) > -1 )
             {
                 // change the secondary of the sun icon
-                changeColorsOfChildren( icon.childNodes, colorval, "fill", "stroke" )
+                changeColorsOfChildren( icon.childNodes, colorval, "fill", "stroke", "fill" )
             }
             else if( icon.id.indexOf( "observer" ) > -1 )
             {
                 // change the secondary of the observer icon
-                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "stroke", "stroke", "stroke", "stroke", "stroke" )
+                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "stroke", "stroke", "stroke", "stroke" )
             }
     }
 }
@@ -1978,22 +2040,45 @@ function changeColorsOfChildren( children, color , ...order )
  * @param {string} code - either "enable", or "disable" 
  * @description disabled the buttons when the pencil icon is hit
  */
-function changeButtonActivation( code )
+function changeButtonActivation( ActivationCode, code )
 {
-    // enable or disable buttons depending on code
-    if( code == "enable" )
+    switch( code ) 
     {
-        document.getElementById( "northarrowopt" ).classList.remove( "disabled" )
-        document.getElementById( "observerarrowopt" ).classList.remove( "disabled" )
-        document.getElementById( "sunarrowopt" ).classList.remove( "disabled" )
-        document.getElementById( "outlinebtnopt" ).classList.remove( "disabled" )
-    }
-    else if( code == "disable" )
-    {
-        document.getElementById( "northarrowopt" ).classList.add( "disabled" )
-        document.getElementById( "observerarrowopt" ).classList.add( "disabled" )
-        document.getElementById( "sunarrowopt" ).classList.add( "disabled" )
-        document.getElementById( "outlinebtnopt" ).classList.add( "disabled" )
+        case 0:
+            // enable or disable buttons depending on code
+            if( ActivationCode == "enable" )
+            {
+                document.getElementById( "northarrowopt" ).classList.remove( "disabled" )
+                document.getElementById( "observerarrowopt" ).classList.remove( "disabled" )
+                document.getElementById( "sunarrowopt" ).classList.remove( "disabled" )
+                document.getElementById( "outlinebtnopt" ).classList.remove( "disabled" )
+            }
+            else if( ActivationCode == "disable" )
+            {
+                document.getElementById( "northarrowopt" ).classList.add( "disabled" )
+                document.getElementById( "observerarrowopt" ).classList.add( "disabled" )
+                document.getElementById( "sunarrowopt" ).classList.add( "disabled" )
+                document.getElementById( "outlinebtnopt" ).classList.add( "disabled" )
+            }
+            break
+        
+        case 1:
+            // enable or disable buttons depending on code
+            if( ActivationCode == "enable" )
+            {
+                document.getElementById( "northarrowopt" ).classList.remove( "disabled" )
+                document.getElementById( "observerarrowopt" ).classList.remove( "disabled" )
+                document.getElementById( "sunarrowopt" ).classList.remove( "disabled" )
+                document.getElementById( "penciloptbtn" ).classList.remove( "disabled" )
+            }
+            else if( ActivationCode == "disable" )
+            {
+                document.getElementById( "northarrowopt" ).classList.add( "disabled" )
+                document.getElementById( "observerarrowopt" ).classList.add( "disabled" )
+                document.getElementById( "sunarrowopt" ).classList.add( "disabled" )
+                document.getElementById( "penciloptbtn" ).classList.add( "disabled" )
+            }
+            break
     }
 }
 
@@ -2069,7 +2154,9 @@ function updateCaptionBoxColor ( color, objectid )
 }
 
 /**
- * Draw Function 
+ * @function drawMouseDownListener
+ * @param {_Event} event - click event
+ * @description drawing line on the svg while dragging
  */
 function drawMouseDownListener( event )
 {
@@ -2173,12 +2260,16 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     let lineheadinput = document.createElement("select")
     let lineheadinputlabel = document.createElement("label")
 
+    lineoptionbar.addEventListener("click", function( event ){
+        optionsAction(event.target)
+    })
+
     // input x1 fields
     linex1input.setAttribute( "objectid", objectid )
     linex1inputlabel.setAttribute( "objectid", objectid )
     linex1input.setAttribute( "type", "number" )
     linex1input.setAttribute( "min", "0" )
-    linex1inputlabel.innerHTML = "Line Head X Coordinate"
+    linex1inputlabel.innerHTML = "Line Start-Point X: "
     linex1input.value = parseFloat(x1).toFixed(0)
 
     linex1input.addEventListener("change", function(event)
@@ -2198,7 +2289,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     // input y1 fields
     liney1input.setAttribute("objectid", objectid)
     liney1inputlabel.setAttribute("objectid", objectid)
-    liney1inputlabel.innerHTML = "Line Head Y Coordinate"
+    liney1inputlabel.innerHTML = "Line Start-Point Y: "
     liney1input.setAttribute("type", "number")
     liney1input.setAttribute("min", "0")
     liney1input.value = parseFloat(y1).toFixed(0)
@@ -2222,7 +2313,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     // input line width fields
     widthlabel.setAttribute("objectid", objectid)
     linewidthinput.setAttribute("objectid", objectid)
-    widthlabel.innerHTML = "Line Thickness"
+    widthlabel.innerHTML = "Line Thickness: "
     linewidthinput.setAttribute("type", "number")
     linewidthinput.setAttribute("min", "10")
     linewidthinput.value = strokeWidth
@@ -2245,7 +2336,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     // input line color fields
     colorlabel.setAttribute("objectid", objectid)
     linecolorinput.setAttribute("objectid", objectid)
-    colorlabel.innerHTML = "Line Color"
+    colorlabel.innerHTML = "Line Color: "
     linecolorinput.setAttribute("type", "color")
     linecolorinput.value = "#ffffff"
 
@@ -2256,20 +2347,32 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         lineelement.setAttribute("stroke", this.value )
 
         try{
-            let markerid = lineelement.style.markerEnd.split('#')[1].replace('")','')
+            let markerEndid = lineelement.style.markerEnd.split('#')[1].replace('")','')
+            let markerStartid = lineelement.style.markerStart.split('#')[1].replace('")','')
 
-            let newMarker = document.getElementById( markerid )
-    
-            // set attributes for new marker
-            newMarker.setAttribute("id", objectid + "-marker")
-            newMarker.firstChild.setAttribute("fill", this.value)
-            newMarker.setAttribute("markerWidth", lineelement.getAttribute("stroke-width")/2)
-            newMarker.setAttribute("markerHeight", lineelement.getAttribute("stroke-width")/2)
-            lineelement.style.markerEnd = `url("#${newMarker.getAttribute("id")}")`
-    
-            // add the new marker
-            document.getElementById("figdefs").appendChild(newMarker)
-        
+            if( markerEndid )
+            {
+                let newEndMarker = document.getElementById( markerEndid )
+                // set attributes for new marker
+                newEndMarker.setAttribute("id", objectid + "-marker")
+                newEndMarker.firstChild.setAttribute("fill", this.value)
+                lineelement.style.markerEnd = `url("#${newEndMarker.getAttribute("id")}")`
+
+                // add the new marker
+                document.getElementById("figdefs").appendChild(newEndMarker)
+            }
+
+            if( markerStartid )
+            {
+                let newStartMarker = document.getElementById( markerStartid )
+                // set attributes for new marker
+                newStartMarker.setAttribute("id", objectid + "-markerEnd")
+                newStartMarker.firstChild.setAttribute("fill", this.value)
+                lineelement.style.markerStart = `url("#${newStartMarker.getAttribute("id")}")`
+
+                // add the new marker
+                document.getElementById("figdefs").appendChild(newStartMarker)
+            }
         }catch(err){
             console.error("Line Has No Head")
         }
@@ -2285,6 +2388,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     // options bar stuff
     lineoptionbar.setAttribute("class", 'windowoptionsbar')
     lineoptionbar.style.display = "flex"
+
     lineoptionheader.innerHTML = "Line Icon"
 
     // same with the minimize button
@@ -2365,8 +2469,8 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 
 
     // set aptions bar nodes
-    lineoptionbar.append( 
-        lineoptionheader, 
+    lineoptionbar.append(
+        lineoptionheader,
         minibtn,
         deletebtn,
         layerbtn
@@ -2375,7 +2479,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     //  x2 input fields
     linex2input.setAttribute("objectid", objectid)
     linex2inputlabel.setAttribute("objectid", objectid)
-    linex2inputlabel.innerHTML = "Line Tail X Coordinate"
+    linex2inputlabel.innerHTML = "Line End-Point X: "
     linex2input.setAttribute("min", "0")
     linex2input.setAttribute("type", "number")
 
@@ -2399,7 +2503,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     // input y2 fields
     liney2input.setAttribute("objectid", objectid)
     liney2inputlabel.setAttribute("objectid", objectid)
-    liney2inputlabel.innerHTML = "Line Tail Y Coordinate"
+    liney2inputlabel.innerHTML = "Line End-Point Y"
     liney2input.setAttribute("min", "0")
     liney2input.setAttribute("type", "number")
 
@@ -2427,7 +2531,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 
     lineheadinput.setAttribute("objectid", objectid)
     lineheadinputlabel.setAttribute("objectid", objectid)
-    lineheadinputlabel.innerHTML = "Line Head"
+    lineheadinputlabel.innerHTML = "Line End-Point Head: "
 
     // set the options for the input
     optionarrow.innerHTML = "None"
@@ -2462,13 +2566,13 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
             switch( event.target.value )
             {
                 case "arrow":
-                    createMarker(line.style.markerEnd, line.id, "arrow")
+                    createMarker(line.style.markerEnd, line.id, "arrow", 0 )
                     break
                 case "square":
-                    createMarker(object.style.markerEnd, line.id, "square" )
+                    createMarker(object.style.markerEnd, line.id, "square", 0 )
                     break
                 case "circle":
-                    createMarker(object.style.markerEnd, line.id, "circle" )
+                    createMarker(object.style.markerEnd, line.id, "circle", 0 )
                     break
                 default:
                     object.style.markerEnd = "";
@@ -2481,6 +2585,45 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         }
     })
 
+
+    let linetailheadinput = lineheadinput.cloneNode(true)
+    let linetailheadinputlabel = lineheadinputlabel.cloneNode(true)
+
+    linetailheadinputlabel.innerHTML = "Line Start-Point Head: "
+
+    linetailheadinput.addEventListener("change", function(event) {
+        
+        let object = document.getElementById(event.target.attributes.objectid.value)
+
+        // if the object exists
+        if( object )
+        {
+            let line = document.getElementById(linetailheadinput.attributes.objectid.value)
+
+            // switch on the option
+            switch( event.target.value )
+            {
+                case "arrow":
+                    createMarker(line.style.markerStart, line.id, "arrow", 1 )
+                    break
+                case "square":
+                    createMarker(object.style.markerStart, line.id, "square", 1 )
+                    break
+                case "circle":
+                    createMarker(object.style.markerStart, line.id, "circle", 1 )
+                    break
+                default:
+                    object.style.markerStart = "";
+                    document.getElementById("figdefs").removeChild(document.getElementById(line.id+"-markerEnd"))
+            }
+        }
+        else
+        {
+            console.error("Error: Cannot find object with objectid" + event.target.attributes.objectid.value)
+        }
+    })
+
+
     // append the objects
     linetoolbox.append(
         colorlabel,
@@ -2490,6 +2633,10 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         lineheadinputlabel,
         document.createElement("br"),
         lineheadinput,
+        document.createElement("br"),
+        linetailheadinputlabel,
+        document.createElement("br"),
+        linetailheadinput,
         document.createElement("br"),
         widthlabel,
         document.createElement("br"),
@@ -2526,52 +2673,497 @@ function updateUILimits ( newW, newH )
  * @param {string} markerString - raw string from markerEnd
  * @param {string} lineid - the id of the line object
  * @param {string} headcode - string telling the type of head icon
+ * @param {number} endCode - the code to tell what end of the line to place the marker
  * @description create and remove markers for customizing lines
  */
-function createMarker( markerString, lineid, headcode )
+function createMarker( markerString, lineid, headcode, endCode )
 {
-    // check if the current line already has a marker object
-    if( markerString.indexOf(lineid) > -1)
+    if( endCode == 0 )
     {
-        // get the marker and line
-        let marker = document.getElementById(lineid+"-marker")
-        let line = document.getElementById(lineid)
-
-        // if the marker exists
-        if(marker)
+        // check if the current line already has a marker object
+        if( markerString.indexOf(lineid) > -1)
         {
-            // set the innerHTML of the line marker to the inner html of the new head icon using the skeletons
-            marker.innerHTML = document.getElementById(headcode+"head").innerHTML
-            // set the new color of the marker
-            marker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )
+            // get the marker and line
+            let marker = document.getElementById(lineid+"-marker")
+            let line = document.getElementById(lineid)
+
+            // if the marker exists
+            if(marker)
+            {
+                // set the innerHTML of the line marker to the inner html of the new head icon using the skeletons
+                marker.innerHTML = document.getElementById(headcode+"head").innerHTML
+                // set the new color of the marker
+                marker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )
+            }
+            else
+            {
+                console.error("Failed to find marker by id " + lineid)
+            }
         }
         else
         {
-            console.error("Failed to find marker by id " + lineid)
+            // create a new marker from the skeletons
+            let marker = document.getElementById(headcode+"head")
+            let line = document.getElementById(lineid)
+
+            if( marker )
+            {
+                // shift marker variable to a new node
+                let newmarker = marker.cloneNode(true)
+
+                // set new attributes
+                newmarker.setAttribute( "id", lineid + "-marker" )
+                newmarker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )
+                newmarker.setAttribute("markerWidth", line.getAttribute("stroke-width")/2)
+                newmarker.setAttribute("markerHeight", line.getAttribute("stroke-width")/2)
+
+                // append the new marker
+                document.getElementById("figdefs").appendChild(newmarker)
+
+                // set line marker end
+                line.style.markerEnd = `url(#${newmarker.id})`
+            }
         }
     }
     else
     {
-        // create a new marker from the skeletons
-        let marker = document.getElementById(headcode+"head")
-        let line = document.getElementById(lineid)
-
-        if( marker )
+            // check if the current line already has a marker object
+        if( markerString.indexOf(lineid+"-markerEnd") > -1)
         {
-            // shift marker variable to a new node
-            let newmarker = marker.cloneNode(true)
+            // get the marker and line
+            let marker = document.getElementById(lineid+"-markerEnd")
+            let line = document.getElementById(lineid)
 
-            // set new attributes
-            newmarker.setAttribute( "id", lineid + "-marker" )
-            newmarker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )
-            newmarker.setAttribute("markerWidth", line.getAttribute("stroke-width")/2)
-            newmarker.setAttribute("markerHeight", line.getAttribute("stroke-width")/2)
+            // if the marker exists
+            if(marker)
+            {
+                // set the innerHTML of the line marker to the inner html of the new head icon using the skeletons
+                marker.innerHTML = document.getElementById(headcode+"head").innerHTML
+                // set the new color of the marker
+                marker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )
+            }
+            else
+            {
+                console.error("Failed to find marker by id " + lineid)
+            }
+        }
+        else
+        {
+            // create a new marker from the skeletons
+            let marker = document.getElementById(headcode+"head")
+            let line = document.getElementById(lineid)
 
-            // append the new marker
-            document.getElementById("figdefs").appendChild(newmarker)
+            if( marker )
+            {
+                // shift marker variable to a new node
+                let newmarker = marker.cloneNode(true)
 
-            // set line marker end
-            line.style.markerEnd = `url(#${newmarker.id})`
+                // set new attributes
+                newmarker.setAttribute( "id", lineid + "-markerEnd" )
+                newmarker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )
+                newmarker.setAttribute("markerWidth", line.getAttribute("stroke-width")/2)
+                newmarker.setAttribute("orient", "auto-start-reverse")
+                newmarker.setAttribute("markerHeight", line.getAttribute("stroke-width")/2)
+
+                // append the new marker
+                document.getElementById("figdefs").appendChild(newmarker)
+
+                // set line marker end
+                line.style.markerStart = `url(#${newmarker.id})`
+            }
         }
     }
+}
+
+/**
+ * @function optionsAction
+ * @param {Node} target - the target of the  click event 
+ * @description click the second element in the node
+ */
+function optionsAction( target )
+{
+    let btn = target.firstChild.nextSibling
+
+    if( btn && btn.nodeName == "BUTTON" ){
+        btn.click()
+    }
+}
+
+/**
+ * @function drawBoxMouseDownListener
+ * @param {_Event} event - the click event
+ * @description drawing a box
+ */
+function drawBoxMouseDownListener( event )
+{
+    // prevent defaults to stop dragging
+    event.preventDefault()
+
+    let rect = document.createElementNS( NS.svg, "rect" ),
+        rectId = randomId("rect"),
+        startClickX, startClickY;
+
+    // get transformed svg point where click occured
+    let svgP = createSVGPoint( event.clientX, event.clientY )
+
+    startClickX = svgP.x
+    startClickY = svgP.y
+
+    // set rectangle attributes
+    rect.setAttribute( "x", svgP.x )
+    rect.setAttribute( "y", svgP.y )
+    rect.setAttribute( "stroke", "#ffffff" )
+    rect.setAttribute( "fill", "transparent" )
+    rect.setAttribute( "id", rectId )
+    rect.setAttribute( "stroke-width", "10" )
+    rect.setAttribute( "height", 20 )
+    rect.setAttribute( "width", 20 )
+
+    // create the inner outline draw listener
+    function endBoxDraw( event )
+        {
+            document.getElementById("outlinebtnopt").click()
+            svgContainer.removeEventListener( "mousemove", updateBoxUI )
+            svgContainer.removeEventListener( "mouseup", endBoxDraw )
+
+            // create the toolbox when the rect finished being drawn by the user
+            createOutlineToolbox( 
+                rectId, 
+                rect.getAttribute("x"),
+                rect.getAttribute("y"),
+                rect.getAttribute("width"),
+                rect.getAttribute("height"),
+                rect.getAttribute("stroke"))
+        }
+
+    // sets the end of the line to where the mouse is
+    svgContainer.addEventListener( "mouseup", endBoxDraw )
+
+    // set the update function
+    function updateBoxUI ( event )
+    {
+            let svgP = createSVGPoint( event.clientX, event.clientY )
+
+            // if newx is lt startclick X  + left 20px 
+            if( svgP.x < startClickX - 20 )
+            {
+                // newx = mouse location
+                rect.setAttribute("x", svgP.x)
+                // new width = startlocation - mouseX
+                rect.setAttribute("width", startClickX - svgP.x)
+            }
+            else if( svgP.x > startClickX + 20 )
+            {
+                // calculate difference in x values to get width
+                rect.setAttribute("x", startClickX)
+                rect.setAttribute("width", svgP.x - Number(rect.getAttribute("x")) )
+            }
+
+            // check if the new y is less than the start point
+            if( svgP.y < startClickY - 20)
+            {
+                // update the new x location
+                rect.setAttribute("y", svgP.y)
+                rect.setAttribute("height", startClickY - svgP.y)
+            }
+            else if( svgP.y > startClickY + 20 )
+            {
+                rect.setAttribute("y", startClickY)
+                rect.setAttribute("height", svgP.y - Number(rect.getAttribute("y")) )
+            }
+    }
+
+    // event listener for mousemove
+    svgContainer.addEventListener( "mousemove", updateBoxUI )
+
+    // put the line on the svg image
+    svgContainer.appendChild(rect)
+}
+
+/**
+ * @function createOutlineToolBox
+ * @param {string} objectid - the id of the rectangle svg element
+ * @param {number} rectX - the x of the rect 
+ * @param {number} rectY - the y of the rect
+ * @param {number} rectW - the width of the rect
+ * @param {number} rectH - the height of the rect
+ * @param {string} strokeColor - color code
+ * @description draw and add the input fields to the document
+ */
+function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColor )
+{
+    let rectxinput = document.createElement("input")
+    let rectxinputlabel = document.createElement("label")
+    let rectyinput = document.createElement("input")
+    let rectyinputlabel = document.createElement("label")
+    let strokewidthinput = document.createElement("input")
+    let strokewidthinputlabel = document.createElement("label")
+    let rectwidthlabel = document.createElement("label")
+    let rectwidthinput = document.createElement("input")
+    let rectheightlabel = document.createElement("label")
+    let rectheightinput = document.createElement("input")
+    let rectcolorlabel = document.createElement("label")
+    let rectcolorinput = document.createElement("input")
+    let recttoolbox = document.createElement("div")
+    let rectoptionbar = document.createElement("div")
+    let rectoptionheader = document.createElement("h4")
+    let deletebtn = document.createElement("button")
+    let minibtn = document.createElement("button")
+    let layerbtn = document.createElement("button")
+
+    // event listener for clicking options bar to close
+    rectoptionbar.addEventListener("click", function( event ){
+        optionsAction(event.target)
+    })
+
+    // input x field and label
+    rectxinput.setAttribute( "objectid", objectid )
+    rectxinputlabel.setAttribute( "objectid", objectid )
+    rectxinput.setAttribute( "type", "number" )
+    rectxinput.setAttribute( "min", "0" )
+    rectxinputlabel.innerHTML = "Outline X: "
+    rectxinput.value = parseFloat(rectX).toFixed(0)
+
+    rectxinput.addEventListener("change", function(event)
+    {
+        // perform line movements
+        if( Number(this.getAttribute("min")) > Number(this.value) )
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("x", Number(this.getAttribute("min")) )
+            this.value = Number(this.getAttribute("min"))
+        }
+        else
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("x", this.value )
+        }
+    })
+
+    // input y node attributes
+    rectyinput.setAttribute("objectid", objectid)
+    rectyinputlabel.setAttribute("objectid", objectid)
+    rectyinputlabel.innerHTML = "Outline Y: "
+    rectyinput.setAttribute("type", "number")
+    rectyinput.setAttribute("min", "0")
+    rectyinput.value = parseFloat(rectY).toFixed(0)
+
+    rectyinput.addEventListener("change", function(event)
+    {
+        if( Number(this.getAttribute("min")) > Number(this.value) )
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("y", Number(this.getAttribute("min")) )
+            this.value = Number(this.getAttribute("min"))
+        }
+        else
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("y", this.value )
+        }
+
+    })
+
+    // input rect width
+    rectwidthlabel.setAttribute("objectid", objectid)
+    rectwidthinput.setAttribute("objectid", objectid)
+    rectwidthlabel.innerHTML = "Outline Width: "
+    rectwidthinput.setAttribute("type", "number")
+    rectwidthinput.setAttribute("min", "20")
+    rectwidthinput.value = rectW
+
+    rectwidthinput.addEventListener("change", function(event)
+    {
+        if( Number(this.getAttribute("min")) > Number(this.value) )
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("width", Number(this.getAttribute("min")) )
+            this.value = Number(this.getAttribute("min"))
+        }
+        else
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("width", this.value )
+        }
+    })
+
+    // input line height
+    rectheightlabel.setAttribute("objectid", objectid)
+    rectheightinput.setAttribute("objectid", objectid)
+    rectheightlabel.innerHTML = "Outline Height: "
+    rectheightinput.setAttribute("type", "number")
+    rectheightinput.setAttribute("min", "20")
+    rectheightinput.value = rectH
+
+    rectheightinput.addEventListener("change", function(event)
+    {
+        // line width setting
+        if( Number(this.getAttribute("min")) > Number(this.value) )
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("height", Number(this.getAttribute("min")) )
+            this.value = Number(this.getAttribute("min"))
+        }
+        else
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("height", this.value )
+        }
+    })
+
+
+    // stroke width node attributes
+    strokewidthinputlabel.setAttribute("objectid", objectid)
+    strokewidthinput.setAttribute("objectid", objectid)
+    strokewidthinputlabel.innerHTML = "Outline Thickness: "
+    strokewidthinput.setAttribute("type", "number")
+    strokewidthinput.setAttribute("min", "10")
+    strokewidthinput.value = 10
+
+    strokewidthinput.addEventListener("change", function(event)
+    {
+        // line width setting
+        if( Number(this.getAttribute("min")) > Number(this.value) )
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("stroke-width", Number(this.getAttribute("min")) )
+            this.value = Number(this.getAttribute("min"))
+        }
+        else
+        {
+            document.getElementById( this.attributes.objectid.value).setAttribute("stroke-width", this.value )
+        }
+    })
+
+    // input outline color fields
+    rectcolorlabel.setAttribute("objectid", objectid)
+    rectcolorinput.setAttribute("objectid", objectid)
+    rectcolorlabel.innerHTML = "Outline Color: "
+    rectcolorinput.setAttribute("type", "color")
+    rectcolorinput.value = strokeColor
+
+    rectcolorinput.addEventListener("change", function(event)
+    {
+        let rect = document.getElementById( this.attributes.objectid.value )
+        // Update color when the color changes
+        rect.setAttribute("stroke", this.value )
+    })
+
+    //  outer toolbox info
+    recttoolbox.setAttribute("objectid", objectid)
+    rectoptionbar.setAttribute("objectid", objectid)
+    rectoptionheader.setAttribute("objectid", objectid)
+    recttoolbox.classList.add("linetoolsbox")
+    recttoolbox.setAttribute("id", "linetoolsbox-" + objectid)
+
+    // options bar stuff
+    rectoptionbar.setAttribute("class", 'windowoptionsbar')
+    rectoptionbar.style.display = "flex"
+
+    rectoptionheader.innerHTML = "Outline Icon"
+
+    // same with the minimize button
+    minibtn.classList.add("windowminimizebtn")
+    minibtn.innerHTML = "▲"
+
+    // cant forget the event handler for the minimize btn
+    minibtn.addEventListener( "click", function(event) {
+        minimizeToolsWindow(event)
+    })
+
+    // same for delete as minimize
+    deletebtn.classList.add("windowremovebtn")
+    deletebtn.setAttribute("objectid", objectid)
+    deletebtn.innerHTML = "&times"
+
+    // set event listener to remove north icon
+    deletebtn.addEventListener( "click", function(event) {
+        //delete a line
+        removeLineWindow(event)
+    })
+
+    deletebtn.setAttribute("objectid", objectid)
+
+    /** Dyncamic layer buttoon requires more work*/
+    // set the class css and the svg button graphic
+    layerbtn.classList.add("windoworderingbtn")
+    layerbtn.innerHTML = "<svg viewBox='0 0 100 100' width='100%' height='100%' style='padding:1px' >"+
+                        "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
+                        "<rect x='30' y='10' width='50' height='10' fill='black' rx='5'/>"+
+                        "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
+                        "<rect x='30' y='41' width='50' height='10' fill='black' rx='5'/>" + 
+                        "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
+                        "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
+    
+    // main handler for the dragging functionality
+    layerbtn.addEventListener("mousedown", function(event) {
+        // capture the start y when the click happens
+        oldY = event.pageY
+
+        // add the listeners for removing the drag functions
+        layerbtn.addEventListener("mouseup", documentMouseUpListener, layerbtn)
+        document.addEventListener("mousemove", getMouseDirection, false)
+
+        // try to find the element to put things above
+        try{
+            // ** I know to look for this because the structure of the layer browser. ** could be simplified in the future
+            upperObject = (event.target.parentElement.parentElement.previousSibling.previousSibling) ?
+            event.target.parentElement.parentElement.previousElementSibling.previousSibling :
+            null; 
+        }catch{
+            upperObject = null
+        }
+        // the element to put things below
+        try{
+            lowerObject = event.target.parentElement.parentElement.nextSibling.nextSibling.nextSibling
+        }
+        catch{
+            lowerObject = null
+        }
+        // objects that need to shift
+        try{
+            // get current targets parentElement for shifting
+            shiftObjects = [event.target.parentElement.parentElement, event.target.parentElement.parentElement.nextSibling]
+        }catch{
+            shiftObjects = null
+        }
+
+        // drag function
+        document.addEventListener("mousemove", docucmentMouseOverHandler)
+    })
+
+    // add the window lister to remove active dragging
+    window.addEventListener("mousedown", () => {
+        window.addEventListener("mouseup", documentMouseUpListener, layerbtn)
+    })
+    /** End Dragging */
+
+
+    // set aptions bar nodes
+    rectoptionbar.append( 
+        rectoptionheader, 
+        minibtn,
+        deletebtn,
+        layerbtn
+    )
+
+    // append the objects
+    recttoolbox.append(
+        rectxinputlabel,
+        document.createElement("br"),
+        rectxinput,
+        document.createElement("br"),
+        rectyinputlabel,
+        document.createElement("br"),
+        rectyinput,
+        document.createElement("br"),
+        rectwidthlabel,
+        document.createElement("br"),
+        rectwidthinput,
+        document.createElement("br"),
+        rectheightlabel,
+        document.createElement("br"),
+        rectheightinput,
+        document.createElement("br"),
+        rectcolorlabel,
+        document.createElement("br"),
+        rectcolorinput,
+        document.createElement("br"),
+        strokewidthinputlabel,
+        document.createElement("br"),
+        strokewidthinput   
+    )
+
+    document.getElementById("toolcontainer").append(rectoptionbar, recttoolbox)
 }

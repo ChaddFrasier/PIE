@@ -4,7 +4,6 @@ describe("Icon Tests > ", () => {
         cy.visit('/');
 
         cy.get("#addimagebtn").click();
-        cy.get("#editminibtn").click();
     });
 
     it("Icon is added to SVG when dragged and dropped on an image", ()=>{
@@ -57,7 +56,7 @@ describe("Icon Tests > ", () => {
         
         // add the icon 
         cy.get("#northarrowopt").trigger("mousedown");
-        cy.get("svg>image").last().trigger("mouseup");
+        cy.get("#figurecontainer").trigger("mouseup");
         
         // change the value of the color input
         cy.get(".icontoolbox>input[type='color']").first()
@@ -92,7 +91,7 @@ describe("Icon Tests > ", () => {
             .trigger("change")
 
         // test color primary
-        cy.get('svg#figureContainer>g>circle').first().should("have.attr", "stroke", testcolor);
+        cy.get('svg#figureContainer>g>ellipse').first().should("have.attr", "stroke", testcolor);
 
         // secondary color
         cy.get(".icontoolbox>input[type='color']").last()
@@ -100,7 +99,7 @@ describe("Icon Tests > ", () => {
             .trigger("change")
         
         // test secondary color
-        cy.get('svg#figureContainer>g>circle').first().should("have.attr", "fill", testcolor);
+        cy.get('svg#figureContainer>g>ellipse').first().should("have.attr", "stroke", testcolor);
     });
 
     
@@ -144,22 +143,10 @@ describe("Icon Tests > ", () => {
 
         // find the group and check the inner style, throw an error to stop
         cy.get('svg#figureContainer>g').then( icongroup => {
-            if( icongroup.attr("style").indexOf("translate(2200") <= -1 )
+            console.log(String("translate("+ (1100/5)))
+            if( icongroup.attr("style").indexOf(String("translate("+ (1100/5))) <= -1 )
             {
                 throw new Error("Should contain a translate of x/scale")
-            }
-        });
-
-        // test location y
-        cy.get(".icontoolbox>input[type='number']")
-            .eq(2).clear()
-            .type('1100{enter}')
-
-        // find the group and check the inner style, throw an error to stop
-        cy.get('svg#figureContainer>g').then( icongroup => {
-            if( icongroup.attr("style").indexOf("translate(2200px, 2200") <= -1 )
-            {
-                throw new Error("Should contain a translate of y/scale")
             }
         });
     });

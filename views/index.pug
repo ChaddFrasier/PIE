@@ -12,7 +12,7 @@ html
             a.leftcontainer(href="https://www.usgs.gov/centers/astrogeology-science-center", target='_blank')
                 img(src="/images/usgsLogo.png", alt="HeaderLogo", class="usgsLogo")
             .centercontainer(style="text-align:center")
-                img(src="/images/pieFuture.png", alt="PIElogo", class="titleLogo")
+                img(src="/images/pieLogo.svg", alt="PIElogo", class="titleLogo")
             .rightcontainer(style="text-align:right")
                 img.headerimage(src="/images/LRO_0.png", alt="lroLogo")
                 img.headerimage(src="/images/pdslogo.png", alt="PSDLogo")
@@ -37,78 +37,65 @@ html
 
                     .windowoptionsbar(style="display:flex;")
                         h4="Editing Tools"
-                        button#editminibtn.windowminimizebtn='▼'
-                    #edittoolsbox.edittoolsbox.closed
+                        button#editminibtn.windowminimizebtn='▲'
+                    #edittoolsbox.edittoolsbox
                         label.text(for="northarrowopt")="North Button"
                         br
                         button#northarrowopt(type="button")
-                            svg.btnvectorgraphic(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve")
-                                g#northgroup(width="25px" height="25px" stroke-width="10")
-                                    path( stroke="black" fill="white" d="M397.344,216.64L269.664,7.68C266.752,2.912,261.568,0,256,0s-10.752,2.912-13.664,7.648l-127.68,208.96 c-4.16,6.784-2.656,15.616,3.488,20.704c6.112,5.024,15.072,4.832,20.96-0.544C170.688,207.904,212.224,192,256,192 s85.312,15.904,116.896,44.768c5.856,5.344,14.784,5.568,20.96,0.544C400,232.224,401.504,223.392,397.344,216.64z")
-                                    path( stroke="black" fill="white" d="M256,224c-79.392,0-144,64.608-144,144s64.608,144,144,144s144-64.608,144-144S335.392,224,256,224z M304,432 c0,7.392-5.088,13.888-12.32,15.552c-1.248,0.32-2.464,0.448-3.68,0.448c-5.984,0-11.552-3.328-14.304-8.832L240,371.776V432 c0,8.832-7.168,16-16,16c-8.832,0-16-7.168-16-16V304c0-7.392,5.12-13.888,12.32-15.552c7.136-1.856,14.656,1.792,17.984,8.416 L272,364.224V304c0-8.832,7.168-16,16-16c8.832,0,16,7.168,16,16V432z")
+                            svg.btnvectorgraphic(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 25 25" xml:space="preserve")
+                                g#northgroup
+                                    ellipse( ry="7.3046503" rx="7.3046513" cy="17" cx="12.500001" fill="black" stroke="white")
+                                    path( stroke="black" fill="white" d="M 8.7741768,11.735472 V 22.574205 H 11.387087 V 17 L 14,22.574205 h 2.612909 V 11.735472 H 14 V 17 l -2.612913,-5.264528 c -1.265266,0 -1.791112,0 -2.6129102,0 z")
+                                    path( stroke="white" fill="black" d="M 12.495,0 18,8.6 V 10 L 15.5778,8.6 12.495,8 9.4122,8.6 6.99,10 V 8.6 Z")
                         br
                         label.text(for="sunarrowbtn")="Sun Button"
                         br
                         button#sunarrowopt(type="button")
-                            svg.btnvectorgraphic(viewBox="0 0 512 512")
+                            svg.btnvectorgraphic(viewBox="0 0 25 25")
                                 g#sungroup(width=25, height=25)
-                                        circle(r="150", cx="256", cy="256", fill="black", stroke-width="20", stroke="white")      
-                                        circle(r="50", cx="256", cy="256", fill="white", stroke="white")
+                                    ellipse(cx="12.388" cy="14.965" stroke="#fff" rx="9" ry="9" fill="#000" stroke-linejoin="round" stroke-width="1.817")
+                                    ellipse(cx="12.388" cy="14.965" stroke="#000" fill="#fff" rx="3" ry="3" stroke-linejoin="round" stroke-width=".056954")
+                                    path(d="m10.289 5.3029c1.6585-0.99794 1.6585-2.4948 2.2113-3.9918 0.55282 1.4969 0.55282 2.9938 2.2113 3.9918-2.7641-0.99794-1.6585-0.99794-4.4226 0z" stroke="#fff" fill="#000" stroke-width=".9085")
                         br
                         label.text(for="observerarrowbtn")="Observer Button"
                         br
                         button#observerarrowopt(type="button")
-                            svg.btnvectorgraphic(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 480 480" style="enable-background:new 0 0 480 480;" xml:space="preserve")
-                                g#observergroup(width=25 stroke-width=10 enable-background="new 0 0 511.951 511.951" viewBox="0 0 511.951 511.951" height=25 xmlns="http://www.w3.org/2000/svg")
-                                    circle(fill='black' stroke='white' cx="255.961" cy="165.951" r="15")
-                                    path(fill='black' stroke='white' d="m329.54 180.775c9.294-48.646-27.94-89.388-72.836-89.775-.253 0-.491-.049-.743-.049-.07 0-.134.013-.203.013-37.749.143-67.194 27.817-73.376 60.163-9.406 49.23 29.011 89.108 70.803 89.645 39.443 1.396 70.033-26.915 76.355-59.997zm-118.579-14.824c0-24.814 20.186-45 45-45s45 20.186 45 45-20.186 45-45 45-45-20.186-45-45z")
-                                    path(fill='black' stroke='white' d="m168.986 223.799c-15.114-22.778-21.354-50.652-16.077-78.298 2.587-13.546 8.091-26.058 15.478-37.245-30.681 11.642-57.083 27.096-76.412 40.466-.45 4.371-.853 8.756-.958 13.213-.168 7.216.436 14.286 1.172 21.317 18.868 13.045 45.404 28.7 76.797 40.547z")
-                                    path(fill='black' stroke='white' d="m359.013 186.4c-2.58 13.506-8.062 25.981-15.414 37.143 30.97-11.768 57.215-27.219 75.991-40.184.617-5.768 1.371-11.505 1.371-17.408 0-5.806-.317-11.536-.899-17.186-19.616-13.579-46.331-29.196-77.258-40.833 15.202 22.808 21.499 50.751 16.209 78.468z")
-                                    path(fill='black' stroke='white' d="m200.4 320.829-37.94 133.758c-8.197 28.707 13.278 57.363 43.271 57.363h100.459c29.976 0 51.474-28.637 43.271-57.363l-37.954-133.788c45.74-16.329 80.788-51.768 97.861-95.519-38.956 22.619-93.204 45.67-153.408 45.67-60.284 0-114.606-23.117-153.51-45.727 16.808 43.585 51.406 79.101 97.95 95.606z")
-                                    path(fill='black' stroke='white' d="m409.955 107.007c-23.619-61.737-83.114-106.663-153.452-107.005-72.173-.352-131.217 45.37-154.603 107.04 39.529-23.117 93.688-46.091 154.061-46.091 53.267 0 107.999 19.158 153.994 46.056z")
+                            svg.btnvectorgraphic(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve")
+                                g#observergroup(width=24 viewBox="0 0 24 24" height=24 xmlns="http://www.w3.org/2000/svg" stroke-width="1.5px")
+                                    circle(cx="12" cy="14" r="9.5489" fill="#000" stroke-dashoffset="3.5906" stroke="#fff" stroke-linejoin="round")
+                                    path(d="m4.5 14c8.0769 6.6667 8.0769 6.6667 15 0-6.9231-6.6667-6.9231-6.6667-15 0z" fill="#000" stroke="#fff" stroke-linejoin="round")
+                                    ellipse(cx="12.577" cy="14" rx="2.8846" ry="3.3333" fill="#000" stroke-dashoffset="3.5906" stroke="#fff" stroke-linejoin="round")
+                                    ellipse(cx="12.649" cy="14.045" rx=".57692" ry=".83333" stroke-dashoffset="3.5906" stroke="#fff" stroke-linejoin="round")
+                                    path(d="m6.4778 4.2722c0-0.8089 4.6178-2.6963 5.7722-4.0445 1.1544 1.3482 5.7722 3.2356 5.7722 4.0445-5.3874-1.0785-6.157-1.0785-11.544 0z" fill="#000" stroke="#fff" stroke-linejoin="round")
 
                         br
                         label.text(for="pencilopt")="Pencil Button"
                         br
                         button#penciloptbtn(type="button")
-                            svg.btnvectorgraphic(enable-background="new 0 0 512 512" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg")
+                            svg.btnvectorgraphic(enable-background="new 0 0 24 24" height="25" viewBox="0 -2 25 25" width="25" xmlns="http://www.w3.org/2000/svg")
                                 g#pencilgroup(stroke="black" stroke-width="2")
-                                    path(d="m384.721 0-323.626 323.627-61.095 188.373 188.374-61.094 323.626-323.627zm84.853 127.279-42.427 42.427-84.853-84.853 42.426-42.427zm-388.611 232.331 71.427 71.428-32.036 10.39-49.782-49.782zm14.501-27.925 225.617-225.618 31.82 31.82-225.618 225.617zm53.032 53.032 225.618-225.619 31.82 31.82-225.618 225.619zm-88.313 38.965 28.136 28.136-41.642 13.505z")
+                                    path(d="m19.788 15.562-3.2543 3.4393-13.528-12.8 3.2543-3.4393z" fill="none" stroke="#000" stroke-linejoin="round" stroke-width=".22123")
+                                    path(d="m12.935 9.2079 6.6617 6.3034-3.123 3.3005-13.323-12.607 3.123-3.3005z" fill="#ff9923" fill-opacity=".89069" stroke="#ff9923" stroke-opacity=".8902" stroke-width=".091798")
+                                    path(d="m6.2752 2.7452-5.1871-1.6489 1.9328 5.0882c0.30533-1.7802-0.002723-1.4546 1.5836-1.6736 0.26201-1.7344-0.046044-1.4088 1.6707-1.7657z" fill="none" stroke-width=".06982")
+                                    path(d="m3.13 1.7814-1.2322 1.3022-0.79685-1.9881z" stroke-width=".11637")
+                                    rect(transform="rotate(133.42)" x="-2.426" y="-27.327" width="4.9302" height="1.9452" fill="#f55" fill-opacity=".89069" stroke-linejoin="round" stroke-width=".07")
+                                    rect(transform="rotate(133.42)" x="-2.2466" y="-24.93" width=".8964" height="18.48" stroke-width=".068389" fill="#f60" fill-opacity=".89069" stroke="#000")
+                                    rect(transform="rotate(133.42)" x="1.5404" y="-24.93" width=".8964" height="18.48" stroke-width=".0684" fill="#f60" fill-opacity=".89069" stroke="#000")
+                                    rect(transform="rotate(133.42)" x="-.29708" y="-24.92" width=".8964" height="18.48" stroke-width=".0684" fill="#f60" fill-opacity=".89069" stroke="#000")
+                                    path(d="m5.0359 3.0666c0.09772-0.050764 0.15576-0.065469 0.59625-0.15118l0.36588-0.071186-0.3246 0.34886c-0.17853 0.19187-0.47328 0.50338-0.655 0.69223l-0.3304 0.34336 0.05087-0.36926c0.06076-0.44104 0.07046-0.4901 0.11886-0.60135 0.04509-0.10364 0.07882-0.13989 0.17814-0.19147z" fill-opacity=".8902" stroke="#000" fill="#ff9923" stroke-width=".004408")
+                                    path(d="m3.4298 4.7425c0.0821-0.044442 0.24261-0.076435 0.57487-0.11459l0.35467-0.040728-0.62077 0.65605c-0.3595 0.37994-0.62102 0.64803-0.62138 0.63697-0.0012-0.036475 0.10822-0.7155 0.13191-0.8189 0.03882-0.16939 0.09819-0.27415 0.1807-0.3188z" fill="#ff9923" stroke-width=".004408" fill-opacity=".8902" stroke="#000")
+                                    path(d="m4.6349 2.2685c0.78805 0.25071 1.4331 0.46003 1.4335 0.46514 3.54e-4 0.00515-0.18297 0.043568-0.40738 0.08545-0.60404 0.11274-0.73933 0.16515-0.84751 0.32839-0.06927 0.10454-0.10752 0.27429-0.1709 0.75864l-0.05783 0.44197-0.1293 0.13757-0.25384 0.029159c-0.65735 0.075511-0.72584 0.089615-0.84664 0.17432-0.13955 0.097866-0.18741 0.24642-0.28233 0.87629-0.03526 0.23397-0.06758 0.42535-0.07182 0.42529-0.0042-2.42e-5 -0.2494-0.63482-0.54479-1.4106l-0.53706-1.4105 1.2831-1.357z" fill-opacity=".8902" stroke="#000" fill="#ffa622" stroke-width=".097808")
                         br
                         label.text(for="outlineopt")="Outline Box"
                         br
                         button#outlinebtnopt(type="button")
-                            svg.btnvectorgraphic(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve")
-                                g#outlinegroup(stroke="white", fill="black")
-                                    path(d="M503.706,0H468.32c-4.58,0-8.294,3.712-8.294,8.294v9.4h-27.093c-4.58,0-8.294,3.712-8.294,8.294 c0,4.581,3.713,8.294,8.294,8.294h27.093v9.4c0,4.581,3.713,8.294,8.294,8.294h9.4v27.093c0,4.581,3.713,8.294,8.294,8.294 c4.58,0,8.294-3.712,8.294-8.294V51.974h9.4c4.58,0,8.294-3.712,8.294-8.294V8.294C512,3.712,508.287,0,503.706,0z M495.413,35.387h-18.799V16.587h18.799V35.387z")
-                                    path(d="M503.706,460.026h-9.4v-27.093c0-4.581-3.713-8.294-8.294-8.294c-4.58,0-8.294,3.712-8.294,8.294v27.093h-9.4 c-4.58,0-8.294,3.712-8.294,8.294v9.4h-27.093c-4.58,0-8.294,3.712-8.294,8.294s3.713,8.294,8.294,8.294h27.093v9.4 c0,4.581,3.713,8.294,8.294,8.294h35.387c4.58,0,8.294-3.712,8.294-8.294V468.32C512,463.738,508.287,460.026,503.706,460.026z M495.413,495.413h-18.799v-18.799h18.799V495.413z")
-                                    path(d="M25.987,212.32c-4.58,0-8.294,3.712-8.294,8.294v17.693c0,4.581,3.713,8.294,8.294,8.294c4.58,0,8.294-3.712,8.294-8.294 v-17.693C34.281,216.032,30.567,212.32,25.987,212.32z")
-                                    path(d="M25.987,159.24c-4.58,0-8.294,3.712-8.294,8.294v17.693c0,4.581,3.713,8.294,8.294,8.294c4.58,0,8.294-3.712,8.294-8.294 v-17.693C34.281,162.952,30.567,159.24,25.987,159.24z")
-                                    path(d="M25.987,265.4c-4.58,0-8.294,3.712-8.294,8.294v17.693c0,4.581,3.713,8.294,8.294,8.294c4.58,0,8.294-3.712,8.294-8.294	v-17.693C34.281,269.112,30.567,265.4,25.987,265.4z")
-                                    path(d="M25.987,106.16c-4.58,0-8.294,3.712-8.294,8.294v17.693c0,4.581,3.713,8.294,8.294,8.294c4.58,0,8.294-3.712,8.294-8.294 v-17.693C34.281,109.872,30.567,106.16,25.987,106.16z")
-                                    path(d="M25.987,318.479c-4.58,0-8.294,3.712-8.294,8.294v17.693c0,4.581,3.713,8.294,8.294,8.294c4.58,0,8.294-3.712,8.294-8.294 v-17.693C34.281,322.192,30.567,318.479,25.987,318.479z")
-                                    path(d="M25.987,371.559c-4.58,0-8.294,3.712-8.294,8.294v17.693c0,4.581,3.713,8.294,8.294,8.294c4.58,0,8.294-3.712,8.294-8.294 v-17.693C34.281,375.272,30.567,371.559,25.987,371.559z")
-                                    path(d="M486.013,212.32c-4.58,0-8.294,3.712-8.294,8.294v17.693c0,4.581,3.713,8.294,8.294,8.294c4.58,0,8.294-3.712,8.294-8.294 v-17.693C494.307,216.032,490.593,212.32,486.013,212.32z")
-                                    path(d="M486.013,159.24c-4.58,0-8.294,3.712-8.294,8.294v17.693c0,4.581,3.713,8.294,8.294,8.294c4.58,0,8.294-3.712,8.294-8.294 v-17.693C494.307,162.952,490.593,159.24,486.013,159.24z")
-                                    path(d="M486.013,265.4c-4.58,0-8.294,3.712-8.294,8.294v17.693c0,4.581,3.713,8.294,8.294,8.294c4.58,0,8.294-3.712,8.294-8.294 v-17.693C494.307,269.112,490.593,265.4,486.013,265.4z")
-                                    path(d="M486.013,106.16c-4.58,0-8.294,3.712-8.294,8.294v17.693c0,4.581,3.713,8.294,8.294,8.294c4.58,0,8.294-3.712,8.294-8.294 v-17.693C494.307,109.872,490.593,106.16,486.013,106.16z")
-                                    path(d="M486.013,318.479c-4.58,0-8.294,3.712-8.294,8.294v17.693c0,4.581,3.713,8.294,8.294,8.294 c4.58,0,8.294-3.712,8.294-8.294v-17.693C494.307,322.192,490.593,318.479,486.013,318.479z")
-                                    path(d="M486.013,371.559c-4.58,0-8.294,3.712-8.294,8.294v17.693c0,4.581,3.713,8.294,8.294,8.294 c4.58,0,8.294-3.712,8.294-8.294v-17.693C494.307,375.272,490.593,371.559,486.013,371.559z")
-                                    path(d="M238.307,477.719h-17.693c-4.58,0-8.294,3.712-8.294,8.294s3.713,8.294,8.294,8.294h17.693 c4.58,0,8.294-3.712,8.294-8.294S242.887,477.719,238.307,477.719z")
-                                    path(d="M185.227,477.719h-17.693c-4.58,0-8.294,3.712-8.294,8.294s3.713,8.294,8.294,8.294h17.693 c4.58,0,8.294-3.712,8.294-8.294S189.807,477.719,185.227,477.719z")
-                                    path(d="M291.387,477.719h-17.693c-4.58,0-8.294,3.712-8.294,8.294s3.713,8.294,8.294,8.294h17.693 c4.58,0,8.294-3.712,8.294-8.294S295.967,477.719,291.387,477.719z")
-                                    path(d="M132.147,477.719h-17.693c-4.58,0-8.294,3.712-8.294,8.294s3.713,8.294,8.294,8.294h17.693 c4.58,0,8.294-3.712,8.294-8.294S136.727,477.719,132.147,477.719z")
-                                    path(d="M79.067,477.719H51.974v-9.4c0-4.581-3.713-8.294-8.294-8.294h-9.4v-27.093c0-4.581-3.713-8.294-8.294-8.294 c-4.58,0-8.294,3.712-8.294,8.294v27.093h-9.4c-4.58,0-8.294,3.712-8.294,8.294v35.387C0,508.288,3.713,512,8.294,512H43.68	c4.58,0,8.294-3.712,8.294-8.294v-9.4h27.093c4.58,0,8.294-3.712,8.294-8.294S83.647,477.719,79.067,477.719z M35.387,495.413 H16.587v-18.799h18.799V495.413z")
-                                    path(d="M344.466,477.719h-17.693c-4.58,0-8.294,3.712-8.294,8.294s3.713,8.294,8.294,8.294h17.693 c4.58,0,8.294-3.712,8.294-8.294S349.047,477.719,344.466,477.719z")
-                                    path(d="M397.546,477.719h-17.693c-4.58,0-8.294,3.712-8.294,8.294s3.713,8.294,8.294,8.294h17.693 c4.58,0,8.294-3.712,8.294-8.294S402.127,477.719,397.546,477.719z")
-                                    path(d="M238.307,17.693h-17.693c-4.58,0-8.294,3.712-8.294,8.294c0,4.581,3.713,8.294,8.294,8.294h17.693 c4.58,0,8.294-3.712,8.294-8.294C246.6,21.406,242.887,17.693,238.307,17.693z")
-                                    path(d="M185.227,17.693h-17.693c-4.58,0-8.294,3.712-8.294,8.294c0,4.581,3.713,8.294,8.294,8.294h17.693 c4.58,0,8.294-3.712,8.294-8.294C193.521,21.406,189.807,17.693,185.227,17.693z")
-                                    path(d="M291.387,17.693h-17.693c-4.58,0-8.294,3.712-8.294,8.294c0,4.581,3.713,8.294,8.294,8.294h17.693 c4.58,0,8.294-3.712,8.294-8.294C299.68,21.406,295.967,17.693,291.387,17.693z")
-                                    path(d="M132.147,17.693h-17.693c-4.58,0-8.294,3.712-8.294,8.294c0,4.581,3.713,8.294,8.294,8.294h17.693 c4.58,0,8.294-3.712,8.294-8.294C140.441,21.406,136.727,17.693,132.147,17.693z")
-                                    path(d="M79.067,17.693H51.974v-9.4C51.974,3.712,48.261,0,43.68,0H8.294C3.713,0,0,3.712,0,8.294V43.68 c0,4.581,3.713,8.294,8.294,8.294h9.4v27.093c0,4.581,3.713,8.294,8.294,8.294c4.58,0,8.294-3.712,8.294-8.294V51.974h9.4 c4.58,0,8.294-3.712,8.294-8.294v-9.4h27.093c4.58,0,8.294-3.712,8.294-8.294C87.361,21.406,83.647,17.693,79.067,17.693z M35.387,35.387H16.587V16.587h18.799V35.387z")
-                                    path(d="M344.466,17.693h-17.693c-4.58,0-8.294,3.712-8.294,8.294c0,4.581,3.713,8.294,8.294,8.294h17.693 c4.58,0,8.294-3.712,8.294-8.294C352.76,21.406,349.047,17.693,344.466,17.693z")
-                                    path(d="M397.546,17.693h-17.693c-4.58,0-8.294,3.712-8.294,8.294c0,4.581,3.713,8.294,8.294,8.294h17.693 c4.58,0,8.294-3.712,8.294-8.294C405.84,21.406,402.127,17.693,397.546,17.693z")
-
+                            svg.btnvectorgraphic(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve")
+                                g#outlinegroup(stroke="black", fill="none")
+                                    rect(x="1" y="1" width="22" height="22" fill="transparent" stroke="#000" stroke-linejoin="round" fill-opacity=".8902" stroke-dasharray="3.77952766,1.88976383" stroke-dashoffset="3.5906" stroke-width="1.8898")
+                                    rect(x=".47244" y=".47244" width="4" height="4" stroke-dashoffset="3.9685" stroke-width=".94488")
+                                    rect(x="19.472" y=".47244" width="4" height="4" stroke-dashoffset="3.9685" stroke-width=".94488")
+                                    rect(x="19.472" y="19.472" width="4" height="4" stroke-dashoffset="3.9685" stroke-width=".94488")
+                                    rect(x=".47244" y="19.472" width="4" height="4" stroke-dashoffset="3.9685" stroke-width=".94488")
 
                     h3#tooldivider.dividerline="Vector Layers"
                     //- Objects Section Is below here 
@@ -117,10 +104,10 @@ html
                     button.toolboxminimizebtn='◄'
                     button#addimagebtn.toolboxaddimagebtn
                         svg.btnvectorgraphic(viewBox="0 0 25 25")
-                            image.svgimg(href="images/add.svg", width="25px", height="25px")
+                            image.svgimg(href="images/addPlanetImage.svg", width="25px", height="25px")
                     button#addcaptionbtn.toolboxaddcaptionbtn
-                        svg.btnvectorgraphic(viewBox="0 0 25 23")
-                            image.svgimg(href="images/text.svg", width="25px", height="25px")
+                        svg.btnvectorgraphic(viewBox="-1 1 27 27")
+                            image.svgimg(href="images/addCaptionImage.svg", width="27px", height="27px")
             #editbox.editbox
                 //- Other Options Button Group
                 .exportoptionsbar(style="display:flex;")
@@ -135,12 +122,12 @@ html
                     svg#figurecontainer.imagecontainer(viewBox="0 0 1500 1500", xmlns="http://www.w3.org/2000/svg", version="1.1", width="100%", height="100%", preserveAspectRatio="xMidYMid meet")
                         defs#figdefs
                             //- markder endings can change size using markerHeight and markerWidth
-                            marker(id="arrowhead" viewBox="0 0 50 50" markerWidth="5" markerHeight="5" refX="0.1" refY="24" orient="auto" )
-                                path( d="M 0 0 L 50 25 L 0 50" fill="#fff" stroke-width="5")
-                            marker(id="circlehead" viewBox="0 0 50 50" markerWidth="5" markerHeight="5" refX="0.1" refY="25" orient="auto")
-                                circle(r="25" cx="25" cy="25" fill="#fff")
-                            marker(id="squarehead"  viewBox="0 0 50 50" markerWidth="5" markerHeight="5" refX="0.1" refY="25" orient="auto")
-                                polygon(points="0 0, 0 50, 50 50, 50 0 z" fill="#fff")
+                            marker(id="arrowhead" viewBox="0 0 10 10" markerWidth="5px" markerHeight="5px" refX="0.1" refY="2.5" orient="auto")
+                                path( d="M 0 0 L 5 2.5 L 0 5" fill="#fff" stroke-width="2")
+                            marker(id="circlehead" viewBox="0 0 10 10" markerWidth="5px" markerHeight="5px" refX="0.1" refY="2.5" orient="auto")
+                                circle(r="2.5" cx="2.5" cy="2.5" fill="#fff" stroke="transparent" stroke-width="2")
+                            marker(id="squarehead"  viewBox="0 0 10 10" markerWidth="5px" markerHeight="5px" refX="0.1" refY="2.5" orient="auto")
+                                polygon(points="0 0, 0 5, 5 5, 5 0 z" fill="#fff" stroke="transparent" stroke-width="2")
                         style
                             include css/svg.css
 
