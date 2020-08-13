@@ -15,13 +15,7 @@ This server was created to simplify the figure making process for planetary rese
 
 2. Install dependencies
 ```
-
-### TODO
-```
-1. ~Outline box functionality~
-2. ~Outline tool box~
-3. ~Outline tests~
-4. TIFF rendering
+npm install
 ```
 -----------------------
 @USGS
