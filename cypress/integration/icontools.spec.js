@@ -11,7 +11,7 @@ describe("Icon Tests > ", () => {
         cy.get("#northarrowopt").trigger("mousedown");
         
         // release the mouse over the image location doesnt matter
-        cy.get("svg>image").last().trigger("mouseup");
+        cy.get("#figurecontainer>image").last().trigger("mouseup");
 
         // test that the icon grounp is there
         cy.get('svg#figureContainer>g').should("have.length", 1)
@@ -64,7 +64,7 @@ describe("Icon Tests > ", () => {
             .trigger("change")
 
         // test that the fill of the path is the test var
-        cy.get('svg#figureContainer>g>path').first().should("have.attr", "fill", testcolor);
+        cy.get('svg#figureContainer>g>path').first().should("have.attr", "stroke", testcolor);
 
         // change secondary color
         cy.get(".icontoolbox>input[type='color']").last()
@@ -72,7 +72,7 @@ describe("Icon Tests > ", () => {
             .trigger("change")
         
         // test secondary color
-        cy.get('svg#figureContainer>g>path').first().should("have.attr", "stroke", testcolor);
+        cy.get('svg#figureContainer>g>path').first().should("have.attr", "fill", testcolor);
 
     });
 
@@ -118,7 +118,7 @@ describe("Icon Tests > ", () => {
             .trigger("change")
 
         // test primary color
-        cy.get('svg#figureContainer>g>circle').first().should("have.attr", "fill", testcolor);
+        cy.get('svg#figureContainer>g>ellipse').first().should("have.attr", "stroke", testcolor);
 
         // change secondary color
         cy.get(".icontoolbox>input[type='color']").last()
@@ -126,7 +126,7 @@ describe("Icon Tests > ", () => {
             .trigger("change")
         
         // test change color
-        cy.get('svg#figureContainer>g>circle').first().should("have.attr", "stroke", testcolor);
+        cy.get('svg#figureContainer>g>ellipse').first().should("have.attr", "fill", testcolor);
     });
 
     it("Test that the observer icon translates when changes occur", ()=>{
