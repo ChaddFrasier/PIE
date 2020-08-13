@@ -445,9 +445,10 @@ $(document).ready(()=>{
         textholder.setAttribute("height", "100")
         textholder.setAttribute("class", "captionObject")
 
-        const text = document.createElement("div")
+        const text = document.createElement("textarea")
         text.classList.add('captions')
         text.setAttribute("id", captionId + "text")
+        text.style.fontFamily =  "'Times New Roman', Times, serif"
         text.setAttribute("x", "0")
         text.setAttribute("y", "0")
         text.setAttribute("width", "100%")

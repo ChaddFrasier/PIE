@@ -448,6 +448,10 @@ button.selected {
     resize: vertical;
 }
 
+.captions {
+    overflow-y: hidden;
+}
+
 .imagetoolsbox {
     border: 1px solid black;
     width: auto;
