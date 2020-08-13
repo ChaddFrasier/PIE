@@ -68,9 +68,6 @@ app.get(['/', '/index.html'], (req, res) => {
     {
         res.render('index');
     }
-
-    // render basic pug file
-    // res.redirect('/login');
 });
 
 /**
@@ -90,9 +87,6 @@ app.get('/contact', (req, res) => {
     console.log(req.body);
 
     res.render('contact');
-
-    // render basic pug file
-    // res.redirect('/login');
 });
 
 
@@ -104,9 +98,6 @@ app.get('/faq', (req, res) => {
     console.log(req.body);
 
     res.render('faq');
-
-    // render basic pug file
-    // res.redirect('/login');
 });
 
 // getting the basic login page
@@ -134,6 +125,9 @@ app.post('/', (req, res) => {
 app.post("/api/isis", upload.single('uploadfile'), function(req, res) {
 
     console.log("file recieved: " + req.file.filename)
+
+    // TODO: this is where i should attempt to create a vrt file using the method that Trent sent me
+
     var child = spawn("gdal_translate", ["-of", "JPEG", "-scale", "-outsize", "20%",  "20%", path.join(__dirname, "public", "uploads", req.file.filename), path.join(__dirname, "public", "uploads", getNewImageName(req.file.filename, "jpg"))])
     
     child.stdout.on("data", data => {
@@ -149,19 +143,12 @@ app.post("/api/isis", upload.single('uploadfile'), function(req, res) {
         res.sendStatus("500");
     });
     
+    // TODO: send the file back to the client
     child.on("close", code => {
         console.log(`child process exited with code ${code}`);
         if( code == 0)
         {
-            var file = fs.createReadStream(path.join(__dirname, "public","uploads", getNewImageName(req.file.filename, "jpg")))
-
-            file.pipe(res);
-
-            file.on("data", (chunk) => {
-                
-            });
-
-            res.sendStatus(200)
+            res.sendFile(path.join(__dirname, "public","uploads", getNewImageName(req.file.filename, "jpg")))
         }
     });
 });
