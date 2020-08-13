@@ -332,7 +332,6 @@ $(document).ready(()=>{
         xcoordlabel.innerHTML = "Caption X: "
         xcoordlabel.setAttribute("for", "widthinput")
         xcoordinput.setAttribute("type", "number")
-        xcoordinput.setAttribute("min", '0')
         xcoordinput.value = 0
         xcoordinput.setAttribute("name","xcoordlabelinput")
 
@@ -342,22 +341,15 @@ $(document).ready(()=>{
             // updpate the text inside once found
             if(matchingCaption && !isNaN(Number(this.value)))
             {
-                if( Number(this.value) < Number(this.getAttribute("min")) )
-                {
-                    matchingCaption.setAttribute("x", Number(this.getAttribute("min")))
-                    this.value = Number(this.getAttribute("min"))
-                }
-                else
-                {
-                    matchingCaption.setAttribute("x", Number(this.value))
-                }
+                
+                matchingCaption.setAttribute("x", Number(this.value))
+                
             }
         })
         
         ycoordlabel.innerHTML = "Caption Y: "
         ycoordlabel.setAttribute("for", "ycoordinput")
         ycoordinput.setAttribute("type", "number")
-        ycoordinput.setAttribute("min", '0')
         ycoordinput.value = '0'
         ycoordinput.setAttribute("name","ycoordlabelinput")
         
@@ -367,15 +359,7 @@ $(document).ready(()=>{
             // updpate the text inside once found
             if(matchingCaption && !isNaN(Number(this.value)))
             {
-                if( Number(this.value) < Number(this.getAttribute("min")) )
-                {
-                    matchingCaption.setAttribute("y", Number(this.getAttribute("min")))
-                    this.value = Number(this.getAttribute("min"))
-                }
-                else
-                {
-                    matchingCaption.setAttribute("y", Number(this.value))
-                }
+                matchingCaption.setAttribute("y", Number(this.value))
             }
         })
 
@@ -694,7 +678,6 @@ $(document).ready(()=>{
         xcoordlabel.innerHTML = "Image X: "
         xcoordlabel.setAttribute("for", "xcoordinput")
         xcoordinput.setAttribute("type", "number")
-        xcoordinput.setAttribute("min", '0')
         xcoordinput.value = 0
         xcoordinput.setAttribute("name","xcoordinput")
 
@@ -704,15 +687,8 @@ $(document).ready(()=>{
             // updpate the text inside once found
             if(matchingCaption && !isNaN(Number(this.value)))
             {
-                if( Number(this.value) < Number(this.getAttribute("min")) )
-                {
-                    matchingCaption.setAttribute("x", Number(this.getAttribute("min")))
-                    this.value = Number(this.getAttribute("min"))
-                }
-                else
-                {
-                    matchingCaption.setAttribute("x", Number(this.value))
-                }
+                matchingCaption.setAttribute("x", Number(this.value))
+                
             }
         })
         
@@ -730,15 +706,7 @@ $(document).ready(()=>{
             // updpate the text inside once found
             if(matchingCaption && !isNaN(Number(this.value)))
             {
-                if( Number(this.value) < Number(this.getAttribute("min")) )
-                {
-                    matchingCaption.setAttribute("y", Number(this.getAttribute("min")))
-                    this.value = Number(this.getAttribute("min"))
-                }
-                else
-                {
-                    matchingCaption.setAttribute("y", Number(this.value))
-                }
+                matchingCaption.setAttribute("y", Number(this.value))
             }
         })
 
@@ -2295,22 +2263,12 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     linex1input.setAttribute( "objectid", objectid )
     linex1inputlabel.setAttribute( "objectid", objectid )
     linex1input.setAttribute( "type", "number" )
-    linex1input.setAttribute( "min", "0" )
     linex1inputlabel.innerHTML = "Line Start-Point X: "
     linex1input.value = parseFloat(x1).toFixed(0)
 
     linex1input.addEventListener("change", function(event)
     {
-        // perform line movements
-        if( Number(this.getAttribute("min")) > Number(this.value) )
-        {
-            document.getElementById( this.attributes.objectid.value).setAttribute("x1", Number(this.getAttribute("min")) )
-            this.value = Number(this.getAttribute("min"))
-        }
-        else
-        {
-            document.getElementById( this.attributes.objectid.value).setAttribute("x1", this.value )
-        }
+        document.getElementById( this.attributes.objectid.value).setAttribute("x1", this.value )
     })
 
     // input y1 fields
@@ -2324,16 +2282,9 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     liney1input.addEventListener("change", function(event)
     {
         // y1 translate input
-        // perform line movements
-        if( Number(this.getAttribute("min")) > Number(this.value) )
-        {
-            document.getElementById( this.attributes.objectid.value).setAttribute("y1", Number(this.getAttribute("min")) )
-            this.value = Number(this.getAttribute("min"))
-        }
-        else
-        {
-            document.getElementById( this.attributes.objectid.value).setAttribute("y1", this.value )
-        }
+        
+        document.getElementById( this.attributes.objectid.value).setAttribute("y1", this.value )
+        
 
     })
 
@@ -2515,15 +2466,8 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     linex2input.addEventListener("change", function(event)
     {
         // x2 translate attribute
-        if( Number(this.getAttribute("min")) > Number(this.value) )
-        {
-            document.getElementById( this.attributes.objectid.value).setAttribute("x2", Number(this.getAttribute("min")) )
-            this.value = Number(this.getAttribute("min"))
-        }
-        else
-        {
-            document.getElementById( this.attributes.objectid.value).setAttribute("x2", this.value )
-        }
+        
+        document.getElementById( this.attributes.objectid.value).setAttribute("x2", this.value )
     })
 
 
@@ -2539,15 +2483,8 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     liney2input.addEventListener("change", function(event)
     {
         // line y2 attribute
-        if( Number(this.getAttribute("min")) > Number(this.value) )
-        {
-            document.getElementById( this.attributes.objectid.value).setAttribute("y2", Number(this.getAttribute("min")) )
-            this.value = Number(this.getAttribute("min"))
-        }
-        else
-        {
-            document.getElementById( this.attributes.objectid.value).setAttribute("y2", this.value )
-        }
+        
+        document.getElementById( this.attributes.objectid.value).setAttribute("y2", this.value )
     })
 
     // input line ender select elements
