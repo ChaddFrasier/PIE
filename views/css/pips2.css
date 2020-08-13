@@ -4,9 +4,10 @@
     --secondary-color: #89BFD2;
     --accent-color: #124A69;
     --contrast-color: #3E95A3;
-    --bar-gradient: linear-gradient(to top right,rgb(236, 236, 236), rgb(156, 156, 156));
-    --transition-time: 0.125s;
+    --bar-gradient: linear-gradient(to top right,rgb(237, 237, 237), rgb(156, 156, 156));
+    --transition-time: 0.125s; 
 }
+
 
 html {
     background: var(--main-bg-color);
