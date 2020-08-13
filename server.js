@@ -128,7 +128,7 @@ app.post("/api/isis", upload.single('uploadfile'), function(req, res) {
 
     // TODO: this is where i should attempt to create a vrt file using the method that Trent sent me
 
-    var child = spawn("gdal_translate", ["-of", "JPEG", "-scale", "-outsize", "20%",  "20%", path.join(__dirname, "public", "uploads", req.file.filename), path.join(__dirname, "public", "uploads", getNewImageName(req.file.filename, "jpg"))])
+    var child = spawn("gdal_translate", ["-of", "JPEG", "-ot", "byte", "-scale", "-outsize", "30%", "30%", path.join(__dirname, "public", "uploads", req.file.filename), path.join(__dirname, "public", "uploads", getNewImageName(req.file.filename, "jpg"))])
     
     child.stdout.on("data", data => {
         console.log(`stdout: ${data}`);
@@ -144,19 +144,39 @@ app.post("/api/isis", upload.single('uploadfile'), function(req, res) {
     });
     
     // TODO: send the file back to the client
+    // when the response is ready to close
     child.on("close", code => {
         console.log(`child process exited with code ${code}`);
+        // if the gdal command exited with 0
         if( code == 0)
         {
+            // send the image back to client in a browser acceptable image format
             res.sendFile(path.join(__dirname, "public","uploads", getNewImageName(req.file.filename, "jpg")))
+
+            // create the vrt file
+            var vrtChild = spawn("gdal_translate", ["-of", "vrt", path.join(__dirname, "public", "uploads", getNewImageName(req.file.filename, "jpg")), path.join(__dirname, "public", "uploads", getNewImageName(req.file.filename, "vrt"))])
+
+            vrtChild.on("close", exitCode => {
+                if( exitCode == 0 )
+                {
+                    // on success
+                    console.log("vrt created successfully")
+                }
+            })
         }
-    });
+    })
 });
 
 // run the server on port
 const port = 8080;
 app.listen(port, () => console.log(`Listening for connection at http://localhost:${port}`));
 
+/**
+ * @function getNewImageName
+ * @param {string} filename the basefilename with the origional ext
+ * @param {string} ext - extension that the new file has
+ * @description create a new filename using the new ext and that has the same base name as filename
+ */
 function getNewImageName( filename, ext )
 {
     let tmp = filename.split(".")
