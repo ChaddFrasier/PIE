@@ -14,7 +14,7 @@ describe("Caption Tool Box Tests > ", () => {
         cy.get("textarea[name='captiontextinput']").type("This is an automated cypress test that is intended to\
         check and see if the caption object is working in terms of reflecting what is in this box{enter}");
         // check that the new contents of the svg object contains part of the required string
-        cy.get("#figurecontainer > .captionObject>div").contains("reflecting what")
+        cy.get("#figurecontainer > .captionObject>textarea").contains("reflecting what")
 
     });
 
