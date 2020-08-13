@@ -29,7 +29,7 @@ describe("Outline Tests > ", () => {
 
     it("Test that the outline X point moves when changed in input", () => {
         // change the color of the line
-        cy.get("input[type='number']").first()
+        cy.get("input[type='number']").eq(3)
             .clear().type("300{enter}")
             .trigger("change")
 
@@ -40,7 +40,7 @@ describe("Outline Tests > ", () => {
     it("Test that the outline Y point moves when changed in input field", () => {
         cy.get("#figurecontainer>rect").should("exist")
         // change the color of the line
-        cy.get("input[type='number']").eq(1)
+        cy.get("input[type='number']").eq(4)
             .clear().type("300{enter}")
             .trigger("change")
 
@@ -50,7 +50,7 @@ describe("Outline Tests > ", () => {
 
     it("Test that the outline thickness works", () =>{ 
         // change the color of the line
-        cy.get("input[type='number']").last()
+        cy.get("input[type='number']").first()
             .clear().type("150{enter}")
             .trigger("change")
 
@@ -60,7 +60,7 @@ describe("Outline Tests > ", () => {
 
     it("Test that the outline width works", () => {
         // change the color of the line
-        cy.get("input[type='number']").eq(2)
+        cy.get("input[type='number']").eq(1)
             .clear().type("150{enter}")
             .trigger("change")
 
@@ -70,7 +70,7 @@ describe("Outline Tests > ", () => {
 
     it("Test that the outline height works", () => {
         // change the color of the line
-        cy.get("input[type='number']").eq(3)
+        cy.get("input[type='number']").eq(2)
             .clear().type("150{enter}")
             .trigger("change")
 
@@ -79,7 +79,7 @@ describe("Outline Tests > ", () => {
     })
 
     it("Test that the outline removes when the button is clicked", () => {
-        cy.get(".windowremovebtn").first()
+        cy.get(".windowremovebtn").last()
             .click()
         cy.get("#figurecontainer>rect").should("not.exist")
     })

@@ -1508,10 +1508,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
             // append elements to page
             icontoolbox.append(
-                scalelabel,
-                document.createElement("br"),
-                iconscaleinput,
-                document.createElement("br"),
                 maincolorlabel,
                 document.createElement("br"),
                 iconmaincolorinput,
@@ -1519,6 +1515,10 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
                 accentcolorlabel,
                 document.createElement("br"),
                 iconaccentcolorinput,
+                document.createElement("br"),
+                scalelabel,
+                document.createElement("br"),
+                iconscaleinput,
                 document.createElement("br"),
                 northicontranslatexlabel,
                 document.createElement("br"),
@@ -1621,10 +1621,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
             // append all elements to page
             sunicontoolbox.append(
-                sunscalelabel, 
-                document.createElement("br"),
-                suniconscaleinput,
-                document.createElement("br"),
                 sunmaincolorlabel,
                 document.createElement("br"),
                 suniconmaincolorinput,
@@ -1632,6 +1628,10 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
                 sunaccentcolorlabel,
                 document.createElement("br"),
                 suniconaccentcolorinput,
+                document.createElement("br"),
+                sunscalelabel, 
+                document.createElement("br"),
+                suniconscaleinput,
                 document.createElement("br"),
                 sunicontranslatexlabel,
                 document.createElement("br"),
@@ -1732,10 +1732,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
             // append rest of options
             obsicontoolbox.append( 
-                obsscalelabel, 
-                document.createElement("br"), 
-                obsiconscaleinput, 
-                document.createElement("br"),
                 obsmaincolorlabel,
                 document.createElement("br"),
                 obsiconmaincolorinput,
@@ -1743,6 +1739,10 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
                 obsaccentcolorlabel,
                 document.createElement("br"),
                 obsiconaccentcolorinput,
+                document.createElement("br"),
+                obsscalelabel, 
+                document.createElement("br"), 
+                obsiconscaleinput, 
                 document.createElement("br"),
                 obsicontranslatexlabel, 
                 document.createElement("br"),
@@ -2966,7 +2966,7 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     rectwidthlabel.innerHTML = "Outline Width: "
     rectwidthinput.setAttribute("type", "number")
     rectwidthinput.setAttribute("min", "20")
-    rectwidthinput.value = rectW
+    rectwidthinput.value = parseFloat(rectW).toFixed(0)
 
     rectwidthinput.addEventListener("change", function(event)
     {
@@ -2987,7 +2987,7 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     rectheightlabel.innerHTML = "Outline Height: "
     rectheightinput.setAttribute("type", "number")
     rectheightinput.setAttribute("min", "20")
-    rectheightinput.value = rectH
+    rectheightinput.value = parseFloat(rectH).toFixed(0)
 
     rectheightinput.addEventListener("change", function(event)
     {
@@ -3140,13 +3140,13 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
 
     // append the objects
     recttoolbox.append(
-        rectxinputlabel,
+        rectcolorlabel,
         document.createElement("br"),
-        rectxinput,
+        rectcolorinput,
         document.createElement("br"),
-        rectyinputlabel,
+        strokewidthinputlabel,
         document.createElement("br"),
-        rectyinput,
+        strokewidthinput,
         document.createElement("br"),
         rectwidthlabel,
         document.createElement("br"),
@@ -3156,13 +3156,13 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
         document.createElement("br"),
         rectheightinput,
         document.createElement("br"),
-        rectcolorlabel,
+        rectxinputlabel,
         document.createElement("br"),
-        rectcolorinput,
+        rectxinput,
         document.createElement("br"),
-        strokewidthinputlabel,
+        rectyinputlabel,
         document.createElement("br"),
-        strokewidthinput   
+        rectyinput
     )
 
     document.getElementById("toolcontainer").append(rectoptionbar, recttoolbox)

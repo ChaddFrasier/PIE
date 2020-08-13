@@ -75,6 +75,30 @@ describe("Line Tests > ", () => {
         cy.get("line").should("have.attr", "y2", 400)
     })
 
+    it("Test that line marker end and start both work", ()=> {
+        // add arrow end
+        cy.get("select").last().select("arrow")
+
+        // add arrow start
+        cy.get("select").eq(1).select("arrow")
+
+        // test that the marker end is the right color
+        cy.get("line").then(line => {
+           if ( line.css("marker-end").indexOf(line.attr("id")) > -1)
+           {
+               cy.get("#"+line.attr("id")+"-marker > path").should("exist")
+           }
+        })
+
+        // test that the marker end is the right color
+        cy.get("line").then(line => {
+           if ( line.css("marker-start").indexOf(line.attr("id")) > -1)
+           {
+               cy.get("#"+line.attr("id")+"-markerEnd > path").should("exist")
+           }
+        })
+    })
+
     it("Test that the removing the line element remove function is working", ()=> {
         
         // action to test that toolbox exists

@@ -647,6 +647,7 @@ svg.imagecontainer {
     border-top: 0px solid var(--contrast-color);
     overflow-y: auto;
     overflow-x: hidden;
+    padding: 0 0 5% 0;
     transition: all ease-in-out var(--transition-time);
     -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
     -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
