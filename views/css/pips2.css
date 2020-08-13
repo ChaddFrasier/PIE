@@ -199,7 +199,7 @@ input, select {
     margin: 0 auto;
 }
 
-svg > rect {
+.edittoolsbox > rect, .filetoolsbox > rect {
     pointer-events: none;
 }
 
