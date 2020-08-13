@@ -1710,12 +1710,12 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             // primary color input
             obsiconmaincolorinput.setAttribute("type", "color")
             obsiconmaincolorinput.setAttribute("objectid", iconId)
-            obsiconmaincolorinput.value = "#000000"
+            obsiconmaincolorinput.value = "#ffffff"
 
             // color input secondary
             obsiconaccentcolorinput.setAttribute("type", "color")
             obsiconaccentcolorinput.setAttribute("objectid", iconId)
-            obsiconaccentcolorinput.value = "#ffffff"
+            obsiconaccentcolorinput.value = "#000000"
 
             // add events
             obsiconscaleinput.addEventListener("change", updateIconScale)
@@ -1967,17 +1967,17 @@ function changeIconColor( colorid, colorval, icon )
             if( icon.id.indexOf( "north" ) > -1 )
             {
                 // change all three children of the north icon
-                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "fill", "stroke" )
+                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "stroke", "stroke fill" )
             }
             else if( icon.id.indexOf( "sun" ) > -1 )
             {
                 // change the primary of the sun icon
-                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "fill", "stroke" )
+                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "stroke", "fill" )
             }
             else if( icon.id.indexOf( "observer" ) > -1 )
             {
                 // change the primary of the observer icon
-                changeColorsOfChildren( icon.childNodes, colorval, "fill", "fill", "fill", "fill", "fill" )
+                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "stroke", "stroke", "fill stroke", "", "stroke fill" )
             }
             break
         case 1:
@@ -1985,17 +1985,17 @@ function changeIconColor( colorid, colorval, icon )
             if( icon.id.indexOf( "north" ) > -1 )
             {
                 // change the secondary of the north icon
-                changeColorsOfChildren( icon.childNodes, colorval, "fill", "stroke", "fill" )
+                changeColorsOfChildren( icon.childNodes, colorval, "fill", "fill", "" )
             }
             else if( icon.id.indexOf( "sun" ) > -1 )
             {
                 // change the secondary of the sun icon
-                changeColorsOfChildren( icon.childNodes, colorval, "fill", "stroke", "fill" )
+                changeColorsOfChildren( icon.childNodes, colorval, "fill", "fill", "stroke" )
             }
             else if( icon.id.indexOf( "observer" ) > -1 )
             {
                 // change the secondary of the observer icon
-                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "stroke", "stroke", "stroke", "stroke" )
+                changeColorsOfChildren( icon.childNodes, colorval, "fill", "fill", "fill", "", "fill stroke", "")
             }
     }
 }
