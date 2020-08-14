@@ -776,8 +776,6 @@ $(document).ready(()=>{
         // update the svgContainer size
         let tmp = event.target.value.split("x")
         svgContainer.setAttribute("viewBox", "0 0 " + tmp[0] + ' ' + tmp[1])
-
-        updateUILimits( tmp[0], tmp[1] )
     })
 
     /**
@@ -810,6 +808,28 @@ $(document).ready(()=>{
         }
         else{
             alert("There Must be an image in the figure to attach a North Arrow")
+        }
+    })
+
+    /**
+     * @function scalebarbtnopt.onmousedown
+     * @description this function starts the drag and drop logic for the north icon
+     */
+    $('#scalebarbtnopt').on("mousedown", (event) => {
+        let btn = event.target
+
+        if( getObjectCount(0,"image") != 0)
+        {
+            if(selectedObject){
+                selectedObject = null
+            }
+            else {
+                btn.classList.add("selected")
+                document.addEventListener("mouseup", setElement)
+            }
+        }
+        else{
+            alert("There Must be an image in the figure to attach a Scalebar")
         }
     })
     
@@ -1266,9 +1286,13 @@ function setElement( event )
         {
             iconType = "observer"
         }
+        else if( btn.id.indexOf( "scalebar" ) > -1 )
+        {
+            iconType = "scalebar"
+        }
         else
         {
-            console.log("Unknown Object ID" + btn.id)
+            console.log("Unknown Object ID = " + btn.id)
         }
         
         // draw the icon
@@ -1364,6 +1388,34 @@ function drawSvgIcon( image, icontype, event )
             // append the icon
             svgContainer.appendChild(icongroup)
             break
+
+            case "scalebar":
+                // get svg transformed point
+                svgP = createSVGPoint(event.clientX, event.clientY)
+    
+                // set group attributes for svg
+                icongroup = document.getElementById("scalebargroup").cloneNode(true)
+                icongroup.setAttribute("objectid", image.id)
+                icongroup.setAttribute("id", "scalebarIcon-" + image.id)
+                icongroup.style.scale = "0.5"
+    
+                // set the location of the icon to where the mouse was released
+                newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 2000 )
+                newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 500 )
+            
+                if( !isNaN(newX) && !isNaN(newY))
+                {
+                    // set translate
+                    icongroup.style.transform = translateString( newX, newY )
+                }
+                else
+                {
+                    console.error("Translate Values Failed")
+                }
+               
+                // append the icon
+                svgContainer.appendChild(icongroup)
+                break
     }
 
     // find proper tool box
@@ -1757,6 +1809,108 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             toolbox.append( obsoptionbar, obsicontoolbox )
             break
 
+
+        case "scalebar":
+           
+            let scalemaincolorinput = document.createElement("input")
+            let scaleaccentcolorinput = document.createElement("input")
+            let scaleaccentcolorlabel = document.createElement("label")
+            let scalemaincolorlabel = document.createElement("label")
+            
+            let scaleicontoolbox = document.createElement("div")
+
+            let scaleoptionbar = document.createElement("div")
+            let scaleoptionheader = document.createElement("h4")
+            let deletebtn3 = document.createElement("button")
+            let scaleicontranslatex = document.createElement("input")
+            let scaleicontranslatexlabel = document.createElement("label")
+            let scaleicontranslatey = document.createElement("input")
+            let scaleicontranslateylabel = document.createElement("label")
+
+            // Set Options bar stuff
+            scaleoptionbar.setAttribute("class", 'windowoptionsbar')
+            scaleoptionbar.style.display = "flex"
+
+            scaleoptionbar.addEventListener("click", function ( event )
+            {
+                optionsAction(event.target)
+            })
+            
+            scaleoptionheader.innerHTML = "Scalebar Icon"
+
+            // same for delete as minimize
+            deletebtn3.classList.add("windowremovebtn")
+            deletebtn3.innerHTML = "&times"
+
+            // add event listener for delete btn
+            deletebtn3.addEventListener( "click", function(event) {
+                removeIconWindow(event)
+            })
+
+            // x and y translate
+            scaleicontranslatex.setAttribute("type", "number")
+            scaleicontranslatex.setAttribute("objectid", iconId)
+            scaleicontranslatex.setAttribute("min", "0")
+            scaleicontranslatey.setAttribute("type", "number")
+            scaleicontranslatey.setAttribute("objectid", iconId)
+            scaleicontranslatey.setAttribute("min", "1")
+
+            // set start values for label and value of translate
+            scaleicontranslateylabel.innerHTML = "Scalebar Y: "
+            scaleicontranslatexlabel.innerHTML = "Scalebar X: "
+
+            scaleicontranslatex.value = (transX*0.5).toFixed(0)
+            scaleicontranslatey.value = (transY*0.5).toFixed(0)
+
+            // create labels
+            scalemaincolorlabel.innerHTML = "Scalebar Main Color: "
+            scaleaccentcolorlabel.innerHTML = "Scalebar Secondary Color: "
+
+            // primary color input
+            scalemaincolorinput.setAttribute("type", "color")
+            scalemaincolorinput.setAttribute("objectid", iconId)
+            scalemaincolorinput.value = "#ffffff"
+
+            // color input secondary
+            scaleaccentcolorinput.setAttribute("type", "color")
+            scaleaccentcolorinput.setAttribute("objectid", iconId)
+            scaleaccentcolorinput.value = "#000000"
+
+            // add events
+            scalemaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)})
+            scaleaccentcolorinput.addEventListener("change", function(event){updateIconColor(event, 1)})
+            scaleicontranslatex.addEventListener("change", function(event){updateIconPosition(event, 0)})
+            scaleicontranslatey.addEventListener("change", function(event){updateIconPosition(event, 1)})
+
+            scaleicontoolbox.classList.add("icontoolbox")
+
+            // append aspect to options bar
+            scaleoptionbar.append( scaleoptionheader, document.createElement("br"), deletebtn3 )
+            scaleoptionbar.setAttribute( "objectid", iconId )
+
+            // append rest of options
+            scaleicontoolbox.append( 
+                scalemaincolorlabel,
+                document.createElement("br"),
+                scalemaincolorinput,
+                document.createElement("br"),
+                scaleaccentcolorlabel,
+                document.createElement("br"),
+                scaleaccentcolorinput,
+                document.createElement("br"),
+                scaleicontranslatexlabel, 
+                document.createElement("br"),
+                scaleicontranslatex,
+                document.createElement("br"),
+                scaleicontranslateylabel, 
+                document.createElement("br"),
+                scaleicontranslatey
+            )
+            
+            // append optionsbar and tools
+            toolbox.append( scaleoptionbar, scaleicontoolbox )
+            break
+
         default:
             console.log("UHHH OHH this is wrong")
     }
@@ -1979,6 +2133,12 @@ function changeIconColor( colorid, colorval, icon )
                 // change the primary of the observer icon
                 changeColorsOfChildren( icon.childNodes, colorval, "stroke", "stroke", "stroke", "fill stroke", "", "stroke fill" )
             }
+            else if( icon.id.indexOf( "scalebar" ) > -1 )
+            {
+                // change the primary of the observer icon
+                console.log(icon.childNodes.length)
+                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill" )
+            }
             break
         case 1:
             // change secondary color
@@ -1996,6 +2156,11 @@ function changeIconColor( colorid, colorval, icon )
             {
                 // change the secondary of the observer icon
                 changeColorsOfChildren( icon.childNodes, colorval, "fill", "fill", "fill", "", "fill stroke", "")
+            }
+            else if( icon.id.indexOf( "scalebar" ) > -1 )
+            {
+                // change the primary of the observer icon
+                changeColorsOfChildren( icon.childNodes, colorval, "fill", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" )
             }
     }
 }
