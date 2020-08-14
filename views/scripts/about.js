@@ -1,5 +1,3 @@
-
-
 function writeContent(){
     const contentArr = [
         String(" \
@@ -26,6 +24,4 @@ function writeContent(){
     });
 }
 
-$(document).ready(() => {
-    writeContent();
-});
+document.addEventListener("readystatechange", writeContent)
