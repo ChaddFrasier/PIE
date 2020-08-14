@@ -15,6 +15,4 @@ function writeContent(){
     });
 }
 
-$(document).ready(() => {
-    writeContent();
-});
+document.addEventListener("readystatechange", writeContent)

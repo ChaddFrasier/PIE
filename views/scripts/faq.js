@@ -1,6 +1,3 @@
-
-// TODO: generate all the peices of the page using js and not by hand to allow for easier additions and subtractions from the UI
-//  can be done with all pages that generate the content with a script
 function writeContent(){
     const contentArr = [
         String("<div class='answerBox'><i><b>Planetary Image Editor</i></b></div><div class='descBox'>Born from the\
@@ -36,6 +33,4 @@ function writeContent(){
     });
 }
 
-$(document).ready(() => {
-    writeContent();
-});
+document.addEventListener("readystatechange", writeContent)
