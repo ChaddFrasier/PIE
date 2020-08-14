@@ -941,6 +941,11 @@ function removeToolsWindow( event )
     }
 }
 
+/**
+ * @function detectMouseWheelDirection
+ * @param {_Event} e - the mouse wheel event
+ * @description tells which way the scroll wheel is going
+ */
 function detectMouseWheelDirection( e )
 {
     var delta = null,
@@ -2627,11 +2632,6 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 }
  /** End Draw Functions */
 
-function updateUILimits ( newW, newH )
-{
-    console.log(`The new figure width is ${newW} and the new figure height is ${newH}`)
-}
-
 /**
  * @function createMarker
  * @param {string} markerString - raw string from markerEnd
@@ -2739,13 +2739,11 @@ function createMarker( markerString, lineid, headcode, endCode )
     }
 }
 
-function adjustViewBox(newX, newY, viewwidth, viewheight) {
-    let svgContainer = document.getElementById("figurecontainer")
-
-    svgContainer.setAttribute("viewBox", String( newX + ' ' + newY + ' ' + viewwidth + ' ' + viewheight ))
-}
-
-// TODO: make this zoom handler work all the time
+/**
+ * @function zoomHandler
+ * @param {_Event} event - the event of the scroll wheel
+ * @description change the main size of whatever element the target it
+ */
 function zoomHandler( event ) {
     let direction = detectMouseWheelDirection( event )
 
@@ -2780,7 +2778,6 @@ function zoomHandler( event ) {
                 event.target.parentElement.setAttribute("height", Number(event.target.parentElement.getAttribute("height"))-50)
                 break
         }
-        
     }
     else if( event.target.nodeName == "line" || event.target.nodeName == "rect" )
     {
@@ -2795,7 +2792,6 @@ function zoomHandler( event ) {
                 event.target.setAttribute("stroke-width", Number(event.target.getAttribute("stroke-width"))-5)
                 break
         }
-        
     }
     else if( event.target.parentElement.nodeName == "group")
     {
@@ -2809,7 +2805,6 @@ function zoomHandler( event ) {
                 console.log("THIS IS AN ICON")
                 break
         }
-        
     }
 }
 
