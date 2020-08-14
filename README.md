@@ -14,7 +14,6 @@ This server was created to simplify the figure making process for planetary rese
 1. Pull down the code from the repo
 
 2. Install dependencies
-```
 npm install
 ```
 -----------------------
