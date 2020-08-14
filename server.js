@@ -1,160 +1,170 @@
 /* Libraries */
-const express = require('express');
-const path = require('path');
-const compression = require('compression');
-const bodyParser = require('body-parser');
-const multer = require('multer');
-const fs = require('fs');
-const { spawn } = require('child_process');
+const express = require( 'express' )
+const path = require( 'path' )
+const compression = require( 'compression' )
+const bodyParser = require( 'body-parser' )
+const multer = require( 'multer' )
+const fs = require( 'fs' )
+const { spawn } = require( 'child_process' )
 
 /* init the application */
-const app = express();
+const app = express()
 
 // init storage object to tell multer what to do
-var storage = multer.diskStorage({
-    // tell multer where the destination is
-    destination: function (req, file, cb) {
-        cb(null, 'public/uploads/')
-    },
-    // tell multer how to name the file
-    filename: function (req, file, cb) {
-        cb(null, new Date().getTime() +"_"+ path.basename(file.originalname))
+var storage = multer.diskStorage(
+    {
+        // tell multer where the destination is
+        destination: ( req, file, cb ) =>
+        {
+            cb( null, 'public/uploads/' )
+        },
+        // tell multer how to name the file
+        filename: ( req, file, cb ) =>
+        {
+            cb( null, new Date().getTime() +"_"+ path.basename(file.originalname) )
+        }
     }
+)
+
+/**
+ * read the upload directory and remove all files if its there
+ */
+fs.readdir( path.join(__dirname, "public", "uploads"), ( err, files ) =>
+{
+    if( err ){ return }
+
+    files.forEach( filename =>
+    {
+        fs.unlink( path.join(__dirname, "public", "uploads", filename), () =>
+        {
+            console.log("Removed " + filename)
+        })
+    })
 })
 
-fs.readdir(path.join(__dirname, "public", "uploads"), function(err, files){
-    if(err){console.log(err); return;}
-    files.forEach(filename => {
-        fs.unlink(path.join(__dirname, "public", "uploads", filename), function() {
-            console.log("Removed " + filename)
-
-        });
-    });
-});
-
 // set the upload object for multer
-var upload = multer({ storage: storage });
+var upload = multer( { storage: storage } )
 
 /* config server */
 // using pug engine
-app.set('view engine', 'pug');
-app.set('views', './views');
-app.set('utils', './scripts');
+app.set( 'view engine', 'pug' )
+app.set( 'views', './views' )
+app.set( 'utils', './scripts' )
+
 // set path for static folder
-app.use(express.static(path.join(__dirname,'public')));
+app.use( express.static(path.join(__dirname, 'public')) )
+
 // using compression for speed
-app.use(compression());
+app.use( compression() )
+
 // for parsing json
-app.use(bodyParser.json());
+app.use( bodyParser.json() )
 // for parsing application/xwww-
-app.use(bodyParser.urlencoded({extended: true}));
+app.use( bodyParser.urlencoded( {extended: true} ) )
 
 /**
- * Used for users login page
+ * @returns index.html
  */
-app.get(['/', '/index.html'], (req, res) => {
-    console.log(req.url);
+app.get(['/', '/index.html'], ( req, res ) => 
+{
+    console.log(req.url)
 
     // get the pow job id
-    let jobid = req.query.pow;
+    let jobid = req.query.pow
 
     if( jobid )
     {
+        //TODO: pow connection detected on the homepage
         console.log("pow connection")
 
-        res.render('index', {pow: req.query.pow});
+        res.render( 'index', {pow: req.query.pow} )
     }
     else
     {
-        res.render('index');
+        res.render( 'index' )
     }
 });
 
 /**
- * Used for talking about the project
+ * @returns about.html
  */
-app.get(['/about', '/about.html'], (req, res) => {
-    console.log(req.url);
+app.get(['/about', '/about.html'], ( req, res ) =>
+{
+    console.log(req.url)
 
-    res.render('about');
+    res.render( 'about' )
 });
 
 /**
- * Used for taling about the project
+ * @returns contact.html
  */
-app.get('/contact', (req, res) => {
-    console.log(req.url);
-    console.log(req.body);
+app.get(['/contact', '/contact.html'], ( req, res ) =>
+{
+    console.log(req.url)
 
-    res.render('contact');
+    res.render( 'contact' )
 });
-
 
 /**
- * Used for taling about the project
+ * @returns faq.html
  */
-app.get('/faq', (req, res) => {
-    console.log(req.url);
-    console.log(req.body);
+app.get(['/faq', '/faq.html'], ( req, res ) =>
+{
+    console.log(req.url)
 
-    res.render('faq');
+    res.render( 'faq' )
 });
 
-// getting the basic login page
-app.get('/login', (req, res) => {
-    console.log(req.url);
-    let date = new Date(); 
-    res.render('login', {title: 'Login', date: date.toDateString(), emailMessage: 'Please log in with your USGS credentials'});
-});
-
-// posting to / with some user info
-app.post('/', (req, res) => {
-    console.log(req.url);
-    console.log(req.body);
-
-    if (req.body.usgsEmail && req.body.usgsPassword) {
-        res.render('index', {usgsEmail: req.body.usgsEmail, usgsPassword: req.body.usgsPassword});
-    }
-    else {
-        let date = new Date(); 
-        res.render('login', {title: 'Login', date: date.toDateString(), emailMessage: 'Please log in with your USGS credentials'});
-    }
-});
-
-// api post path for processing tifs and cubes
-app.post("/api/isis", upload.single('uploadfile'), function(req, res) {
-
-    console.log("file recieved: " + req.file.filename)
-
+/**
+ * @returns the image that was uploaded
+ */
+app.post("/api/isis", upload.single('uploadfile'), (req, res) =>
+{
     // TODO: this is where i should attempt to create a vrt file using the method that Trent sent me
-
-    var child = spawn("gdal_translate", ["-of", "JPEG", "-ot", "byte", "-scale", "-outsize", "30%", "30%", path.join(__dirname, "public", "uploads", req.file.filename), path.join(__dirname, "public", "uploads", getNewImageName(req.file.filename, "jpg"))])
+    var child = spawn(
+        "gdal_translate",
+        [
+            "-of", "JPEG",
+            "-ot", "byte",
+            "-scale", "-outsize", "30%", "30%",
+            path.join(__dirname, "public", "uploads", req.file.filename),
+            path.join(__dirname, "public", "uploads", getNewImageName(req.file.filename, "jpg"))
+        ]
+    )
     
-    child.stdout.on("data", data => {
+    child.stdout.on("data", data =>
+    {
         console.log(`stdout: ${data}`);
     });
     
-    child.stderr.on("data", data => {
+    child.stderr.on("data", data =>
+    {
         console.log(`stderr: ${data}`);
     });
     
     child.on('error', (error) => {
         console.log(`error: ${error.message}`);
-        res.sendStatus("500");
+        res.sendStatus( "500" );
     });
     
-    // TODO: send the file back to the client
     // when the response is ready to close
     child.on("close", code => {
         console.log(`child process exited with code ${code}`);
         // if the gdal command exited with 0
-        if( code == 0)
+        if( code == 0 )
         {
             // send the image back to client in a browser acceptable image format
-            res.sendFile(path.join(__dirname, "public","uploads", getNewImageName(req.file.filename, "jpg")))
+            res.sendFile( path.join(__dirname, "public","uploads", getNewImageName(req.file.filename, "jpg")) )
 
             // create the vrt file
-            var vrtChild = spawn("gdal_translate", ["-of", "vrt", path.join(__dirname, "public", "uploads", getNewImageName(req.file.filename, "jpg")), path.join(__dirname, "public", "uploads", getNewImageName(req.file.filename, "vrt"))])
+            var vrtChild = spawn(
+                "gdal_translate", 
+                [
+                    "-of", "vrt",
+                    path.join(__dirname, "public", "uploads", getNewImageName(req.file.filename, "jpg")),
+                    path.join(__dirname, "public", "uploads", getNewImageName(req.file.filename, "vrt"))
+                ]
+            )
 
             vrtChild.on("close", exitCode => {
                 if( exitCode == 0 )
