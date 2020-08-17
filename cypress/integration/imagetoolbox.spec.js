@@ -68,8 +68,8 @@ describe("Image Tool Box Tests > ", () => {
         cy.get(".imagetoolsbox>input[name='xcoordinput']").clear().type("dafjsg{enter}")    
         cy.get(".imagetoolsbox>input[name='ycoordinput']").clear().type("heaufgwy{enter}")    
        
-        cy.get("#figurecontainer>image").should("have.attr", "x", "0")
-        cy.get("#figurecontainer>image").should("have.attr", "y", "0")
+        cy.get("#figurecontainer>image").should("have.attr", "x")
+        cy.get("#figurecontainer>image").should("have.attr", "y")
     });
 
     it("Should change the image width and height when the image width and height is NaN", () => {
