@@ -2,7 +2,7 @@ describe("Outline Tests > ", () => {
     beforeEach(()=> {
         cy.visit('/');
 
-        // Click pencil and draw  a line
+        // Click outline and draw  a line
         cy.get("#outlinebtnopt").click();
 
         cy.get("#figurecontainer").trigger("mousedown", {clientX:415, clientY: 209})

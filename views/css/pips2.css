@@ -111,9 +111,8 @@ i>b {
     text-align: left;
 }
 
-.map {
-    background: green;
-    width: 100%;
+.selectedBox {
+    border: 7px solid var(--main-bg-color);
 }
 
 .basicpagecontent {
@@ -192,10 +191,6 @@ a.descanchor:hover {
 body {
     margin: 0;
     height: 100%;
-}
-
-input, select {
-    cursor: auto;
 }
 
 .svgimg {
@@ -302,6 +297,10 @@ button.disabled {
     cursor: grab;
 }
 
+.windoworderingbtn>svg {
+    pointer-events: none;
+}
+
 .windoworderingbtn{
     background: transparent;
     border-radius: 2px 2px;
@@ -349,7 +348,6 @@ button.disabled {
     box-shadow: 0px -5px var(--contrast-color);
     margin: 4px 0 auto 0;
     text-align: center;
-    cursor: default;
 }
 
 .filetoolsbox > input[type="file"] {
@@ -387,7 +385,7 @@ label.text {
 }
 
 button.selected {
-    background: rgba(255, 163, 163, 0.5);
+    background: rgba(85, 84, 84, 0.5);
 }
 
 .captiontoolsbox {
@@ -536,11 +534,15 @@ button#northarrowopt, button#sunarrowopt, button#observerarrowopt  {
     max-height: 25px;
 }
 
+.draggableToolbox {
+    background: yellow;
+    display: block;
+}
+
 button.disabled {
     background: rgba(0, 0, 0, 0.35) !important;
     pointer-events: none;
     border: none;
-    cursor: auto;
 }
 
 
@@ -583,7 +585,6 @@ button:hover {
 }
 
 .footerbuttongroup > a:hover {
-    cursor: default;
     background: rgba(62, 149, 163, 0.24);
 }
 
@@ -624,7 +625,6 @@ svg.imagecontainer {
     vertical-align: top;
     margin: 0 0 0 auto;
     border: 1px solid transparent;
-    cursor: auto;
 }
 
 .windowoptionsbar {
@@ -634,13 +634,11 @@ svg.imagecontainer {
     padding: 0px;
     border: 1px solid black;
     overflow: hidden;
-    cursor: auto;
 }
 
 .windowoptionsbar>h4{
     font-size: 16px;
     vertical-align: middle;
-    cursor: default;
     margin: auto auto auto 0;
     pointer-events: none;
 }

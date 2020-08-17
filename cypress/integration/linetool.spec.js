@@ -99,6 +99,46 @@ describe("Line Tests > ", () => {
         })
     })
 
+    it("Test the line markers are removed when the line is removed", ()=> {
+        // set test color
+        let testcolor = "#1d84b5";
+        
+        // change the color of the line
+        cy.get("input[type='color']").last()
+            .invoke("val", testcolor)
+            .trigger("change")
+
+        // add arrow end
+        cy.get("select").last().select("arrow")
+
+        // add arrow start
+        cy.get("select").eq(1).select("circle")
+
+        // test that the marker end is the right color
+        cy.get("line").then(line => {
+            if ( line.css("marker-end").indexOf(line.attr("id")) > -1)
+            {
+                cy.get("#"+line.attr("id")+"-marker > circle").should("exist")
+            }
+         })
+ 
+         // test that the marker end is the right color
+         cy.get("line").then(line => {
+            if ( line.css("marker-start").indexOf(line.attr("id")) > -1)
+            {
+                cy.get("#"+line.attr("id")+"-markerEnd > path").should("exist")
+            }
+         })
+
+        // remove the element
+        cy.get(".windowremovebtn").first()
+            .click()
+
+        // test that the marker end is not there
+        cy.get("marker").should("have.length", 3)
+        
+    })
+
     it("Test that the removing the line element remove function is working", ()=> {
         
         // action to test that toolbox exists
