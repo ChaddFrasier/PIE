@@ -183,7 +183,7 @@ $(document).ready(()=>{
             oldY = event.pageY
             toggleLayerUI("add")
 
-            layerbtn.addEventListener("mouseup", documentMouseUpListener, layerbtn)
+            layerbtn.addEventListener("mouseup", documentMouseUpListener)
             document.addEventListener("mousemove", getMouseDirection, false)
            
             // objects that need to shift
@@ -198,6 +198,9 @@ $(document).ready(()=>{
                 
                 // put dragging stuff here
                 document.addEventListener("mousemove", docucmentMouseOverHandler)
+
+                // set shiftObjects css
+                shiftObjects.classList.add("selectedBox")
             }catch(err)
             {
                 console.log(err)
@@ -207,7 +210,7 @@ $(document).ready(()=>{
 
         // add the window lister to remove active dragging
         window.addEventListener("mousedown", () => {
-            window.addEventListener("mouseup", documentMouseUpListener, layerbtn)
+            window.addEventListener("mouseup", documentMouseUpListener)
         })
 
         /** End Dragging */
@@ -510,7 +513,7 @@ $(document).ready(()=>{
 
             toggleLayerUI( "add" )
 
-            layerbtn.addEventListener("mouseup", documentMouseUpListener, layerbtn)
+            layerbtn.addEventListener("mouseup", documentMouseUpListener, false)
             document.addEventListener("mousemove", getMouseDirection, false)
            
             // objects that need to shift
@@ -525,6 +528,9 @@ $(document).ready(()=>{
                 
                 // put dragging stuff here
                 document.addEventListener("mousemove", docucmentMouseOverHandler)
+
+                // set shiftObjects css
+                shiftObjects.classList.add("selectedBox")
             }catch(err)
             {
                 console.log(err)
@@ -534,7 +540,7 @@ $(document).ready(()=>{
 
         // add mouse liseners
         window.addEventListener("mousedown", () => {
-            window.addEventListener("mouseup", documentMouseUpListener, layerbtn)
+            window.addEventListener("mouseup", documentMouseUpListener, false)
         })
         /** End Dynamic button*/
 
@@ -797,6 +803,13 @@ $(document).ready(()=>{
                 selectedObject = null
             }
             else {
+
+                // make new shadow icon
+                shadowIcon = drawShadowIcon( event )
+
+                document.addEventListener("mousemove", shadowAnimate)
+                document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon)
+
                 btn.classList.add("selected")
                 document.addEventListener("mouseup", setElement)
             }
@@ -819,6 +832,12 @@ $(document).ready(()=>{
                 selectedObject = null
             }
             else {
+                // make new shadow icon
+                shadowIcon = drawShadowIcon( event )
+
+                document.addEventListener("mousemove", shadowAnimate)
+                document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon)
+
                 btn.classList.add("selected")
                 document.addEventListener("mouseup", setElement)
             }
@@ -845,6 +864,12 @@ $(document).ready(()=>{
             }
             else
             {
+                // make new shadow icon
+                shadowIcon = drawShadowIcon( event )
+
+                document.addEventListener("mousemove", shadowAnimate)
+                document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon)
+
                 btn.classList.add("selected")
                 document.addEventListener("mouseup", setElement)
             }
@@ -872,6 +897,12 @@ $(document).ready(()=>{
             }
             else
             {
+                // make new shadow icon
+                shadowIcon = drawShadowIcon( event )
+
+                document.addEventListener("mousemove", shadowAnimate)
+                document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon)
+                
                 // set the selected UI for the observer
                 btn.classList.add("selected")
                 document.addEventListener("mouseup", setElement)
@@ -1098,6 +1129,9 @@ function documentMouseUpListener()
         console.log("document listener remove failed")
     }
 
+    
+    if(shiftObjects){ shiftObjects.classList.remove("selectedBox") }
+    
     // remove element markers
     lowerObject = null
     upperObject = null
@@ -1247,6 +1281,12 @@ function typeofObject(testString)
 function setElement( event ) 
 {
     let btn = document.getElementsByClassName( "selected" )[ 0 ]
+
+    document.getElementsByClassName("maincontent")[0].removeChild(shadowIcon)
+    document.removeEventListener("mousemove", shadowAnimate)
+
+    shadowIcon = null
+
     if(typeofObject(event.target.id) == "image")
     {
         // set element
@@ -2595,7 +2635,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 
         toggleLayerUI("add")
 
-        layerbtn.addEventListener("mouseup", documentMouseUpListener, layerbtn)
+        layerbtn.addEventListener("mouseup", documentMouseUpListener, false)
         document.addEventListener("mousemove", getMouseDirection, false)
        
         // objects that need to shift
@@ -2610,6 +2650,9 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
             
             // put dragging stuff here
             document.getElementById("toolbox").addEventListener("mousemove", docucmentMouseOverHandler)
+            
+            // set shiftObjects css
+            shiftObjects.classList.add("selectedBox")
         }catch(err)
         {
             console.log(err)
@@ -2619,7 +2662,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 
     // add the window lister to remove active dragging
     window.addEventListener("mousedown", () => {
-        window.addEventListener("mouseup", documentMouseUpListener, layerbtn)
+        window.addEventListener("mouseup", documentMouseUpListener, false)
     })
 
     /** End Dragging */
@@ -3307,7 +3350,7 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
 
         toggleLayerUI("add")
 
-        layerbtn.addEventListener("mouseup", documentMouseUpListener, layerbtn)
+        layerbtn.addEventListener("mouseup", documentMouseUpListener, false)
         document.addEventListener("mousemove", getMouseDirection, false)
        
         // objects that need to shift
@@ -3322,6 +3365,9 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
             
             // put dragging stuff here
             document.getElementById("toolbox").addEventListener("mousemove", docucmentMouseOverHandler)
+            
+            // set shiftObjects css
+            shiftObjects.classList.add("selectedBox")
         }catch(err)
         {
             console.log(err)
@@ -3331,7 +3377,7 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
 
     // add the window lister to remove active dragging
     window.addEventListener("mousedown", () => {
-        window.addEventListener("mouseup", documentMouseUpListener, layerbtn)
+        window.addEventListener("mouseup", documentMouseUpListener)
     })
     /** End Dragging */
 
@@ -3378,4 +3424,28 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     holderbox.append(rectoptionbar, recttoolbox)
 
     document.getElementById("tooldivider").insertAdjacentElement("afterend", holderbox)
+}
+var shadowIcon = null
+
+function shadowAnimate( event )
+{
+    shadowIcon.style.left = event.pageX
+    shadowIcon.style.top = event.pageY
+}
+
+function drawShadowIcon( event )
+{
+    // create a mini symbol that follows the mouse
+    let shadowdiv = document.createElement("div")
+    shadowdiv.setAttribute("width", "50px")
+    shadowdiv.setAttribute("height", "50px")
+    shadowdiv.innerHTML = event.target.innerHTML
+
+
+    shadowdiv.style.opacity = .5
+    shadowdiv.style.position = "absolute"
+    shadowdiv.style.left = event.pageX
+    shadowdiv.style.top = event.pageY
+
+    return shadowdiv
 }

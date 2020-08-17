@@ -111,9 +111,8 @@ i>b {
     text-align: left;
 }
 
-.map {
-    background: green;
-    width: 100%;
+.selectedBox {
+    border: 7px solid var(--main-bg-color);
 }
 
 .basicpagecontent {
@@ -386,7 +385,7 @@ label.text {
 }
 
 button.selected {
-    background: rgba(255, 163, 163, 0.5);
+    background: rgba(85, 84, 84, 0.5);
 }
 
 .captiontoolsbox {

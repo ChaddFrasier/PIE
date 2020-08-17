@@ -23,13 +23,13 @@ npm install
 
 2. ~Make the event listeners for dragging a scalebar onto the screen~
 
-3. Should be able to drag a ui box up and down without resetting
+3. ~Should be able to drag a ui box up and down without resetting~
 
-4. Ui box that is being dragged up and down should have a thicker border or some indication of focus
+4. ~Ui box that is being dragged up and down should have a thicker border or some indication of focus~
 
 5. Cursor should be 'grab' when dragging a UI box. (will probably need to put a class on the whole body)
 
-6. Create a mini image for when dragging an icon to the image, the icon should follow the mouse like a ghost
+6. ~Create a mini image for when dragging an icon to the image, the icon should follow the mouse like a ghost~
 
 -----------------------
 @USGS
