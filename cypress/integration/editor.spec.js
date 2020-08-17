@@ -2,35 +2,35 @@ describe('Editor Page Tests > ', () => {
     // refresh the page
     beforeEach(() => {
         cy.visit('/');
-    });
+    })
 
     it("Should have no objects in layers at start", () => {
         // tooldivider should have no siblings that care related to captions or images
         cy.get("#tooldivider").siblings(".imagetoolsbox").should("have.length", 0)
         cy.get("#tooldivider").siblings(".captiontoolsbox").should("have.length", 0)
-    });
+    })
 
     it("Should Add Image tools box when image button is clicked", () => {
         // add an image using the btn
         cy.get("#addimagebtn").click()
         
         // check that there is 1 tool box exists
-        cy.get("#tooldivider").siblings(".imagetoolsbox").should("have.length", 1)
+        cy.get(".draggableToolbox>.windowoptionsbar>h4").should("have.html", "Image Layer")
 
         // add another image
         cy.get("#addimagebtn").click()
 
         // check that there are two now
-        cy.get("#tooldivider").siblings(".imagetoolsbox").should("have.length", 2)
-    });
+        cy.get(".draggableToolbox>.windowoptionsbar>h4").last().should("have.html", "Image Layer")
+    })
 
     it("Should Add Caption tools box when caption button is clicked", () => {
         // add 2 captions
         cy.get("#addcaptionbtn").click()
         cy.get("#addcaptionbtn").click()
         // check there are 2 caption tool boxes
-        cy.get("#tooldivider").siblings(".captiontoolsbox").should("have.length", 2)
-    });
+        cy.get(".captiontoolsbox").should("have.length", 2)
+    })
 
     
     it("Should Close and disable add buttons when sidebar is closed", () => {
@@ -46,7 +46,7 @@ describe('Editor Page Tests > ', () => {
         cy.get("#addimagebtn.disabled").should("have.length", 0)
         cy.get("#addcaptionbtn.disabled").should("have.length", 0)
 
-    });
+    })
 
     it("Background should change when value changes", () => {
         // color to test
@@ -57,7 +57,7 @@ describe('Editor Page Tests > ', () => {
 
         // check the background of the figure svg element
         cy.get("svg#figurecontainer").should("have.css", "background-color", "rgb(55, 71, 131)")
-    });
+    })
 
     it("Figure Size Changes SVG viewBox", () => {
         // change bg color and check
@@ -71,7 +71,7 @@ describe('Editor Page Tests > ', () => {
         
         // should be changed when the select is changed
         cy.get("svg#figurecontainer[viewBox='0 0 2500 2000']").should("have.length", 0)
-    });
+    })
 
     it("Window Size Changes when the mini button is clicked", () => {
         // check that there is no closed tool box
@@ -82,21 +82,21 @@ describe('Editor Page Tests > ', () => {
 
         // check that it is closed
         cy.get("#edittoolsbox").should("have.class", "closed")
-    });
+    })
 
     it("Navigate to 'Getting Started'", () => {
         // should be closed when the mini button is clicked
         cy.get(".footerbuttongroup>a").first().click();
 
         cy.get("title").should("have.html", "Get Started");
-    });
+    })
 
     it("Navigate to 'FAQ'", () => {
         // should be closed when the mini button is clicked
         cy.get(".footerbuttongroup>a").last().click();
 
         cy.get("title").should("have.html", "FAQ");
-    });
+    })
 
     it("Navigate to 'Contact Us' and back to index.html", () => {
         // should be closed when the mini button is clicked
@@ -110,7 +110,7 @@ describe('Editor Page Tests > ', () => {
 
         // test for home
         cy.get("title").should("have.html", "PIE");
-    });
+    })
 
     it("Test that the pencil button disables other buttons", () => {
         
@@ -130,6 +130,26 @@ describe('Editor Page Tests > ', () => {
         cy.get("#sunarrowopt").should("have.attr", "class", '');
         cy.get("#observerarrowopt").should("have.attr", "class", '');
         cy.get("#outlinebtnopt").should("have.attr", "class", '');
-    });
+    })
 
+    it("Test that the toolboxes can be dragged to change layer depth", () => {
+        cy.get("#addcaptionbtn").click()
+        cy.get("#addimagebtn").click()
+
+        // Click pencil and draw  a line
+        cy.get("#penciloptbtn").click();
+
+        cy.get("#figurecontainer").trigger("mousedown", {clientX:500, clientY: 150})
+        .trigger("mousemove", {clientX: 638, clientY: 452})
+        .trigger("mouseup", {clientX: 555, clientY: 509})
+
+        cy.get(".windoworderingbtn").eq(1).trigger("mousedown").then(() => {
+            cy.get("#toolbox").trigger("mousemove", {pageX: 100, pageY: 100})
+        })
+
+
+        cy.get("line").then((lineElement) => {
+            cy.get(".draggableToolbox").eq(1).should("have.attr", "objectid", lineElement.attr("id"))
+        })
+    })
 });
