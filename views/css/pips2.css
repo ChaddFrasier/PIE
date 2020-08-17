@@ -113,6 +113,12 @@ i>b {
 
 .selectedBox {
     border: 7px solid var(--main-bg-color);
+    pointer-events: none;
+    transition: all .25ms linear;
+}
+
+.selectedBox > div {
+    cursor: grabbing;
 }
 
 .basicpagecontent {
