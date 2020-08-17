@@ -194,10 +194,6 @@ body {
     height: 100%;
 }
 
-input, select {
-    cursor: auto;
-}
-
 .svgimg {
     width: 25px;
     height: 100%;
@@ -302,6 +298,10 @@ button.disabled {
     cursor: grab;
 }
 
+.windoworderingbtn>svg {
+    pointer-events: none;
+}
+
 .windoworderingbtn{
     background: transparent;
     border-radius: 2px 2px;
@@ -349,7 +349,6 @@ button.disabled {
     box-shadow: 0px -5px var(--contrast-color);
     margin: 4px 0 auto 0;
     text-align: center;
-    cursor: default;
 }
 
 .filetoolsbox > input[type="file"] {
@@ -536,11 +535,15 @@ button#northarrowopt, button#sunarrowopt, button#observerarrowopt  {
     max-height: 25px;
 }
 
+.draggableToolbox {
+    background: yellow;
+    display: block;
+}
+
 button.disabled {
     background: rgba(0, 0, 0, 0.35) !important;
     pointer-events: none;
     border: none;
-    cursor: auto;
 }
 
 
@@ -583,7 +586,6 @@ button:hover {
 }
 
 .footerbuttongroup > a:hover {
-    cursor: default;
     background: rgba(62, 149, 163, 0.24);
 }
 
@@ -624,7 +626,6 @@ svg.imagecontainer {
     vertical-align: top;
     margin: 0 0 0 auto;
     border: 1px solid transparent;
-    cursor: auto;
 }
 
 .windowoptionsbar {
@@ -634,13 +635,11 @@ svg.imagecontainer {
     padding: 0px;
     border: 1px solid black;
     overflow: hidden;
-    cursor: auto;
 }
 
 .windowoptionsbar>h4{
     font-size: 16px;
     vertical-align: middle;
-    cursor: default;
     margin: auto auto auto 0;
     pointer-events: none;
 }

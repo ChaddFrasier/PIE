@@ -178,48 +178,38 @@ $(document).ready(()=>{
                             "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
         
         // main handler for the dragging functionality
-        layerbtn.addEventListener("mousedown", function(event) {
+        layerbtn.addEventListener("mousedown", function(event) {  
             // capture the start y when the click happens
             oldY = event.pageY
+            toggleLayerUI("add")
 
-            // add the listeners for removing the drag functions
             layerbtn.addEventListener("mouseup", documentMouseUpListener, layerbtn)
             document.addEventListener("mousemove", getMouseDirection, false)
-            document.getElementById("toolcontainer").classList.add("hand")
-            
-
-            // try to find the element to put things above
-            try{
-                // ** I know to look for this because the structure of the layer browser. ** could be simplified in the future
-                upperObject = (event.target.parentElement.parentElement.previousSibling.previousSibling) ?
-                event.target.parentElement.parentElement.previousElementSibling.previousSibling :
-                null; 
-            }catch{
-                upperObject = null
-            }
-            // the element to put things below
-            try{
-                lowerObject = event.target.parentElement.parentElement.nextSibling.nextSibling.nextSibling
-            }
-            catch{
-                lowerObject = null
-            }
+           
             // objects that need to shift
-            try{
-                // get current targets parentElement for shifting
-                shiftObjects = [event.target.parentElement.parentElement, event.target.parentElement.parentElement.nextSibling]
-            }catch{
-                shiftObjects = null
+            try {
+                shiftObjects = event.target.parentElement.parentElement
+            
+                // the element to put things below
+                lowerObject = shiftObjects.nextElementSibling
+                
+                // the element to put things above
+                upperObject = shiftObjects.previousElementSibling
+                
+                // put dragging stuff here
+                document.addEventListener("mousemove", docucmentMouseOverHandler)
+            }catch(err)
+            {
+                console.log(err)
+                upperObject, lowerObject, shiftObjects = null
             }
-
-            // drag function
-            document.addEventListener("mousemove", docucmentMouseOverHandler)
         })
 
         // add the window lister to remove active dragging
         window.addEventListener("mousedown", () => {
             window.addEventListener("mouseup", documentMouseUpListener, layerbtn)
         })
+
         /** End Dragging */
 
         // this is all dynamic css for the caption tool box
@@ -419,8 +409,12 @@ $(document).ready(()=>{
         newoptionsbar.setAttribute( "objectid", captionId )
 
         // finish by appending the whole thing
-        dividerObject.insertAdjacentElement("afterend", toolsarea)
-        dividerObject.insertAdjacentElement("afterend", newoptionsbar)
+        let holderbox = document.createElement("div")
+        holderbox.setAttribute("class", "draggableToolbox")
+        holderbox.append(newoptionsbar, toolsarea)
+        holderbox.setAttribute("objectid", captionId)
+
+        dividerObject.insertAdjacentElement("afterend", holderbox)
 
         /** Add a caption box in the svg area */
         const textholder = document.createElementNS(NS.svg, "foreignObject")
@@ -514,35 +508,32 @@ $(document).ready(()=>{
             // capture the start y when the click happens
             oldY = event.pageY
 
+            toggleLayerUI( "add" )
+
             layerbtn.addEventListener("mouseup", documentMouseUpListener, layerbtn)
             document.addEventListener("mousemove", getMouseDirection, false)
-            // the element to put things above
-            try{
-                upperObject = (event.target.parentElement.parentElement.previousSibling.previousSibling) ?
-                event.target.parentElement.parentElement.previousElementSibling.previousSibling :
-                null;   
-            }catch{
-                upperObject = null
-            }
-            // the element to put things below
-            try{
-                lowerObject = event.target.parentElement.parentElement.nextSibling.nextSibling.nextSibling
-            }
-            catch{
-                lowerObject = null
-            }
+           
             // objects that need to shift
-            try{
-                shiftObjects = [ event.target.parentElement.parentElement, event.target.parentElement.parentElement.nextSibling ]
-            }catch{
-                shiftObjects = null
+            try {
+                shiftObjects = event.target.parentElement.parentElement
+            
+                // the element to put things below
+                lowerObject = shiftObjects.nextElementSibling
+                
+                // the element to put things above
+                upperObject = shiftObjects.previousElementSibling
+                
+                // put dragging stuff here
+                document.addEventListener("mousemove", docucmentMouseOverHandler)
+            }catch(err)
+            {
+                console.log(err)
+                upperObject, lowerObject, shiftObjects = null
             }
-
-            // put dragging stuff here
-            document.addEventListener("mousemove", docucmentMouseOverHandler)
         })
+
         // add mouse liseners
-        window.addEventListener("mousedown", function(){
+        window.addEventListener("mousedown", () => {
             window.addEventListener("mouseup", documentMouseUpListener, layerbtn)
         })
         /** End Dynamic button*/
@@ -751,8 +742,12 @@ $(document).ready(()=>{
         newoptionsbar.setAttribute("objectid", imageId)
     
         // finish by appending the whole thing
-        dividerObject.insertAdjacentElement("afterend", toolsarea)
-        dividerObject.insertAdjacentElement("afterend", newoptionsbar)
+        let holderbox = document.createElement("div")
+        holderbox.setAttribute("class", "draggableToolbox")
+        holderbox.setAttribute("objectid", imageId)
+        holderbox.append(newoptionsbar, toolsarea)
+
+        dividerObject.insertAdjacentElement("afterend", holderbox)
 
         // set image initial attributes
         imagesvg.setAttribute("x", "0")
@@ -934,30 +929,32 @@ function removeToolsWindow( event )
     if(event.target.parentElement.attributes.objectid.value)
     {
         // remove the current options bar, its next child and the caption matching the same id
-        let captiontoolsbar = event.target.parentElement
-        let toolsbox = captiontoolsbar.nextElementSibling
-        let captionsvg = document.getElementById(event.target.parentElement.attributes.objectid.value)
+        let parentBox = event.target.parentElement.parentElement
+        let svgObject = document.getElementById(event.target.parentElement.attributes.objectid.value)
+        
         let toolcontainer = document.getElementById('toolcontainer')
         let svgcontainer = document.getElementById('figurecontainer')
 
         // remove the options and other things for image
-        toolcontainer.removeChild(captiontoolsbar) 
-        toolcontainer.removeChild(toolsbox)
-        svgcontainer.removeChild(captionsvg)
+        toolcontainer.removeChild(parentBox) 
+        svgcontainer.removeChild(svgObject)
 
-        // try removing each icon seperatly
+        // remove all icons using image remove btn
         try{
-            svgcontainer.removeChild(document.getElementById("northIcon-" + captionsvg.id))
+            svgcontainer.removeChild(document.getElementById("northIcon-" + svgObject.id))
         }catch(err){}
         try{
-            svgcontainer.removeChild(document.getElementById("sunIcon-" + captionsvg.id))
+            svgcontainer.removeChild(document.getElementById("sunIcon-" + svgObject.id))
         }catch(err){}
         try{
-            svgcontainer.removeChild(document.getElementById("observerIcon-" + captionsvg.id))
+            svgcontainer.removeChild(document.getElementById("observerIcon-" + svgObject.id))
+        }catch(err){}
+        try{
+            svgcontainer.removeChild(document.getElementById("scalebarIcon-" + svgObject.id))
         }catch(err){}
 
         // update the count
-        getObjectCount(-1 , typeofObject(captionsvg.id))
+        getObjectCount(-1 , typeofObject(svgObject.id))
     }
 }
 
@@ -1000,14 +997,14 @@ function randomId( textareaprefix )
  * @function docucmentMouseOverHandler
  * @description handler for when the user wants to drag an element up or down calls the shift functions respectivly
  */
-function docucmentMouseOverHandler ()
+function docucmentMouseOverHandler ( event )
 {
     if(yDirection == "up")
     {
         // shift up of both objects are there
         if(shiftObjects && upperObject)
         {
-            shiftUp(shiftObjects, upperObject)
+            shiftUp( event.pageY )
         }
     }
     else if(yDirection == "down")
@@ -1015,7 +1012,7 @@ function docucmentMouseOverHandler ()
         // shift down of both objects are there
         if(shiftObjects && lowerObject)
         {
-            shiftDown(shiftObjects, lowerObject)
+            shiftDown( event.pageY )
         }
     }
 }
@@ -1025,7 +1022,7 @@ var xDirection = "",
     yDirection = "",
     oldX = 0,
     oldY = 0,
-    sensitivity = 50;
+    sensitivity = 75;
  
 /**
  * @function getMouseDirection
@@ -1088,12 +1085,12 @@ function getMouseDirection( e )
  */
 function documentMouseUpListener()
 {
-    document.getElementById("toolcontainer").classList.remove("hand")
-
     // try to set the mouse events for the dragging
     try{
-        document.removeEventListener("mousemove", docucmentMouseOverHandler)
+        document.getElementById("toolbox").removeEventListener("mousemove", docucmentMouseOverHandler)
+        toggleLayerUI("remove")
         window.removeEventListener("mouseup", documentMouseUpListener)
+        window.removeEventListener("mousedown", windowDownListener)
         document.removeEventListener("mousemove", getMouseDirection)
     }
     catch(err)
@@ -1114,24 +1111,22 @@ function documentMouseUpListener()
  * @function shiftUp
  * @description shift the object up one slot in the tools location
  */
-function shiftUp()
+function shiftUp( pageY )
 {
     // check for a none outer object as the upper element
     if( upperObject.getAttribute("objectid") )
     {
         // insert the element above the sifting elements
-        shiftObjects.forEach(domElement => {
-            document.getElementById("toolcontainer").insertBefore(domElement, upperObject)
-        })
+        document.getElementById("toolcontainer").insertBefore(shiftObjects, upperObject)
         
         // move up one layer
-        moveSvgUp(document.getElementById(shiftObjects[0].attributes.objectid.value))
+        moveSvgUp(document.getElementById(shiftObjects.attributes.objectid.value))
 
         // clear elements
-        lowerObject = null
-        upperObject = null
-        shiftObjects = null
+        lowerObject = upperObject
+        upperObject = shiftObjects.previousElementSibling
         yDirection = ""
+        oldY = pageY
     }
 }
 
@@ -1139,22 +1134,20 @@ function shiftUp()
  * @function shiftDown
  * @description shift the object down one slot in the tools location
  */
-function shiftDown()
+function shiftDown( pageY )
 {
     // check for an object below
     if( lowerObject )
     {
-        // Reset the order of the edit box elemets
-        shiftObjects.reverse().forEach(domElement => {
-            lowerObject.insertAdjacentElement("afterend", domElement)
-        })
+        lowerObject.insertAdjacentElement("afterend", shiftObjects)
+
         // move up one layer
-        moveSvgDown(document.getElementById(shiftObjects[0].attributes.objectid.value))
+        moveSvgDown(document.getElementById(shiftObjects.attributes.objectid.value))
 
         // clear elements
-        lowerObject = null
-        upperObject = null
-        shiftObjects = null
+        upperObject = lowerObject
+        lowerObject = shiftObjects.nextElementSibling
+        oldY = pageY
         yDirection = ""
     }
 }
@@ -1170,7 +1163,7 @@ function moveSvgUp( element )
 }
 
 /**
- * @function moveSvgUp
+ * @function moveSvgDown
  * @param {Node} element
  * @description move the svg element down to the top of the layers of the svg
  */
@@ -2016,8 +2009,8 @@ function rescaleIcon ( oldscale, scale, translate )
     let x = parseInt( translate.split(',')[0].split( "translate(" )[1] )
     let y = parseInt( translate.split(',')[1] )
 
-    x = x * oldscale  / scale 
-    y = y * oldscale  / scale 
+    x = x * oldscale / scale 
+    y = y * oldscale / scale 
 
     return translateString( x, y )
 }
@@ -2064,22 +2057,26 @@ function removeMarker( markerString )
  */
 function removeLineWindow( event )
 {
-    if( event.target.parentElement.attributes.objectid.value )
+    if( event.target.parentElement.parentElement.attributes.objectid.value )
     {
         // remove the current options bar, its next child and the caption matching the same id
-        let toolsbar = event.target.parentElement
-        let toolsbox = toolsbar.nextElementSibling
-        let linesvg = document.getElementById( toolsbar.attributes.objectid.value )
+        let holderbox = event.target.parentElement.parentElement
+        
+        let linesvg = document.getElementById( holderbox.attributes.objectid.value )
 
         // remove all elements
-        toolsbox.parentElement.removeChild( toolsbar )
-        toolsbox.parentElement.removeChild( toolsbox )
+        holderbox.parentElement.removeChild( holderbox )
         svgContainer.removeChild( linesvg )
 
         // remove marker if there is one
         if( linesvg.style.markerEnd != "" )
         {
             removeMarker(linesvg.style.markerEnd)
+        }
+
+        if( linesvg.style.markerStart != "" )
+        {
+            removeMarker(linesvg.style.markerStart)
         }
     }
 }
@@ -2317,6 +2314,25 @@ function updateCaptionBoxColor ( color, objectid )
         console.error( "Error: Cannot Find Id for object in function updateCaptionBoxColor" )
     }
 }
+
+
+function toggleLayerUI( activation )
+{
+    let requiredLayers = [ document.getElementById("toolbox"), document.getElementById("editbox") ]
+
+    requiredLayers.forEach(div => {
+        switch(activation)
+        {
+            case "remove":
+                div.classList.remove("hand")
+                break
+            
+            case "add":
+                div.classList.add("hand")
+                break
+        }
+    });
+} 
 
 /**
  * @function drawMouseDownListener
@@ -2577,42 +2593,35 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         // capture the start y when the click happens
         oldY = event.pageY
 
-        // add the listeners for removing the drag functions
+        toggleLayerUI("add")
+
         layerbtn.addEventListener("mouseup", documentMouseUpListener, layerbtn)
         document.addEventListener("mousemove", getMouseDirection, false)
-
-        // try to find the element to put things above
-        try{
-            // ** I know to look for this because the structure of the layer browser. ** could be simplified in the future
-            upperObject = (event.target.parentElement.parentElement.previousSibling.previousSibling) ?
-            event.target.parentElement.parentElement.previousElementSibling.previousSibling :
-            null; 
-        }catch{
-            upperObject = null
-        }
-        // the element to put things below
-        try{
-            lowerObject = event.target.parentElement.parentElement.nextSibling.nextSibling.nextSibling
-        }
-        catch{
-            lowerObject = null
-        }
+       
         // objects that need to shift
-        try{
-            // get current targets parentElement for shifting
-            shiftObjects = [event.target.parentElement.parentElement, event.target.parentElement.parentElement.nextSibling]
-        }catch{
-            shiftObjects = null
+        try {
+            shiftObjects = event.target.parentElement.parentElement
+        
+            // the element to put things below
+            lowerObject = shiftObjects.nextElementSibling
+            
+            // the element to put things above
+            upperObject = shiftObjects.previousElementSibling
+            
+            // put dragging stuff here
+            document.getElementById("toolbox").addEventListener("mousemove", docucmentMouseOverHandler)
+        }catch(err)
+        {
+            console.log(err)
+            upperObject, lowerObject, shiftObjects = null
         }
-
-        // drag function
-        document.addEventListener("mousemove", docucmentMouseOverHandler)
     })
 
     // add the window lister to remove active dragging
     window.addEventListener("mousedown", () => {
         window.addEventListener("mouseup", documentMouseUpListener, layerbtn)
     })
+
     /** End Dragging */
 
 
@@ -2793,7 +2802,13 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         liney2input
     )
 
-    document.getElementById("toolcontainer").append(lineoptionbar, linetoolbox)
+    // finish by appending the whole thing
+    let holderbox = document.createElement("div")
+    holderbox.setAttribute("class", "draggableToolbox")
+    holderbox.setAttribute("objectid", objectid)
+    holderbox.append(lineoptionbar, linetoolbox)
+
+    document.getElementById("tooldivider").insertAdjacentElement("afterend", holderbox)
 }
  /** End Draw Functions */
 
@@ -3286,40 +3301,32 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
                         "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
     
     // main handler for the dragging functionality
-    layerbtn.addEventListener("mousedown", function(event) {
+    layerbtn.addEventListener("mousedown", function(event) {  
         // capture the start y when the click happens
         oldY = event.pageY
 
-        // add the listeners for removing the drag functions
+        toggleLayerUI("add")
+
         layerbtn.addEventListener("mouseup", documentMouseUpListener, layerbtn)
         document.addEventListener("mousemove", getMouseDirection, false)
-
-        // try to find the element to put things above
-        try{
-            // ** I know to look for this because the structure of the layer browser. ** could be simplified in the future
-            upperObject = (event.target.parentElement.parentElement.previousSibling.previousSibling) ?
-            event.target.parentElement.parentElement.previousElementSibling.previousSibling :
-            null; 
-        }catch{
-            upperObject = null
-        }
-        // the element to put things below
-        try{
-            lowerObject = event.target.parentElement.parentElement.nextSibling.nextSibling.nextSibling
-        }
-        catch{
-            lowerObject = null
-        }
+       
         // objects that need to shift
-        try{
-            // get current targets parentElement for shifting
-            shiftObjects = [event.target.parentElement.parentElement, event.target.parentElement.parentElement.nextSibling]
-        }catch{
-            shiftObjects = null
+        try {
+            shiftObjects = event.target.parentElement.parentElement
+        
+            // the element to put things below
+            lowerObject = shiftObjects.nextElementSibling
+            
+            // the element to put things above
+            upperObject = shiftObjects.previousElementSibling
+            
+            // put dragging stuff here
+            document.getElementById("toolbox").addEventListener("mousemove", docucmentMouseOverHandler)
+        }catch(err)
+        {
+            console.log(err)
+            upperObject, lowerObject, shiftObjects = null
         }
-
-        // drag function
-        document.addEventListener("mousemove", docucmentMouseOverHandler)
     })
 
     // add the window lister to remove active dragging
@@ -3364,5 +3371,11 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
         rectyinput
     )
 
-    document.getElementById("toolcontainer").append(rectoptionbar, recttoolbox)
+    // finish by appending the whole thing
+    let holderbox = document.createElement("div")
+    holderbox.setAttribute("class", "draggableToolbox")
+    holderbox.setAttribute("objectid", objectid)
+    holderbox.append(rectoptionbar, recttoolbox)
+
+    document.getElementById("tooldivider").insertAdjacentElement("afterend", holderbox)
 }
