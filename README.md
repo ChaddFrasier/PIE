@@ -18,6 +18,23 @@ npm install
 ```
 
 ## TODOs
-
+1. ~Fix icon arrow bug~
+2. Dragging functions
+    a. ~north arrow~
+    b. ~sun arrow~
+    c. ~observer arrow~
+    d. scalebar icon ( to fix, )
+    e. rectagnle outline
+    f. lines
+3. Scale the icons with the scroll wheel
+    a. North
+    b. Sun
+    c. Observer
+    d. Scalebar ( Eventually, change size of scalebar and recalculate numbers being displayed )
+    e. ~outlines~
+    f. ~lines~
+4. Fix the scalebar icon size when it is placed on the screen
+5. Marker stroke-width is too big needs to match the line
+x. Get ISIS working at home
 -----------------------
 @USGS
