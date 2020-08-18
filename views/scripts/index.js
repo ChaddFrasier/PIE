@@ -25,6 +25,7 @@ $(document).ready(()=>{
     svgContainer = document.getElementById("figurecontainer")
 
     svgContainer.addEventListener("DOMMouseScroll", zoomHandler )
+    svgContainer.addEventListener("mousedown", dragHandler )
     
     // set background right away when page loads
     setSVGBackground(svgContainer, bgPicker.value)
@@ -1069,7 +1070,7 @@ var xDirection = "",
     yDirection = "",
     oldX = 0,
     oldY = 0,
-    sensitivity = 75;
+    sensitivity = 55;
  
 /**
  * @function getMouseDirection
@@ -2420,10 +2421,7 @@ function drawMouseDownListener( event )
     {
         let svgP = createSVGPoint( event.clientX, event.clientY )
         // calculate distance or length of the line
-        let linedist = Math.sqrt( 
-                Math.pow( svgP.x - Number(line.getAttribute("x1")), 2 ) 
-                + Math.pow( svgP.y - Number(line.getAttribute("y1")), 2 )
-                )
+        let linedist = distance ( line.getAttribute("x1"), line.getAttribute("y1"), svgP.x, svgP.y )
         if( linedist > 50 )
         {
             // update the position
@@ -2986,7 +2984,7 @@ function createMarker( markerString, lineid, headcode, endCode )
 function zoomHandler( event ) {
     let direction = detectMouseWheelDirection( event )
 
-    console.log(event.target.nodeName)
+//    console.log(event.target.nodeName)
 
     if( event.target.nodeName == "image")
     {
@@ -3441,6 +3439,7 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
 
     document.getElementById("tooldivider").insertAdjacentElement("afterend", holderbox)
 }
+
 var shadowIcon = null
 
 function shadowAnimate( event )
@@ -3464,4 +3463,119 @@ function drawShadowIcon( event )
     shadowdiv.style.top = event.pageY
 
     return shadowdiv
+}
+
+var draggingIcon = null,
+    oldX = null,
+    oldY = null,
+    currentX = null,
+    currentY = null;
+
+function dragHandler( event )
+{
+    let svgcontainer = document.getElementById("figurecontainer")
+    if(event.target.nodeName != "image")
+    {
+        draggingIcon = getIconParentContainer( event.target )
+
+        console.log("The dragging object is: ")
+        console.log(draggingIcon)
+
+        if( draggingIcon != null )
+        {
+            let svgP = createSVGPoint( event.clientX, event.clientY )
+            oldX = svgP.x
+            oldY = svgP.y
+    
+            
+            svgcontainer.addEventListener("mousemove", dragObject )
+            svgcontainer.addEventListener("mouseleave", endDrag )
+            svgcontainer.addEventListener("mouseup", endDrag )
+        }
+    }
+}
+
+function endDrag( event )
+{
+    let svgcontainer = document.getElementById("figurecontainer")
+
+    try{
+        svgcontainer.removeEventListener("mousemove", dragObject )
+        svgcontainer.removeEventListener("mouseleave", endDrag )
+        svgcontainer.removeEventListener("mouseup", endDrag )
+    }catch( err )
+    {
+        console.log(err)
+    }
+    
+    draggingIcon = null
+    oldX = null
+    oldY = null
+    currentX = null
+    currentY = null
+}
+
+function dragObject ( event )
+{
+    let svgP = createSVGPoint(event.clientX, event.clientY)
+
+    if( draggingIcon.nodeName == "g" )
+    {
+        let scaledX = getScaledPoint(svgP.x, Number(draggingIcon.style.scale), 25)
+        let scaledY = getScaledPoint(svgP.y, Number(draggingIcon.style.scale), 25)
+
+        draggingIcon.style.transform = translateString(scaledX, scaledY)
+    }
+    else if( draggingIcon.nodeName == "rect" )
+    {
+        currentX = getScaledPoint(svgP.x, 1, 1)
+        currentY = getScaledPoint(svgP.y, 1, 1)
+
+        draggingIcon.setAttribute("x", Number(draggingIcon.getAttribute("x")) + (currentX - oldX))
+        draggingIcon.setAttribute("y", Number(draggingIcon.getAttribute("y")) + (currentY - oldY))
+    }
+    else if( draggingIcon.nodeName == "line" )
+    {
+
+        // get first mouse position
+        currentX = getScaledPoint(svgP.x, 1, 1)
+        currentY = getScaledPoint(svgP.y, 1, 1)
+
+        console.log(currentX)
+        console.log(currentY)
+
+        draggingIcon.setAttribute("x1", Number(draggingIcon.getAttribute("x1")) + (currentX - oldX))
+        draggingIcon.setAttribute("y1", Number(draggingIcon.getAttribute("y1")) + (currentY - oldY))
+        draggingIcon.setAttribute("x2", Number(draggingIcon.getAttribute("x2")) + (currentX - oldX))
+        draggingIcon.setAttribute("y2", Number(draggingIcon.getAttribute("y2")) + (currentY - oldY))
+    }
+
+    oldX = currentX
+    oldY = currentY
+}
+
+function getIconParentContainer( target )
+{
+    try {
+        while( !( target == null )
+        && target.nodeName != 'g' 
+        && target.nodeName != "line" 
+        && target.nodeName != "rect" )
+        {
+            target = target.parentElement
+        }
+    }catch(err)
+    {
+        console.log(err)
+    }
+
+    return target
+}
+
+function distance( x1, y1, x2, y2 )
+{
+    return Math.sqrt( 
+        Math.pow( (Number(x2) - Number(x1)), 2 ) 
+        + Math.pow( (Number(y2) - Number(y1)), 2 )
+        )
 }
