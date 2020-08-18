@@ -971,19 +971,35 @@ function removeToolsWindow( event )
         svgcontainer.removeChild(svgObject)
 
         // remove all icons using image remove btn
-        try{
-            svgcontainer.removeChild(document.getElementById("northIcon-" + svgObject.id))
-        }catch(err){}
-        try{
-            svgcontainer.removeChild(document.getElementById("sunIcon-" + svgObject.id))
-        }catch(err){}
-        try{
-            svgcontainer.removeChild(document.getElementById("observerIcon-" + svgObject.id))
-        }catch(err){}
-        try{
-            svgcontainer.removeChild(document.getElementById("scalebarIcon-" + svgObject.id))
-        }catch(err){}
+        if( document.getElementById("northIcon-" + svgObject.id) )
+        {
+            do{
+                svgcontainer.removeChild(document.getElementById("northIcon-" + svgObject.id))
+            }while( document.getElementById("northIcon-" + svgObject.id) )
+        }
+       
 
+        if( document.getElementById("sunIcon-" + svgObject.id) )
+        {
+            do{
+                svgcontainer.removeChild(document.getElementById("sunIcon-" + svgObject.id))
+            }while( document.getElementById("sunIcon-" + svgObject.id) )    
+        }
+        
+        if( document.getElementById("observerIcon-" + svgObject.id) )
+        {
+            do{
+                svgcontainer.removeChild(document.getElementById("observerIcon-" + svgObject.id))
+            }while(document.getElementById("observerIcon-" + svgObject.id))    
+        }
+        
+        if( document.getElementById("scalebarIcon-" + svgObject.id) )
+        {
+            do{
+                svgcontainer.removeChild(document.getElementById("scalebarIcon-" + svgObject.id))
+            }while(document.getElementById("scalebarIcon-" + svgObject.id))    
+        }
+        
         // update the count
         getObjectCount(-1 , typeofObject(svgObject.id))
     }
@@ -1130,7 +1146,7 @@ function documentMouseUpListener()
     }
 
     
-    if(shiftObjects){ shiftObjects.classList.remove("selectedBox") }
+    if( shiftObjects ){ shiftObjects.classList.remove("selectedBox") }
     
     // remove element markers
     lowerObject = null
