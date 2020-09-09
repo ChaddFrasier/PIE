@@ -9,8 +9,8 @@ html
 
     body
         header.pips2header 
-            a.leftcontainer(href="https://www.usgs.gov/centers/astrogeology-science-center", target='_blank')
-                img(src="/images/usgsLogo.png", alt="HeaderLogo", class="usgsLogo")
+            .leftcontainer
+                img#usgsNavIcon(src="/images/usgsLogo.png", alt="HeaderLogo", class="usgsLogo", onclick="navigateTo('https://www.usgs.gov/centers/astrogeology-science-center')")
             .centercontainer(style="text-align:center")
                 img(src="/images/pieLogo.svg", alt="PIElogo", class="titleLogo")
             .rightcontainer(style="text-align:right")
@@ -23,8 +23,8 @@ html
                     h3.dividerline="Tools"
                     .windowoptionsbar(style="display:flex;")
                         h4="File Tools"
-                        button.windowminimizebtn='▲'
-                    #filetools.filetoolsbox
+                        button.windowminimizebtn='▼'
+                    #filetools.filetoolsbox.closed
                         label.text(for="figureoutputsize")="Choose an output size"
                         br
                         select#figsizeselect
@@ -37,8 +37,8 @@ html
 
                     .windowoptionsbar(style="display:flex;")
                         h4="Editing Tools"
-                        button#editminibtn.windowminimizebtn='▲'
-                    #edittoolsbox.edittoolsbox
+                        button#editminibtn.windowminimizebtn='▼'
+                    #edittoolsbox.edittoolsbox.closed
                         label.text(for="northarrowopt")="North Button"
                         br
                         button#northarrowopt(type="button")
@@ -143,15 +143,13 @@ html
                         svg.btnvectorgraphic(viewBox="0 0 25 25")
                             image.svgimg(href="images/addPlanetImage.svg", width="25px", height="25px")
                     button#addcaptionbtn.toolboxaddcaptionbtn
-                        svg.btnvectorgraphic(viewBox="-1 1 27 27")
-                            image.svgimg(href="images/addCaptionImage.svg", width="27px", height="27px")
+                        svg.btnvectorgraphic(viewBox="0 0 25 25")
+                            image.svgimg(href="images/addCaptionImage.svg", width="25px", height="25px")
             #editbox.editbox
                 //- Other Options Button Group
                 .exportoptionsbar(style="display:flex;")
                     .buttongroup
-                        button='Undo'
-                        button='Delete'
-                        button='Draft'
+                        button#strtoverbtn(onclick="startOverFunction()")='Restart'
                         button='Export'
                 //- svg figure location
                 
