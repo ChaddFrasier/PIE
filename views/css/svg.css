@@ -13,10 +13,10 @@
     margin: 0;
 }
 
-line.placed:hover, rect.placed:hover {
+line.placed:hover, rect.placed:hover , g:hover{
     cursor: grab;
 }
 
-line.placed.dragging, rect.placed.dragging, svg.dragging{
+line.placed.dragging, rect.placed.dragging, svg.dragging, g.dragging{
     cursor: grabbing;
 }
