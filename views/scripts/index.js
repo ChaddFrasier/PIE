@@ -278,7 +278,7 @@ $(document).ready(()=>{
         widthinput.setAttribute("min", '500')
         widthinput.setAttribute("max", 'none')
         widthinput.value = 1500
-        widthinput.setAttribute("name","widthlabelinput")
+        widthinput.setAttribute("name","widthinput")
 
         widthinput.addEventListener("change", function() {
             // find the matching html caption element
@@ -299,12 +299,12 @@ $(document).ready(()=>{
         })
 
         heightlabel.innerHTML = "Caption Height: "
-        heightlabel.setAttribute("for", "widthinput")
+        heightlabel.setAttribute("for", "heightinput")
 
         heightinput.setAttribute("type", "number")
         heightinput.setAttribute("min", '100')
         heightinput.value = 100
-        heightinput.setAttribute("name","heightlabelinput")
+        heightinput.setAttribute("name","heightinput")
         heightinput.addEventListener("change", function() {
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value )
@@ -324,10 +324,10 @@ $(document).ready(()=>{
         })
 
         xcoordlabel.innerHTML = "Caption X: "
-        xcoordlabel.setAttribute("for", "widthinput")
+        xcoordlabel.setAttribute("for", "xcoordinput")
         xcoordinput.setAttribute("type", "number")
         xcoordinput.value = 0
-        xcoordinput.setAttribute("name","xcoordlabelinput")
+        xcoordinput.setAttribute("name","xcoordinput")
 
         xcoordinput.addEventListener("change", function() {
             // find the matching html caption element
@@ -345,7 +345,7 @@ $(document).ready(()=>{
         ycoordlabel.setAttribute("for", "ycoordinput")
         ycoordinput.setAttribute("type", "number")
         ycoordinput.value = '0'
-        ycoordinput.setAttribute("name","ycoordlabelinput")
+        ycoordinput.setAttribute("name","ycoordinput")
         
         ycoordinput.addEventListener("change", function() {
             // find the matching html caption element
@@ -554,7 +554,7 @@ $(document).ready(()=>{
         filelabel.innerHTML = "Upload an Image: "
         filelabel.setAttribute("for", "imageinput")
         fileinput.setAttribute("type", "file")
-        fileinput.setAttribute("name", "uploadfile")
+        fileinput.setAttribute("name", "imageinput")
         fileinput.setAttribute("id","input"+imageId)
         fileinput.classList.add('fileinputfield')
 
@@ -1138,7 +1138,6 @@ function documentMouseUpListener()
         document.getElementById("toolbox").removeEventListener("mousemove", docucmentMouseOverHandler)
         toggleLayerUI("remove")
         window.removeEventListener("mouseup", documentMouseUpListener)
-        window.removeEventListener("mousedown", windowDownListener)
         document.removeEventListener("mousemove", getMouseDirection)
     }
     catch(err)
@@ -1565,6 +1564,7 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             // set scale attributes
             iconscaleinput.setAttribute("type", "number")
             iconscaleinput.setAttribute("objectid", iconId)
+            iconscaleinput.setAttribute("name", "iconscaleinput")
             icontoolbox.setAttribute("objectid", iconId)
             iconscaleinput.setAttribute("step", 0.5)
             iconscaleinput.setAttribute("min", 1)
@@ -1572,24 +1572,38 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
             // labels for north
             maincolorlabel.innerHTML = "North Main Color: "
+            maincolorlabel.setAttribute("for", "iconmaincolorinput")
+
             accentcolorlabel.innerHTML = "North Secondary Color: "
+            accentcolorlabel.setAttribute("for", "iconsecondarycolorinput")
+
             scalelabel.innerHTML = "North Scale: "
+            scalelabel.setAttribute("for", "iconscaleinput")
 
             // both color input fields
             iconmaincolorinput.setAttribute("type", "color")
             iconmaincolorinput.setAttribute("objectid", iconId)
             iconmaincolorinput.value = "#ffffff"
+            iconmaincolorinput.setAttribute("name", "iconmaincolorinput")
+
+
             iconaccentcolorinput.setAttribute("type", "color")
             iconaccentcolorinput.setAttribute("objectid", iconId)
             iconaccentcolorinput.value = "#000000"
+            iconaccentcolorinput.setAttribute("name", "iconsecondarycolorinput")
+
 
             // set translate x and y element attributes
             northicontranslatex.setAttribute("type", "number")
             northicontranslatex.setAttribute("objectid", iconId)
             northicontranslatex.setAttribute("min", "0")
+            northicontranslatex.setAttribute("name", "iconxcoordinput")
+
             northicontranslatey.setAttribute("type", "number")
             northicontranslatey.setAttribute("objectid", iconId)
             northicontranslatey.setAttribute("min", "1")
+            northicontranslatey.setAttribute("name", "iconycoordinput")
+
 
             // set translate value based on icon scale and fix to integer
             northicontranslatex.value = (transX*iconscaleinput.value).toFixed(0)
@@ -1597,7 +1611,10 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
             // set translate labels
             northicontranslateylabel.innerHTML = "North Y: "
+            northicontranslateylabel.setAttribute("for", "iconycoordinput")
+
             northicontranslatexlabel.innerHTML = "North X: "
+            northicontranslatexlabel.setAttribute("for", "iconxcoordinput")
 
             // set event listeners
             iconscaleinput.addEventListener("change", updateIconScale)
@@ -1674,13 +1691,19 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             sunicontranslatex.setAttribute("type", "number")
             sunicontranslatex.setAttribute("objectid", iconId)
             sunicontranslatex.setAttribute("min", "0")
+            sunicontranslatex.setAttribute("name", "iconxcoordinput")
+
             sunicontranslatey.setAttribute("type", "number")
             sunicontranslatey.setAttribute("objectid", iconId)
             sunicontranslatey.setAttribute("min", "1")
+            sunicontranslatey.setAttribute("name", "iconycoordinput")
 
             // set label input
             sunicontranslateylabel.innerHTML = "Sun Y: "
+            sunicontranslateylabel.setAttribute("for", "iconycoordinput")
+
             sunicontranslatexlabel.innerHTML = "Sun X: "
+            sunicontranslatexlabel.setAttribute("for", "iconxcoordinput")
 
             // append optionsbar stuff
             sunoptionbar.append(sunoptionheader, document.createElement("br"), deletebtn1)
@@ -1692,25 +1715,36 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             suniconscaleinput.value = "5"
             suniconscaleinput.setAttribute("min", 1)
             suniconscaleinput.setAttribute("step", "0.5")
+            suniconscaleinput.setAttribute("name", "iconscaleinput")
 
             // labels for input fields
             sunmaincolorlabel.innerHTML = "Sun Main Color: "
+            sunmaincolorlabel.setAttribute("for", "iconmaincolorinput")
+
             sunaccentcolorlabel.innerHTML = "Sun Secondary Color: "
+            sunaccentcolorlabel.setAttribute("for", "iconsecondarycolorinput")
+
             sunscalelabel.innerHTML = "Sun Scale: "
+            sunscalelabel.setAttribute("for", "iconscaleinput")
 
             // set translate value
             sunicontranslatex.value = (transX*suniconscaleinput.value).toFixed(0)
+            sunicontranslatex.setAttribute("name", "iconxcoordinput")
+
             sunicontranslatey.value = (transY*suniconscaleinput.value).toFixed(0)
+            sunicontranslatey.setAttribute("name", "iconycoordinput")
 
             // main color input
             suniconmaincolorinput.setAttribute("type", "color")
             suniconmaincolorinput.setAttribute( "objectid", iconId )
             suniconmaincolorinput.value = "#ffffff"
+            suniconmaincolorinput.setAttribute("name", "iconmaincolorinput")
 
             // color accent input
             suniconaccentcolorinput.setAttribute("type", "color")
             suniconaccentcolorinput.setAttribute( "objectid", iconId )
             suniconaccentcolorinput.value = "#000000"
+            suniconaccentcolorinput.setAttribute("name", "iconsecondarycolorinput")
 
             // set event listeners
             suniconscaleinput.addEventListener("change", updateIconScale)
@@ -1786,13 +1820,19 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             obsicontranslatex.setAttribute("type", "number")
             obsicontranslatex.setAttribute("objectid", iconId)
             obsicontranslatex.setAttribute("min", "0")
+            obsicontranslatex.setAttribute("name", "iconxcoordinput")
+
             obsicontranslatey.setAttribute("type", "number")
             obsicontranslatey.setAttribute("objectid", iconId)
             obsicontranslatey.setAttribute("min", "1")
+            obsicontranslatey.setAttribute("name", "iconycoordinput")
 
             // set start values for label and value of translate
             obsicontranslateylabel.innerHTML = "Observer Y: "
+            obsicontranslateylabel.setAttribute("for", "iconycoordinput")
+            
             obsicontranslatexlabel.innerHTML = "Observer X: "
+            obsicontranslatexlabel.setAttribute("for", "iconxcoordinput")
 
             // scale input field
             obsiconscaleinput.setAttribute("type", "number")
@@ -1800,24 +1840,33 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             obsiconscaleinput.setAttribute("step", "0.5")
             obsiconscaleinput.setAttribute("value", 5)
             obsiconscaleinput.setAttribute("min", "1")
+            obsiconscaleinput.setAttribute("name", "iconscaleinput")
 
             obsicontranslatex.value = (transX*obsiconscaleinput.value).toFixed(0)
             obsicontranslatey.value = (transY*obsiconscaleinput.value).toFixed(0)
 
             // create labels
             obsmaincolorlabel.innerHTML = "Observer Main Color: "
+            obsmaincolorlabel.setAttribute("for", "iconmaincolorinput")
+
             obsaccentcolorlabel.innerHTML = "Observer Secondary Color: "
+            obsaccentcolorlabel.setAttribute("for", "iconsecondarycolorinput")
+
             obsscalelabel.innerHTML = "Observer Scale: "
+            obsscalelabel.setAttribute("for", "maincolorinput")
 
             // primary color input
             obsiconmaincolorinput.setAttribute("type", "color")
             obsiconmaincolorinput.setAttribute("objectid", iconId)
             obsiconmaincolorinput.value = "#ffffff"
+            obsiconmaincolorinput.setAttribute("name", "iconmaincolorinput")
 
             // color input secondary
             obsiconaccentcolorinput.setAttribute("type", "color")
             obsiconaccentcolorinput.setAttribute("objectid", iconId)
             obsiconaccentcolorinput.value = "#000000"
+            obsiconaccentcolorinput.setAttribute("name", "iconsecondarycolorinput")
+
 
             // add events
             obsiconscaleinput.addEventListener("change", updateIconScale)
@@ -2441,6 +2490,8 @@ function drawMouseDownListener( event )
         document.getElementById("penciloptbtn").click()
         svgContainer.removeEventListener( "mousemove", updateUI )
         svgContainer.removeEventListener( "mouseup", endDraw )
+
+        line.classList.add("placed")
     }
 
     // sets the end of the line to where the mouse is
@@ -2504,6 +2555,8 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     linex1inputlabel.setAttribute( "objectid", objectid )
     linex1input.setAttribute( "type", "number" )
     linex1inputlabel.innerHTML = "Line Start-Point X: "
+    linex1inputlabel.setAttribute("for","linex1input")
+    linex1input.setAttribute("name","linex1input")
     linex1input.value = parseFloat(x1).toFixed(0)
 
     linex1input.addEventListener("change", function(event)
@@ -2518,6 +2571,8 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     liney1input.setAttribute("type", "number")
     liney1input.setAttribute("min", "0")
     liney1input.value = parseFloat(y1).toFixed(0)
+    liney1inputlabel.setAttribute("for","liney1input")
+    liney1input.setAttribute("name","liney1input")
 
     liney1input.addEventListener("change", function(event)
     {
@@ -2532,9 +2587,11 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     widthlabel.setAttribute("objectid", objectid)
     linewidthinput.setAttribute("objectid", objectid)
     widthlabel.innerHTML = "Line Thickness: "
+    widthlabel.setAttribute("for", "linethicknessinput")
     linewidthinput.setAttribute("type", "number")
     linewidthinput.setAttribute("min", "10")
     linewidthinput.value = strokeWidth
+    linewidthinput.setAttribute("name", "linethicknessinput")
 
     linewidthinput.addEventListener("change", function(event)
     {
@@ -2555,8 +2612,11 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     colorlabel.setAttribute("objectid", objectid)
     linecolorinput.setAttribute("objectid", objectid)
     colorlabel.innerHTML = "Line Color: "
+    colorlabel.setAttribute("for", "linecolorinput")
     linecolorinput.setAttribute("type", "color")
     linecolorinput.value = "#ffffff"
+
+    linecolorinput.setAttribute("name", "linecolorinput")
 
     linecolorinput.addEventListener("change", function(event)
     {
@@ -2694,8 +2754,11 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     linex2input.setAttribute("objectid", objectid)
     linex2inputlabel.setAttribute("objectid", objectid)
     linex2inputlabel.innerHTML = "Line End-Point X: "
+    linex2inputlabel.setAttribute("for", "linex2input")
     linex2input.setAttribute("min", "0")
     linex2input.setAttribute("type", "number")
+    
+    linex2input.setAttribute("name", "linex2input")
 
     linex2input.value = parseFloat(x2).toFixed(0)
 
@@ -2711,8 +2774,12 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     liney2input.setAttribute("objectid", objectid)
     liney2inputlabel.setAttribute("objectid", objectid)
     liney2inputlabel.innerHTML = "Line End-Point Y"
+    liney2inputlabel.setAttribute("for", "liney2input")
+
     liney2input.setAttribute("min", "0")
     liney2input.setAttribute("type", "number")
+
+    liney2input.setAttribute("name", "liney2input")
 
     liney2input.value = parseFloat(y2).toFixed(0)
 
@@ -2732,6 +2799,9 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     lineheadinput.setAttribute("objectid", objectid)
     lineheadinputlabel.setAttribute("objectid", objectid)
     lineheadinputlabel.innerHTML = "Line End-Point Head: "
+
+    lineheadinputlabel.setAttribute("for", "lineheadinput")
+    lineheadinput.setAttribute("name", "lineheadinput")
 
     // set the options for the input
     optionarrow.innerHTML = "Headless"
@@ -2790,6 +2860,9 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     let linetailheadinputlabel = lineheadinputlabel.cloneNode(true)
 
     linetailheadinputlabel.innerHTML = "Line Start-Point Head: "
+
+    linetailheadinputlabel.setAttribute("for", "linetailinput")
+    linetailheadinput.setAttribute("name", "linetailinput")
 
     linetailheadinput.addEventListener("change", function(event) {
         
@@ -2915,8 +2988,6 @@ function createMarker( markerString, lineid, headcode, endCode )
                 // set new attributes
                 newmarker.setAttribute( "id", lineid + "-marker" )
                 newmarker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )
-                newmarker.setAttribute("markerWidth", line.getAttribute("stroke-width")/2)
-                newmarker.setAttribute("markerHeight", line.getAttribute("stroke-width")/2)
 
                 // append the new marker
                 document.getElementById("figdefs").appendChild(newmarker)
@@ -2961,10 +3032,8 @@ function createMarker( markerString, lineid, headcode, endCode )
 
                 // set new attributes
                 newmarker.setAttribute( "id", lineid + "-markerEnd" )
-                newmarker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )
-                newmarker.setAttribute("markerWidth", line.getAttribute("stroke-width")/2)
+                newmarker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )     
                 newmarker.setAttribute("orient", "auto-start-reverse")
-                newmarker.setAttribute("markerHeight", line.getAttribute("stroke-width")/2)
 
                 // append the new marker
                 document.getElementById("figdefs").appendChild(newmarker)
@@ -2993,11 +3062,17 @@ function zoomHandler( event ) {
             case "up":
                 event.target.setAttribute("width", Number(event.target.getAttribute("width"))+50)
                 event.target.setAttribute("height", Number(event.target.getAttribute("height"))+50)
+
+                // TODO: zoom handler input changes
+
                 break
 
             case "down":
                 event.target.setAttribute("width", Number(event.target.getAttribute("width"))-50)
                 event.target.setAttribute("height", Number(event.target.getAttribute("height"))-50)
+
+                // TODO: zoom handler input changes
+
                 break
         }
     }
@@ -3008,25 +3083,38 @@ function zoomHandler( event ) {
             case "up":
                 event.target.parentElement.setAttribute("width", Number(event.target.parentElement.getAttribute("width"))+50)
                 event.target.parentElement.setAttribute("height", Number(event.target.parentElement.getAttribute("height"))+50)
+
+                // TODO: zoom handler input changes
+
                 break
 
             case "down":
                 event.target.parentElement.setAttribute("width", Number(event.target.parentElement.getAttribute("width"))-50)
                 event.target.parentElement.setAttribute("height", Number(event.target.parentElement.getAttribute("height"))-50)
+
+                // TODO: zoom handler input changes
+
                 break
         }
     }
     else if( event.target.nodeName == "line" || event.target.nodeName == "rect" )
     {
+        let strokeWidth = 0
         switch( direction )
         {
             case "up":
-                event.target.setAttribute("stroke-width", Number(event.target.getAttribute("stroke-width"))+5)
+                strokeWidth = Number(event.target.getAttribute("stroke-width"))+5
+                event.target.setAttribute("stroke-width", strokeWidth)
 
+                updateObjectUI( event.target.getAttribute("id"), strokeWidth )
                 break
 
             case "down":
-                event.target.setAttribute("stroke-width", Number(event.target.getAttribute("stroke-width"))-5)
+                strokeWidth = Number(event.target.getAttribute("stroke-width"))-5
+
+                event.target.setAttribute("stroke-width", strokeWidth)
+
+                updateObjectUI( event.target.getAttribute("id"), strokeWidth )
                 break
         }
     }
@@ -3036,10 +3124,14 @@ function zoomHandler( event ) {
         {
             case "up":
                 console.log("THIS IS AN ICON")
+                // TODO: zoom handler input changes
+
                 break
 
             case "down":
                 console.log("THIS IS AN ICON")
+                // TODO: zoom handler input changes
+
                 break
         }
     }
@@ -3091,7 +3183,7 @@ function drawBoxMouseDownListener( event )
 
     
     // create the inner outline draw listener
-    function endBoxDraw( event )
+    function endBoxDraw( )
         {
             document.getElementById("outlinebtnopt").click()
             svgContainer.removeEventListener( "mousemove", updateBoxUI )
@@ -3105,6 +3197,8 @@ function drawBoxMouseDownListener( event )
                 rect.getAttribute("width"),
                 rect.getAttribute("height"),
                 rect.getAttribute("stroke"))
+            
+            rect.classList.add("placed")
         }
 
     // sets the end of the line to where the mouse is
@@ -3195,6 +3289,9 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     rectxinputlabel.innerHTML = "Outline X: "
     rectxinput.value = parseFloat(rectX).toFixed(0)
 
+    rectxinputlabel.setAttribute("for", "rectxinput")
+    rectxinput.setAttribute("name", "rectxinput")
+
     rectxinput.addEventListener("change", function(event)
     {
         // perform line movements
@@ -3216,6 +3313,9 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     rectyinput.setAttribute("type", "number")
     rectyinput.setAttribute("min", "0")
     rectyinput.value = parseFloat(rectY).toFixed(0)
+
+    rectyinputlabel.setAttribute("for", "rectyinput")
+    rectyinput.setAttribute("name", "rectyinput")
 
     rectyinput.addEventListener("change", function(event)
     {
@@ -3239,6 +3339,9 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     rectwidthinput.setAttribute("min", "20")
     rectwidthinput.value = parseFloat(rectW).toFixed(0)
 
+    rectwidthlabel.setAttribute("for", "rectwidthinput")
+    rectwidthinput.setAttribute("name", "rectwidthinput")
+
     rectwidthinput.addEventListener("change", function(event)
     {
         if( Number(this.getAttribute("min")) > Number(this.value) )
@@ -3259,6 +3362,9 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     rectheightinput.setAttribute("type", "number")
     rectheightinput.setAttribute("min", "20")
     rectheightinput.value = parseFloat(rectH).toFixed(0)
+
+    rectheightlabel.setAttribute("for", "rectheightinput")
+    rectheightinput.setAttribute("name", "rectheightinput")
 
     rectheightinput.addEventListener("change", function(event)
     {
@@ -3283,6 +3389,9 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     strokewidthinput.setAttribute("min", "10")
     strokewidthinput.value = 10
 
+    strokewidthinputlabel.setAttribute("for", "rectthicknessinput")
+    strokewidthinput.setAttribute("name", "rectthicknessinput")
+
     strokewidthinput.addEventListener("change", function(event)
     {
         // line width setting
@@ -3303,6 +3412,9 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     rectcolorlabel.innerHTML = "Outline Color: "
     rectcolorinput.setAttribute("type", "color")
     rectcolorinput.value = strokeColor
+
+    rectcolorlabel.setAttribute("for", "rectcolorinput")
+    rectcolorinput.setAttribute("name", "rectcolorinput")
 
     rectcolorinput.addEventListener("change", function(event)
     {
@@ -3456,7 +3568,6 @@ function drawShadowIcon( event )
     shadowdiv.setAttribute("height", "50px")
     shadowdiv.innerHTML = event.target.innerHTML
 
-
     shadowdiv.style.opacity = .5
     shadowdiv.style.position = "absolute"
     shadowdiv.style.left = event.pageX
@@ -3491,6 +3602,10 @@ function dragHandler( event )
             svgcontainer.addEventListener("mousemove", dragObject )
             svgcontainer.addEventListener("mouseleave", endDrag )
             svgcontainer.addEventListener("mouseup", endDrag )
+
+            draggingIcon.classList.add('dragging')
+            svgcontainer.classList.add('dragging')
+
         }
     }
 }
@@ -3507,7 +3622,10 @@ function endDrag( event )
     {
         console.log(err)
     }
-    
+
+    draggingIcon.classList.remove('dragging')
+    svgcontainer.classList.remove('dragging')
+
     draggingIcon = null
     oldX = null
     oldY = null
@@ -3524,6 +3642,8 @@ function dragObject ( event )
         let scaledX = getScaledPoint(svgP.x, Number(draggingIcon.style.scale), 25)
         let scaledY = getScaledPoint(svgP.y, Number(draggingIcon.style.scale), 25)
 
+        updateInputField(draggingIcon.getAttribute("id"), scaledX, scaledY)
+
         draggingIcon.style.transform = translateString(scaledX, scaledY)
     }
     else if( draggingIcon.nodeName == "rect" )
@@ -3531,8 +3651,14 @@ function dragObject ( event )
         currentX = getScaledPoint(svgP.x, 1, 1)
         currentY = getScaledPoint(svgP.y, 1, 1)
 
-        draggingIcon.setAttribute("x", Number(draggingIcon.getAttribute("x")) + (currentX - oldX))
-        draggingIcon.setAttribute("y", Number(draggingIcon.getAttribute("y")) + (currentY - oldY))
+        y = Number(draggingIcon.getAttribute("y")) + (currentY - oldY)
+        x = Number(draggingIcon.getAttribute("x")) + (currentX - oldX)
+
+        draggingIcon.setAttribute("x", x)
+        draggingIcon.setAttribute("y", y)
+
+        updateInputField(draggingIcon.getAttribute("id"), x, y)
+
     }
     else if( draggingIcon.nodeName == "line" )
     {
@@ -3541,17 +3667,83 @@ function dragObject ( event )
         currentX = getScaledPoint(svgP.x, 1, 1)
         currentY = getScaledPoint(svgP.y, 1, 1)
 
-        console.log(currentX)
-        console.log(currentY)
+        x1 = Number(draggingIcon.getAttribute("x1")) + (currentX - oldX)
+        y1 = Number(draggingIcon.getAttribute("y1")) + (currentY - oldY)
+        x2 = Number(draggingIcon.getAttribute("x2")) + (currentX - oldX)
+        y2 = Number(draggingIcon.getAttribute("y2")) + (currentY - oldY)
+        
+        draggingIcon.setAttribute("x1", x1)
+        draggingIcon.setAttribute("y1", y1)
+        draggingIcon.setAttribute("x2", x2)
+        draggingIcon.setAttribute("y2", y2)
 
-        draggingIcon.setAttribute("x1", Number(draggingIcon.getAttribute("x1")) + (currentX - oldX))
-        draggingIcon.setAttribute("y1", Number(draggingIcon.getAttribute("y1")) + (currentY - oldY))
-        draggingIcon.setAttribute("x2", Number(draggingIcon.getAttribute("x2")) + (currentX - oldX))
-        draggingIcon.setAttribute("y2", Number(draggingIcon.getAttribute("y2")) + (currentY - oldY))
+        updateInputField(draggingIcon.getAttribute("id"), x1, y1, x2, y2)
     }
 
     oldX = currentX
     oldY = currentY
+}
+
+function updateInputField( objectid, ...args )
+{
+    // dragging a line
+    if( objectid.indexOf("line") > -1)
+    {
+        var objectArr = document.getElementsByClassName("draggableToolbox")
+    
+        // more than 1 toolbox present
+        for(let i = 0; i < objectArr.length; i++ ){
+            if( objectArr[i].getAttribute("objectid") == objectid )
+            { 
+                // set the ui input boxes
+                var x1input = objectArr[i].children[1].querySelector("input[name='linex1input']")
+                x1input.value = Number(args[0]).toFixed(0)
+
+                var y1input = objectArr[i].children[1].querySelector("input[name='liney1input']")
+                y1input.value = Number(args[1]).toFixed(0)
+
+                var x2input = objectArr[i].children[1].querySelector("input[name='linex2input']")
+                x2input.value = Number(args[2]).toFixed(0)
+
+                var y2input = objectArr[i].children[1].querySelector("input[name='liney2input']")
+                y2input.value = Number(args[3]).toFixed(0)
+            }
+        }
+    }
+    else if( objectid.indexOf("rect") > -1)
+    {
+        var objectArr = document.getElementsByClassName("draggableToolbox")
+
+        // more than 1 toolbox present
+        for(let i = 0; i < objectArr.length; i++ ){
+            if( objectArr[i].getAttribute("objectid") == objectid )
+            {
+                // set the ui input boxes
+                var xinput = objectArr[i].children[1].querySelector("input[name='rectxinput']")
+                xinput.value = Number(args[0]).toFixed(0)
+
+                var yinput = objectArr[i].children[1].querySelector("input[name='rectyinput']")
+                yinput.value = Number(args[1]).toFixed(0)
+            }
+        }
+    }
+    else if( objectid.indexOf("g") > -1)
+    {
+        var objectArr = document.getElementsByClassName("draggableToolbox") 
+        
+        // more than 1 toolbox present
+        for(let i = 0; i < objectArr.length; i++ ){
+            if( objectArr[i].getAttribute("objectid") == objectid )
+            {
+                // set the ui input boxes
+                var xinput = objectArr[i].children[1].querySelector("input[name='iconxcoordinput']")
+                xinput.value = Number(args[0]).toFixed(0)
+
+                var yinput = objectArr[i].children[1].querySelector("input[name='iconycoordinput']")
+                yinput.value = Number(args[1]).toFixed(0)
+            }
+        }
+    }
 }
 
 function getIconParentContainer( target )
@@ -3578,4 +3770,48 @@ function distance( x1, y1, x2, y2 )
         Math.pow( (Number(x2) - Number(x1)), 2 ) 
         + Math.pow( (Number(y2) - Number(y1)), 2 )
         )
+}
+
+function startOverFunction()
+{
+    location.reload()
+}
+
+function navigateTo( url )
+{
+    location.href = url
+}
+
+function updateObjectUI( objectid, ...args )
+{
+    if(objectid.indexOf("line") > -1)
+    {
+        let objectArr = document.getElementsByClassName("draggableToolbox")
+    
+        // more than 1 toolbox present
+        for(let i = 0; i < objectArr.length; i++ ){
+            if( objectArr[i].getAttribute("objectid") == objectid )
+            { 
+                // set the ui input boxes
+                let thickness = objectArr[i].children[1].querySelector("input[name='linethicknessinput']")
+                thickness.value = Number(args[0]).toFixed(0)
+            }
+        }
+    }
+    else if(objectid.indexOf("rect") > -1)
+    {
+        let objectArr = document.getElementsByClassName("draggableToolbox")
+    
+        // more than 1 toolbox present
+        for(let i = 0; i < objectArr.length; i++ ){
+            if( objectArr[i].getAttribute("objectid") == objectid )
+            { 
+                // set the ui input boxes
+                let thickness = objectArr[i].children[1].querySelector("input[name='rectthicknessinput']")
+                thickness.value = Number(args[0]).toFixed(0)
+            }
+        }
+    }
+
+    // TODO: change icon scale when the zoom hanler runs
 }
