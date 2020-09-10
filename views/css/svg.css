@@ -12,3 +12,11 @@
     text-align: left;
     margin: 0;
 }
+
+line.placed:hover, rect.placed:hover , g:hover{
+    cursor: grab;
+}
+
+line.placed.dragging, rect.placed.dragging, svg.dragging, g.dragging{
+    cursor: grabbing;
+}
