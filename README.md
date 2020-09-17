@@ -11,6 +11,8 @@ This server was created to simplify the figure making process for planetary rese
 
 ## Installation
 
+The installtion steps below are for an Ubuntu enironment. PIE requires a UNIX based development environment for the simple fact that ISIS cannot be installed on Windows. If you want to install PIE onto a Windows machine you will need to install the Docker image found [here](https://hub.docker.com/repository/docker/chaddfrasier/pie-usgs).
+
 1. Anaconda / Miniconda
 ``` 
 Download [Miniconda3](https://docs.conda.io/en/latest/miniconda.html) or Anaconda3 to help create the development environment.
@@ -35,7 +37,7 @@ conda config --env --add channels conda-forge
 conda install -c conda-forge gdal
 ```
 
-3. ISIS 3
+3. ISIS 3 ( Cannot be installed on Windows )
 ``` 
 # create the gdal environment
 conda create -n isis python=3.6
@@ -54,7 +56,6 @@ conda install -c usgs-astrogeology isis=3.10.2
 Install [NodeJS](https://nodejs.org/en/)
 ```
 
-
 ### Node Modules
 ```
 # Pull down the code from the repo
@@ -72,22 +73,14 @@ npm install
 npm install --only=proc
 ```
 
-## TODOs
-2. Dragging functions
-    a. north arrow
-    b. sun arrow
-    c. observer arrow
-    d. scalebar icon ( to fix, )
-    e. ~rectangle outline~
-    f. ~lines~
-3. Scale the icons with the scroll wheel
-    a. North
-    b. Sun
-    c. Observer
-    d. Scalebar ( Eventually, change size of scalebar and recalculate numbers being displayed )
-    e. ~outlines~
-    f. ~lines~
-4. Fix the scalebar icon size when it is placed on the screen
 
+## Running
+```
+# turn on both environments
+conda activate isis && conda activate --stack gdal
+
+# test the environment
+lowpass -h && gdal_translate -h
+```
 -----------------------
-@USGS
+@USGS-Astrogeology
