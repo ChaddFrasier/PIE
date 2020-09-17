@@ -11,11 +11,13 @@ This server was created to simplify the figure making process for planetary rese
 
 ## Installation
 
-The installtion steps below are for an Ubuntu enironment. PIE requires a UNIX based development environment for the simple fact that ISIS cannot be installed on Windows. If you want to install PIE onto a Windows machine you will need to install the Docker image found [here](https://hub.docker.com/repository/docker/chaddfrasier/pie-usgs).
+The installation steps below are for an Ubuntu enironment. PIE requires a UNIX based development environment for the simple fact that ISIS cannot be installed on Windows. If you want to install PIE onto a Windows machine you will need to install the Docker image found [here](https://hub.docker.com/repository/docker/chaddfrasier/pie-usgs).
 
 1. Anaconda / Miniconda
-``` 
 Download [Miniconda3](https://docs.conda.io/en/latest/miniconda.html) or Anaconda3 to help create the development environment.
+```
+# after downloaded navigate to the miniconda install script
+cd /path/to/downloaded/script
 
 # Give permission
 chmod +x ./Miniconda3.sh
@@ -52,8 +54,9 @@ conda install -c usgs-astrogeology isis=3.10.2
 ```
 
 4. NodeJS
-```
 Install [NodeJS](https://nodejs.org/en/)
+```
+follow install steps for your OS.
 ```
 
 ### Node Modules
@@ -72,7 +75,6 @@ npm install
 # Install dependencies w/ production requirements
 npm install --only=proc
 ```
-
 
 ## Running
 ```
