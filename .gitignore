@@ -1,5 +1,11 @@
-# *TEMP* test folder
-test/
+# ISIS Files
+*.tif
+*.TIF
+*.TIFF
+*.tiff
+*.cub
+*.CUB
+
 # Logs
 logs
 *.log
