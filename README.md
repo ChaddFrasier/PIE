@@ -10,26 +10,69 @@ This server was created to simplify the figure making process for planetary rese
 3. NodeJS
 
 ## Installation
-### Prerequisites
-1. GDAL
-    ``` This is how to install GDAL```
-2. ISIS 3/4
-    ``` This is how to install ISIS```
-3. NodeJS
-    ``` This is how to install NodeJS```
+
+1. Anaconda / Miniconda
+``` 
+Download [Miniconda3](https://docs.conda.io/en/latest/miniconda.html) or Anaconda3 to help create the development environment.
+
+# Give permission
+chmod +x ./Miniconda3.sh
+
+# run the installer
+./Miniconda3.sh
+```
+
+2. GDAL Environment
+``` 
+# create the gdal environment
+conda create -n gdal
+
+# activate the env
+conda activate gdal
+
+# install gdal using conda
+conda config --env --add channels conda-forge
+conda install -c conda-forge gdal
+```
+
+3. ISIS 3
+``` 
+# create the gdal environment
+conda create -n isis python=3.6
+
+# activate the env
+conda activate isis
+
+# install isis
+conda config --env --add channels conda-forge
+conda config --env --add channels usgs-astrogeology
+conda install -c usgs-astrogeology isis=3.10.2
+```
+
+4. NodeJS
+```
+Install [NodeJS](https://nodejs.org/en/)
+```
 
 
 ### Node Modules
 ```
-1. Pull down the code from the repo
-> git clone https://github.com/ChaddFrasier/PIE.git
+# Pull down the code from the repo
+git clone https://github.com/ChaddFrasier/PIE.git
 
-2. Install dependencies
-> npm install
+# change directory into /PIE
+cd /path/to/PIE
+
+# Install dependencies w/ development requirements
+npm install
+
+# or
+
+# Install dependencies w/ production requirements
+npm install --only=proc
 ```
 
 ## TODOs
-1. ~Fix line marker bug where the marker-ends are too big if the thickness changes before~
 2. Dragging functions
     a. north arrow
     b. sun arrow
@@ -45,10 +88,6 @@ This server was created to simplify the figure making process for planetary rese
     e. ~outlines~
     f. ~lines~
 4. Fix the scalebar icon size when it is placed on the screen
-5. ~Marker stroke-width is too big needs to match the line~
-6. UI of dragging svg icons should have a grabbable hand when hovering and then and dragging when the mouse is held.
 
-
-x. Get ISIS working at home
 -----------------------
 @USGS
