@@ -1,4 +1,3 @@
-
 function writeContent(){
     const contentArr = [
         String("<pre><i><b>All contact can be directed to our <a class='descanchor' href='https://github.com/ChaddFrasier/PIE',target='_blank'>GitHub</a> Page. \

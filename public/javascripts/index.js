@@ -3772,7 +3772,7 @@ function distance( x1, y1, x2, y2 )
         )
 }
 
-function startOverFunction()
+function NewFigure()
 {
     location.reload()
 }
@@ -3780,6 +3780,11 @@ function startOverFunction()
 function navigateTo( url )
 {
     location.href = url
+}
+
+function LastFigure()
+{
+    // TODO: undo the figure if possible
 }
 
 function updateObjectUI( objectid, ...args )
