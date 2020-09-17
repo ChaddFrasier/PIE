@@ -1,38 +1,36 @@
-html 
-    head
-        title="FAQ"
-        style
-            include css/pips2.css
-        script
-            include scripts/faq.js
-        
-    body
-        header.pips2header 
-            .leftcontainer
-                img#usgsNavIcon(src="/images/usgsLogo.png", alt="HeaderLogo", class="usgsLogo", onclick="navigateTo('https://www.usgs.gov/centers/astrogeology-science-center')")
-            a.centercontainer(style="text-align:center; text-decoration: none;", href="/")
-                img(src="/images/pieLogo.svg", alt="PIElogo", class="titleLogo")
-            .rightcontainer(style="text-align:right")
-                img.gdalimage(src="/images/questionMark.svg", alt="question")
-        span.maincontent
-            .mainaboutbox
-                h2.basicpageheader="What is PIE?"
-                #faqcontent1.basicfaqcontent
-                br
-                h2.basicpageheader="How does it work?"
-                #faqcontent2.basicfaqcontent
-                br
-                h2.basicpageheader="How do I start?"
-                #faqcontent3.basicfaqcontent
-                br
-                h2.basicpageheader="Helpful Links"
-                #faqcontent4.basicpagecontent(style='display: flex; padding:0')
-        br
-        footer.mainfooter
-            .leftfooter
-                .footerbuttongroup
-                    a(href="/about")='Getting Started'
-                    a(href="/contact")='Contact Us'
-                    a(href="")='FAQ'
+extends layout
 
-            h5.rightfooter="Developed by the USGS Astrogeology Science Center"
+block pagescript
+  script(src="/javascripts/faq.js", type="text/javascript")
+
+block content
+    header.pips2header 
+        .leftcontainer
+            img#usgsNavIcon(src="/images/usgsLogo.png", alt="HeaderLogo", class="usgsLogo", onclick="navigateTo('https://www.usgs.gov/centers/astrogeology-science-center')")
+        a.centercontainer(style="text-align:center; text-decoration: none;", href="/")
+            img(src="/images/pieLogo.svg", alt="PIElogo", class="titleLogo")
+        .rightcontainer(style="text-align:right")
+            img.gdalimage(src="/images/questionMark.svg", alt="question")
+    span.maincontent
+        .mainaboutbox
+            h2.basicpageheader="What is PIE?"
+            #faqcontent1.basicfaqcontent
+            br
+            h2.basicpageheader="How does it work?"
+            #faqcontent2.basicfaqcontent
+            br
+            h2.basicpageheader="How do I start?"
+            #faqcontent3.basicfaqcontent
+            br
+            h2.basicpageheader="Helpful Links"
+            #faqcontent4.basicpagecontent(style='display: flex; padding:0')
+
+block footer
+    footer.mainfooter
+        .leftfooter
+            .footerbuttongroup
+                a(href="/about")='Getting Started'
+                a(href="/contact")='Contact Us'
+                a(href="")='FAQ'
+
+        h5.rightfooter="Developed by the USGS Astrogeology Science Center"
