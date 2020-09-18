@@ -2,6 +2,43 @@
 
 function DraggableArea( objectbox=undefined )
 {
+
+    // Private functions
+    function validNode( nodeName )
+    {
+        var testarray = ["svg"]
+        // check test nodes for the current node name
+        return (testarray.indexOf(nodeName) > -1) ? true: false;
+    }
+
+    function validDraggableNode( nodeName )
+    {
+        var testarray = ["g", "line", "rect"]
+        // check test nodes for the current node name
+        return (testarray.indexOf(nodeName) > -1) ? true: false;
+    }
+
+    /**
+     * 
+     * @param {Object} target 
+     * @description this function loops until failure or until a expected / draggable parent is found
+     */
+    function getIconParentContainer( target )
+    {
+        try {
+            while( !( target == null )
+            && !validDraggableNode(target.nodeName) )
+            {
+                target = target.parentElement
+            }
+        }catch(err)
+        {
+            console.log(err)
+        }
+
+        return target
+    }
+
     // validate input
     if( objectbox &&
         objectbox.getAttribute("id") &&
@@ -144,40 +181,4 @@ function DraggableArea( objectbox=undefined )
             NodeName: objectbox.nodeName
         };
     }
-}
-
-// Private functions
-function validNode( nodeName )
-{
-    var testarray = ["svg"]
-    // check test nodes for the current node name
-    return (testarray.indexOf(nodeName) > -1) ? true: false;
-}
-
-function validDraggableNode( nodeName )
-{
-    var testarray = ["g", "line", "rect"]
-    // check test nodes for the current node name
-    return (testarray.indexOf(nodeName) > -1) ? true: false;
-}
-
-/**
- * 
- * @param {Object} target 
- * @description this function loops until failure or until a expected / draggable parent is found
- */
-function getIconParentContainer( target )
-{
-    try {
-        while( !( target == null )
-        && !validDraggableNode(target.nodeName) )
-        {
-            target = target.parentElement
-        }
-    }catch(err)
-    {
-        console.log(err)
-    }
-
-    return target
 }
