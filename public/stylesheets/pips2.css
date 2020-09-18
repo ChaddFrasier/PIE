@@ -28,6 +28,15 @@ html {
     text-align: center;
 }
 
+.nobody {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0 auto;
+    height: 100%;
+    width: 100%;
+}
+
 .hand  {
     cursor: grabbing !important;
 }
@@ -194,7 +203,7 @@ a.descanchor:hover {
 }
 
 .drawing:hover{
-    cursor: url("images/pencil.svg"), auto !important;
+    cursor: url("/images/pencil.svg"), auto !important;
 }
 
 body {
