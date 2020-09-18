@@ -1099,66 +1099,6 @@ function randomId( textareaprefix )
 {
     return textareaprefix + String( Math.floor((Math.random() * 1000) + 1) )
 }
- 
-/** Setup a function to track the mouse movement of the user */
-var xDirection = "",
-    yDirection = "",
-    oldX = 0,
-    oldY = 0,
-    sensitivity = 55;
- 
-/**
- * @function getMouseDirection
- * @param {_MouseEvent} e
- * @description get the mouse direction as a string relative to the sensitivity level set globally
- */
-function getMouseDirection( e )
-{
-    //deal with the horizontal case
-    if ( oldX + sensitivity < e.pageX )
-    {
-        // update right
-        update = true
-        xDirection = "right"
-
-        // new anchor point
-        oldX = e.pageX
-    } 
-    else if( oldX - sensitivity > e.pageX )
-    {
-        // set update left
-        update = true
-        xDirection = "left"
-
-        // set new anchor point
-        oldX = e.pageX
-    }
- 
-    //deal with the vertical case
-    if ( oldY + sensitivity < e.pageY )
-    {
-        // set update down
-        yDirection = "down"
-        update = true
-
-        // set new anchor point
-        oldY = e.pageY
-    }
-    else if ( oldY - sensitivity > e.pageY )
-    {
-        // update the page and set direction up
-        update = true
-        yDirection = "up"
-
-        // set new anchor point
-        oldY = e.pageY
-    }
-    else
-    {
-        // direction not determined
-        yDirection = ""
-    }
-}
 
 /**
  * stores and retrieves object count for me
