@@ -1,32 +1,8 @@
 /**
- * @function createSVGPoint
- * @param {number} x - x translate
- * @param {number} y - y translate
- * @description this function creates a svg point from the svgContainer matrix and transforms it into the client space.
- *  This is used to get the pixel in the svg that was clicked when dropping icons on screen
+ * 
+ * @file svgHelper.js
+ * @fileoverview file for helping the DraggableArea and DraggableList files
  */
-function createSVGPoint( x, y )
-{
-    // create a svg point on screen
-    let pt = svgContainer.createSVGPoint()
-    
-    // input to a float and set the initial point values in the svgpoint object
-    pt.x = parseFloat( x )
-    pt.y = parseFloat( y )
-
-    if( !isNaN( pt.x ) && !isNaN( pt.y ) )
-    {
-        /**
-         * Apply a matrix tranform on the new point using the transform matrix of the target svg
-         *  Note: must inverse the matrix when being inputed because of matrix arithmetic
-         * */ 
-        return pt.matrixTransform( svgContainer.getScreenCTM().inverse() )
-    }
-    else
-    {
-        console.error( "Error: SVG Point Mapping Failed" )
-    }
-}
 
 /**
  * @function translateString
