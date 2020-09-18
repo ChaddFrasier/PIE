@@ -1,7 +1,10 @@
 extends layout
 
 block pagescript
-  script(src="/javascripts/index.js", type="text/javascript")
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js", type="text/javascript")
+    script(src="/javascripts/svgHelper.js", type="text/javascript")
+    script(src="/javascripts/DraggableArea.js", type="text/javascript")
+    script(src="/javascripts/index.js", type="text/javascript")
 
 block content
     header.pips2header 

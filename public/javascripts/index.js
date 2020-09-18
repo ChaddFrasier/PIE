@@ -1,4 +1,3 @@
-// GLOABALS
 // only used to track which menu item is being moved and where it should move to
 var shiftObjects,
     lowerObject, 
@@ -24,11 +23,14 @@ $(document).ready(()=>{
     // get the global figure element
     svgContainer = document.getElementById("figurecontainer")
 
-    svgContainer.addEventListener("DOMMouseScroll", zoomHandler )
-    svgContainer.addEventListener("mousedown", dragHandler )
+    // create the Draggable Object COntainer
+    svgDraggable = DraggableArea( svgContainer )
+
+    // add zoom handler to the container that the draggable is watching
+    svgDraggable.getContainerObject().addEventListener("DOMMouseScroll", zoomHandler )
     
     // set background right away when page loads
-    setSVGBackground(svgContainer, bgPicker.value)
+    setSVGBackground(svgDraggable.getContainerObject(), bgPicker.value)
 
     /** 
      * @function .windowminimizebtn.click()
@@ -1203,26 +1205,6 @@ function shiftDown( pageY )
 }
 
 /**
- * @function moveSvgUp
- * @param {Node} element
- * @description move the svg element up to the top of the layers of the svg
- */
-function moveSvgUp( element )
-{
-    element.nextSibling.insertAdjacentElement("afterend", element)
-}
-
-/**
- * @function moveSvgDown
- * @param {Node} element
- * @description move the svg element down to the top of the layers of the svg
- */
-function moveSvgDown( element )
-{
-    document.getElementById("figurecontainer").insertBefore(element, element.previousSibling)
-}
-
-/**
  * stores and retrieves object count for me
  */
 var imageCount = 0,
@@ -1474,35 +1456,6 @@ function drawSvgIcon( image, icontype, event )
     drawToolbox( imagetoolbox, icontype, icongroup.id, newX, newY )
 }
 
-/**
- * @function createSVGPoint
- * @param {number} x - x translate
- * @param {number} y - y translate
- * @description this function creates a svg point from the svgContainer matrix and transforms it into the client space.
- *  This is used to get the pixel in the svg that was clicked when dropping icons on screen
- */
-function createSVGPoint( x, y )
-{
-    // create a svg point on screen
-    let pt = svgContainer.createSVGPoint()
-    
-    // input to a float and set the initial point values in the svgpoint object
-    pt.x = parseFloat( x )
-    pt.y = parseFloat( y )
-
-    if( !isNaN( pt.x ) && !isNaN( pt.y ) )
-    {
-        /**
-         * Apply a matrix tranform on the new point using the transform matrix of the target svg
-         *  Note: must inverse the matrix when being inputed because of matrix arithmetic
-         * */ 
-        return pt.matrixTransform( svgContainer.getScreenCTM().inverse() )
-    }
-    else
-    {
-        console.error( "Error: SVG Point Mapping Failed" )
-    }
-}
 
 /**
  * @function drawToolbox
@@ -2036,34 +1989,6 @@ function updateIconPosition ( event, attrId )
 }
 
 /**
- * @function updateTranslate
- * @param {string} translateStr - translate string for the translate
- * @param {string} attr - the attribute to update
- * @param {number} value - the new value
- * @param {number} scale - the current scale
- * @description update just one part of the translate. either x or y
- */
-function updateTranslate ( translateStr, attr, value, scale )
-{
-    // quick fix for unknown javascript 0px error that changes the transform string
-    value = ( value == 0 ) ? 1 : value
-
-    if( attr == "x" )
-    {
-        let y = parseInt( translateStr.split( "," )[ 1 ] )
-
-        return  String( "translate(" +  value / scale  + "px, " + y  + "px)" ) 
-    }
-    else if( attr == "y" )
-    {
-        let x = parseInt( translateStr.split( "translate(" )[ 1 ].split( "," )[ 0 ] )
-
-        return  String( "translate(" +  x  + "px, " + value / scale   + "px)" )
-
-    }
-}
-
-/**
  * @function findImageToolbox
  * @param {string} id 
  * @param {NodeList} array 
@@ -2348,33 +2273,6 @@ function changeButtonActivation( ActivationCode, code )
             }
             break
     }
-}
-
-/**
- * @function translateString
- * @param {number} x - the x value in pixels
- * @param {number} y - the y value in pixels
- * @description returns a string for of the x,y point as a translate() command
- */
-function translateString( x, y )
-{
-    return String( "translate(" +  x  + "px, " +  y  + "px)" )
-}
-
-/**
- * @function getScaledPoint
- * @param {number} p - the point that we need to scale
- * @param {number} scale - the new scale of the image
- * @param {number} objectDim - the object dimension, either width or height
- * @description move the point over half the scaled width and then divide by the scale again 
- */
-function getScaledPoint( p, scale, objectDim )
-{
-    // scale object dimension and get half of it because we want the center of the object
-    let p_half = objectDim * scale / 2
-
-    // scale the point down with half subtracted to find the center of the icon
-    return ( p  - p_half ) /  scale  
 }
 
 /**
@@ -3576,113 +3474,9 @@ function drawShadowIcon( event )
     return shadowdiv
 }
 
-var draggingIcon = null,
-    oldX = null,
-    oldY = null,
-    currentX = null,
-    currentY = null;
 
-function dragHandler( event )
-{
-    let svgcontainer = document.getElementById("figurecontainer")
-    if(event.target.nodeName != "image")
-    {
-        draggingIcon = getIconParentContainer( event.target )
 
-        console.log("The dragging object is: ")
-        console.log(draggingIcon)
 
-        if( draggingIcon != null )
-        {
-            let svgP = createSVGPoint( event.clientX, event.clientY )
-            oldX = svgP.x
-            oldY = svgP.y
-    
-            
-            svgcontainer.addEventListener("mousemove", dragObject )
-            svgcontainer.addEventListener("mouseleave", endDrag )
-            svgcontainer.addEventListener("mouseup", endDrag )
-
-            draggingIcon.classList.add('dragging')
-            svgcontainer.classList.add('dragging')
-
-        }
-    }
-}
-
-function endDrag( event )
-{
-    let svgcontainer = document.getElementById("figurecontainer")
-
-    try{
-        svgcontainer.removeEventListener("mousemove", dragObject )
-        svgcontainer.removeEventListener("mouseleave", endDrag )
-        svgcontainer.removeEventListener("mouseup", endDrag )
-    }catch( err )
-    {
-        console.log(err)
-    }
-
-    draggingIcon.classList.remove('dragging')
-    svgcontainer.classList.remove('dragging')
-
-    draggingIcon = null
-    oldX = null
-    oldY = null
-    currentX = null
-    currentY = null
-}
-
-function dragObject ( event )
-{
-    let svgP = createSVGPoint(event.clientX, event.clientY)
-
-    if( draggingIcon.nodeName == "g" )
-    {
-        let scaledX = getScaledPoint(svgP.x, Number(draggingIcon.style.scale), 25)
-        let scaledY = getScaledPoint(svgP.y, Number(draggingIcon.style.scale), 25)
-
-        updateInputField(draggingIcon.getAttribute("id"), scaledX, scaledY)
-
-        draggingIcon.style.transform = translateString(scaledX, scaledY)
-    }
-    else if( draggingIcon.nodeName == "rect" )
-    {
-        currentX = getScaledPoint(svgP.x, 1, 1)
-        currentY = getScaledPoint(svgP.y, 1, 1)
-
-        y = Number(draggingIcon.getAttribute("y")) + (currentY - oldY)
-        x = Number(draggingIcon.getAttribute("x")) + (currentX - oldX)
-
-        draggingIcon.setAttribute("x", x)
-        draggingIcon.setAttribute("y", y)
-
-        updateInputField(draggingIcon.getAttribute("id"), x, y)
-
-    }
-    else if( draggingIcon.nodeName == "line" )
-    {
-
-        // get first mouse position
-        currentX = getScaledPoint(svgP.x, 1, 1)
-        currentY = getScaledPoint(svgP.y, 1, 1)
-
-        x1 = Number(draggingIcon.getAttribute("x1")) + (currentX - oldX)
-        y1 = Number(draggingIcon.getAttribute("y1")) + (currentY - oldY)
-        x2 = Number(draggingIcon.getAttribute("x2")) + (currentX - oldX)
-        y2 = Number(draggingIcon.getAttribute("y2")) + (currentY - oldY)
-        
-        draggingIcon.setAttribute("x1", x1)
-        draggingIcon.setAttribute("y1", y1)
-        draggingIcon.setAttribute("x2", x2)
-        draggingIcon.setAttribute("y2", y2)
-
-        updateInputField(draggingIcon.getAttribute("id"), x1, y1, x2, y2)
-    }
-
-    oldX = currentX
-    oldY = currentY
-}
 
 function updateInputField( objectid, ...args )
 {
@@ -3744,24 +3538,6 @@ function updateInputField( objectid, ...args )
             }
         }
     }
-}
-
-function getIconParentContainer( target )
-{
-    try {
-        while( !( target == null )
-        && target.nodeName != 'g' 
-        && target.nodeName != "line" 
-        && target.nodeName != "rect" )
-        {
-            target = target.parentElement
-        }
-    }catch(err)
-    {
-        console.log(err)
-    }
-
-    return target
 }
 
 function distance( x1, y1, x2, y2 )
