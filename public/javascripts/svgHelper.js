@@ -1,4 +1,10 @@
 /**
+ * 
+ * @file svgHelper.js
+ * @fileoverview file for helping the DraggableArea and DraggableList files
+ */
+
+/**
  * @function createSVGPoint
  * @param {number} x - x translate
  * @param {number} y - y translate

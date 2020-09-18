@@ -1,9 +1,21 @@
+/**
+ * @file DraggableArea.js
+ * @requires svgHelper.js
+ * @fileoverview 
+ *      This file is used in PIE and can be used as a basic framework for a draggable container in HTML using javascript listeners
+ */
+
 "use strict";
 
+/**
+ * @function constructor
+ *       var dragObj = DraggableArea( HTML_Object )
+ * @param {DOM Object} objectbox the object that you would like the dragging actions to take place inside of.
+ */
 function DraggableArea( objectbox=undefined )
 {
 
-    // Private functions
+    // ---------------- Private functions --------------------------
     function validNode( nodeName )
     {
         var testarray = ["svg"]
@@ -39,6 +51,8 @@ function DraggableArea( objectbox=undefined )
         return target
     }
 
+    // ---------------- ^ End Private functions ^ --------------------------
+
     // validate input
     if( objectbox &&
         objectbox.getAttribute("id") &&
@@ -53,7 +67,7 @@ function DraggableArea( objectbox=undefined )
             currentX = null,
             currentY = null;
 
-        
+        // ---------------- Private Functions Only Needed on Success --------------------------
         function dragObject ( event )
         {
             let svgP = createSVGPoint(event.clientX, event.clientY)
@@ -105,7 +119,7 @@ function DraggableArea( objectbox=undefined )
             oldY = currentY
         }
         
-        function endDrag( event )
+        function endDrag( )
         {
             let svgcontainer = DragBoxContainer
 
@@ -156,10 +170,13 @@ function DraggableArea( objectbox=undefined )
                 }
             }
         }
+        // ---------------- End Private functions 2 --------------------------
 
+
+        // add the main listener to the object target by Draggable
         DragBoxContainer.addEventListener("mousedown", dragHandler )
 
-        // return the DraggableArea object function
+        // return the DraggableArea object
         return {
 
             // public variables
