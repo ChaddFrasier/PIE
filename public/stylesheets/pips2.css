@@ -177,7 +177,7 @@ img#usgsNavIcon:hover {
 }
 
 .iconbtn {
-    background: linear-gradient(bottom left to top right, rgb(190, 190, 190), rgb(119, 119, 119));
+    background: var(--bar-gradient);
     padding: 4px 0;
 }
 
@@ -697,7 +697,7 @@ svg.imagecontainer {
 }
 
 .leftfooter {
-    vertical-align: center;
+    vertical-align: middle;
     margin: auto auto auto 0;
     width: 33.3%;
     color: inherit;
@@ -750,7 +750,6 @@ svg.imagecontainer {
     height: auto;
     width: auto;
     text-align: center;
-    min-width: none;
     max-width: 95%;
     max-height: max-content;
     border: 2px solid black;

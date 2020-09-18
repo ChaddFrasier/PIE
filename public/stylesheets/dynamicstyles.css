@@ -1,84 +1,84 @@
 /* Very Large Screen screens */
 @media only screen and (min-width:1900px) {
 
-  .titleLogo {
-      height: 125px;
-  }
+    .titleLogo {
+        height: 125px;
+    }
 
-  .pips2header {
-      min-height: 125px;   
-  }
-  
-  .windowoptionsbar>h4{
-      font-size: 18px;
-  }
+    .pips2header {
+        min-height: 125px;   
+    }
 
-  .windowoptionsbar>button {
-      font-size: 15px;
-  }
+    .windowoptionsbar>h4{
+        font-size: 18px;
+    }
 
-  .dividerline {
-      font-size: 22px;
-  }
-  
-  .filetoolsbox>label {
-      font-size: 22px;
-  }
+    .windowoptionsbar>button {
+        font-size: 15px;
+    }
 
-  .toolscontainer {
-      max-width: 300px;
-  }
+    .dividerline {
+        font-size: 22px;
+    }
 
-  .toolboxcontainer {
-      min-width: 300px;
-  }
+    .filetoolsbox>label {
+        font-size: 22px;
+    }
 
-  .edittoolsbox>label, .edittoolsbox>div>label {
-      font-size: 22px;
-  }
+    .toolscontainer {
+        max-width: 300px;
+    }
 
-  .footerbuttongroup>a {
-      font-size: 19px;
-  }
+    .toolboxcontainer {
+        min-width: 300px;
+    }
 
-  .rightfooter {
-      font-size: 19px;
-  }
+    .edittoolsbox>label, .edittoolsbox>div>label {
+        font-size: 22px;
+    }
 
-  .captiontoolsbox>label {
-      font-size: 22px;
-  }
+    .footerbuttongroup>a {
+        font-size: 19px;
+    }
 
-  .imagetoolsbox>label {
-      font-size: 22px;
-  }
+    .rightfooter {
+        font-size: 19px;
+    }
 
-  .editbox {
-      min-width: 1800px;
-      margin: 0 auto 0 0;
-  }
+    .captiontoolsbox>label {
+        font-size: 22px;
+    }
 
-  .mainfooter {
-      margin: auto 0 0 0;
-      padding: 0;
-      height: 5%;
-  }
+    .imagetoolsbox>label {
+        font-size: 22px;
+    }
 
-  .windowsidebar {
-      min-width: 36px;
-      max-width: 36px;
-      max-height: none;
-      padding: 0;
-  }
+    .editbox {
+        min-width: 1800px;
+        margin: 0 auto 0 0;
+    }
 
-  .windowsidebar>button {
-      font-size: 15px;
-  }
+    .mainfooter {
+        margin: auto 0 0 0;
+        padding: 0;
+        height: 5%;
+    }
 
-  .toolboxcontainer.closed {
-      width: 36px !important;
-      min-width: 0% !important;
-  }    
+    .windowsidebar {
+        min-width: 36px;
+        max-width: 36px;
+        max-height: none;
+        padding: 0;
+    }
+
+    .windowsidebar>button {
+        font-size: 15px;
+    }
+
+    .toolboxcontainer.closed {
+        width: 36px !important;
+        min-width: 0% !important;
+    }    
 }
 
 /* Normal screens */
@@ -116,69 +116,69 @@
 /* Small screens */
 @media only screen and (max-width:900px) {
 
-  html {
-      max-height: none;
-      height: fit-content;
-  }
+    html {
+        max-height: none;
+        height: 100%;
+    }
 
-  .titleLogo {
-      height: 75px;
-  }
+    .titleLogo {
+        height: 75px;
+    }
 
-  .maincontent {
-      display: block;
-      overflow-y: scroll;
-  }
+    .maincontent {
+        display: block;
+        overflow-y: scroll;
+    }
 
 
-  .windowoptionsbar>h4{
-      font-size: 11px;
-  }
+    .windowoptionsbar>h4{
+        font-size: 11px;
+    }
 
-  .windowoptionsbar>button {
-      font-size: 9px;
-  }
+    .windowoptionsbar>button {
+        font-size: 9px;
+    }
 
-  .dividerline {
-      font-size: 12px;
-  }
-  
-  .filetoolsbox>label {
-      font-size: 11px;
-  }
+    .dividerline {
+        font-size: 12px;
+    }
 
-  .toolboxcontainer {
-      width: 100%;
-      height: auto;
-  }
+    .filetoolsbox>label {
+        font-size: 11px;
+    }
 
-  .toolscontainer {
-      overflow-y: scroll;
-      margin: auto auto;
-      max-width: none;
-      text-align: center;
-      height: 300px;
-  }
+    .toolboxcontainer {
+        width: 100%;
+        height: auto;
+    }
 
-  .editbox {
-      width: 100%;
-      max-width: none;
-      margin: auto auto;
-      max-height: none;
-      height: auto;
-  }
+    .toolscontainer {
+        overflow-y: scroll;
+        margin: auto auto;
+        max-width: none;
+        text-align: center;
+        height: 300px;
+    }
 
-  .mainfooter {
-      height: 4%;
-      position: relative;;
-      margin: auto 0 0 0;
-  }
+    .editbox {
+        width: 100%;
+        max-width: none;
+        margin: auto auto;
+        max-height: none;
+        height: auto;
+    }
 
-  .leftfooter {
-      font-size: 12px;
-  }
+    .mainfooter {
+        height: 4%;
+        position: relative;;
+        margin: auto 0 0 0;
+    }
 
-  .rightfooter {
-      font-size: 10px;
-  }
+    .leftfooter {
+        font-size: 12px;
+    }
+
+    .rightfooter {
+        font-size: 10px;
+    }
 }
