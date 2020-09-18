@@ -1148,7 +1148,7 @@ function getObjectCount( inc=0, objecttype="both" )
  * @param {string} testString
  * @description this function uses regexp to check and see if a string fits on of the object prefixes
  */
-function typeofObject(testString) 
+function typeofObject(testString)
 {
     // create the new Reg-Expresions
     let imagereexp = new RegExp('^image[0-9]*')
