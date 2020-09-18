@@ -1,11 +1,4 @@
-// only used to track which menu item is being moved and where it should move to
-var shiftObjects,
-    lowerObject, 
-    upperObject, 
-    selectedObject, 
-    svgContainer = null;
-
-// Namespaces for svg
+// Namespaces Global
 var NS = {xhtml:"http://www.w3.org/1999/xhtml",
             svg: "http://www.w3.org/2000/svg"};
 
@@ -16,21 +9,23 @@ var NS = {xhtml:"http://www.w3.org/1999/xhtml",
 $(document).ready(()=>{
     // local jquery variables
     var bgPicker = document.getElementById("backgroundcolor"),
-        dividerObject = document.getElementById("tooldivider"),
         PencilFlag = false,
+        selectedObject = null,
         OutlineFlag = false;
 
     // get the global figure element
-    svgContainer = document.getElementById("figurecontainer")
+    let svgContainer = document.getElementById("figurecontainer")
 
     // create the Draggable Object COntainer
-    svgDraggable = DraggableArea( svgContainer )
+    draggableSvg = DraggableArea( svgContainer )
+
+    draggableList = DraggableList( document.getElementById("DraggableContainer") )
 
     // add zoom handler to the container that the draggable is watching
-    svgDraggable.getContainerObject().addEventListener("DOMMouseScroll", zoomHandler )
+    draggableSvg.getContainerObject().addEventListener("DOMMouseScroll", zoomHandler )
     
     // set background right away when page loads
-    setSVGBackground(svgDraggable.getContainerObject(), bgPicker.value)
+    setSVGBackground(draggableSvg.getContainerObject(), bgPicker.value)
 
     /** 
      * @function .windowminimizebtn.click()
@@ -39,7 +34,7 @@ $(document).ready(()=>{
     $('button.windowminimizebtn').click(function(event) {
         minimizeToolsWindow(event)
     })
-
+    
     $('#penciloptbtn').click( function( event ) {
         if(PencilFlag)
         {
@@ -50,7 +45,7 @@ $(document).ready(()=>{
             changeButtonActivation("enable", 0)
 
             // remove draw listeners
-            svgContainer.removeEventListener("mousedown", drawMouseDownListener)
+            draggableSvg.getContainerObject().removeEventListener("mousedown", drawMouseDownListener)
         }
         else
         {
@@ -61,7 +56,7 @@ $(document).ready(()=>{
             changeButtonActivation("disable", 0)
 
             // add event listener for click on svg
-            svgContainer.addEventListener("mousedown", drawMouseDownListener )
+            draggableSvg.getContainerObject().addEventListener("mousedown", drawMouseDownListener )
         }
         PencilFlag = !(PencilFlag)
     })
@@ -76,7 +71,7 @@ $(document).ready(()=>{
             changeButtonActivation("enable", 1)
 
             // remove draw listeners
-            svgContainer.removeEventListener("mousedown", drawBoxMouseDownListener )
+            draggableSvg.getContainerObject().removeEventListener("mousedown", drawBoxMouseDownListener )
         }
         else
         {
@@ -88,7 +83,7 @@ $(document).ready(()=>{
             changeButtonActivation("disable", 1)
 
             // add event listener for click on svg
-            svgContainer.addEventListener("mousedown", drawBoxMouseDownListener )
+            draggableSvg.getContainerObject().addEventListener("mousedown", drawBoxMouseDownListener )
         }
         OutlineFlag = !(OutlineFlag)
     })
@@ -165,9 +160,8 @@ $(document).ready(()=>{
         // same for delete as minimize
         deletebtn.classList.add("windowremovebtn")
         deletebtn.innerHTML = "&times"
-        deletebtn.addEventListener( "click", function(event) {
-            removeToolsWindow(event)
-        })
+        
+        draggableList.removeDraggable( deletebtn )
 
         /** Dyncamic layer buttoon requires more work*/
         // set the class css and the svg button graphic
@@ -180,41 +174,7 @@ $(document).ready(()=>{
                             "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
                             "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
         
-        // main handler for the dragging functionality
-        layerbtn.addEventListener("mousedown", function(event) {  
-            // capture the start y when the click happens
-            oldY = event.pageY
-            toggleLayerUI("add")
-
-            layerbtn.addEventListener("mouseup", documentMouseUpListener)
-            document.addEventListener("mousemove", getMouseDirection, false)
-           
-            // objects that need to shift
-            try {
-                shiftObjects = event.target.parentElement.parentElement
-            
-                // the element to put things below
-                lowerObject = shiftObjects.nextElementSibling
-                
-                // the element to put things above
-                upperObject = shiftObjects.previousElementSibling
-                
-                // put dragging stuff here
-                document.addEventListener("mousemove", docucmentMouseOverHandler)
-
-                // set shiftObjects css
-                shiftObjects.classList.add("selectedBox")
-            }catch(err)
-            {
-                console.log(err)
-                upperObject, lowerObject, shiftObjects = null
-            }
-        })
-
-        // add the window lister to remove active dragging
-        window.addEventListener("mousedown", () => {
-            window.addEventListener("mouseup", documentMouseUpListener)
-        })
+        draggableList.addDraggable( layerbtn )
 
         /** End Dragging */
 
@@ -420,7 +380,7 @@ $(document).ready(()=>{
         holderbox.append(newoptionsbar, toolsarea)
         holderbox.setAttribute("objectid", captionId)
 
-        dividerObject.insertAdjacentElement("afterend", holderbox)
+        draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
 
         /** Add a caption box in the svg area */
         const textholder = document.createElementNS(NS.svg, "foreignObject")
@@ -444,7 +404,7 @@ $(document).ready(()=>{
 
         // finish by adding them to the document
         textholder.appendChild(text)
-        svgContainer.appendChild(textholder)
+        draggableSvg.getContainerObject().appendChild(textholder)
 
         getObjectCount(1, "caption")
     })
@@ -496,9 +456,8 @@ $(document).ready(()=>{
         // setup delete button
         deletebtn.classList.add("windowremovebtn")
         deletebtn.innerHTML = "&times"
-        deletebtn.addEventListener( "click", function(event) {
-            removeToolsWindow(event)
-        })
+        
+        draggableList.removeDraggable(deletebtn)
 
         /** Dyncamic layer buttoon */
         layerbtn.classList.add("windoworderingbtn")
@@ -510,41 +469,8 @@ $(document).ready(()=>{
                             "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
                             "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
                             
-        layerbtn.addEventListener("mousedown", function(event) {  
-            // capture the start y when the click happens
-            oldY = event.pageY
+        draggableList.addDraggable( layerbtn )
 
-            toggleLayerUI( "add" )
-
-            layerbtn.addEventListener("mouseup", documentMouseUpListener, false)
-            document.addEventListener("mousemove", getMouseDirection, false)
-           
-            // objects that need to shift
-            try {
-                shiftObjects = event.target.parentElement.parentElement
-            
-                // the element to put things below
-                lowerObject = shiftObjects.nextElementSibling
-                
-                // the element to put things above
-                upperObject = shiftObjects.previousElementSibling
-                
-                // put dragging stuff here
-                document.addEventListener("mousemove", docucmentMouseOverHandler)
-
-                // set shiftObjects css
-                shiftObjects.classList.add("selectedBox")
-            }catch(err)
-            {
-                console.log(err)
-                upperObject, lowerObject, shiftObjects = null
-            }
-        })
-
-        // add mouse liseners
-        window.addEventListener("mousedown", () => {
-            window.addEventListener("mouseup", documentMouseUpListener, false)
-        })
         /** End Dynamic button*/
 
         // toolbox attributes
@@ -756,7 +682,7 @@ $(document).ready(()=>{
         holderbox.setAttribute("objectid", imageId)
         holderbox.append(newoptionsbar, toolsarea)
 
-        dividerObject.insertAdjacentElement("afterend", holderbox)
+        draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
 
         // set image initial attributes
         imagesvg.setAttribute("x", "0")
@@ -766,7 +692,7 @@ $(document).ready(()=>{
         imagesvg.setAttribute("id", imageId)
         imagesvg.setAttribute("href", "test/moonphasestest.jpg")
 
-        svgContainer.appendChild(imagesvg)
+        draggableSvg.getContainerObject().appendChild(imagesvg)
 
         // add 1 to the totaly image count
         getObjectCount(1, "image")
@@ -779,7 +705,7 @@ $(document).ready(()=>{
     $('#figsizeselect').on("change", (event) => {
         // update the svgContainer size
         let tmp = event.target.value.split("x")
-        svgContainer.setAttribute("viewBox", "0 0 " + tmp[0] + ' ' + tmp[1])
+        draggableSvg.getContainerObject().setAttribute("viewBox", "0 0 " + tmp[0] + ' ' + tmp[1])
     })
 
     /**
@@ -788,7 +714,7 @@ $(document).ready(()=>{
      * will be visible when exported
      */
     $('#backgroundcolor').on("change", () => {
-        setSVGBackground(svgContainer, bgPicker.value)
+        setSVGBackground(draggableSvg.getContainerObject(), bgPicker.value)
     })
 
     /** Annotation buttons */
@@ -917,6 +843,192 @@ $(document).ready(()=>{
         }
     })
 
+    
+    /**
+     * @function setElement
+     * @param {_Event} event 
+     * @description set the current element that the mouse dropped over
+     */
+    function setElement( event ) 
+    {
+        let btn = document.getElementsByClassName( "selected" )[ 0 ]
+
+        document.getElementsByClassName("maincontent")[0].removeChild(shadowIcon)
+        document.removeEventListener("mousemove", shadowAnimate)
+
+        shadowIcon = null
+
+        if(typeofObject(event.target.id) == "image")
+        {
+            // set element
+            selectedObject = event.target
+        }
+        else if(btn != event.target)
+        {
+            alert("CANNOT ADD ICON TO THIS ELEMENT")
+        }
+
+        // remove the current listener
+        this.removeEventListener("mouseup", setElement)
+        btn.classList.remove("selected")
+
+        /* call the drawing function with the type of image that can
+        be found fron the btn and on the selectedObject*/
+        if ( selectedObject )
+        {
+            let iconType
+
+            if( btn.id.indexOf( "north" ) > -1 )
+            {
+                iconType = "north"
+            }
+            else if( btn.id.indexOf( "sun" ) > -1 )
+            {
+                iconType = "sun"
+            }
+            else if( btn.id.indexOf( "observer" ) > -1 )
+            {
+                iconType = "observer"
+            }
+            else if( btn.id.indexOf( "scalebar" ) > -1 )
+            {
+                iconType = "scalebar"
+            }
+            else
+            {
+                console.log("Unknown Object ID = " + btn.id)
+            }
+            
+            // draw the icon
+            drawSvgIcon( selectedObject, iconType, event )
+
+            // after drawing svg icon is finished remove the object
+            selectedObject = null
+        }
+    }
+
+    /**
+     * @function drawSvgIcon
+     * @param {Node} image 
+     * @param {string} icontype 
+     * @param {_Event} event
+     * @description this function draws the svg icons over the svg figure image where the mouse drop occured
+     */
+    function drawSvgIcon( image, icontype, event )
+    {
+        let icongroup = null,
+            svgP = null,
+            newX = 0,
+            newY = 0;
+
+        switch (icontype)
+        {
+            case "north":
+                // get svg transformed point
+                svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
+
+                // set group attributes for svg
+                icongroup = document.getElementById("northgroup").cloneNode(true)
+                icongroup.setAttribute("objectid", image.id)
+                icongroup.setAttribute("id", "northIcon-" + image.id)
+                icongroup.style.scale = "5"
+
+                // set the location of the icon to where the mouse was released
+                newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 25 )
+                newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 25 )
+
+                // set translate
+                icongroup.style.transform = translateString( newX, newY)
+
+                // append the icon
+                draggableSvg.getContainerObject().appendChild(icongroup)
+                break
+        
+            case "sun":
+                // get svg transformed point
+                svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
+
+                // set group attributes for svg
+                icongroup = document.getElementById("sungroup").cloneNode(true)
+                icongroup.setAttribute("objectid", image.id)
+                icongroup.setAttribute("id", "sunIcon-" + image.id)
+                icongroup.style.scale = "5"
+
+                // set the location of the icon to where the mouse was released
+                newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 24 )
+                newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 24 )
+        
+                // set translate
+                icongroup.style.transform = translateString( newX, newY )
+
+                // append the icon
+                draggableSvg.getContainerObject().appendChild(icongroup)
+                break
+        
+            case "observer":
+                // get svg transformed point
+                svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
+
+                // set group attributes for svg
+                icongroup = document.getElementById("observergroup").cloneNode(true)
+                icongroup.setAttribute("objectid", image.id)
+                icongroup.setAttribute("id", "observerIcon-" + image.id)
+                icongroup.style.scale = "5"
+
+                // set the location of the icon to where the mouse was released
+                newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 24 )
+                newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 24 )
+            
+                if( !isNaN(newX) && !isNaN(newY))
+                {
+                    // set translate
+                    icongroup.style.transform = translateString( newX, newY )
+                }
+                else
+                {
+                    console.error("Translate Values Failed")
+                }
+            
+                // append the icon
+                draggableSvg.getContainerObject().appendChild(icongroup)
+                break
+
+                case "scalebar":
+                    // get svg transformed point
+                    svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
+        
+                    // set group attributes for svg
+                    icongroup = document.getElementById("scalebargroup").cloneNode(true)
+                    icongroup.setAttribute("objectid", image.id)
+                    icongroup.setAttribute("id", "scalebarIcon-" + image.id)
+                    icongroup.style.scale = "0.5"
+        
+                    // set the location of the icon to where the mouse was released
+                    newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 2000 )
+                    newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 500 )
+                
+                    if( !isNaN(newX) && !isNaN(newY))
+                    {
+                        // set translate
+                        icongroup.style.transform = translateString( newX, newY )
+                    }
+                    else
+                    {
+                        console.error("Translate Values Failed")
+                    }
+                
+                    // append the icon
+                    draggableSvg.getContainerObject().appendChild(icongroup)
+                    break
+        }
+
+        // find proper tool box
+        let imagetoolbox = findImageToolbox( selectedObject.id, document.getElementsByClassName("imagetoolsbox") )
+
+        // draw the tool box based on the icon type
+        drawToolbox( imagetoolbox, icontype, icongroup.id, newX, newY )
+    }
+
 }) // end of jquery functions
 
 /* Helper functions */
@@ -954,61 +1066,6 @@ function minimizeToolsWindow( event )
 }
 
 /**
- * @function removeToolsWindow
- * @param {_Event} event
- * @description This function is used to delete the tools window and options bar from the tool box area
- */
-function removeToolsWindow( event )
-{
-    if(event.target.parentElement.attributes.objectid.value)
-    {
-        // remove the current options bar, its next child and the caption matching the same id
-        let parentBox = event.target.parentElement.parentElement
-        let svgObject = document.getElementById(event.target.parentElement.attributes.objectid.value)
-        
-        let toolcontainer = document.getElementById('toolcontainer')
-        let svgcontainer = document.getElementById('figurecontainer')
-
-        // remove the options and other things for image
-        toolcontainer.removeChild(parentBox) 
-        svgcontainer.removeChild(svgObject)
-
-        // remove all icons using image remove btn
-        if( document.getElementById("northIcon-" + svgObject.id) )
-        {
-            do{
-                svgcontainer.removeChild(document.getElementById("northIcon-" + svgObject.id))
-            }while( document.getElementById("northIcon-" + svgObject.id) )
-        }
-       
-
-        if( document.getElementById("sunIcon-" + svgObject.id) )
-        {
-            do{
-                svgcontainer.removeChild(document.getElementById("sunIcon-" + svgObject.id))
-            }while( document.getElementById("sunIcon-" + svgObject.id) )    
-        }
-        
-        if( document.getElementById("observerIcon-" + svgObject.id) )
-        {
-            do{
-                svgcontainer.removeChild(document.getElementById("observerIcon-" + svgObject.id))
-            }while(document.getElementById("observerIcon-" + svgObject.id))    
-        }
-        
-        if( document.getElementById("scalebarIcon-" + svgObject.id) )
-        {
-            do{
-                svgcontainer.removeChild(document.getElementById("scalebarIcon-" + svgObject.id))
-            }while(document.getElementById("scalebarIcon-" + svgObject.id))    
-        }
-        
-        // update the count
-        getObjectCount(-1 , typeofObject(svgObject.id))
-    }
-}
-
-/**
  * @function detectMouseWheelDirection
  * @param {_Event} e - the mouse wheel event
  * @description tells which way the scroll wheel is going
@@ -1041,30 +1098,6 @@ function detectMouseWheelDirection( e )
 function randomId( textareaprefix )
 {
     return textareaprefix + String( Math.floor((Math.random() * 1000) + 1) )
-}
-
-/**
- * @function docucmentMouseOverHandler
- * @description handler for when the user wants to drag an element up or down calls the shift functions respectivly
- */
-function docucmentMouseOverHandler ( event )
-{
-    if(yDirection == "up")
-    {
-        // shift up of both objects are there
-        if(shiftObjects && upperObject)
-        {
-            shiftUp( event.pageY )
-        }
-    }
-    else if(yDirection == "down")
-    {
-        // shift down of both objects are there
-        if(shiftObjects && lowerObject)
-        {
-            shiftDown( event.pageY )
-        }
-    }
 }
  
 /** Setup a function to track the mouse movement of the user */
@@ -1123,83 +1156,6 @@ function getMouseDirection( e )
     else
     {
         // direction not determined
-        yDirection = ""
-    }
-}
-
-/**
- * @function documentMouseUpListener
- * @description when the mouse is released remove the listeners
- * 
- * TODO: this couold be manipulated to let the user drag the box up and down contantly until the mouse is lifted
- */
-function documentMouseUpListener()
-{
-    // try to set the mouse events for the dragging
-    try{
-        document.getElementById("toolbox").removeEventListener("mousemove", docucmentMouseOverHandler)
-        toggleLayerUI("remove")
-        window.removeEventListener("mouseup", documentMouseUpListener)
-        document.removeEventListener("mousemove", getMouseDirection)
-    }
-    catch(err)
-    {
-        console.log("document listener remove failed")
-    }
-
-    
-    if( shiftObjects ){ shiftObjects.classList.remove("selectedBox") }
-    
-    // remove element markers
-    lowerObject = null
-    upperObject = null
-    shiftObjects = null
-    oldX = 0
-    oldY = 0
-    yDirection = ""
-}
-
-/**
- * @function shiftUp
- * @description shift the object up one slot in the tools location
- */
-function shiftUp( pageY )
-{
-    // check for a none outer object as the upper element
-    if( upperObject.getAttribute("objectid") )
-    {
-        // insert the element above the sifting elements
-        document.getElementById("toolcontainer").insertBefore(shiftObjects, upperObject)
-        
-        // move up one layer
-        moveSvgUp(document.getElementById(shiftObjects.attributes.objectid.value))
-
-        // clear elements
-        lowerObject = upperObject
-        upperObject = shiftObjects.previousElementSibling
-        yDirection = ""
-        oldY = pageY
-    }
-}
-
-/**
- * @function shiftDown
- * @description shift the object down one slot in the tools location
- */
-function shiftDown( pageY )
-{
-    // check for an object below
-    if( lowerObject )
-    {
-        lowerObject.insertAdjacentElement("afterend", shiftObjects)
-
-        // move up one layer
-        moveSvgDown(document.getElementById(shiftObjects.attributes.objectid.value))
-
-        // clear elements
-        upperObject = lowerObject
-        lowerObject = shiftObjects.nextElementSibling
-        oldY = pageY
         yDirection = ""
     }
 }
@@ -1270,192 +1226,6 @@ function typeofObject(testString)
         return "caption"
     }
 }
-
-/**
- * @function setElement
- * @param {_Event} event 
- * @description set the current element that the mouse dropped over
- */
-function setElement( event ) 
-{
-    let btn = document.getElementsByClassName( "selected" )[ 0 ]
-
-    document.getElementsByClassName("maincontent")[0].removeChild(shadowIcon)
-    document.removeEventListener("mousemove", shadowAnimate)
-
-    shadowIcon = null
-
-    if(typeofObject(event.target.id) == "image")
-    {
-        // set element
-        selectedObject = event.target
-    }
-    else if(btn != event.target)
-    {
-        alert("CANNOT ADD ICON TO THIS ELEMENT")
-    }
-
-    // remove the current listener
-    this.removeEventListener("mouseup", setElement)
-    btn.classList.remove("selected")
-
-    /* call the drawing function with the type of image that can
-     be found fron the btn and on the selectedObject*/
-    if ( selectedObject )
-    {
-        let iconType
-
-        if( btn.id.indexOf( "north" ) > -1 )
-        {
-            iconType = "north"
-        }
-        else if( btn.id.indexOf( "sun" ) > -1 )
-        {
-            iconType = "sun"
-        }
-        else if( btn.id.indexOf( "observer" ) > -1 )
-        {
-            iconType = "observer"
-        }
-        else if( btn.id.indexOf( "scalebar" ) > -1 )
-        {
-            iconType = "scalebar"
-        }
-        else
-        {
-            console.log("Unknown Object ID = " + btn.id)
-        }
-        
-        // draw the icon
-        drawSvgIcon( selectedObject, iconType, event )
-
-        // after drawing svg icon is finished remove the object
-        selectedObject = null
-    }
-}
-
-/**
- * @function drawSvgIcon
- * @param {Node} image 
- * @param {string} icontype 
- * @param {_Event} event
- * @description this function draws the svg icons over the svg figure image where the mouse drop occured
- */
-function drawSvgIcon( image, icontype, event )
-{
-    let icongroup = null,
-        svgP = null,
-        newX = 0,
-        newY = 0;
-
-    switch (icontype)
-    {
-        case "north":
-            // get svg transformed point
-            svgP = createSVGPoint( event.clientX, event.clientY)
-
-            // set group attributes for svg
-            icongroup = document.getElementById("northgroup").cloneNode(true)
-            icongroup.setAttribute("objectid", image.id)
-            icongroup.setAttribute("id", "northIcon-" + image.id)
-            icongroup.style.scale = "5"
-
-            // set the location of the icon to where the mouse was released
-            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 25 )
-            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 25 )
-
-            // set translate
-            icongroup.style.transform = translateString( newX, newY)
-
-            // append the icon
-            svgContainer.appendChild(icongroup)
-            break
-    
-        case "sun":
-            // get svg transformed point
-            svgP = createSVGPoint(event.clientX, event.clientY)
-
-            // set group attributes for svg
-            icongroup = document.getElementById("sungroup").cloneNode(true)
-            icongroup.setAttribute("objectid", image.id)
-            icongroup.setAttribute("id", "sunIcon-" + image.id)
-            icongroup.style.scale = "5"
-
-            // set the location of the icon to where the mouse was released
-            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 24 )
-            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 24 )
-    
-            // set translate
-            icongroup.style.transform = translateString( newX, newY )
-
-            // append the icon
-            svgContainer.appendChild(icongroup)
-            break
-    
-        case "observer":
-            // get svg transformed point
-            svgP = createSVGPoint(event.clientX, event.clientY)
-
-            // set group attributes for svg
-            icongroup = document.getElementById("observergroup").cloneNode(true)
-            icongroup.setAttribute("objectid", image.id)
-            icongroup.setAttribute("id", "observerIcon-" + image.id)
-            icongroup.style.scale = "5"
-
-            // set the location of the icon to where the mouse was released
-            newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 24 )
-            newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 24 )
-        
-            if( !isNaN(newX) && !isNaN(newY))
-            {
-                // set translate
-                icongroup.style.transform = translateString( newX, newY )
-            }
-            else
-            {
-                console.error("Translate Values Failed")
-            }
-           
-            // append the icon
-            svgContainer.appendChild(icongroup)
-            break
-
-            case "scalebar":
-                // get svg transformed point
-                svgP = createSVGPoint(event.clientX, event.clientY)
-    
-                // set group attributes for svg
-                icongroup = document.getElementById("scalebargroup").cloneNode(true)
-                icongroup.setAttribute("objectid", image.id)
-                icongroup.setAttribute("id", "scalebarIcon-" + image.id)
-                icongroup.style.scale = "0.5"
-    
-                // set the location of the icon to where the mouse was released
-                newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 2000 )
-                newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 500 )
-            
-                if( !isNaN(newX) && !isNaN(newY))
-                {
-                    // set translate
-                    icongroup.style.transform = translateString( newX, newY )
-                }
-                else
-                {
-                    console.error("Translate Values Failed")
-                }
-               
-                // append the icon
-                svgContainer.appendChild(icongroup)
-                break
-    }
-
-    // find proper tool box
-    let imagetoolbox = findImageToolbox( selectedObject.id, document.getElementsByClassName("imagetoolsbox") )
-
-    // draw the tool box based on the icon type
-    drawToolbox( imagetoolbox, icontype, icongroup.id, newX, newY )
-}
-
 
 /**
  * @function drawToolbox
@@ -2065,7 +1835,7 @@ function removeIconWindow( event )
 
         imagetoolbox.removeChild( icontoolsbar )
         imagetoolbox.removeChild( toolsbox )
-        svgContainer.removeChild( iconsvg )
+        draggableSvg.getContainerObject().removeChild( iconsvg )
     }
 }
 
@@ -2097,7 +1867,7 @@ function removeLineWindow( event )
 
         // remove all elements
         holderbox.parentElement.removeChild( holderbox )
-        svgContainer.removeChild( linesvg )
+        draggableSvg.getContainerObject().removeChild( linesvg )
 
         // remove marker if there is one
         if( linesvg.style.markerEnd != "" )
@@ -2352,7 +2122,7 @@ function drawMouseDownListener( event )
         lineId = randomId("line");
 
     // get transformed svg point where click occured
-    let svgP = createSVGPoint( event.clientX, event.clientY )
+    let svgP = draggableSvg.svgAPI( event.clientX, event.clientY )
 
     // set line attributes
     line.setAttribute( "x1", svgP.x )
@@ -2366,7 +2136,7 @@ function drawMouseDownListener( event )
     // create the inner draw listener
     function endDraw( event )
     {
-        let svgP = createSVGPoint( event.clientX, event.clientY )
+        let svgP = draggableSvg.svgAPI( event.clientX, event.clientY )
         // calculate distance or length of the line
         let linedist = distance ( line.getAttribute("x1"), line.getAttribute("y1"), svgP.x, svgP.y )
         if( linedist > 50 )
@@ -2380,35 +2150,35 @@ function drawMouseDownListener( event )
         }
         else
         {
-            svgContainer.removeChild(line)
+            draggableSvg.getContainerObject().removeChild(line)
             // no need to add tool box
             alert("Your line was too short please draw a larger line")
         }
 
         document.getElementById("penciloptbtn").click()
-        svgContainer.removeEventListener( "mousemove", updateUI )
-        svgContainer.removeEventListener( "mouseup", endDraw )
+        draggableSvg.getContainerObject().removeEventListener( "mousemove", updateUI )
+        draggableSvg.getContainerObject().removeEventListener( "mouseup", endDraw )
 
         line.classList.add("placed")
     }
 
     // sets the end of the line to where the mouse is
-    svgContainer.addEventListener( "mouseup", endDraw )
+    draggableSvg.getContainerObject().addEventListener( "mouseup", endDraw )
 
     // set the update function
     function updateUI ( event )
     {
-        let svgP = createSVGPoint( event.clientX, event.clientY )
+        let svgP = draggableSvg.svgAPI( event.clientX, event.clientY )
 
         line.setAttribute( "x2", svgP.x )
         line.setAttribute( "y2", svgP.y )
     }
 
     // event listener for mousemove
-    svgContainer.addEventListener( "mousemove", updateUI )
+    draggableSvg.getContainerObject().addEventListener( "mousemove", updateUI )
 
     // put the line on the svg image
-    svgContainer.appendChild(line)
+    draggableSvg.getContainerObject().appendChild(line)
 }
 
 /**
@@ -2601,42 +2371,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
                         "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
     
     // main handler for the dragging functionality
-    layerbtn.addEventListener("mousedown", function(event) {
-        // capture the start y when the click happens
-        oldY = event.pageY
-
-        toggleLayerUI("add")
-
-        layerbtn.addEventListener("mouseup", documentMouseUpListener, false)
-        document.addEventListener("mousemove", getMouseDirection, false)
-       
-        // objects that need to shift
-        try {
-            shiftObjects = event.target.parentElement.parentElement
-        
-            // the element to put things below
-            lowerObject = shiftObjects.nextElementSibling
-            
-            // the element to put things above
-            upperObject = shiftObjects.previousElementSibling
-            
-            // put dragging stuff here
-            document.getElementById("toolbox").addEventListener("mousemove", docucmentMouseOverHandler)
-            
-            // set shiftObjects css
-            shiftObjects.classList.add("selectedBox")
-        }catch(err)
-        {
-            console.log(err)
-            upperObject, lowerObject, shiftObjects = null
-        }
-    })
-
-    // add the window lister to remove active dragging
-    window.addEventListener("mousedown", () => {
-        window.addEventListener("mouseup", documentMouseUpListener, false)
-    })
-
+    draggableList.addDraggable( layerbtn )
     /** End Dragging */
 
 
@@ -2836,7 +2571,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     holderbox.setAttribute("objectid", objectid)
     holderbox.append(lineoptionbar, linetoolbox)
 
-    document.getElementById("tooldivider").insertAdjacentElement("afterend", holderbox)
+    draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
 }
  /** End Draw Functions */
 
@@ -3064,7 +2799,7 @@ function drawBoxMouseDownListener( event )
         startClickX, startClickY;
 
     // get transformed svg point where click occured
-    let svgP = createSVGPoint( event.clientX, event.clientY )
+    let svgP = draggableSvg.svgAPI( event.clientX, event.clientY )
 
     startClickX = svgP.x
     startClickY = svgP.y
@@ -3084,8 +2819,8 @@ function drawBoxMouseDownListener( event )
     function endBoxDraw( )
         {
             document.getElementById("outlinebtnopt").click()
-            svgContainer.removeEventListener( "mousemove", updateBoxUI )
-            svgContainer.removeEventListener( "mouseup", endBoxDraw )
+            draggableSvg.getContainerObject().removeEventListener( "mousemove", updateBoxUI )
+            draggableSvg.getContainerObject().removeEventListener( "mouseup", endBoxDraw )
 
             // create the toolbox when the rect finished being drawn by the user
             createOutlineToolbox( 
@@ -3100,12 +2835,12 @@ function drawBoxMouseDownListener( event )
         }
 
     // sets the end of the line to where the mouse is
-    svgContainer.addEventListener( "mouseup", endBoxDraw )
+    draggableSvg.getContainerObject().addEventListener( "mouseup", endBoxDraw )
 
     // set the update function
     function updateBoxUI ( event )
     {
-            let svgP = createSVGPoint( event.clientX, event.clientY )
+            let svgP = draggableSvg.svgAPI( event.clientX, event.clientY )
 
             // if newx is lt startclick X  + left 20px 
             if( svgP.x < startClickX - 20 )
@@ -3137,10 +2872,10 @@ function drawBoxMouseDownListener( event )
     }
 
     // event listener for mousemove
-    svgContainer.addEventListener( "mousemove", updateBoxUI )
+    draggableSvg.getContainerObject().addEventListener( "mousemove", updateBoxUI )
 
     // put the line on the svg image
-    svgContainer.appendChild(rect)
+    draggableSvg.getContainerObject().appendChild(rect)
 }
 
 /**
@@ -3367,42 +3102,9 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
                         "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
                         "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
     
-    // main handler for the dragging functionality
-    layerbtn.addEventListener("mousedown", function(event) {  
-        // capture the start y when the click happens
-        oldY = event.pageY
+    // add all listeners to the btn and the parent element to start dragging in an orderly fashion confined by draggableList.getContainerObject()
+    draggableList.addDraggable( layerbtn )
 
-        toggleLayerUI("add")
-
-        layerbtn.addEventListener("mouseup", documentMouseUpListener, false)
-        document.addEventListener("mousemove", getMouseDirection, false)
-       
-        // objects that need to shift
-        try {
-            shiftObjects = event.target.parentElement.parentElement
-        
-            // the element to put things below
-            lowerObject = shiftObjects.nextElementSibling
-            
-            // the element to put things above
-            upperObject = shiftObjects.previousElementSibling
-            
-            // put dragging stuff here
-            document.getElementById("toolbox").addEventListener("mousemove", docucmentMouseOverHandler)
-            
-            // set shiftObjects css
-            shiftObjects.classList.add("selectedBox")
-        }catch(err)
-        {
-            console.log(err)
-            upperObject, lowerObject, shiftObjects = null
-        }
-    })
-
-    // add the window lister to remove active dragging
-    window.addEventListener("mousedown", () => {
-        window.addEventListener("mouseup", documentMouseUpListener)
-    })
     /** End Dragging */
 
 
@@ -3447,7 +3149,7 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     holderbox.setAttribute("objectid", objectid)
     holderbox.append(rectoptionbar, recttoolbox)
 
-    document.getElementById("tooldivider").insertAdjacentElement("afterend", holderbox)
+    draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
 }
 
 var shadowIcon = null
@@ -3473,9 +3175,6 @@ function drawShadowIcon( event )
 
     return shadowdiv
 }
-
-
-
 
 
 function updateInputField( objectid, ...args )
