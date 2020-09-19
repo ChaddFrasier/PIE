@@ -10,7 +10,7 @@ var indexRouter = require('./routes/index');
 var aboutRouter = require('./routes/about');
 var contactRouter = require('./routes/contact');
 var apiRouter = require('./routes/api');
-var faqRouter = require("./routes/faq")
+var faqRouter = require('./routes/faq');
 
 var app = express();
 

@@ -6,12 +6,14 @@ var NS = {xhtml:"http://www.w3.org/1999/xhtml",
  * @function document.ready()
  * @description Function that runs when the page is done loading
  */
-$(document).ready(()=>{
+$(document).ready(()=> {
     // local jquery variables
     var bgPicker = document.getElementById("backgroundcolor"),
         PencilFlag = false,
         selectedObject = null,
-        OutlineFlag = false;
+        OutlineFlag = false,
+        shadowIcon = initShadowIcon();
+
 
     // get the global figure element
     let svgContainer = document.getElementById("figurecontainer")
@@ -734,10 +736,9 @@ $(document).ready(()=>{
             else {
 
                 // make new shadow icon
-                shadowIcon = drawShadowIcon( event )
-
-                document.addEventListener("mousemove", shadowAnimate)
-                document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon)
+                shadowIcon.icon = shadowIcon.drawShadowIcon( event )
+                document.addEventListener("mousemove", shadowIcon.shadowAnimate);
+                document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
 
                 btn.classList.add("selected")
                 document.addEventListener("mouseup", setElement)
@@ -762,10 +763,9 @@ $(document).ready(()=>{
             }
             else {
                 // make new shadow icon
-                shadowIcon = drawShadowIcon( event )
-
-                document.addEventListener("mousemove", shadowAnimate)
-                document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon)
+                shadowIcon.icon = shadowIcon.drawShadowIcon( event )
+                document.addEventListener("mousemove", shadowIcon.shadowAnimate);
+                document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
 
                 btn.classList.add("selected")
                 document.addEventListener("mouseup", setElement)
@@ -794,10 +794,9 @@ $(document).ready(()=>{
             else
             {
                 // make new shadow icon
-                shadowIcon = drawShadowIcon( event )
-
-                document.addEventListener("mousemove", shadowAnimate)
-                document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon)
+                shadowIcon.icon = shadowIcon.drawShadowIcon( event )
+                document.addEventListener("mousemove", shadowIcon.shadowAnimate);
+                document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
 
                 btn.classList.add("selected")
                 document.addEventListener("mouseup", setElement)
@@ -827,10 +826,9 @@ $(document).ready(()=>{
             else
             {
                 // make new shadow icon
-                shadowIcon = drawShadowIcon( event )
-
-                document.addEventListener("mousemove", shadowAnimate)
-                document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon)
+                shadowIcon.icon = shadowIcon.drawShadowIcon( event )
+                document.addEventListener("mousemove", shadowIcon.shadowAnimate);
+                document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
                 
                 // set the selected UI for the observer
                 btn.classList.add("selected")
@@ -852,11 +850,11 @@ $(document).ready(()=>{
     function setElement( event ) 
     {
         let btn = document.getElementsByClassName( "selected" )[ 0 ]
+        
+        document.getElementsByClassName("maincontent")[0].removeChild(shadowIcon.icon)
+        document.removeEventListener("mousemove", shadowIcon.shadowAnimate)
 
-        document.getElementsByClassName("maincontent")[0].removeChild(shadowIcon)
-        document.removeEventListener("mousemove", shadowAnimate)
-
-        shadowIcon = null
+        shadowIcon.icon = null
 
         if(typeofObject(event.target.id) == "image")
         {
@@ -3091,31 +3089,6 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
 
     draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
 }
-
-var shadowIcon = null
-
-function shadowAnimate( event )
-{
-    shadowIcon.style.left = event.pageX
-    shadowIcon.style.top = event.pageY
-}
-
-function drawShadowIcon( event )
-{
-    // create a mini symbol that follows the mouse
-    let shadowdiv = document.createElement("div")
-    shadowdiv.setAttribute("width", "50px")
-    shadowdiv.setAttribute("height", "50px")
-    shadowdiv.innerHTML = event.target.innerHTML
-
-    shadowdiv.style.opacity = .5
-    shadowdiv.style.position = "absolute"
-    shadowdiv.style.left = event.pageX
-    shadowdiv.style.top = event.pageY
-
-    return shadowdiv
-}
-
 
 function updateInputField( objectid, ...args )
 {
