@@ -7,7 +7,7 @@
     max-width: none;
     color: black;
     background: linear-gradient(to bottom left, #ffffff, #d3d3d3);
-    overflow: wrap;
+    overflow: auto;
     vertical-align: middle;
     text-align: left;
     margin: 0;
