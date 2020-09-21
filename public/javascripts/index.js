@@ -29,6 +29,7 @@ $(document).ready(()=> {
     // set background right away when page loads
     setSVGBackground(draggableSvg.getContainerObject(), bgPicker.value)
 
+    
     /** 
      * @function .windowminimizebtn.click()
      * @description Show and hide contents of the tool windows works generically so we can add more later

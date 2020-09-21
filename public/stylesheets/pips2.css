@@ -20,7 +20,7 @@ html {
 .linklist > a {
     color: var(--contrast-color);
     margin: auto auto;
-    font-size: large;
+    font-size: var(--medium-font);
 }
 
 .linklist {
@@ -28,12 +28,30 @@ html {
     text-align: center;
 }
 
+.leftcontainer {
+    margin: auto auto auto 0;
+    width: 33.3%;
+    height: var(--header-height);
+}
+
+.centercontainer {
+    margin: auto auto;
+    width: auto;
+    height: var(--header-height);
+}
+
+.rightcontainer {
+    margin: auto 0 auto auto;
+    width: 33.3%;
+    height: var(--header-height);
+}
+
 .nobody {
     background-color: transparent;
     border: none;
     padding: 0;
     margin: 0 auto;
-    height: 100%;
+    height: auto;
     width: 100%;
 }
 
@@ -61,15 +79,16 @@ html {
 }
 
 i>b {
-    font-size: 1.25em;
+    font-size: var(--medium-font);
 }
 
+/* TODO: adjust these when the time fcomes because as of riht now the page is not loading images*/
 .pilotstepsimage {
-    width: 80%;
+    width: auto;
     height: auto;
     min-width: 750px;
     max-width: 1500px;
-    margin: .5em auto;
+    margin: 0 auto 0 auto;
 }
 
 .pilotstepsimage-sm {
@@ -80,8 +99,7 @@ i>b {
     margin: 0 auto;
     width: 100%;
     height: 100%;
-    max-height: 100px;
-    max-width: 100px;
+    max-height: var(--max-title-height);
 }
 
 .basicfaqcontent {
@@ -104,6 +122,7 @@ i>b {
     background: rgba(0, 0, 0, 0.1);
     text-align: left;
     padding: 10px 5px;
+    font-size: var(--medium-font);
 }
 
 .pilotimage {
@@ -122,7 +141,7 @@ i>b {
 .selectedBox {
     border: 7px solid var(--main-bg-color);
     pointer-events: none;
-    transition: all .25ms linear;
+    transition: all .5ms linear;
 }
 
 .selectedBox > div {
@@ -132,11 +151,15 @@ i>b {
 .basicpagecontent {
     background-color: rgba(0,0,0,.1);
     padding: 1em;
+}
 
+pre > h2 {
+    font-size: var(--medium-font);
 }
 
 .basicpagecontent > pre {
     padding: 10px;
+    font-size: var(--medium-font);
     max-width: none;
     background-color: rgba(255, 255, 255, 0.1);
     margin: auto;
@@ -168,6 +191,7 @@ i>b {
     text-align: center;
     background: var(--accent-color);
     color: var(--primary-color);
+    font-size: var(--medium-font);
     width:100%;
     overflow-y: auto;
 }
@@ -182,8 +206,8 @@ img#usgsNavIcon:hover {
 }
 
 .headerimage {
-    max-width: 100px;
-    max-height: 100px;
+    max-width: var(--max-image-width);
+    max-height: var(--header-height);
 }
 
 a.descanchor, a.descanchor:visited   {
@@ -212,7 +236,7 @@ body {
 }
 
 .svgimg {
-    width: 25px;
+    width: var(--svg-icon-width);
     height: 100%;
     margin: 0 auto;
 }
@@ -234,39 +258,23 @@ button.disabled {
 }
 
 .titleLogo {
-    width: 100%;
+    width: auto;
     height: auto;
+    max-height: var(--max-title-height);
+    max-width: var(--max-title-width);
 }
 
 .usgsLogo {
     height: auto;
-    min-width: 175px;
-    max-width: 225px;
-    min-height: 75px;
+    width: auto;
+    max-width: var(--usgs-image-width);
+    min-height: var(--usgs-image-height);
 }
 
 .pips2header {
     width: 100%;
-    height: auto;
-    min-height: 16%;
-    max-height: 20%;
+    height: var(--header-height);
     display: flex;
-}
-
-.leftcontainer {
-    margin: auto auto auto 0;
-    width: 33.3%;
-}
-
-.centercontainer {
-    margin: auto auto;
-    width: auto;
-    height:auto;
-}
-
-.rightcontainer {
-    margin: auto 0 auto auto;
-    width: 33.3%;
 }
 
 .fileinputfield {
@@ -276,7 +284,7 @@ button.disabled {
 .mainfooter {
     display: flex;
     width: 100%;
-    height: 5%;
+    height: var(--footer-height);
     background: var(--bar-gradient);
     color: var(--accent-color);
     bottom: 0;
@@ -286,7 +294,7 @@ button.disabled {
 .windowremovebtn {
     background: transparent;
     border-radius: 2px 2px;
-    font-size: 10px;
+    font-size: var(--medium-font);
     padding: 5px;
     vertical-align: top;
     margin: 0 0 0 0;
@@ -295,7 +303,7 @@ button.disabled {
 
 .maincontent {
     display: flex; 
-    height: 81%;
+    height: var(--main-content-height);
     width: auto; 
     margin: 0 0 0 0;
     text-align: left;
@@ -309,7 +317,6 @@ button.disabled {
     margin: 0;
 }
 
-
 .windoworderingbtn:hover {
     cursor: grab;
 }
@@ -321,12 +328,12 @@ button.disabled {
 .windoworderingbtn{
     background: transparent;
     border-radius: 2px 2px;
-    font-size: 10px;
+    font-size: var(--medium-font);
     padding: 0;
     width: auto;
-    min-width: 25px;
-    max-width: 25px;
-    min-height: 25px;
+    min-width: var(--min-svg-btn);
+    max-width: var(--max-svg-btn);
+    min-height: var(--min-svg-btn);;
     vertical-align: top;
     margin: 0 0 0 0;
     border: 1px solid transparent;
@@ -336,10 +343,10 @@ button.disabled {
 .filetoolsbox {
     border: 1.5px solid var(--primary-color);
     width: auto;
-    min-width: 100%;
-    max-width: 100%;
-    min-height: 0%;
-    max-height: 96%;
+    min-width: var(--toolbox-min-width);
+    max-width: var(--toolbox-max-width);
+    min-height: var(--toolbox-min-height);
+    max-height: var(--toolbox-max-height);
     background: var(--accent-color);
     height: 25%;
     overflow: auto;
@@ -357,9 +364,9 @@ button.disabled {
 .dividerline {
     width: 100%;
     height: auto;
-    font-size: 20px;
-    min-height: 20px;
-    max-height: 35px;
+    font-size: var(--medium-font);
+    min-height: var(--toolbox-min-height);
+    max-height: var(--toolbox-max-height);
     background: var(--secondary-color);
     border-radius: 2px 2px;
     box-shadow: 0px -5px var(--contrast-color);
@@ -373,7 +380,7 @@ button.disabled {
 
 label.text {
     border-bottom: 1px solid white;
-    font-size: 12px;
+    font-size: var(--xsmall-font);
     border-top: 1px solid white;
     color: white;
     padding: 2.5px 10px;
@@ -385,8 +392,8 @@ label.text {
     width: auto;
     min-width: 100%;
     max-width: 100%;
-    min-height: 0%;
-    max-height: 100%;
+    min-height: var(--toolbox-min-height);
+    max-height: var(--edittoolbox-max-height);
     height: 40%;
     background: var(--accent-color);
     overflow: auto;
@@ -413,7 +420,7 @@ button.selected {
     min-height: 0%;
     background: var(--accent-color);
     max-height: 100%;
-    height: 35%;
+    height: 250px;
     overflow: auto;
     padding: 0 2px;
     transition: all ease-in-out var(--transition-time);
@@ -428,7 +435,7 @@ button.selected {
 
 .textareainputfield {
     max-width: 100%;
-    font-size: 13px;
+    font-size: var(--xsmall-font);
     margin: 0 auto;
 }
 
@@ -456,7 +463,7 @@ button.selected {
     min-height: 0%;
     max-height: 200px;
     background: var(--accent-color);
-    height: 35%;
+    height: 200px;
     padding: 0 2px;
     overflow: auto;
     transition: all ease-in-out var(--transition-time);
@@ -477,10 +484,10 @@ button.selected {
     width: auto;
     color: white;
     min-width: 100%;
-    min-height: 0%;
+    min-height: 0px;
     max-height: 200px;
     background: var(--accent-color);
-    height: 35%;
+    height: 200px;
     padding: 0 2px;
     overflow: auto;
     transition: all ease-in-out var(--transition-time);
@@ -500,10 +507,10 @@ button.selected {
     width: 100%;
     height: auto;
     box-shadow: 2px 2px rgb(177, 177, 177);
-    min-width: 25px;
-    max-width: 35px;
-    min-height: 25px;
-    max-height: 25px;
+    min-width: var(--toolbox-minibtn-min-width);
+    max-width: var(--toolbox-minibtn-max-width);
+    min-height: var(--toolbox-minibtn-min-height);
+    max-height: var(--toolbox-minibtn-max-height);
 }
 
 .btnvectorgraphic {
@@ -511,7 +518,6 @@ button.selected {
     height: 100%;
     pointer-events: none;
 }
-
 
 button#northarrowopt, button#sunarrowopt, button#observerarrowopt  {
     background: var(--bar-gradient);    
@@ -530,10 +536,10 @@ button#northarrowopt, button#sunarrowopt, button#observerarrowopt  {
     height: auto;
     padding: 0;
     box-shadow: 2px 2px rgb(177, 177, 177);
-    min-width: 25px;
-    max-width: 35px;
-    min-height: 25px;
-    max-height: 35px;
+    min-width: var(--min-svg-btn);
+    max-width: var(--max-svg-btn);
+    min-height: var(--min-svg-btn);
+    max-height: var(--max-svg-btn);
 }
 
 .toolboxaddcaptionbtn {
@@ -545,10 +551,10 @@ button#northarrowopt, button#sunarrowopt, button#observerarrowopt  {
     height: auto;
     box-shadow: 2px 2px rgb(177, 177, 177);
     padding: 0;
-    min-width: 25px;
-    max-width: 35px;
-    min-height: 25px;
-    max-height: 25px;
+    min-width: var(--min-svg-btn);
+    max-width: var(--max-svg-btn);
+    min-height: var(--min-svg-btn);
+    max-height: var(--max-svg-btn);
 }
 
 .draggableToolbox {
@@ -561,7 +567,6 @@ button.disabled {
     pointer-events: none;
     border: none;
 }
-
 
 button:hover {
     border-color: black;
@@ -594,6 +599,7 @@ button:hover {
     text-decoration: none;
     margin: auto 5px auto 5px;
     padding: 5px;
+    font-size: var(--sm-medium-font);
     box-shadow: 0 2px var(--contrast-color);
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
@@ -619,7 +625,7 @@ svg.imagecontainer {
     padding: 0;
     width: 100%;
     height: 95%;
-    max-height: 1000px;
+    max-height: 70em;
 }
 
 .progressBox {
@@ -637,7 +643,7 @@ svg.imagecontainer {
 .windowminimizebtn {
     background: transparent;
     border-radius: 2px 2px;
-    font-size: 10px;
+    font-size: var(--small-font);
     padding: 5px 5px;
     vertical-align: top;
     margin: 0 0 0 auto;
@@ -654,24 +660,25 @@ svg.imagecontainer {
 }
 
 .windowoptionsbar>h4{
-    font-size: 16px;
+    font-size: var(--small-font);
     vertical-align: middle;
     margin: auto auto auto 0;
     pointer-events: none;
 }
 
 .windowoptionsbar>button {
-    font-size: 10px;
+    font-size: var(--xsmall-font);
 }
 
 .toolscontainer{
     width: 95%;
     height: auto;
+    max-height: var(--inner-main-content-max-height);
     border: 2px solid var(--contrast-color);
     border-top: 0px solid var(--contrast-color);
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 0 0 5% 0;
+    padding: 0 0 0 0;
     transition: all ease-in-out var(--transition-time);
     -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
     -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
@@ -719,11 +726,11 @@ svg.imagecontainer {
 }
 
 .closed {
-    height: 0% !important;
+    height: 0em !important;
 }
 
 .toolboxcontainer.closed {
-    width: 1em !important;
+    width: 2em !important;
     min-width: 0% !important;
 }
 
@@ -732,13 +739,14 @@ svg.imagecontainer {
     color: black;
     display: flex;
     height: auto;
+    width: auto;
     min-width: 15%;
     transition: all ease-in-out var(--transition-time);
     -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
     -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
     -o-transition: all ease-in-out var(--transition-time); /* Opera */
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
-    max-height: max-content;
+    max-height: 100%;
     margin: 0 2.5px 0 0;
 }
 
@@ -751,7 +759,7 @@ svg.imagecontainer {
     width: auto;
     text-align: center;
     max-width: 95%;
-    max-height: max-content;
+    max-height: var(--inner-main-content-max-height);
     border: 2px solid black;
     transition: all ease-in-out var(--transition-time);
     -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
