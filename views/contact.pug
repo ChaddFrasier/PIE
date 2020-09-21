@@ -1,7 +1,7 @@
 extends layout
 
 block pagescript
-  script(src="/javascripts/contact.js", type="text/javascript")
+
 
 block content
     header.pips2header 
@@ -10,11 +10,51 @@ block content
         a.centercontainer(style="text-align:center; text-decoration: none;", href="/")
             img(src="/images/pieLogo.svg", alt="PIElogo", class="titleLogo")
         .rightcontainer(style="text-align:right")
-            img.gdalimage(src="/images/github.svg", alt="gitLogo")
+            img.githubimage(src="/images/github.svg", alt="gitLogo")
     span.maincontent
         .mainaboutbox
             h2.basicpageheader="Contact Us"
             #contactcontent1.basicpagecontent
+                pre
+                    i
+                        b(style="text-align: left;")="We have decided to facilitate all of our user contact through our "
+                            a.descanchor(href='https://github.com/ChaddFrasier/PIE' ,target='_blank')="GitHub"
+                            text=" page. File an issue to ask any and all questions about PIE including asking for new features."
+                br
+                pre
+                    i
+                        b.basicpageheader="How to File an Issue:"
+                    pre
+                        pre
+                            u 
+                                b="1. Click New Issue"
+                            br
+                        pre(style="text-align:center")
+                            img.pilotstepsimage(src='/images/newissue1.png')
+                    br
+                    pre
+                        pre
+                            u 
+                                b="2. Set Label(s)"
+                            br
+                        pre(style="text-align:center")
+                            img.pilotstepsimage(src='images/newissue2.png')
+                    
+                    br
+                    pre
+                        pre
+                            u 
+                                b="3. Fill Out Description Fields"
+                            br
+                        pre(style="text-align:center")
+                            img.pilotstepsimage(src='images/newissue3.png')
+                    
+                    br
+                    pre
+                        pre
+                            
+                            b 
+                                a.descanchor(href='https://github.com/ChaddFrasier/PIE/issues/new', target='_blank')="File an Issue?"
 
 block footer
     footer.mainfooter
