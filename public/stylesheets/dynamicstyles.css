@@ -9,7 +9,41 @@
 /* Pretty Large Screen */
 @media only screen and (min-width:1500px) {
     :root {
-     
+        --large-font: 22px;
+        --medium-font: 20px;
+        --sm-medium-font: 18px;
+        --small-font: 15px;
+        --xsmall-font: 12px;
+
+        --usgs-image-height: 50px;
+        --usgs-image-width: 200px;
+
+        --max-image-width: 100px;
+
+        --max-title-width: 300px;
+        --max-title-height: 100px;
+
+        --toolbox-min-height: 0;
+        --toolbox-max-height: 75px;
+        --toolbox-min-width: 100%;
+        --toolbox-max-width: 100px;
+        --edittoolbox-max-height: 150px;
+
+        --toolbox-minibtn-min-width: 25px;
+        --toolbox-minibtn-max-width: 32px;
+        --toolbox-minibtn-min-height: 20px;
+        --toolbox-minibtn-max-height: 25px;
+
+        --inner-main-content-max-height: 38em;
+
+        --min-svg-btn: 32px;
+        --max-svg-btn: 32px;
+
+        --svg-icon-width: 30px;
+
+        --header-height: 5%;
+        --main-content-height: 71%;
+        --footer-height: 6%;
     }
 }
 
@@ -25,7 +59,7 @@
         --usgs-image-height: 75px;
         --usgs-image-width: 250px;
 
-        --max-image-width: 100px;
+        --max-image-width: 125px;
 
         --max-title-width: 400px;
         --max-title-height: 125px;
