@@ -15,8 +15,8 @@ PIE requires a UNIX based development environment for the simple fact that ISIS 
 
 ### Ubuntu 16.04+
 1. Anaconda / Miniconda
-Download [Miniconda3](https://docs.conda.io/en/latest/miniconda.html) or Anaconda3 to help create the development environment.
 
+Download [Miniconda3](https://docs.conda.io/en/latest/miniconda.html) or Anaconda3 to help create the development environment.
 - Installing Miniconda3.
 ```
 cd /path/to/downloaded/script
@@ -44,6 +44,7 @@ conda install -c conda-forge gdal
 conda create -n isis python=3.6
 conda activate isis
 ```
+
 - Install ISIS Version 3.10.2 or whatever you want. *Developed with v3.10.2*
 ```
 conda config --env --add channels conda-forge
@@ -53,6 +54,7 @@ conda install -c usgs-astrogeology isis=3.10.2
 - You will need some data for ISIS before you can run any ISIS applications. At [this link](https://github.com/USGS-Astrogeology/ISIS3#partial-download-of-isis-base-data) you can find all the command you can run to install any data collection at the USGS's disposal.
 
 4. NodeJS
+
 Installing on Ubuntu is very simple. Just update your package set and then install the libraries with apt. *nodejs* contains all the executable and server side functionality while *npm* helps with dependencies.
 ```
 sudo apt update
@@ -60,6 +62,7 @@ sudo apt apt install nodejs npm
 ```
 
 5. Source Code & Dependencies
+
 This can either be done using git or by downloading the source zip. I am demonstrating the easy way to develop.
 - Pull the code down with *git*.
 ```
@@ -80,6 +83,16 @@ npm install --only=proc
 ```
 conda activate isis && conda activate --stack gdal
 lowpass -h && gdal_translate -h
+```
+
+2. Start the server code.
+```
+npm start
+```
+
+or you can start the code in debug mode
+```
+npm run debug
 ```
 -----------------------
 [USGS-Astrogeology](https://www.usgs.gov/centers/astrogeology-science-center)
