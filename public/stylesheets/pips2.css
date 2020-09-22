@@ -4,6 +4,7 @@
     --secondary-color: #89BFD2;
     --accent-color: #124A69;
     --contrast-color: #3E95A3;
+    --footer-button-disabled-color: rgba(27, 114, 128, 0.541);
     --bar-gradient: linear-gradient(to top right,rgb(237, 237, 237), rgb(156, 156, 156));
     --transition-time: 0.125s; 
 }
@@ -87,6 +88,13 @@ html.contained {
 
 i>b {
     font-size: var(--medium-font);
+}
+
+i>b>a, i>b>a:visited {
+    font-style: none;
+    font-size: var(--medium-font);
+    color: lightskyblue;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 /* TODO: adjust these when the time fcomes because as of riht now the page is not loading images*/
@@ -616,6 +624,11 @@ button:hover {
     border-bottom-right-radius: 0px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
+}
+
+.footerbuttongroup > a.disabled {
+   background: var(--footer-button-disabled-color);
+   pointer-events: none;
 }
 
 .footerbuttongroup > a:hover {
