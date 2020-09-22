@@ -23,9 +23,9 @@ app.use(compression())
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      defaultSrc: ["'self'", "data:", "unsafe-inline"],
+      defaultSrc: ["'self'", "data:"],
       styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'", "ajax.googleapis.com", "'unsafe-inline'"],
+      scriptSrc: ["'self'", "ajax.googleapis.com", "'unsafe-inline'"]
     },
   })
 );
