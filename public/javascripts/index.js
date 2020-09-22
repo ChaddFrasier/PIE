@@ -500,7 +500,7 @@ $(document).ready(()=> {
         form.setAttribute("class", "imageform")
         form.setAttribute("method", "post")
         form.setAttribute("enctype", "multipart/form-data")
-        form.setAttribute("action", "/api/isis")
+        form.setAttribute("action", "/upload")
         form.appendChild(fileinput)
 
         // listener for when the user changes the image of the input field
@@ -543,7 +543,7 @@ $(document).ready(()=> {
                 }
 
                 // open the request and send the data
-                xhr.open('POST', "/api/isis", true)
+                xhr.open('POST', "/upload", true)
                 xhr.send(fd)
 
                 // prevent propigation with non-true return
