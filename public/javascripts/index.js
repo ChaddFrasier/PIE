@@ -7,6 +7,9 @@ var NS = {xhtml:"http://www.w3.org/1999/xhtml",
  * @description Function that runs when the page is done loading
  */
 $(document).ready(()=> {
+
+    document.body.parentElement.setAttribute("class", "contained")
+
     // local jquery variables
     var bgPicker = document.getElementById("backgroundcolor"),
         PencilFlag = false,
