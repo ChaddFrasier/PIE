@@ -5,6 +5,24 @@ var { spawn } = require('child_process');
 module.exports = {
     PIEAPI: function()
     {
+
+        function getOutputFormat( filename )
+        {
+            let chunks = filename.split(".");
+            let ext = chunks[chunks.length-1];
+
+            let pngs = ["png", "PNG"];
+            let jpegs = ["jpg", "jpeg", "JPEG", "JPG"];
+            
+            if(jpegs.indexOf(ext) > -1)
+            {
+                return "JPEG";
+            }
+            else if(pngs.indexOf(ext) > -1)
+            {
+                return "PNG";
+            }
+        }
     
         return {
             gdal_translate: function( argv )
@@ -31,7 +49,38 @@ module.exports = {
                         return argv[argv.length-1]
                     }
                 });
+            },
+
+            gdal_rescale: function( inputfile=undefined, scale="30%", outputfile=undefined)
+            {
+
+                var outputtype = getOutputFormat( outputfile )
+
+                // create a gdal_translate instance with args in the array
+                var child = spawn( "gdal_translate", [
+                        "-of", outputtype,
+                        "-ot", "byte", 
+                        "-scale","-outsize", scale, scale,
+                        inputfile, outputfile] )
+    
+                child.stdout.on("data", data => { console.log(`stdout: ${data}`) });
+    
+                child.stderr.on("data", data => { console.log(`stderr: ${data}`) });
+    
+                child.on('error', (error) => {
+                    console.log(`error: ${error.message}`);
+                    return error.message;
+                });
+    
+                // when the response is ready to close
+                child.on("close", code => {
+                    console.log(`child process exited with code ${code}`);
+                    // if the gdal command exited with 0
+                    return code;
+                });
             }
+
+
         };
     },
     
