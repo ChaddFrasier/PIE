@@ -1,184 +1,128 @@
-/* Very Large Screen screens */
-@media only screen and (min-width:1900px) {
-
-    .titleLogo {
-        height: 125px;
-    }
-
-    .pips2header {
-        min-height: 125px;   
-    }
-
-    .windowoptionsbar>h4{
-        font-size: 18px;
-    }
-
-    .windowoptionsbar>button {
-        font-size: 15px;
-    }
-
-    .dividerline {
-        font-size: 22px;
-    }
-
-    .filetoolsbox>label {
-        font-size: 22px;
-    }
-
-    .toolscontainer {
-        max-width: 300px;
-    }
-
-    .toolboxcontainer {
-        min-width: 300px;
-    }
-
-    .edittoolsbox>label, .edittoolsbox>div>label {
-        font-size: 22px;
-    }
-
-    .footerbuttongroup>a {
-        font-size: 19px;
-    }
-
-    .rightfooter {
-        font-size: 19px;
-    }
-
-    .captiontoolsbox>label {
-        font-size: 22px;
-    }
-
-    .imagetoolsbox>label {
-        font-size: 22px;
-    }
-
-    .editbox {
-        min-width: 1800px;
-        margin: 0 auto 0 0;
-    }
-
-    .mainfooter {
-        margin: auto 0 0 0;
-        padding: 0;
-        height: 5%;
-    }
-
-    .windowsidebar {
-        min-width: 36px;
-        max-width: 36px;
-        max-height: none;
-        padding: 0;
-    }
-
-    .windowsidebar>button {
-        font-size: 15px;
-    }
-
-    .toolboxcontainer.closed {
-        width: 36px !important;
-        min-width: 0% !important;
-    }    
-}
-
-/* Normal screens */
-@media only screen and (min-width: 900px)
+/* Half screens */
+@media only screen and (min-width: 700px)
 {
-    .maincontent {
-        display: flex;
-    }
+    :root {
+        --large-font: 17px;
+        --medium-font: 16px;
+        --sm-medium-font: 15px;
+        --small-font: 12px;
+        --xsmall-font: 10px;
 
-    .windowoptionsbar>h4{
-        font-size: 13px;
-    }
+        --usgs-image-height: 50px;
+        --usgs-image-width: 200px;
 
-    .windowoptionsbar>button {
-        font-size: 11px;
-    }
+        --max-image-width: 100px;
 
-    .dividerline {
-        font-size: 14px;
-    }
-    
-    .filetoolsbox>label {
-        font-size: 13px;
-    }
+        --max-title-width: 300px;
+        --max-title-height: 100px;
 
-    .editbox {
-        margin: 0 auto;
-    }
+        --toolbox-min-height: 0;
+        --toolbox-max-height: 75px;
+        --toolbox-min-width: 100%;
+        --toolbox-max-width: 100px;
+        --edittoolbox-max-height: 150px;
 
-    .titleLogo {
-        height: 100px;
+        --toolbox-minibtn-min-width: 25px;
+        --toolbox-minibtn-max-width: 32px;
+        --toolbox-minibtn-min-height: 20px;
+        --toolbox-minibtn-max-height: 25px;
+
+        --inner-main-content-max-height: 79vh;
+
+        --min-svg-btn: 32px;
+        --max-svg-btn: 32px;
+
+        --svg-icon-width: 30px;
+
+        --header-height: 5%;
+        --main-content-height: 80vh;
+        --toolcontainer-height: 80vh;
+        --footer-height: 6%;
+    }
+}
+
+/* Pretty Large Screen */
+@media only screen and (min-width:1500px) {
+    :root {
+        --large-font: 22px;
+        --medium-font: 20px;
+        --sm-medium-font: 18px;
+        --small-font: 15px;
+        --xsmall-font: 12px;
+
+        --usgs-image-height: 50px;
+        --usgs-image-width: 200px;
+
+        --max-image-width: 100px;
+
+        --max-title-width: 300px;
+        --max-title-height: 100px;
+
+        --toolbox-min-height: 0;
+        --toolbox-max-height: 75px;
+        --toolbox-min-width: 100%;
+        --toolbox-max-width: 100px;
+        --edittoolbox-max-height: 150px;
+
+        --toolbox-minibtn-min-width: 25px;
+        --toolbox-minibtn-max-width: 32px;
+        --toolbox-minibtn-min-height: 20px;
+        --toolbox-minibtn-max-height: 25px;
+
+        --inner-main-content-max-height: 79vh;
+
+        --min-svg-btn: 32px;
+        --max-svg-btn: 32px;
+
+        --svg-icon-width: 30px;
+
+        --header-height: 5%;
+        --main-content-height: 80vh;
+        --toolcontainer-height: 80vh;
+        --footer-height: 6%;
     }
 }
 
-/* Small screens */
-@media only screen and (max-width:900px) {
+/* Native 4k+ Resolution */
+@media only screen and (min-width:2500px) {
+    :root {
+        --large-font: 27px;
+        --medium-font: 22px;
+        --sm-medium-font: 20px;
+        --small-font: 18px;
+        --xsmall-font: 15px;
 
-    html {
-        max-height: none;
-        height: 100%;
-    }
+        --usgs-image-height: 75px;
+        --usgs-image-width: 250px;
 
-    .titleLogo {
-        height: 75px;
-    }
+        --max-image-width: 125px;
 
-    .maincontent {
-        display: block;
-        overflow-y: scroll;
-    }
+        --max-title-width: 400px;
+        --max-title-height: 125px;
 
+        --toolbox-min-height: 0;
+        --toolbox-max-height: 100px;
+        --toolbox-min-width: 100%;
+        --toolbox-max-width: 150px;
+        --edittoolbox-max-height: 200px;
 
-    .windowoptionsbar>h4{
-        font-size: 11px;
-    }
+        --toolbox-minibtn-min-width: 25px;
+        --toolbox-minibtn-max-width: 32px;
+        --toolbox-minibtn-min-height: 20px;
+        --toolbox-minibtn-max-height: 25px;
 
-    .windowoptionsbar>button {
-        font-size: 9px;
-    }
+        --inner-main-content-max-height: 86vh;
 
-    .dividerline {
-        font-size: 12px;
-    }
+        --min-svg-btn: 32px;
+        --max-svg-btn: 32px;
 
-    .filetoolsbox>label {
-        font-size: 11px;
-    }
+        --svg-icon-width: 30px;
 
-    .toolboxcontainer {
-        width: 100%;
-        height: auto;
-    }
-
-    .toolscontainer {
-        overflow-y: scroll;
-        margin: auto auto;
-        max-width: none;
-        text-align: center;
-        height: 300px;
-    }
-
-    .editbox {
-        width: 100%;
-        max-width: none;
-        margin: auto auto;
-        max-height: none;
-        height: auto;
-    }
-
-    .mainfooter {
-        height: 4%;
-        position: relative;;
-        margin: auto 0 0 0;
-    }
-
-    .leftfooter {
-        font-size: 12px;
-    }
-
-    .rightfooter {
-        font-size: 10px;
+        --header-height: 5%;
+        --main-content-height: 86vh;
+        --toolcontainer-height: 86vh;
+        --footer-height: 4%;
     }
 }
+
+/* TODO: more to come */

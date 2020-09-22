@@ -11,78 +11,95 @@ This server was created to simplify the figure making process for planetary rese
 
 ## Installation
 
-The installation steps below are for an Ubuntu enironment. PIE requires a UNIX based development environment for the simple fact that ISIS cannot be installed on Windows. If you want to install PIE onto a Windows machine you will need to install the Docker image found [here](https://hub.docker.com/repository/docker/chaddfrasier/pie-usgs).
+PIE requires a UNIX based development environment for the simple fact that ISIS cannot be installed on Windows without a virtual environment. If you want to install PIE onto a Windows machine it would be easier to install the Docker image found [here](https://hub.docker.com/repository/docker/chaddfrasier/pie-usgs). If you wish to contribute to the repo on a Windows machine, I suggest using a virtual linux environemnt and following the steps below.
 
+### Ubuntu 16.04+
 1. Anaconda / Miniconda
 Download [Miniconda3](https://docs.conda.io/en/latest/miniconda.html) or Anaconda3 to help create the development environment.
+
+- Navigate to folder of the install script
 ```
-# after downloaded navigate to the miniconda install script
-cd /path/to/downloaded/script
-
-# Give permission
-chmod +x ./Miniconda3.sh
-
-# run the installer
-./Miniconda3.sh
+$> cd /path/to/downloaded/script
+```
+- Remove permissions on the file
+```
+$> chmod +x ./Miniconda3.sh
+```
+- Run the script and follow the instructions
+```
+$> ./Miniconda3.sh
 ```
 
 2. GDAL Environment
-``` 
-# create the gdal environment
-conda create -n gdal
-
-# activate the env
-conda activate gdal
-
-# install gdal using conda
-conda config --env --add channels conda-forge
-conda install -c conda-forge gdal
+ 
+- Create the gdal environment.
+```
+$> conda create -n gdal
+```
+- Activate the new environment.
+```
+$> conda activate gdal
+```
+- Install gdal using conda
+```
+$> conda config --env --add channels conda-forge
+$> conda install -c conda-forge gdal
 ```
 
 3. ISIS 3 ( Cannot be installed on Windows )
-``` 
-# create the gdal environment
-conda create -n isis python=3.6
-
-# activate the env
-conda activate isis
-
-# install isis
-conda config --env --add channels conda-forge
-conda config --env --add channels usgs-astrogeology
-conda install -c usgs-astrogeology isis=3.10.2
+ 
+- Create the isis environment *Note: Python 3.6*.
 ```
+$> conda create -n isis python=3.6
+```
+- Activate the environment.
+```
+$> conda activate isis
+```
+- Install ISIS Version 3.10.2 or whatever you want. *Developed with v3.10.2*
+```
+$> conda config --env --add channels conda-forge
+$> conda config --env --add channels usgs-astrogeology
+$> conda install -c usgs-astrogeology isis=3.10.2
+``` 
+- You will need some data for ISIS before you can run any ISIS applications. At (this link)[https://github.com/USGS-Astrogeology/ISIS3#partial-download-of-isis-base-data] you can find all the command you can run to install any data collection at the USGS's disposal.
 
 4. NodeJS
-Install [NodeJS](https://nodejs.org/en/)
+Installing on Ubuntu is very simple. Just update your package set and then install the libraries with apt. *nodejs* contains all the executable and server side functionality while *npm* helps with dependencies.
 ```
-follow install steps for your OS.
+$> sudo apt update
+$> sudo apt apt install nodejs npm
 ```
 
-### Node Modules
+5. Source Code & Dependencies
+This can either be done using git or by downloading the source zip. I am demonstrating the easy way to develop.
+- Pull the code down with *git*.
 ```
-# Pull down the code from the repo
-git clone https://github.com/ChaddFrasier/PIE.git
-
-# change directory into /PIE
-cd /path/to/PIE
-
-# Install dependencies w/ development requirements
-npm install
-
-# or
-
-# Install dependencies w/ production requirements
-npm install --only=proc
+$> git clone https://github.com/ChaddFrasier/PIE.git
+```
+- Change directory into /PIE folder
+```
+$> cd /path/to/PIE
+```
+- Install dependencies w/ development requirements
+```
+$> npm install
+```
+or
+- Install in production mode.
+```
+$> npm install --only=proc
 ```
 
 ## Running
+1. Activate ISIS and then activate GDAL on top of the ISIS environment.
 ```
-# turn on both environments
-conda activate isis && conda activate --stack gdal
+$> conda activate isis && conda activate --stack gdal
+```
 
-# test the environment
-lowpass -h && gdal_translate -h
+2. Test that it worked.
+```
+$> lowpass -h && gdal_translate -h
 ```
 -----------------------
-@USGS-Astrogeology
+(USGS-Astrogeology)[https://www.usgs.gov/centers/astrogeology-science-center]
