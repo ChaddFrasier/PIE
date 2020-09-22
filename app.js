@@ -1,6 +1,7 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+var fs = require('fs');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var compression = require('compression');
@@ -42,6 +43,19 @@ app.use('/contact', contactRouter);
 app.use('/faq', faqRouter);
 app.use(['/api/isis','/api/gdal'], apiRouter);
 app.use('/upload', uploadRouter);
+
+fs.readdir( path.join(__dirname, "public", "uploads"), ( err, files ) =>
+{
+    if( err ){ return }
+
+    files.forEach( filename =>
+    {
+        fs.unlink( path.join(__dirname, "public", "uploads", filename), () =>
+        {
+            console.log("Removed " + filename)
+        })
+    })
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
