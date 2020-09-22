@@ -11,7 +11,7 @@ This server was created to simplify the figure making process for planetary rese
 
 ## Installation
 
-PIE requires a UNIX based development environment for the simple fact that ISIS cannot be installed on Windows without a virtual environment. If you want to install PIE onto a Windows machine it would be easier to install the Docker image found [here](https://hub.docker.com/repository/docker/chaddfrasier/pie-usgs). If you wish to contribute to the repo on a Windows machine, I suggest using a virual linux environemnt and following the steps below.
+PIE requires a UNIX based development environment for the simple fact that ISIS cannot be installed on Windows without a virtual environment. If you want to install PIE onto a Windows machine it would be easier to install the Docker image found [here](https://hub.docker.com/repository/docker/chaddfrasier/pie-usgs). If you wish to contribute to the repo on a Windows machine, I suggest using a virtual linux environemnt and following the steps below.
 
 ### Ubuntu 16.04+
 1. Anaconda / Miniconda
@@ -71,7 +71,7 @@ $> sudo apt update
 $> sudo apt apt install nodejs npm
 ```
 
-5. Download the Source Code
+5. Source Code & Dependencies
 This can either be done using git or by downloading the source zip. I am demonstrating the easy way to develop.
 - Pull the code down with *git*.
 ```
@@ -81,7 +81,6 @@ $> git clone https://github.com/ChaddFrasier/PIE.git
 ```
 $> cd /path/to/PIE
 ```
-
 - Install dependencies w/ development requirements
 ```
 $> npm install
