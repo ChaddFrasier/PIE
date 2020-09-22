@@ -97,12 +97,9 @@ i>b>a, i>b>a:visited {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-/* TODO: adjust these when the time fcomes because as of riht now the page is not loading images*/
 .pilotstepsimage {
-    width: auto;
+    width: 80vw;
     height: auto;
-    min-width: 750px;
-    max-width: 1500px;
     margin: 0 auto 0 auto;
     text-align: center;
 }
@@ -166,12 +163,16 @@ i>b>a, i>b>a:visited {
 .basicpagecontent {
     background-color: rgba(0,0,0,.1);
     padding: 1em;
+    font-size: var(--large-font);
 }
 
 pre > h2 {
     font-size: var(--medium-font);
 }
 
+pre > i > b {
+    word-wrap: break-word;
+}
 .basicpagecontent > pre {
     padding: 10px;
     font-size: var(--medium-font);
@@ -179,6 +180,7 @@ pre > h2 {
     background-color: rgba(255, 255, 255, 0.1);
     margin: auto;
     text-align: left;
+    height: auto;
 }
 
 .basicpagecontent > pre > pre {
@@ -186,12 +188,15 @@ pre > h2 {
     max-width: none;
     background-color: rgba(0, 0, 0, 0.1);
     margin: auto;
-    text-align: left;
+    text-align: center;
+    height: auto;
 }
 
-.basicpagecontent > pre >img {
+.basicpagecontent > pre > img, .basicpagecontent > pre > pre > img {
+    margin: 0 auto 0 auto;
     text-align: center;
 }
+
 
 .basicpagecontent > img {
     text-align: center !important;

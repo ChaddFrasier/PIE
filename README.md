@@ -17,89 +17,69 @@ PIE requires a UNIX based development environment for the simple fact that ISIS 
 1. Anaconda / Miniconda
 Download [Miniconda3](https://docs.conda.io/en/latest/miniconda.html) or Anaconda3 to help create the development environment.
 
-- Navigate to folder of the install script
+- Installing Miniconda3.
 ```
-$> cd /path/to/downloaded/script
-```
-- Remove permissions on the file
-```
-$> chmod +x ./Miniconda3.sh
-```
-- Run the script and follow the instructions
-```
-$> ./Miniconda3.sh
+cd /path/to/downloaded/script
+chmod +x ./Miniconda3.sh
+./Miniconda3.sh
 ```
 
 2. GDAL Environment
  
 - Create the gdal environment.
 ```
-$> conda create -n gdal
-```
-- Activate the new environment.
-```
-$> conda activate gdal
+conda create -n gdal
+conda activate gdal
 ```
 - Install gdal using conda
 ```
-$> conda config --env --add channels conda-forge
-$> conda install -c conda-forge gdal
+conda config --env --add channels conda-forge
+conda install -c conda-forge gdal
 ```
 
 3. ISIS 3 ( Cannot be installed on Windows )
  
 - Create the isis environment *Note: Python 3.6*.
 ```
-$> conda create -n isis python=3.6
-```
-- Activate the environment.
-```
-$> conda activate isis
+conda create -n isis python=3.6
+conda activate isis
 ```
 - Install ISIS Version 3.10.2 or whatever you want. *Developed with v3.10.2*
 ```
-$> conda config --env --add channels conda-forge
-$> conda config --env --add channels usgs-astrogeology
-$> conda install -c usgs-astrogeology isis=3.10.2
+conda config --env --add channels conda-forge
+conda config --env --add channels usgs-astrogeology
+conda install -c usgs-astrogeology isis=3.10.2
 ``` 
-- You will need some data for ISIS before you can run any ISIS applications. At (this link)[https://github.com/USGS-Astrogeology/ISIS3#partial-download-of-isis-base-data] you can find all the command you can run to install any data collection at the USGS's disposal.
+- You will need some data for ISIS before you can run any ISIS applications. At [this link](https://github.com/USGS-Astrogeology/ISIS3#partial-download-of-isis-base-data) you can find all the command you can run to install any data collection at the USGS's disposal.
 
 4. NodeJS
 Installing on Ubuntu is very simple. Just update your package set and then install the libraries with apt. *nodejs* contains all the executable and server side functionality while *npm* helps with dependencies.
 ```
-$> sudo apt update
-$> sudo apt apt install nodejs npm
+sudo apt update
+sudo apt apt install nodejs npm
 ```
 
 5. Source Code & Dependencies
 This can either be done using git or by downloading the source zip. I am demonstrating the easy way to develop.
 - Pull the code down with *git*.
 ```
-$> git clone https://github.com/ChaddFrasier/PIE.git
+git clone https://github.com/ChaddFrasier/PIE.git
+cd /path/to/PIE
 ```
-- Change directory into /PIE folder
+- Install dependencies.
 ```
-$> cd /path/to/PIE
-```
-- Install dependencies w/ development requirements
-```
-$> npm install
-```
-or
-- Install in production mode.
-```
-$> npm install --only=proc
+# install with development dependencies
+npm install 
+
+# or install with production dependencies only
+npm install --only=proc
 ```
 
 ## Running
 1. Activate ISIS and then activate GDAL on top of the ISIS environment.
 ```
-$> conda activate isis && conda activate --stack gdal
-```
-
-2. Test that it worked.
-```
-$> lowpass -h && gdal_translate -h
+conda activate isis && conda activate --stack gdal
+lowpass -h && gdal_translate -h
 ```
 -----------------------
-(USGS-Astrogeology)[https://www.usgs.gov/centers/astrogeology-science-center]
+[USGS-Astrogeology](https://www.usgs.gov/centers/astrogeology-science-center)
