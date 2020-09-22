@@ -11,6 +11,7 @@ var aboutRouter = require('./routes/about');
 var contactRouter = require('./routes/contact');
 var apiRouter = require('./routes/api');
 var faqRouter = require('./routes/faq');
+var uploadRouter = require('./routes/upload')
 
 var app = express();
 
@@ -24,10 +25,11 @@ app.use(
     directives: {
       defaultSrc: ["'self'", "data:"],
       styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'", "ajax.googleapis.com", "'unsafe-inline'"],
+      scriptSrc: ["'self'", "ajax.googleapis.com", "'unsafe-inline'"]
     },
   })
 );
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -39,6 +41,7 @@ app.use('/about', aboutRouter);
 app.use('/contact', contactRouter);
 app.use('/faq', faqRouter);
 app.use(['/api/isis','/api/gdal'], apiRouter);
+app.use('/upload', uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
