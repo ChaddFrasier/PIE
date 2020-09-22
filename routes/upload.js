@@ -49,6 +49,11 @@ router.post('/', upload.single('imageinput') ,(req, res, next) => {
             path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "jpg"))
             )
 
+        pieapi.gdal_virtual(
+            path.join("public", "uploads", req.file.filename),
+            path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "vrt"))
+            )
+
     }
     else
     {

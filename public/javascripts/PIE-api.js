@@ -11,9 +11,10 @@ module.exports = {
             let chunks = filename.split(".");
             let ext = chunks[chunks.length-1];
 
-            let pngs = ["png", "PNG"];
-            let jpegs = ["jpg", "jpeg", "JPEG", "JPG"];
-            
+            let pngs = [ "png", "PNG" ];
+            let jpegs = [ "jpg", "jpeg", "JPEG", "JPG" ];
+            let vrts = ["vrt", "VRT" ];
+
             if(jpegs.indexOf(ext) > -1)
             {
                 return "JPEG";
@@ -21,6 +22,10 @@ module.exports = {
             else if(pngs.indexOf(ext) > -1)
             {
                 return "PNG";
+            }
+            else if(vrts.indexOf(ext) > -1)
+            {
+                return "VRT";
             }
         }
     
@@ -53,7 +58,6 @@ module.exports = {
 
             gdal_rescale: function( inputfile=undefined, scale="30%", outputfile=undefined)
             {
-
                 var outputtype = getOutputFormat( outputfile )
 
                 // create a gdal_translate instance with args in the array
@@ -78,9 +82,29 @@ module.exports = {
                     // if the gdal command exited with 0
                     return code;
                 });
+            },
+
+            gdal_virtual: function( inputfile=undefined, outputfile=undefined)
+            {
+                var outputtype = getOutputFormat( outputfile )
+
+                // create a gdal_translate instance with args in the array
+                var child = spawn( "gdal_translate", [
+                        "-of", outputtype,
+                        inputfile, outputfile] )
+    
+                child.on('error', (error) => {
+                    console.log(`error: ${error.message}`);
+                    return error.message;
+                });
+    
+                // when the response is ready to close
+                child.on("close", code => {
+                    console.log(`child process exited with code ${code}`);
+                    // if the gdal command exited with 0
+                    return code;
+                });
             }
-
-
         };
     },
     
