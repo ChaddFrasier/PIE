@@ -59,6 +59,7 @@ html.contained {
     margin: 0 auto;
     height: auto;
     width: 100%;
+    overflow-x: hidden;
 }
 
 .hand  {
@@ -343,7 +344,7 @@ button.disabled {
     width: auto;
     min-width: var(--min-svg-btn);
     max-width: var(--max-svg-btn);
-    min-height: var(--min-svg-btn);;
+    min-height: var(--min-svg-btn);
     vertical-align: top;
     margin: 0 0 0 0;
     border: 1px solid transparent;
@@ -682,7 +683,7 @@ svg.imagecontainer {
 
 .toolscontainer{
     width: 95%;
-    height: auto;
+    height: var(--toolcontainer-height);
     border: 2px solid var(--contrast-color);
     border-top: 0px solid var(--contrast-color);
     overflow-y: auto;

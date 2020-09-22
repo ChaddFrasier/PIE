@@ -1,8 +1,43 @@
-/* Normal screens */
-@media only screen and (min-width: 900px)
+/* Half screens */
+@media only screen and (min-width: 700px)
 {
     :root {
-        /* TODO: Copy the 4k stuff here but change input */ 
+        --large-font: 17px;
+        --medium-font: 16px;
+        --sm-medium-font: 15px;
+        --small-font: 12px;
+        --xsmall-font: 10px;
+
+        --usgs-image-height: 50px;
+        --usgs-image-width: 200px;
+
+        --max-image-width: 100px;
+
+        --max-title-width: 300px;
+        --max-title-height: 100px;
+
+        --toolbox-min-height: 0;
+        --toolbox-max-height: 75px;
+        --toolbox-min-width: 100%;
+        --toolbox-max-width: 100px;
+        --edittoolbox-max-height: 150px;
+
+        --toolbox-minibtn-min-width: 25px;
+        --toolbox-minibtn-max-width: 32px;
+        --toolbox-minibtn-min-height: 20px;
+        --toolbox-minibtn-max-height: 25px;
+
+        --inner-main-content-max-height: 79vh;
+
+        --min-svg-btn: 32px;
+        --max-svg-btn: 32px;
+
+        --svg-icon-width: 30px;
+
+        --header-height: 5%;
+        --main-content-height: 80vh;
+        --toolcontainer-height: 80vh;
+        --footer-height: 6%;
     }
 }
 
@@ -34,7 +69,7 @@
         --toolbox-minibtn-min-height: 20px;
         --toolbox-minibtn-max-height: 25px;
 
-        --inner-main-content-max-height: 38em;
+        --inner-main-content-max-height: 79vh;
 
         --min-svg-btn: 32px;
         --max-svg-btn: 32px;
@@ -42,7 +77,8 @@
         --svg-icon-width: 30px;
 
         --header-height: 5%;
-        --main-content-height: 71%;
+        --main-content-height: 80vh;
+        --toolcontainer-height: 80vh;
         --footer-height: 6%;
     }
 }
@@ -75,7 +111,7 @@
         --toolbox-minibtn-min-height: 20px;
         --toolbox-minibtn-max-height: 25px;
 
-        --inner-main-content-max-height: 70em;
+        --inner-main-content-max-height: 86vh;
 
         --min-svg-btn: 32px;
         --max-svg-btn: 32px;
@@ -83,7 +119,8 @@
         --svg-icon-width: 30px;
 
         --header-height: 5%;
-        --main-content-height: 81%;
+        --main-content-height: 86vh;
+        --toolcontainer-height: 86vh;
         --footer-height: 4%;
     }
 }

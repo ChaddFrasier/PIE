@@ -172,7 +172,7 @@ $(document).ready(()=> {
         /** Dyncamic layer buttoon requires more work*/
         // set the class css and the svg button graphic
         layerbtn.classList.add("windoworderingbtn")
-        layerbtn.innerHTML = "<svg viewBox='0 0 100 100' width='100%' height='100%' style='padding:1px' >"+
+        layerbtn.innerHTML = "<svg viewBox='-10 -10 100 100' width='80%' height='80%' style='padding:1px' >"+
                             "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
                             "<rect x='30' y='10' width='50' height='10' fill='black' rx='5'/>"+
                             "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
@@ -467,7 +467,7 @@ $(document).ready(()=> {
 
         /** Dyncamic layer buttoon */
         layerbtn.classList.add("windoworderingbtn")
-        layerbtn.innerHTML = "<svg viewBox='0 0 100 100' width='100%' height='100%' style='padding:1px' >"+
+        layerbtn.innerHTML = "<svg viewBox='-10 -10 100 100' width='80%' height='80%' style='padding:1px' >"+
                             "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
                             "<rect x='30' y='10' width='50' height='10' fill='black' rx='5'/>"+
                             "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
@@ -2304,7 +2304,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     /** Dyncamic layer buttoon requires more work*/
     // set the class css and the svg button graphic
     layerbtn.classList.add("windoworderingbtn")
-    layerbtn.innerHTML = "<svg viewBox='0 0 100 100' width='100%' height='100%' style='padding:1px' >"+
+    layerbtn.innerHTML = "<svg viewBox='-10 -10 100 100' width='80%' height='80%' style='padding:1px' >"+
                         "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
                         "<rect x='30' y='10' width='50' height='10' fill='black' rx='5'/>"+
                         "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
@@ -3036,7 +3036,7 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     /** Dyncamic layer buttoon requires more work*/
     // set the class css and the svg button graphic
     layerbtn.classList.add("windoworderingbtn")
-    layerbtn.innerHTML = "<svg viewBox='0 0 100 100' width='100%' height='100%' style='padding:1px' >"+
+    layerbtn.innerHTML = "<svg viewBox='-10 -10 100 100' width='80%' height='80%' style='padding:1px' >"+
                         "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
                         "<rect x='30' y='10' width='50' height='10' fill='black' rx='5'/>"+
                         "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
