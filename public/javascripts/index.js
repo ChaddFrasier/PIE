@@ -537,7 +537,7 @@ $(document).ready(()=> {
                 xhr.responseType = 'blob'
                 
                 // when the requests load handle the response
-                xhr.onloadend = (blob) => {
+                xhr.onloadend = () => {
                     // this is an effective way of recieving the response return
                     document.getElementById(event.target.parentElement.attributes.objectid.value).setAttribute("href", URL.createObjectURL(xhr.response) )
                 }
