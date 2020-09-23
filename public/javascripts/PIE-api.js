@@ -56,7 +56,7 @@ module.exports = {
                 });
             },
 
-            gdal_rescale: function( inputfile=undefined, scale="30%", outputfile=undefined)
+            gdal_rescale: function( inputfile=undefined, scale="50%", outputfile=undefined)
             {
                 return new Promise( (resolveFunc, rejectFunc) => {
                     var outputtype = getOutputFormat( outputfile )

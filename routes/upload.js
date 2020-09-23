@@ -36,25 +36,17 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
 
         var pieapi = PIEAPI.PIEAPI();
 
-        var argv = [
-            "-of", "JPEG",
-            "-ot", "byte",
-            "-scale", "-outsize", "30%", "30%",
-            path.join("public", "uploads", req.file.filename),
-            path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "jpg"))
-        ];
-        
+        // call the gdal scaling function that Trent gave me. and convert the output to jpg
         var promise = pieapi.gdal_rescale(
             path.join("public", "uploads", req.file.filename),
             "30%",
             path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "jpg"))
             );
 
+        // the promise function runs and finishes
         Promise.all([promise])
+            // then() -> just send the resulting file back to the client for displaying
             .then( (newfilename) => {
-
-                
-                console.debug("SUCCESS");
                 res.sendFile( path.resolve(".\\"+newfilename) );
                 
             }).catch( (err) => {
