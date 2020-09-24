@@ -185,6 +185,7 @@ function DraggableArea( objectbox=undefined )
 
                 if( draggingIcon != null )
                 {   
+                    console.debug(event.clientX, event.clientY);
                     // requires svgHelper.js
                     let svgP = createSVGPoint( event.clientX, event.clientY )
                     oldX = svgP.x

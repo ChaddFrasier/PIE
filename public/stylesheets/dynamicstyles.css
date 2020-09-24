@@ -38,6 +38,9 @@
         --main-content-height: 80vh;
         --toolcontainer-height: 80vh;
         --footer-height: 6%;
+
+        /* New Section Here */
+        --inner-main-content-max-width: 81vw;
     }
 }
 
