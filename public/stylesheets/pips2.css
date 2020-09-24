@@ -527,8 +527,9 @@ button.selected {
 .toolboxminimizebtn {
     background: var(--bar-gradient);
     border-radius: 2px 2px;
-    font-size: 10px;
+    font-size: var(--medium-font);
     vertical-align: top;
+    padding: 1px;
     width: 100%;
     height: auto;
     box-shadow: 2px 2px rgb(177, 177, 177);
@@ -763,7 +764,7 @@ svg.imagecontainer {
 }
 
 .toolboxcontainer.closed {
-    width: 2em !important;
+    width: var(--min-svg-btn) !important;
     min-width: 0% !important;
 }
 

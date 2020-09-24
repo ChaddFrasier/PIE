@@ -112,7 +112,7 @@ $(document).ready(()=> {
             imgbtn = document.getElementById('addimagebtn'),
             capbtn = document.getElementById('addcaptionbtn')
 
-        // check if the box is already closed if true open otherwise close
+        // check if the box is already closed, if true, open it, otherwise close
         if( toolbox.classList.contains('closed') ){
             toolbox.classList.remove('closed')
             // reactivate the other buttons
