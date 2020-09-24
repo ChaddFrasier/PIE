@@ -6,7 +6,7 @@
     --contrast-color: #3E95A3;
     --footer-button-disabled-color: rgba(27, 114, 128, 0.541);
     --bar-gradient: linear-gradient(to top right,rgb(237, 237, 237), rgb(156, 156, 156));
-    --transition-time: 0.125s; 
+    --transition-time: 0.125s;
 }
 
 html {
@@ -599,7 +599,7 @@ button:hover {
 
 .exportoptionsbar {
     text-align: right;
-    width: 100%;
+    width: var(--inner-main-content-max-width);
     overflow: hidden;
 }
 
@@ -653,7 +653,7 @@ svg.imagecontainer {
 .svgholder {
     margin: 0;
     padding: 0;
-    width: 100%;
+    width: var(--inner-main-content-max-width);
     height: auto;
     max-height: var(--inner-main-content-max-height);
 }
