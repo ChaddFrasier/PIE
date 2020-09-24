@@ -17,10 +17,10 @@
         --max-title-height: 100px;
 
         --toolbox-min-height: 0;
-        --toolbox-max-height: 75px;
+        --toolbox-max-height: 100px;
         --toolbox-min-width: 100%;
         --toolbox-max-width: 100px;
-        --edittoolbox-max-height: 150px;
+        --edittoolbox-max-height: 175px;
 
         --toolbox-minibtn-min-width: 25px;
         --toolbox-minibtn-max-width: 32px;
@@ -29,8 +29,8 @@
 
         --inner-main-content-max-height: 79vh;
 
-        --min-svg-btn: 32px;
-        --max-svg-btn: 32px;
+        --min-svg-btn: 25px;
+        --max-svg-btn: 30px;
 
         --svg-icon-width: 30px;
 
@@ -74,8 +74,8 @@
 
         --inner-main-content-max-height: 79vh;
 
-        --min-svg-btn: 32px;
-        --max-svg-btn: 32px;
+        --min-svg-btn: 30px;
+        --max-svg-btn: 35px;
 
         --svg-icon-width: 30px;
 
@@ -116,8 +116,8 @@
 
         --inner-main-content-max-height: 86vh;
 
-        --min-svg-btn: 32px;
-        --max-svg-btn: 32px;
+        --min-svg-btn: 35px;
+        --max-svg-btn: 40px;
 
         --svg-icon-width: 30px;
 

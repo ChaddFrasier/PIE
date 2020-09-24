@@ -260,7 +260,7 @@ body {
 }
 
 .svgimg {
-    width: var(--svg-icon-width);
+    width: 100%;
     height: 100%;
     margin: 0 auto;
 }
@@ -374,7 +374,8 @@ button.disabled {
     max-height: var(--toolbox-max-height);
     background: var(--accent-color);
     height: 25%;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     color: white;
     padding: 0 1px;
     transition: all ease-in-out var(--transition-time);
@@ -383,7 +384,6 @@ button.disabled {
     -o-transition: all ease-in-out var(--transition-time); /* Opera */
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
     margin: 0;
-    resize: vertical;
 }
 
 .dividerline {
@@ -421,7 +421,8 @@ label.text {
     max-height: var(--edittoolbox-max-height);
     height: 40%;
     background: var(--accent-color);
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     color: white;
     padding: 0 2px;
     transition: all ease-in-out var(--transition-time);
@@ -430,7 +431,6 @@ label.text {
     -o-transition: all ease-in-out var(--transition-time); /* Opera */
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
     margin: 0;
-    resize: vertical;
 }
 
 button.selected {
@@ -446,7 +446,8 @@ button.selected {
     background: var(--accent-color);
     max-height: 100%;
     height: 250px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     padding: 0 2px;
     transition: all ease-in-out var(--transition-time);
     -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
@@ -455,7 +456,6 @@ button.selected {
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
     margin: 0;
     color: white;
-    resize: vertical;
 }
 
 .textareainputfield {
@@ -490,14 +490,14 @@ button.selected {
     background: var(--accent-color);
     height: 200px;
     padding: 0 2px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     transition: all ease-in-out var(--transition-time);
     -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
     -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
     -o-transition: all ease-in-out var(--transition-time); /* Opera */
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
     margin: 0;
-    resize: vertical;
 }
 
 .captions {
@@ -514,14 +514,14 @@ button.selected {
     background: var(--accent-color);
     height: 200px;
     padding: 0 2px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     transition: all ease-in-out var(--transition-time);
     -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
     -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
     -o-transition: all ease-in-out var(--transition-time); /* Opera */
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
     margin: 0;
-    resize: vertical;
 }
 
 .toolboxminimizebtn {
@@ -539,7 +539,9 @@ button.selected {
 }
 
 .btnvectorgraphic {
-    width: 25px;
+    width: auto;
+    min-width: var(--min-svg-btn);
+    max-width: var(--max-svg-btn);
     height: 100%;
     pointer-events: none;
 }
@@ -555,9 +557,9 @@ button#northarrowopt, button#sunarrowopt, button#observerarrowopt  {
 .toolboxaddimagebtn {
     background: var(--bar-gradient);
     border-radius: 2px 2px;
-    font-size: 10px;
+    font-size: var(--medium-font);
     vertical-align: top;
-    width: 100%;
+    width: auto;
     height: auto;
     padding: 0;
     box-shadow: 2px 2px rgb(177, 177, 177);
@@ -570,9 +572,9 @@ button#northarrowopt, button#sunarrowopt, button#observerarrowopt  {
 .toolboxaddcaptionbtn {
     background: var(--bar-gradient);
     border-radius: 2px 2px;
-    font-size: 10px;
+    font-size: var(--medium-font);
     vertical-align: top;
-    width: 100%;
+    width: auto;
     height: auto;
     box-shadow: 2px 2px rgb(177, 177, 177);
     padding: 0;
@@ -723,7 +725,7 @@ svg.imagecontainer {
     max-width: 2em;
     margin: 0 auto 0 0;
     padding: .5px;
-    min-width: 2em;
+    min-width: var(--min-svg-btn);
     text-align: center;
 }
 
