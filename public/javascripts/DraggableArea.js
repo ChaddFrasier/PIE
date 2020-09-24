@@ -15,6 +15,12 @@
 function DraggableArea( objectbox=undefined )
 {
 
+    var draggingIcon = null,
+        oldX = null,
+        oldY = null,
+        currentX = null,
+        currentY = null;
+
     // ---------------- Private functions --------------------------
     function validNode( nodeName )
     {
@@ -37,7 +43,7 @@ function DraggableArea( objectbox=undefined )
      * @description this function creates a svg point from the svgContainer matrix and transforms it into the client space.
      *  This is used to get the pixel in the svg that was clicked when dropping icons on screen
      */
-    function createSVGPoint( x, y )
+    function createSVGP( x, y )
     {
         // create a svg point on screen
         let pt = DragBoxContainer.createSVGPoint()
@@ -91,16 +97,12 @@ function DraggableArea( objectbox=undefined )
     ){
         // private variables
         var DragBoxContainer = objectbox;
-        var draggingIcon = null,
-            oldX = null,
-            oldY = null,
-            currentX = null,
-            currentY = null;
 
         // ---------------- Private Functions Only Needed on Success --------------------------
         function dragObject ( event )
         {
-            let svgP = createSVGPoint(event.clientX, event.clientY)
+            console.log( event.clientX, event.clientY)
+            let svgP = createSVGP(event.clientX, event.clientY)
 
             if( draggingIcon.nodeName == "g" )
             {
@@ -109,7 +111,11 @@ function DraggableArea( objectbox=undefined )
 
                 updateInputField(draggingIcon.getAttribute("id"), scaledX, scaledY)
 
-                draggingIcon.style.transform = translateString(scaledX, scaledY)
+                // NOT ON APPLE
+                // draggingIcon.style.transform = translateString(scaledX, scaledY)
+                
+                // FOR APPLE
+                draggingIcon.style.transform = translateString(svgP.x, svgP.y) + " " + scaleString(draggingIcon.style.scale)
             }
             else if( draggingIcon.nodeName == "rect" )
             {
@@ -145,8 +151,8 @@ function DraggableArea( objectbox=undefined )
                 updateInputField(draggingIcon.getAttribute("id"), x1, y1, x2, y2)
             }
 
-            oldX = currentX
-            oldY = currentY
+            oldX = currentX;
+            oldY = currentY;
         }
         
         function endDrag( )
@@ -187,7 +193,7 @@ function DraggableArea( objectbox=undefined )
                 {   
                     console.debug(event.clientX, event.clientY);
                     // requires svgHelper.js
-                    let svgP = createSVGPoint( event.clientX, event.clientY )
+                    let svgP = createSVGP( event.clientX, event.clientY )
                     oldX = svgP.x
                     oldY = svgP.y
             
@@ -222,7 +228,7 @@ function DraggableArea( objectbox=undefined )
                 return DragBoxContainer;
             },
             svgAPI: (x, y) => {
-                return createSVGPoint( x, y )
+                return createSVGP( x, y )
             }
         };
     }

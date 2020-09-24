@@ -16,6 +16,18 @@ function translateString( x, y )
 }
 
 /**
+ * @function translateString
+ * @param {number} x - the x value in pixels
+ * @param {number} y - the y value in pixels
+ * @param {number} scale - the scale value
+ * @description returns a string for of the x,y point as a translate() and scale3d() command
+ */
+function scaleString( scale)
+{
+    return String( "scale3d(" + scale + "," + scale + ",1)" )
+}
+
+/**
  * @function getScaledPoint
  * @param {number} p - the point that we need to scale
  * @param {number} scale - the new scale of the image
