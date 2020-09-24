@@ -18,6 +18,7 @@ function initShadowIcon( )
             shadowdiv.style.position = "fixed";
             shadowdiv.style.left = event.pageX+'px';
             shadowdiv.style.top = event.pageY+'px';
+            shadowdiv.style.pointerEvents = "none";
 
             PrivateIcon = shadowdiv;
             return shadowdiv;

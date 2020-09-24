@@ -26,6 +26,7 @@ $(document).ready(()=> {
 
     draggableList = DraggableList( document.getElementById("DraggableContainer") )
 
+    // TODO: remove this 
     // add zoom handler to the container that the draggable is watching
     draggableSvg.getContainerObject().addEventListener("DOMMouseScroll", zoomHandler )
     
@@ -537,7 +538,7 @@ $(document).ready(()=> {
                 xhr.responseType = 'blob'
                 
                 // when the requests load handle the response
-                xhr.onloadend = (blob) => {
+                xhr.onloadend = () => {
                     // this is an effective way of recieving the response return
                     document.getElementById(event.target.parentElement.attributes.objectid.value).setAttribute("href", URL.createObjectURL(xhr.response) )
                 }
@@ -745,7 +746,7 @@ $(document).ready(()=> {
                 document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
 
                 btn.classList.add("selected")
-                document.addEventListener("mouseup", setElement)
+                document.addEventListener("mouseup", setElement, true)
             }
         }
         else{
@@ -772,7 +773,7 @@ $(document).ready(()=> {
                 document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
 
                 btn.classList.add("selected")
-                document.addEventListener("mouseup", setElement)
+                document.addEventListener("mouseup", setElement, true)
             }
         }
         else{
@@ -803,7 +804,7 @@ $(document).ready(()=> {
                 document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
 
                 btn.classList.add("selected")
-                document.addEventListener("mouseup", setElement)
+                document.addEventListener("mouseup", setElement, true)
             }
         }
         else
@@ -836,7 +837,7 @@ $(document).ready(()=> {
                 
                 // set the selected UI for the observer
                 btn.classList.add("selected")
-                document.addEventListener("mouseup", setElement)
+                document.addEventListener("mouseup", setElement, true)
             }
         }
         else
@@ -868,10 +869,11 @@ $(document).ready(()=> {
         else if(btn != event.target)
         {
             alert("CANNOT ADD ICON TO THIS ELEMENT")
+            console.log(event);
         }
 
         // remove the current listener
-        this.removeEventListener("mouseup", setElement)
+        this.removeEventListener("mouseup", setElement, true)
         btn.classList.remove("selected")
 
         /* call the drawing function with the type of image that can
@@ -1159,13 +1161,15 @@ function typeofObject(testString)
     // test string for image
     if( imagereexp.test( testString ) )
     {
-        return "image"
+        return "image";
     }
-
     // test string for caption
-    if( captionreexp.test( testString ) )
+    else if( captionreexp.test( testString ) )
     {
-        return "caption"
+        return "caption";
+    }
+    else{
+        return "none";
     }
 }
 
@@ -1412,11 +1416,11 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             suniconaccentcolorinput.setAttribute("name", "iconsecondarycolorinput")
 
             // set event listeners
-            suniconscaleinput.addEventListener("change", updateIconScale)
-            suniconmaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)})
-            suniconaccentcolorinput.addEventListener("change", function(event){updateIconColor(event, 1)})
-            sunicontranslatex.addEventListener("change", function(event){updateIconPosition(event, 0)})
-            sunicontranslatey.addEventListener("change", function(event){updateIconPosition(event, 1)})
+            suniconscaleinput.addEventListener("change", updateIconScale, false)
+            suniconmaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)}, false)
+            suniconaccentcolorinput.addEventListener("change", function(event){updateIconColor(event, 1)}, false)
+            sunicontranslatex.addEventListener("change", function(event){updateIconPosition(event, 0)}, false)
+            sunicontranslatey.addEventListener("change", function(event){updateIconPosition(event, 1)}, false)
 
             sunicontoolbox.classList.add("icontoolbox")
 
@@ -1534,11 +1538,11 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
 
             // add events
-            obsiconscaleinput.addEventListener("change", updateIconScale)
-            obsiconmaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)})
-            obsiconaccentcolorinput.addEventListener("change", function(event){updateIconColor(event, 1)})
-            obsicontranslatex.addEventListener("change", function(event){updateIconPosition(event, 0)})
-            obsicontranslatey.addEventListener("change", function(event){updateIconPosition(event, 1)})
+            obsiconscaleinput.addEventListener("change", updateIconScale, false)
+            obsiconmaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)}, false)
+            obsiconaccentcolorinput.addEventListener("change", function(event){updateIconColor(event, 1)}, false)
+            obsicontranslatex.addEventListener("change", function(event){updateIconPosition(event, 0)}, false)
+            obsicontranslatey.addEventListener("change", function(event){updateIconPosition(event, 1)}, false)
 
             obsicontoolbox.classList.add("icontoolbox")
 
@@ -1641,10 +1645,10 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             scaleaccentcolorinput.value = "#000000"
 
             // add events
-            scalemaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)})
-            scaleaccentcolorinput.addEventListener("change", function(event){updateIconColor(event, 1)})
-            scaleicontranslatex.addEventListener("change", function(event){updateIconPosition(event, 0)})
-            scaleicontranslatey.addEventListener("change", function(event){updateIconPosition(event, 1)})
+            scalemaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)}, false)
+            scaleaccentcolorinput.addEventListener("change", function(event){updateIconColor(event, 1)}, false)
+            scaleicontranslatex.addEventListener("change", function(event){updateIconPosition(event, 0)}, false)
+            scaleicontranslatey.addEventListener("change", function(event){updateIconPosition(event, 1)}, false)
 
             scaleicontoolbox.classList.add("icontoolbox")
 
@@ -2105,7 +2109,7 @@ function drawMouseDownListener( event )
     }
 
     // sets the end of the line to where the mouse is
-    draggableSvg.getContainerObject().addEventListener( "mouseup", endDraw )
+    draggableSvg.getContainerObject().addEventListener( "mouseup", endDraw , false)
 
     // set the update function
     function updateUI ( event )
@@ -2117,7 +2121,7 @@ function drawMouseDownListener( event )
     }
 
     // event listener for mousemove
-    draggableSvg.getContainerObject().addEventListener( "mousemove", updateUI )
+    draggableSvg.getContainerObject().addEventListener( "mousemove", updateUI , false)
 
     // put the line on the svg image
     draggableSvg.getContainerObject().appendChild(line)
@@ -2777,7 +2781,7 @@ function drawBoxMouseDownListener( event )
         }
 
     // sets the end of the line to where the mouse is
-    draggableSvg.getContainerObject().addEventListener( "mouseup", endBoxDraw )
+    draggableSvg.getContainerObject().addEventListener( "mouseup", endBoxDraw , false)
 
     // set the update function
     function updateBoxUI ( event )

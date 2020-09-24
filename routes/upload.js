@@ -1,9 +1,10 @@
 "use strict"
 
-var express = require('express');
-var multer = require('multer');
-var path  = require('path');
-var router = express.Router();
+const express = require('express');
+const fs  = require('fs');
+const multer = require('multer');
+const path  = require('path');
+const router = express.Router();
 var PIEAPI = require('../public/javascripts/PIE-api.js')
 
 // init storage object to tell multer what to do
@@ -18,14 +19,14 @@ var storage = multer.diskStorage(
         filename: ( req, file, cb ) =>
         {
             cb( null, new Date().getTime() +"_"+ path.basename(file.originalname) )
-          }
+        }
     }
 );
     
 // set the upload object for multer
 var upload = multer( { storage: storage } );
 
-router.post('/', upload.single('imageinput') ,(req, res, next) => {
+router.post('/', upload.single('imageinput') , (req, res, next) => {
     var isisregexp = new RegExp("^.*\.(CUB|cub|tif|TIF)");
 
     if( isisregexp.test(req.file.filename) )
@@ -35,25 +36,22 @@ router.post('/', upload.single('imageinput') ,(req, res, next) => {
 
         var pieapi = PIEAPI.PIEAPI();
 
-        var argv = [
-            "-of", "JPEG",
-            "-ot", "byte",
-            "-scale", "-outsize", "30%", "30%",
-            path.join("public", "uploads", req.file.filename),
-            path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "jpg"))
-        ]
-        
-        pieapi.gdal_rescale(
+        // call the gdal scaling function that Trent gave me. and convert the output to jpg
+        var promise = pieapi.gdal_rescale(
             path.join("public", "uploads", req.file.filename),
             "30%",
             path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "jpg"))
-            )
+            );
 
-        pieapi.gdal_virtual(
-            path.join("public", "uploads", req.file.filename),
-            path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "vrt"))
-            )
-
+        // the promise function runs and finishes
+        Promise.all([promise])
+            // then() -> just send the resulting file back to the client for displaying
+            .then( (newfilename) => {
+                res.sendFile( path.resolve("./"+newfilename) );
+                
+            }).catch( (err) => {
+                console.debug(err);
+            });
     }
     else
     {

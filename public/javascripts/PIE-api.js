@@ -56,20 +56,44 @@ module.exports = {
                 });
             },
 
-            gdal_rescale: function( inputfile=undefined, scale="30%", outputfile=undefined)
+            gdal_rescale: function( inputfile=undefined, scale="50%", outputfile=undefined)
+            {
+                return new Promise( (resolveFunc, rejectFunc) => {
+                    var outputtype = getOutputFormat( outputfile )
+
+                    // create a gdal_translate instance with args in the array
+                    var child = spawn( "gdal_translate", [
+                        "-of", outputtype,
+                        "-ot", "byte", 
+                        "-scale","-outsize", scale, scale,
+                        inputfile, outputfile] )
+
+                    child.stdout.on("data", data => { console.log(`stdout: ${data}`) });
+
+                    child.stderr.on("data", data => { console.log(`stderr: ${data}`) });
+
+                    child.on('error', (error) => {
+                        console.log(`error: ${error.message}`);
+                        rejectFunc(error.message);
+                    });
+
+                    // when the response is ready to close
+                    child.on("close", code => {
+                        console.log(`child process exited with code ${code}`);
+                        // if the gdal command exited with 0
+                        resolveFunc(outputfile);
+                    });
+                });
+            },
+
+            gdal_virtual: function( inputfile=undefined, outputfile=undefined)
             {
                 var outputtype = getOutputFormat( outputfile )
 
                 // create a gdal_translate instance with args in the array
                 var child = spawn( "gdal_translate", [
                         "-of", outputtype,
-                        "-ot", "byte", 
-                        "-scale","-outsize", scale, scale,
                         inputfile, outputfile] )
-    
-                child.stdout.on("data", data => { console.log(`stdout: ${data}`) });
-    
-                child.stderr.on("data", data => { console.log(`stderr: ${data}`) });
     
                 child.on('error', (error) => {
                     console.log(`error: ${error.message}`);
@@ -84,14 +108,13 @@ module.exports = {
                 });
             },
 
-            gdal_virtual: function( inputfile=undefined, outputfile=undefined)
+            isis_campt: function( inputfile=undefined, outputfile=undefined)
             {
-                var outputtype = getOutputFormat( outputfile )
-
                 // create a gdal_translate instance with args in the array
-                var child = spawn( "gdal_translate", [
-                        "-of", outputtype,
-                        inputfile, outputfile] )
+                var child = spawn( "campt", [
+                        "FORMAT=","PVL",
+                        "FROM=", inputfile, 
+                        "TO=", outputfile] )
     
                 child.on('error', (error) => {
                     console.log(`error: ${error.message}`);
