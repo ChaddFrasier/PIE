@@ -43,8 +43,21 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
             path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "jpg"))
             );
 
+/** Temporary sectoion start  */
+        var promise2 = pieapi.gdal_virtual(
+            path.join("public", "uploads", req.file.filename),
+            path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "vrt"))
+            );
+
+        // runn a single promise
+        promise2.then((vrtfile) => {
+            console.log(vrtfile)
+            });
+
+/** Temporary end */
+       
         // the promise function runs and finishes
-        Promise.all([promise])
+        promise
             // then() -> just send the resulting file back to the client for displaying
             .then( (newfilename) => {
                 res.sendFile( path.resolve("./"+newfilename) );

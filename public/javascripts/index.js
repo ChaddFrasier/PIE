@@ -8,6 +8,7 @@ var NS = {xhtml:"http://www.w3.org/1999/xhtml",
  */
 $(document).ready(()=> {
 
+    // conain the index homepage
     document.body.parentElement.setAttribute("class", "contained")
 
     // local jquery variables
@@ -21,20 +22,16 @@ $(document).ready(()=> {
     // get the global figure element
     let svgContainer = document.getElementById("figurecontainer")
 
-    // create the Draggable Object COntainer
+    // create the Draggable Object Container
     draggableSvg = DraggableArea( svgContainer )
 
+    // create the DraggableList
     draggableList = DraggableList( document.getElementById("DraggableContainer") )
-
-    // TODO: remove this 
-    // add zoom handler to the container that the draggable is watching
-    draggableSvg.getContainerObject().addEventListener("DOMMouseScroll", zoomHandler )
     
     // set background right away when page loads
     setSVGBackground(draggableSvg.getContainerObject(), bgPicker.value)
 
-    
-    /** 
+    /**
      * @function .windowminimizebtn.click()
      * @description Show and hide contents of the tool windows works generically so we can add more later
      */
@@ -112,7 +109,7 @@ $(document).ready(()=> {
             imgbtn = document.getElementById('addimagebtn'),
             capbtn = document.getElementById('addcaptionbtn')
 
-        // check if the box is already closed if true open otherwise close
+        // check if the box is already closed, if true, open it, otherwise close
         if( toolbox.classList.contains('closed') ){
             toolbox.classList.remove('closed')
             // reactivate the other buttons
@@ -869,7 +866,6 @@ $(document).ready(()=> {
         else if(btn != event.target)
         {
             alert("CANNOT ADD ICON TO THIS ELEMENT")
-            console.log(event);
         }
 
         // remove the current listener
@@ -931,6 +927,8 @@ $(document).ready(()=> {
                 // get svg transformed point
                 svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
 
+                console.log(svgP)
+
                 // set group attributes for svg
                 icongroup = document.getElementById("northgroup").cloneNode(true)
                 icongroup.setAttribute("objectid", image.id)
@@ -938,11 +936,17 @@ $(document).ready(()=> {
                 icongroup.style.scale = "5"
 
                 // set the location of the icon to where the mouse was released
-                newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 25 )
-                newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 25 )
+                newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 27 )
+                newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 27 )
+
+                console.log(svgP.x, svgP.y)
 
                 // set translate
-                icongroup.style.transform = translateString( newX, newY)
+                // WORKED BEFORE APPLE
+                // icongroup.style.transform = translateString( newX, newY )
+
+                // WORKS WITH APPLE
+                icongroup.style.transform = translateString( svgP.x, svgP.y ) + scaleString(icongroup.style.scale)
 
                 // append the icon
                 draggableSvg.getContainerObject().appendChild(icongroup)
@@ -962,6 +966,7 @@ $(document).ready(()=> {
                 newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 24 )
                 newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 24 )
         
+                //TODO: this is the old section
                 // set translate
                 icongroup.style.transform = translateString( newX, newY )
 
@@ -983,6 +988,8 @@ $(document).ready(()=> {
                 newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 24 )
                 newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 24 )
             
+                //TODO: this is the old section
+
                 if( !isNaN(newX) && !isNaN(newY))
                 {
                     // set translate
@@ -997,32 +1004,35 @@ $(document).ready(()=> {
                 draggableSvg.getContainerObject().appendChild(icongroup)
                 break
 
-                case "scalebar":
-                    // get svg transformed point
-                    svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
-        
-                    // set group attributes for svg
-                    icongroup = document.getElementById("scalebargroup").cloneNode(true)
-                    icongroup.setAttribute("objectid", image.id)
-                    icongroup.setAttribute("id", "scalebarIcon-" + image.id)
-                    icongroup.style.scale = "0.5"
-        
-                    // set the location of the icon to where the mouse was released
-                    newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 2000 )
-                    newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 500 )
-                
-                    if( !isNaN(newX) && !isNaN(newY))
-                    {
-                        // set translate
-                        icongroup.style.transform = translateString( newX, newY )
-                    }
-                    else
-                    {
-                        console.error("Translate Values Failed")
-                    }
-                
-                    // append the icon
-                    draggableSvg.getContainerObject().appendChild(icongroup)
+            case "scalebar":
+                // get svg transformed point
+                svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
+    
+                // set group attributes for svg
+                icongroup = document.getElementById("scalebargroup").cloneNode(true)
+                icongroup.setAttribute("objectid", image.id)
+                icongroup.setAttribute("id", "scalebarIcon-" + image.id)
+                icongroup.style.scale = "0.5"
+    
+                // set the location of the icon to where the mouse was released
+                newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 2000 )
+                newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 500 )
+            
+                //TODO: this is the old section
+
+
+                if( !isNaN(newX) && !isNaN(newY))
+                {
+                    // set translate
+                    icongroup.style.transform = translateString( newX, newY )
+                }
+                else
+                {
+                    console.error("Translate Values Failed")
+                }
+            
+                // append the icon
+                draggableSvg.getContainerObject().appendChild(icongroup)
                     break
         }
 
@@ -1274,6 +1284,8 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             northicontranslatey.setAttribute("name", "iconycoordinput")
 
 
+            //TODO: this is probably wrong with Mac.
+
             // set translate value based on icon scale and fix to integer
             northicontranslatex.value = (transX*iconscaleinput.value).toFixed(0)
             northicontranslatey.value = (transY*iconscaleinput.value).toFixed(0)
@@ -1287,6 +1299,8 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
             // set event listeners
             iconscaleinput.addEventListener("change", updateIconScale)
+            iconscaleinput.dispatchEvent(new Event("change", {value: '5'}))
+
             iconmaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)})
             iconaccentcolorinput.addEventListener("change", function(event){updateIconColor(event, 1)})
             northicontranslatex.addEventListener("change", function(event){updateIconPosition(event, 0)})
@@ -1320,6 +1334,8 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             break
     
         case "sun":
+            //TODO: Do the same thing to fix the sun and I did the north icon
+
             let suniconscaleinput = document.createElement("input")
             let suniconmaincolorinput = document.createElement("input")
             let suniconaccentcolorinput = document.createElement("input")
@@ -1450,6 +1466,8 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             break
     
         case "observer":
+                //TODO: Do the same thing to fix the observer
+
             let obsiconscaleinput = document.createElement("input")
             let obsiconmaincolorinput = document.createElement("input")
             let obsiconaccentcolorinput = document.createElement("input")
@@ -1579,6 +1597,7 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
 
         case "scalebar":
+                //TODO: Do the same thing to fix the scalebar and I did the north icon
            
             let scalemaincolorinput = document.createElement("input")
             let scaleaccentcolorinput = document.createElement("input")
@@ -1759,7 +1778,7 @@ function rescaleIcon ( oldscale, scale, translate )
     x = x * oldscale / scale 
     y = y * oldscale / scale 
 
-    return translateString( x, y )
+    return String(translateString(x, y) + " " + scaleString( scale ))
 }
 
 
@@ -2620,98 +2639,6 @@ function createMarker( markerString, lineid, headcode, endCode )
                 // set line marker end
                 line.style.markerStart = `url(#${newmarker.id})`
             }
-        }
-    }
-}
-
-/**
- * @function zoomHandler
- * @param {_Event} event - the event of the scroll wheel
- * @description change the main size of whatever element the target it
- */
-function zoomHandler( event ) {
-    let direction = detectMouseWheelDirection( event )
-
-//    console.log(event.target.nodeName)
-
-    if( event.target.nodeName == "image")
-    {
-        switch( direction )
-        {
-            case "up":
-                event.target.setAttribute("width", Number(event.target.getAttribute("width"))+50)
-                event.target.setAttribute("height", Number(event.target.getAttribute("height"))+50)
-
-                // TODO: zoom handler input changes
-
-                break
-
-            case "down":
-                event.target.setAttribute("width", Number(event.target.getAttribute("width"))-50)
-                event.target.setAttribute("height", Number(event.target.getAttribute("height"))-50)
-
-                // TODO: zoom handler input changes
-
-                break
-        }
-    }
-    else if( event.target.nodeName == "TEXTAREA" )
-    {
-        switch( direction )
-        {
-            case "up":
-                event.target.parentElement.setAttribute("width", Number(event.target.parentElement.getAttribute("width"))+50)
-                event.target.parentElement.setAttribute("height", Number(event.target.parentElement.getAttribute("height"))+50)
-
-                // TODO: zoom handler input changes
-
-                break
-
-            case "down":
-                event.target.parentElement.setAttribute("width", Number(event.target.parentElement.getAttribute("width"))-50)
-                event.target.parentElement.setAttribute("height", Number(event.target.parentElement.getAttribute("height"))-50)
-
-                // TODO: zoom handler input changes
-
-                break
-        }
-    }
-    else if( event.target.nodeName == "line" || event.target.nodeName == "rect" )
-    {
-        let strokeWidth = 0
-        switch( direction )
-        {
-            case "up":
-                strokeWidth = Number(event.target.getAttribute("stroke-width"))+5
-                event.target.setAttribute("stroke-width", strokeWidth)
-
-                updateObjectUI( event.target.getAttribute("id"), strokeWidth )
-                break
-
-            case "down":
-                strokeWidth = Number(event.target.getAttribute("stroke-width"))-5
-
-                event.target.setAttribute("stroke-width", strokeWidth)
-
-                updateObjectUI( event.target.getAttribute("id"), strokeWidth )
-                break
-        }
-    }
-    else if( event.target.parentElement.nodeName == "group")
-    {
-        switch( direction )
-        {
-            case "up":
-                console.log("THIS IS AN ICON")
-                // TODO: zoom handler input changes
-
-                break
-
-            case "down":
-                console.log("THIS IS AN ICON")
-                // TODO: zoom handler input changes
-
-                break
         }
     }
 }

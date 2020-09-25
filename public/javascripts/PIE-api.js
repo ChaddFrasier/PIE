@@ -88,44 +88,48 @@ module.exports = {
 
             gdal_virtual: function( inputfile=undefined, outputfile=undefined)
             {
-                var outputtype = getOutputFormat( outputfile )
+                return new Promise( (resolveFunc, rejectFunc) => {
+                    var outputtype = getOutputFormat( outputfile )
 
-                // create a gdal_translate instance with args in the array
-                var child = spawn( "gdal_translate", [
-                        "-of", outputtype,
-                        inputfile, outputfile] )
+                    // create a gdal_translate instance with args in the array
+                    var child = spawn( "gdal_translate", [
+                            "-of", outputtype,
+                            inputfile, outputfile] )
+        
+                    child.on('error', (error) => {
+                        console.log(`error: ${error.message}`);
+                        rejectFunc(error.message)
+                    });
     
-                child.on('error', (error) => {
-                    console.log(`error: ${error.message}`);
-                    return error.message;
-                });
-    
-                // when the response is ready to close
-                child.on("close", code => {
-                    console.log(`child process exited with code ${code}`);
-                    // if the gdal command exited with 0
-                    return code;
+                    // when the response is ready to close
+                    child.on("close", code => {
+                        console.log(`child process exited with code ${code}`);
+                        // if the gdal command exited with 0
+                        resolveFunc(outputfile);
+                    });
                 });
             },
 
             isis_campt: function( inputfile=undefined, outputfile=undefined)
             {
-                // create a gdal_translate instance with args in the array
-                var child = spawn( "campt", [
-                        "FORMAT=","PVL",
-                        "FROM=", inputfile, 
-                        "TO=", outputfile] )
-    
-                child.on('error', (error) => {
-                    console.log(`error: ${error.message}`);
-                    return error.message;
-                });
-    
-                // when the response is ready to close
-                child.on("close", code => {
-                    console.log(`child process exited with code ${code}`);
-                    // if the gdal command exited with 0
-                    return code;
+                return new Promise( (resolveFunc, rejectFunc) => {
+                    // create a gdal_translate instance with args in the array
+                    var child = spawn( "campt", [
+                            "FORMAT=","PVL",
+                            "FROM=", inputfile, 
+                            "TO=", outputfile] )
+        
+                    child.on('error', (error) => {
+                        console.log(`error: ${error.message}`);
+                        rejectFunc(error.message);
+                    });
+        
+                    // when the response is ready to close
+                    child.on("close", code => {
+                        console.log(`child process exited with code ${code}`);
+                        // if the gdal command exited with 0
+                        resolveFunc(code);
+                    });
                 });
             }
         };
