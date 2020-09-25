@@ -8,6 +8,7 @@ var NS = {xhtml:"http://www.w3.org/1999/xhtml",
  */
 $(document).ready(()=> {
 
+    // conain the index homepage
     document.body.parentElement.setAttribute("class", "contained")
 
     // local jquery variables
@@ -21,15 +22,16 @@ $(document).ready(()=> {
     // get the global figure element
     let svgContainer = document.getElementById("figurecontainer")
 
-    // create the Draggable Object COntainer
+    // create the Draggable Object Container
     draggableSvg = DraggableArea( svgContainer )
 
+    // create the DraggableList
     draggableList = DraggableList( document.getElementById("DraggableContainer") )
     
     // set background right away when page loads
     setSVGBackground(draggableSvg.getContainerObject(), bgPicker.value)
 
-    /** 
+    /**
      * @function .windowminimizebtn.click()
      * @description Show and hide contents of the tool windows works generically so we can add more later
      */
@@ -1002,35 +1004,35 @@ $(document).ready(()=> {
                 draggableSvg.getContainerObject().appendChild(icongroup)
                 break
 
-                case "scalebar":
-                    // get svg transformed point
-                    svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
-        
-                    // set group attributes for svg
-                    icongroup = document.getElementById("scalebargroup").cloneNode(true)
-                    icongroup.setAttribute("objectid", image.id)
-                    icongroup.setAttribute("id", "scalebarIcon-" + image.id)
-                    icongroup.style.scale = "0.5"
-        
-                    // set the location of the icon to where the mouse was released
-                    newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 2000 )
-                    newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 500 )
-                
-                    //TODO: this is the old section
+            case "scalebar":
+                // get svg transformed point
+                svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
+    
+                // set group attributes for svg
+                icongroup = document.getElementById("scalebargroup").cloneNode(true)
+                icongroup.setAttribute("objectid", image.id)
+                icongroup.setAttribute("id", "scalebarIcon-" + image.id)
+                icongroup.style.scale = "0.5"
+    
+                // set the location of the icon to where the mouse was released
+                newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 2000 )
+                newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 500 )
+            
+                //TODO: this is the old section
 
 
-                    if( !isNaN(newX) && !isNaN(newY))
-                    {
-                        // set translate
-                        icongroup.style.transform = translateString( newX, newY )
-                    }
-                    else
-                    {
-                        console.error("Translate Values Failed")
-                    }
-                
-                    // append the icon
-                    draggableSvg.getContainerObject().appendChild(icongroup)
+                if( !isNaN(newX) && !isNaN(newY))
+                {
+                    // set translate
+                    icongroup.style.transform = translateString( newX, newY )
+                }
+                else
+                {
+                    console.error("Translate Values Failed")
+                }
+            
+                // append the icon
+                draggableSvg.getContainerObject().appendChild(icongroup)
                     break
         }
 
@@ -1332,6 +1334,8 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             break
     
         case "sun":
+            //TODO: Do the same thing to fix the sun and I did the north icon
+
             let suniconscaleinput = document.createElement("input")
             let suniconmaincolorinput = document.createElement("input")
             let suniconaccentcolorinput = document.createElement("input")
@@ -1462,6 +1466,8 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             break
     
         case "observer":
+                //TODO: Do the same thing to fix the observer
+
             let obsiconscaleinput = document.createElement("input")
             let obsiconmaincolorinput = document.createElement("input")
             let obsiconaccentcolorinput = document.createElement("input")
@@ -1591,6 +1597,7 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
 
         case "scalebar":
+                //TODO: Do the same thing to fix the scalebar and I did the north icon
            
             let scalemaincolorinput = document.createElement("input")
             let scaleaccentcolorinput = document.createElement("input")
