@@ -101,21 +101,18 @@ function DraggableArea( objectbox=undefined )
         // ---------------- Private Functions Only Needed on Success --------------------------
         function dragObject ( event )
         {
-            console.log( event.clientX, event.clientY)
             let svgP = createSVGP(event.clientX, event.clientY)
 
             if( draggingIcon.nodeName == "g" )
             {
-                let scaledX = getScaledPoint(svgP.x, Number(draggingIcon.style.scale), 25)
-                let scaledY = getScaledPoint(svgP.y, Number(draggingIcon.style.scale), 25)
+                // TODO: comment this working code!
+
+                let scaledX = getScaledPoint(svgP.x, getTransform("scale", draggingIcon), draggingIcon.getBBox().width)
+                let scaledY = getScaledPoint(svgP.y, getTransform("scale", draggingIcon), draggingIcon.getBBox().height)
 
                 updateInputField(draggingIcon.getAttribute("id"), scaledX, scaledY)
 
-                // NOT ON APPLE
-                // draggingIcon.style.transform = translateString(scaledX, scaledY)
-                
-                // FOR APPLE
-                draggingIcon.style.transform = translateString(svgP.x, svgP.y) + " " + scaleString(draggingIcon.style.scale)
+                setTransform(draggingIcon, scaleString(getTransform("scale", draggingIcon)), translateString(scaledX, scaledY))
             }
             else if( draggingIcon.nodeName == "rect" )
             {

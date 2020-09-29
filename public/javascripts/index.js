@@ -924,29 +924,24 @@ $(document).ready(()=> {
         switch (icontype)
         {
             case "north":
+                // TODO: comment this stuff up
                 // get svg transformed point
                 svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
-
-                console.log(svgP)
 
                 // set group attributes for svg
                 icongroup = document.getElementById("northgroup").cloneNode(true)
                 icongroup.setAttribute("objectid", image.id)
                 icongroup.setAttribute("id", "northIcon-" + image.id)
-                icongroup.style.scale = "5"
+
+                // using svg transform initial values
+                setTransform( icongroup, scaleString(5), translateString(0, 0) )
 
                 // set the location of the icon to where the mouse was released
-                newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 27 )
-                newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 27 )
+                newX = getScaledPoint( svgP.x, getTransform("scale", icongroup), 27 )
+                newY = getScaledPoint( svgP.y, getTransform("scale", icongroup), 27 )
 
-                console.log(svgP.x, svgP.y)
-
-                // set translate
-                // WORKED BEFORE APPLE
-                // icongroup.style.transform = translateString( newX, newY )
-
-                // WORKS WITH APPLE
-                icongroup.style.transform = translateString( svgP.x, svgP.y ) + scaleString(icongroup.style.scale)
+                // using svg transform initial values
+                setTransform( icongroup, scaleString(getTransform("scale", icongroup)), translateString(newX, newY) )
 
                 // append the icon
                 draggableSvg.getContainerObject().appendChild(icongroup)

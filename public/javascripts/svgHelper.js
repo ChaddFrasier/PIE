@@ -4,6 +4,44 @@
  * @fileoverview file for helping the DraggableArea and DraggableList files
  */
 
+
+/**
+ * 
+ * @param {string} translateString 
+ * @param {string} scaleString 
+ */
+function setTransform( element, scaleString, translateString )
+{
+    element.style.webkitTransform = scaleString + " " + translateString;
+    element.style.MozTransform = scaleString + " " + translateString;
+    element.style.msTransform = scaleString + " " + translateString;
+    element.style.OTransform = scaleString + " " + translateString;
+    element.style.transform = scaleString + " " + translateString;
+}
+
+function getTransform( attr, object)
+{
+    switch( attr )
+    {
+        case "scale":
+            return parseInt(object.style.transform.split("scale3d(")[1])
+
+        case "x":
+            console.log(object.style.transform.split("translate("))
+            break
+    
+        case "y":
+            console.log(object.style.transform.split("translate("))
+            break
+        
+        default:
+            console.log("error")
+            break
+            
+        
+    }
+}
+
 /**
  * @function translateString
  * @param {number} x - the x value in pixels
@@ -37,7 +75,7 @@ function scaleString( scale)
 function getScaledPoint( p, scale, objectDim )
 {
     // scale object dimension and get half of it because we want the center of the object
-    let p_half = objectDim * scale / 2
+    let p_half = (objectDim * scale) / 2
 
     // scale the point down with half subtracted to find the center of the icon
     return ( p  - p_half ) /  scale  
@@ -69,7 +107,7 @@ function moveSvgDown( element )
  * @param {string} attr - the attribute to update
  * @param {number} value - the new value
  * @param {number} scale - the current scale
- * @description update just one part of the translate. either x or y
+ * @description update just one part of the translate. either x or y and return translateString()
  */
 function updateTranslate ( translateStr, attr, value, scale )
 {
@@ -80,13 +118,13 @@ function updateTranslate ( translateStr, attr, value, scale )
     {
         let y = parseInt( translateStr.split( "," )[ 1 ] )
 
-        return  String( "translate(" +  value / scale  + "px, " + y  + "px)" ) 
+        return  translateString(value/scale, y) 
     }
     else if( attr == "y" )
     {
         let x = parseInt( translateStr.split( "translate(" )[ 1 ].split( "," )[ 0 ] )
 
-        return  String( "translate(" +  x  + "px, " + value / scale   + "px)" )
+        return  translateString(x, value/scale)
 
     }
 }
