@@ -2,7 +2,7 @@
  * @file DraggableArea.js
  * @requires svgHelper.js
  * @fileoverview 
- *      This file is used in PIE and can be used as a basic framework for a draggable container in HTML using javascript listeners
+ *      This file is used in PIE and can be used as a basic framework for a draggable container in HTML using javascript listeners (No JQuery needed)
  */
 
 "use strict";
@@ -101,17 +101,19 @@ function DraggableArea( objectbox=undefined )
         // ---------------- Private Functions Only Needed on Success --------------------------
         function dragObject ( event )
         {
+            // transform the mouse event location to the svg subspace
             let svgP = createSVGP(event.clientX, event.clientY)
 
             if( draggingIcon.nodeName == "g" )
             {
-                // TODO: comment this working code!
-
+                // get the scaled points and the mouse event
                 let scaledX = getScaledPoint(svgP.x, getTransform("scale", draggingIcon), draggingIcon.getBBox().width)
                 let scaledY = getScaledPoint(svgP.y, getTransform("scale", draggingIcon), draggingIcon.getBBox().height)
 
+                // update the input fields using the id of the draggingObject
                 updateInputField(draggingIcon.getAttribute("id"), scaledX, scaledY)
 
+                // set the new icon transform using the uniform setter function
                 setTransform(draggingIcon, scaleString(getTransform("scale", draggingIcon)), translateString(scaledX, scaledY))
             }
             else if( draggingIcon.nodeName == "rect" )
@@ -188,7 +190,6 @@ function DraggableArea( objectbox=undefined )
 
                 if( draggingIcon != null )
                 {   
-                    console.debug(event.clientX, event.clientY);
                     // requires svgHelper.js
                     let svgP = createSVGP( event.clientX, event.clientY )
                     oldX = svgP.x

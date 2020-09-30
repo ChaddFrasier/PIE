@@ -923,8 +923,8 @@ $(document).ready(()=> {
 
         switch (icontype)
         {
+            // drawing the north icon
             case "north":
-                // TODO: comment this stuff up
                 // get svg transformed point
                 svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
 
@@ -933,16 +933,23 @@ $(document).ready(()=> {
                 icongroup.setAttribute("objectid", image.id)
                 icongroup.setAttribute("id", "northIcon-" + image.id)
 
-                // using svg transform, set initial values
+                // using svg transform of every browser, set initial values * Needed Because getScaledPoint uses it*
                 setTransform( icongroup, scaleString(5), translateString(0, 0) )
 
                 // set the translate location of the icon to where the mouse was released
                 newX = getScaledPoint( svgP.x, getTransform("scale", icongroup), 27 )
                 newY = getScaledPoint( svgP.y, getTransform("scale", icongroup), 27 )
 
-                // using svg transform initial values
-                setTransform( icongroup, scaleString(getTransform("scale", icongroup)), translateString(newX, newY) )
-
+                // test valid input and set the transform for all browsers
+                if( !isNaN(newX) && !isNaN(newY))
+                {
+                    // set translate
+                    setTransform(icongroup, scaleString(getTransform("scale",icongroup)), translateString( newX, newY ))
+                }
+                else
+                {
+                    console.error("Translate Values Failed")
+                }
                 // append the icon to the svg object
                 draggableSvg.getContainerObject().appendChild(icongroup)
                 break
@@ -955,15 +962,23 @@ $(document).ready(()=> {
                 icongroup = document.getElementById("sungroup").cloneNode(true)
                 icongroup.setAttribute("objectid", image.id)
                 icongroup.setAttribute("id", "sunIcon-" + image.id)
-                icongroup.style.scale = "5"
+            
+                setTransform(icongroup, scaleString(5), translateString(0,0))
 
                 // set the location of the icon to where the mouse was released
-                newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 24 )
-                newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 24 )
-        
-                //TODO: this is the old section
-                // set translate
-                icongroup.style.transform = translateString( newX, newY )
+                newX = getScaledPoint( svgP.x, getTransform("scale",icongroup), 27 )
+                newY = getScaledPoint( svgP.y, getTransform("scale", icongroup), 27 )
+
+                // test for valid input of translate and set
+                if( !isNaN(newX) && !isNaN(newY))
+                {
+                    // set translate
+                    setTransform(icongroup, scaleString(getTransform("scale",icongroup)), translateString( newX, newY ))
+                }
+                else
+                {
+                    console.error("Translate Values Failed")
+                }
 
                 // append the icon
                 draggableSvg.getContainerObject().appendChild(icongroup)
@@ -977,18 +992,18 @@ $(document).ready(()=> {
                 icongroup = document.getElementById("observergroup").cloneNode(true)
                 icongroup.setAttribute("objectid", image.id)
                 icongroup.setAttribute("id", "observerIcon-" + image.id)
-                icongroup.style.scale = "5"
+
+                setTransform(icongroup, scaleString(5), translateString(0,0))
 
                 // set the location of the icon to where the mouse was released
-                newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 24 )
-                newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 24 )
+                newX = getScaledPoint( svgP.x, getTransform("scale", icongroup), 27 )
+                newY = getScaledPoint( svgP.y, getTransform("scale", icongroup), 27 )
             
-                //TODO: this is the old section
-
+                // test for valid input of translate and set
                 if( !isNaN(newX) && !isNaN(newY))
                 {
                     // set translate
-                    icongroup.style.transform = translateString( newX, newY )
+                    setTransform(icongroup, scaleString(getTransform("scale", icongroup)), translateString( newX, newY ))
                 }
                 else
                 {
@@ -1000,6 +1015,7 @@ $(document).ready(()=> {
                 break
 
             case "scalebar":
+                // TODO: not done at all needs ISIS and much more work.
                 // get svg transformed point
                 svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
     
@@ -1013,9 +1029,7 @@ $(document).ready(()=> {
                 newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 2000 )
                 newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 500 )
             
-                //TODO: this is the old section
-
-
+                //TODO: this is the old translateing section
                 if( !isNaN(newX) && !isNaN(newY))
                 {
                     // set translate
