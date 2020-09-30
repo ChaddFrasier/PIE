@@ -933,17 +933,17 @@ $(document).ready(()=> {
                 icongroup.setAttribute("objectid", image.id)
                 icongroup.setAttribute("id", "northIcon-" + image.id)
 
-                // using svg transform initial values
+                // using svg transform, set initial values
                 setTransform( icongroup, scaleString(5), translateString(0, 0) )
 
-                // set the location of the icon to where the mouse was released
+                // set the translate location of the icon to where the mouse was released
                 newX = getScaledPoint( svgP.x, getTransform("scale", icongroup), 27 )
                 newY = getScaledPoint( svgP.y, getTransform("scale", icongroup), 27 )
 
                 // using svg transform initial values
                 setTransform( icongroup, scaleString(getTransform("scale", icongroup)), translateString(newX, newY) )
 
-                // append the icon
+                // append the icon to the svg object
                 draggableSvg.getContainerObject().appendChild(icongroup)
                 break
         
@@ -1278,9 +1278,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             northicontranslatey.setAttribute("min", "1")
             northicontranslatey.setAttribute("name", "iconycoordinput")
 
-
-            //TODO: this is probably wrong with Mac.
-
             // set translate value based on icon scale and fix to integer
             northicontranslatex.value = (transX*iconscaleinput.value).toFixed(0)
             northicontranslatey.value = (transY*iconscaleinput.value).toFixed(0)
@@ -1294,6 +1291,7 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
             // set event listeners
             iconscaleinput.addEventListener("change", updateIconScale)
+            // dispatch the event to update the scale
             iconscaleinput.dispatchEvent(new Event("change", {value: '5'}))
 
             iconmaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)})
@@ -3135,6 +3133,4 @@ function updateObjectUI( objectid, ...args )
             }
         }
     }
-
-    // TODO: change icon scale when the zoom hanler runs
 }
