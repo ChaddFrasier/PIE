@@ -3,10 +3,9 @@
  * @requires svgHelper.js
  * @fileoverview 
  *      This file is used in PIE and can be used as a basic framework for a draggable container in HTML using javascript listeners (No JQuery needed)
- */
+*/
 
 "use strict";
-
 /**
  * @function constructor
  *       var dragObj = DraggableArea( HTML_Object )
@@ -14,7 +13,7 @@
  */
 function DraggableArea( objectbox=undefined )
 {
-
+    // init all required variables for dragging
     var draggingIcon = null,
         oldX = null,
         oldY = null,
@@ -22,6 +21,13 @@ function DraggableArea( objectbox=undefined )
         currentY = null;
 
     // ---------------- Private functions --------------------------
+
+    /**
+     * @function validNode
+     * @param {string} nodeName
+     * @description this function only checks that the node in question is valid for becoming a draggable area
+     * @returns {Boolean} True if the node can be converted into draggable area; False otherwise.
+     */
     function validNode( nodeName )
     {
         var testarray = ["svg"]
@@ -29,6 +35,12 @@ function DraggableArea( objectbox=undefined )
         return (testarray.indexOf(nodeName) > -1) ? true: false;
     }
 
+    /**
+     * @function validDraggableNode 
+     * @param {string} nodeName 
+     * @description this function is only designed to return true in the case that the dragging object is a valid node to drag
+     * @returns {Boolean} True if the node can be dragged; False otherwise.
+     */
     function validDraggableNode( nodeName )
     {
         var testarray = ["g", "line", "rect"]
@@ -45,10 +57,10 @@ function DraggableArea( objectbox=undefined )
      */
     function createSVGP( x, y )
     {
-        // create a svg point on screen
+        // create a blank svg point on screen
         let pt = DragBoxContainer.createSVGPoint()
         
-        // input to a float and set the initial point values in the svgpoint object
+        // Then Scale the x and y into the point object 
         pt.x = parseFloat( x )
         pt.y = parseFloat( y )
 
@@ -56,7 +68,7 @@ function DraggableArea( objectbox=undefined )
         {
             /**
              * Apply a matrix tranform on the new point using the transform matrix of the target svg
-             *  Note: must inverse the matrix when being inputed because of matrix arithmetic
+             *  Note: must inverse the matrix before tranforming the points
              * */ 
             return pt.matrixTransform( DragBoxContainer.getScreenCTM().inverse() )
         }
@@ -67,9 +79,10 @@ function DraggableArea( objectbox=undefined )
     }
 
     /**
-     * 
+     * @function getIconParentContainer
      * @param {Object} target 
-     * @description this function loops until failure or until a expected / draggable parent is found
+     * @description this function loops until failure or until a expected / draggable parent is found (Usually Fails in 4 to 5 loops)
+     * TODO: this could be structured better by liitig the while loop to a predictable and expected layer depth. because every loop represents a nested child element
      */
     function getIconParentContainer( target )
     {
@@ -89,7 +102,9 @@ function DraggableArea( objectbox=undefined )
 
     // ---------------- ^ End Private functions ^ --------------------------
 
-    // validate input
+    // ----------------- Main code section ----------------------------
+
+    // validate initialization of DraggableObject
     if( objectbox &&
         objectbox.getAttribute("id") &&
         objectbox.nodeName &&
@@ -98,7 +113,11 @@ function DraggableArea( objectbox=undefined )
         // private variables
         var DragBoxContainer = objectbox;
 
-        // ---------------- Private Functions Only Needed on Success --------------------------
+        // ---------------- Private Listener Functions ( Only Needed on Successful Init ) --------------------------
+        /**
+         * 
+         * @param {*} event 
+         */
         function dragObject ( event )
         {
             // transform the mouse event location to the svg subspace
@@ -154,6 +173,10 @@ function DraggableArea( objectbox=undefined )
             oldY = currentY;
         }
         
+        /**
+         * @function
+         * @param {void}
+         */
         function endDrag( )
         {
             let svgcontainer = DragBoxContainer
@@ -177,6 +200,10 @@ function DraggableArea( objectbox=undefined )
             currentY = null
         }
 
+        /**
+         * 
+         * @param {_Event} event 
+         */
         function dragHandler ( event )
         {
             let svgcontainer = DragBoxContainer
@@ -214,10 +241,6 @@ function DraggableArea( objectbox=undefined )
         // return the DraggableArea object
         return {
 
-            // public variables
-            
-            // public functions
-
             /**
              * @function getContainerObject
              * @description return the DOM object assosiated with the DraggableObject
@@ -225,6 +248,10 @@ function DraggableArea( objectbox=undefined )
             getContainerObject: function(){
                 return DragBoxContainer;
             },
+            /**
+             * @function svgAPI
+             * @description
+             */
             svgAPI: (x, y) => {
                 return createSVGP( x, y )
             }
@@ -232,6 +259,7 @@ function DraggableArea( objectbox=undefined )
     }
     else
     {
+        // on failure return the failed nodeName
         return {
             NodeName: objectbox.nodeName
         };
