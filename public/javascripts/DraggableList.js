@@ -181,8 +181,6 @@
     /**
      * @function documentMouseUpListener
      * @description when the mouse is released remove the listeners
-     * 
-     * TODO: this couold be manipulated to let the user drag the box up and down contantly until the mouse is lifted
      */
     function documentMouseUpListener()
     {
