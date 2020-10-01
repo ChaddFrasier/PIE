@@ -5,7 +5,6 @@ var fs = require('fs');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var compression = require('compression');
-var helmet = require('helmet');
 
 var indexRouter = require('./routes/index');
 var aboutRouter = require('./routes/about');
@@ -22,16 +21,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 app.use(compression())
-
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'","blob:", "data:"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'", "ajax.googleapis.com", "'unsafe-inline'"]
-    },
-  })
-);
 
 app.use(logger('dev'));
 app.use(express.json());
