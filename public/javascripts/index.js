@@ -1723,13 +1723,15 @@ function updateIconPosition ( event, attrId )
 {
     let object = document.getElementById( event.target.attributes.objectid.value )
 
+    let scale = getTransform("scale", object)
+
     if( attrId == 0 )
     {
-        object.style.transform = updateTranslate( object.style.transform, "x", Number( event.target.value ), object.style.scale )
+        object.style.transform = setTransform( object, scaleString(scale), updateTranslate( object.style.transform, "x", Number( event.target.value ), scale ))
     }
     else if( attrId == 1 )
     {
-        object.style.transform = updateTranslate( object.style.transform, "y", Number( event.target.value ), object.style.scale )
+        object.style.transform = setTransform(object, scaleString(scale), updateTranslate( object.style.transform, "y", Number( event.target.value ), scale ))
     }
 }
 
@@ -1762,25 +1764,23 @@ function updateIconScale( event )
 {
     let icon = document.getElementById( event.target.attributes.objectid.value )
     let inputvalue = parseFloat( event.target.value )
-
     if( !isNaN( inputvalue ) )
     {
-        let oldscale = icon.style.scale
-        icon.style.scale = inputvalue
-
+        let oldscale = getTransform("scale", icon)
+        
         // reset the location of the image
-        icon.style.transform = rescaleIcon( oldscale, icon.style.scale, icon.style.transform )
+        icon.style.transform = rescaleIconTransform( oldscale, inputvalue, icon.style.transform )
     }
 }
 
 /**
- * @function rescaleIcon
+ * @function rescaleIconTransform
  * @param {number} oldscale - old scale (used to unscale the icon before setting new scale)
  * @param {number} scale - new scale 
  * @param {string} translate - the transform string that only has translate
  * @description unscale the current translate and then rescale with the new value
  */
-function rescaleIcon ( oldscale, scale, translate )
+function rescaleIconTransform ( oldscale, scale, translate )
 {
     let x = parseInt( translate.split(',')[0].split( "translate(" )[1] )
     let y = parseInt( translate.split(',')[1] )
@@ -1788,7 +1788,7 @@ function rescaleIcon ( oldscale, scale, translate )
     x = x * oldscale / scale 
     y = y * oldscale / scale 
 
-    return String(translateString(x, y) + " " + scaleString( scale ))
+    return String(scaleString(scale) + " " + translateString(x, y))
 }
 
 
