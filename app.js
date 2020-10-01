@@ -24,7 +24,7 @@ app.use(compression())
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -34,7 +34,7 @@ app.use('/contact', contactRouter);
 app.use('/faq', faqRouter);
 app.use(['/api/isis','/api/gdal'], apiRouter);
 app.use('/upload', uploadRouter);
-app.use('/images/*', imageRouter);
+app.set('images', path.join(__dirname, "public", "images"));
 
 fs.readdir( path.join(__dirname, "public", "uploads"), ( err, files ) =>
 {
