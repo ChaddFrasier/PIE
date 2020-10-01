@@ -6,6 +6,10 @@
 
 "use strict";
 
+// Namespaces Global
+var NS = {xhtml:"http://www.w3.org/1999/xhtml",
+            svg: "http://www.w3.org/2000/svg"};
+
 /**
  * @function setTransform
  * @param {string} scaleString - a string returned by scaleString()

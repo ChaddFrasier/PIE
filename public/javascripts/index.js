@@ -1,6 +1,13 @@
-// Namespaces Global
-var NS = {xhtml:"http://www.w3.org/1999/xhtml",
-            svg: "http://www.w3.org/2000/svg"};
+/**
+ * @file index.js
+ * @requires "svgHelper.js"
+ * @requires "DraggableArea.js"
+ * @requires "DraggableList.js"
+ * @requires "GhostDraggable.js"
+ * @requires "PIE-api.js"
+ * 
+ * @fileoverview 
+ */
 
 /**
  * @function document.ready()
