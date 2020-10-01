@@ -6,7 +6,7 @@
  * @requires "GhostDraggable.js"
  * @requires "PIE-api.js"
  * 
- * @fileoverview 
+ * @fileoverview main event loop for the index page of PIE
  */
 
 /**
@@ -1065,16 +1065,6 @@ $(document).ready(()=> {
 }) // end of jquery functions
 
 /* Helper functions */
-/**
- * @function setSVGBackground
- * @param {Node} svg 
- * @param {string} color 
- * @description just changes the background of the specified element
- */
-function setSVGBackground( svg, color )
-{
-    svg.style.background = color
-}
 
 /**
  * @function minimizeToolsWindow

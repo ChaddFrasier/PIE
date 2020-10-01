@@ -7,8 +7,21 @@
 "use strict";
 
 // Namespaces Global
-var NS = {xhtml:"http://www.w3.org/1999/xhtml",
-            svg: "http://www.w3.org/2000/svg"};
+var NS = {
+        xhtml:"http://www.w3.org/1999/xhtml",
+        svg: "http://www.w3.org/2000/svg"
+    };
+
+/**
+ * @function setSVGBackground
+ * @param {Node} svg 
+ * @param {string} color 
+ * @description just changes the background of the specified element
+ */
+function setSVGBackground( svg, color )
+{
+    svg.style.background = color;
+}
 
 /**
  * @function setTransform
