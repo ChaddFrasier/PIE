@@ -13,6 +13,7 @@ var contactRouter = require('./routes/contact');
 var apiRouter = require('./routes/api');
 var faqRouter = require('./routes/faq');
 var uploadRouter = require('./routes/upload')
+var imageRouter = require('./routes/images')
 
 var app = express();
 
@@ -44,6 +45,7 @@ app.use('/contact', contactRouter);
 app.use('/faq', faqRouter);
 app.use(['/api/isis','/api/gdal'], apiRouter);
 app.use('/upload', uploadRouter);
+app.use('/images/*', imageRouter);
 
 fs.readdir( path.join(__dirname, "public", "uploads"), ( err, files ) =>
 {
