@@ -1741,7 +1741,7 @@ function updateIconPosition ( event, attrId )
  * @param {NodeList} array 
  * @description find the element with the id in the array
  * 
- * //TODO: this could be simplified
+ * //TODO: this could be simplified; ithink
  * 
  */
 function findImageToolbox( id, array )
