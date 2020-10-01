@@ -1727,11 +1727,11 @@ function updateIconPosition ( event, attrId )
 
     if( attrId == 0 )
     {
-        object.style.transform = setTransform( object, scaleString(scale), updateTranslate( object.style.transform, "x", Number( event.target.value ), scale ))
+        setTransform( object, scaleString(scale), updateTranslate( object.style.transform, "x", Number( event.target.value ), scale ))
     }
     else if( attrId == 1 )
     {
-        object.style.transform = setTransform(object, scaleString(scale), updateTranslate( object.style.transform, "y", Number( event.target.value ), scale ))
+        setTransform(object, scaleString(scale), updateTranslate( object.style.transform, "y", Number( event.target.value ), scale ))
     }
 }
 
@@ -1762,14 +1762,11 @@ function findImageToolbox( id, array )
  */
 function updateIconScale( event )
 {
-    let icon = document.getElementById( event.target.attributes.objectid.value )
-    let inputvalue = parseFloat( event.target.value )
+    var icon = document.getElementById( event.target.attributes.objectid.value )
+    var inputvalue = parseFloat( event.target.value )
     if( !isNaN( inputvalue ) )
-    {
-        let oldscale = getTransform("scale", icon)
-        
-        // reset the location of the image
-        icon.style.transform = rescaleIconTransform( oldscale, inputvalue, icon.style.transform )
+    {   
+        setTransform(icon, scaleString(inputvalue), translateString(getTransform("x", icon), getTransform("y", icon)) )
     }
 }
 
@@ -1777,18 +1774,19 @@ function updateIconScale( event )
  * @function rescaleIconTransform
  * @param {number} oldscale - old scale (used to unscale the icon before setting new scale)
  * @param {number} scale - new scale 
- * @param {string} translate - the transform string that only has translate
+ * @param {string} x - the transform x
+ * @param {string} y - the transform y value
  * @description unscale the current translate and then rescale with the new value
  */
-function rescaleIconTransform ( oldscale, scale, translate )
+function rescaleIconTransform ( oldscale, scale, x, y )
 {
-    let x = parseInt( translate.split(',')[0].split( "translate(" )[1] )
-    let y = parseInt( translate.split(',')[1] )
+    console.log(x,y)
+    let newx = x * oldscale / scale 
+    let newy = y * oldscale / scale 
 
-    x = x * oldscale / scale 
-    y = y * oldscale / scale 
-
-    return String(scaleString(scale) + " " + translateString(x, y))
+    console.log(newx,newy)
+    // return new transform dimensions
+    return {sc: scale, x:newx, y:newy}
 }
 
 

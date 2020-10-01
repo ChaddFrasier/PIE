@@ -32,15 +32,13 @@ function getTransform( attr, object)
     switch( attr )
     {
         case "scale":
-            return parseInt(object.style.transform.split("scale3d(")[1])
+            return parseFloat(object.style.transform.split("scale3d(")[1])
 
         case "x":
-            console.log(object.style.transform.split("translate("))
-            break
+            return parseFloat(object.style.transform.split("translate(")[1])
     
         case "y":
-            console.log(object.style.transform.split("translate("))
-            break
+            return parseFloat(object.style.transform.split("translate(")[1].split(',')[1])
         
         default:
             console.log("error")
