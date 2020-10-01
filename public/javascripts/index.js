@@ -1,6 +1,13 @@
-// Namespaces Global
-var NS = {xhtml:"http://www.w3.org/1999/xhtml",
-            svg: "http://www.w3.org/2000/svg"};
+/**
+ * @file index.js
+ * @requires "svgHelper.js"
+ * @requires "DraggableArea.js"
+ * @requires "DraggableList.js"
+ * @requires "GhostDraggable.js"
+ * @requires "PIE-api.js"
+ * 
+ * @fileoverview main event loop for the index page of PIE
+ */
 
 /**
  * @function document.ready()
@@ -1058,16 +1065,6 @@ $(document).ready(()=> {
 }) // end of jquery functions
 
 /* Helper functions */
-/**
- * @function setSVGBackground
- * @param {Node} svg 
- * @param {string} color 
- * @description just changes the background of the specified element
- */
-function setSVGBackground( svg, color )
-{
-    svg.style.background = color
-}
 
 /**
  * @function minimizeToolsWindow
