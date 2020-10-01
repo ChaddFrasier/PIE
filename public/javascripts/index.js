@@ -913,6 +913,9 @@ $(document).ready(()=> {
      * @param {string} icontype 
      * @param {_Event} event
      * @description this function draws the svg icons over the svg figure image where the mouse drop occured
+     * 
+     * @TODO: the svgIcons should check for the rotation values  of the image and set the rotation of the icons accordingly: ( 0deg = arrow of icon to right )
+     *          Must finish ISIS backend first.
      */
     function drawSvgIcon( image, icontype, event )
     {
