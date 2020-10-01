@@ -34,7 +34,7 @@ app.use('/contact', contactRouter);
 app.use('/faq', faqRouter);
 app.use(['/api/isis','/api/gdal'], apiRouter);
 app.use('/upload', uploadRouter);
-app.set('images', path.join(__dirname, "public", "images"));
+app.use('/images',imageRouter);
 
 fs.readdir( path.join(__dirname, "public", "uploads"), ( err, files ) =>
 {
