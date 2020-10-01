@@ -2,7 +2,51 @@
  * 
  * @file svgHelper.js
  * @fileoverview file for helping the DraggableArea and DraggableList files
+*/
+
+"use strict";
+
+/**
+ * @function setTransform
+ * @param {string} scaleString - a string returned by scaleString()
+ * @param {string} translateString - a string returned by translateString()
+ * @description This function sets all transform values for any browser using the main rendering engines
  */
+function setTransform( element, scaleString, translateString )
+{
+    element.style.webkitTransform = scaleString + " " + translateString;
+    element.style.MozTransform = scaleString + " " + translateString;
+    element.style.msTransform = scaleString + " " + translateString;
+    element.style.OTransform = scaleString + " " + translateString;
+    element.style.transform = scaleString + " " + translateString;
+}
+
+/**
+ * @function getTransform
+ * @param {string} attr - the transform value that you want to recieve `scale`, `x`, `y`
+ * @param {object} object - the HTML DOM object that we want to change 
+ * @description return the attr of the transform css that is contained in object
+ */
+function getTransform( attr, object)
+{
+    switch( attr )
+    {
+        case "scale":
+            return parseInt(object.style.transform.split("scale3d(")[1])
+
+        case "x":
+            console.log(object.style.transform.split("translate("))
+            break
+    
+        case "y":
+            console.log(object.style.transform.split("translate("))
+            break
+        
+        default:
+            console.log("error")
+            break
+    }
+}
 
 /**
  * @function translateString
@@ -37,7 +81,7 @@ function scaleString( scale)
 function getScaledPoint( p, scale, objectDim )
 {
     // scale object dimension and get half of it because we want the center of the object
-    let p_half = objectDim * scale / 2
+    let p_half = (objectDim * scale) / 2
 
     // scale the point down with half subtracted to find the center of the icon
     return ( p  - p_half ) /  scale  
@@ -45,7 +89,7 @@ function getScaledPoint( p, scale, objectDim )
 
 /**
  * @function moveSvgUp
- * @param {Node} element
+ * @param {Node} element - the element to shift layers
  * @description move the svg element up to the top of the layers of the svg
  */
 function moveSvgUp( element )
@@ -55,7 +99,7 @@ function moveSvgUp( element )
 
 /**
  * @function moveSvgDown
- * @param {Node} element
+ * @param {Node} element - the element to shift down a layer of the svg parent
  * @description move the svg element down to the top of the layers of the svg
  */
 function moveSvgDown( element )
@@ -65,11 +109,12 @@ function moveSvgDown( element )
 
 /**
  * @function updateTranslate
+ * @requires translateSring()
  * @param {string} translateStr - translate string for the translate
  * @param {string} attr - the attribute to update
  * @param {number} value - the new value
  * @param {number} scale - the current scale
- * @description update just one part of the translate. either x or y
+ * @description update just one part of the translate. either x or y and return translateString()
  */
 function updateTranslate ( translateStr, attr, value, scale )
 {
@@ -80,13 +125,13 @@ function updateTranslate ( translateStr, attr, value, scale )
     {
         let y = parseInt( translateStr.split( "," )[ 1 ] )
 
-        return  String( "translate(" +  value / scale  + "px, " + y  + "px)" ) 
+        return  translateString(value/scale, y) 
     }
     else if( attr == "y" )
     {
         let x = parseInt( translateStr.split( "translate(" )[ 1 ].split( "," )[ 0 ] )
 
-        return  String( "translate(" +  x  + "px, " + value / scale   + "px)" )
+        return  translateString(x, value/scale)
 
     }
 }

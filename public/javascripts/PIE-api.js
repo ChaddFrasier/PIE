@@ -1,8 +1,25 @@
+/**
+ * @file PIE-api.js
+ * @fileoverview this is a file that creates exportable functions to interact with the ISIS and GDAL command line interfaces. 
+ */
+
 "use strict";
 
+// spawn to interact with the command line
 var { spawn } = require('child_process');
 
+/**
+ * module.exports allows me to write any number of fucntions that can be used at anypoint after it is included with some code file or in a <script> tag
+ */
 module.exports = {
+    /**
+     * @function PIEAPI
+     * @description init function to create an instace of these functions that can be accessed like this 
+     * 
+     * @example 
+     * let api = PIEAPI()
+     * api.gdal_translate( argv )
+     */
     PIEAPI: function()
     {
 

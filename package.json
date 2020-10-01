@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "debug": "SET DEBUG=pie:* & node ./bin/www"
+    "debug:win": "SET DEBUG=pie:* & node ./bin/www",
+    "debug:mac": "set DEBUG=pie:* & node ./bin/www"
   },
   "dependencies": {
     "compression": "^1.7.4",
