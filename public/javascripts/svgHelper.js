@@ -2,13 +2,15 @@
  * 
  * @file svgHelper.js
  * @fileoverview file for helping the DraggableArea and DraggableList files
- */
+*/
 
+"use strict";
 
 /**
- * 
- * @param {string} translateString 
- * @param {string} scaleString 
+ * @function setTransform
+ * @param {string} scaleString - a string returned by scaleString()
+ * @param {string} translateString - a string returned by translateString()
+ * @description This function sets all transform values for any browser using the main rendering engines
  */
 function setTransform( element, scaleString, translateString )
 {
@@ -19,6 +21,12 @@ function setTransform( element, scaleString, translateString )
     element.style.transform = scaleString + " " + translateString;
 }
 
+/**
+ * @function getTransform
+ * @param {string} attr - the transform value that you want to recieve `scale`, `x`, `y`
+ * @param {object} object - the HTML DOM object that we want to change 
+ * @description return the attr of the transform css that is contained in object
+ */
 function getTransform( attr, object)
 {
     switch( attr )
@@ -37,8 +45,6 @@ function getTransform( attr, object)
         default:
             console.log("error")
             break
-            
-        
     }
 }
 
@@ -83,7 +89,7 @@ function getScaledPoint( p, scale, objectDim )
 
 /**
  * @function moveSvgUp
- * @param {Node} element
+ * @param {Node} element - the element to shift layers
  * @description move the svg element up to the top of the layers of the svg
  */
 function moveSvgUp( element )
@@ -93,7 +99,7 @@ function moveSvgUp( element )
 
 /**
  * @function moveSvgDown
- * @param {Node} element
+ * @param {Node} element - the element to shift down a layer of the svg parent
  * @description move the svg element down to the top of the layers of the svg
  */
 function moveSvgDown( element )
@@ -103,6 +109,7 @@ function moveSvgDown( element )
 
 /**
  * @function updateTranslate
+ * @requires translateSring()
  * @param {string} translateStr - translate string for the translate
  * @param {string} attr - the attribute to update
  * @param {number} value - the new value
