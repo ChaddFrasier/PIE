@@ -85,14 +85,14 @@ conda activate isis && conda activate --stack gdal
 lowpass -h && gdal_translate -h
 ```
 
-2. Start the server code.
+2. Start the server code in production mode.
 ```
 npm start
 ```
 
-or you can start the code in debug mode
+or you can start the code in debug mode `debug:win` for windows users and `debug:mac` for MacOS users.
 ```
-npm run debug
+npm run debug:win
 ```
 -----------------------
 [USGS-Astrogeology](https://www.usgs.gov/centers/astrogeology-science-center)
