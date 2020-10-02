@@ -446,7 +446,7 @@ $(document).ready(()=> {
             ycoordinput = document.createElement("input"),
             imagesvg = document.createElementNS(NS.svg, "image");
 
-        // TODO: this is the start of the image icon layer fix
+        // TODO: this is the start of the image icon layer fix && comment this new stuff
         var holdergroup = document.createElementNS(NS.svg, "g");
 
         // set the class for the options bar
@@ -712,6 +712,7 @@ $(document).ready(()=> {
 
         // TODO: This is the box that will hold the image and the icons for said image
         holdergroup.setAttribute("id", imageId+ "-hg")
+        holdergroup.classList.add("containingelement")
 
         draggableSvg.getContainerObject().appendChild(holdergroup)
 
@@ -1043,17 +1044,19 @@ $(document).ready(()=> {
                 icongroup = document.getElementById("scalebargroup").cloneNode(true)
                 icongroup.setAttribute("objectid", image.id)
                 icongroup.setAttribute("id", "scalebarIcon-" + image.id)
-                icongroup.style.scale = "0.5"
-    
+                
+
+                setTransform(icongroup, scaleString(0.25), translateString(0,0))
+
                 // set the location of the icon to where the mouse was released
-                newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 2000 )
-                newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 500 )
+                newX = getScaledPoint( svgP.x, getTransform("scale", icongroup), 2000 )
+                newY = getScaledPoint( svgP.y, getTransform("scale", icongroup), 500 )
             
-                //TODO: this is the old translateing section
+                // set transform if new location succeeds
                 if( !isNaN(newX) && !isNaN(newY))
                 {
                     // set translate
-                    icongroup.style.transform = translateString( newX, newY )
+                    setTransform(icongroup, scaleString( getTransform("scale", icongroup) ), translateString( newX, newY ) )
                 }
                 else
                 {
@@ -1615,15 +1618,13 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
 
         case "scalebar":
-                //TODO: Do the same thing to fix the scalebar and I did the north icon
+            //TODO: Do the same thing to fix the scalebar and I did the north icon
            
             let scalemaincolorinput = document.createElement("input")
             let scaleaccentcolorinput = document.createElement("input")
             let scaleaccentcolorlabel = document.createElement("label")
             let scalemaincolorlabel = document.createElement("label")
-            
             let scaleicontoolbox = document.createElement("div")
-
             let scaleoptionbar = document.createElement("div")
             let scaleoptionheader = document.createElement("h4")
             let deletebtn3 = document.createElement("button")
@@ -1730,7 +1731,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 function updateIconPosition ( event, attrId )
 {
     let object = document.getElementById( event.target.attributes.objectid.value )
-
     let scale = getTransform("scale", object)
 
     if( attrId == 0 )
@@ -1784,7 +1784,7 @@ function updateIconScale( event )
  * @param {number} scale - new scale 
  * @param {string} x - the transform x
  * @param {string} y - the transform y value
- * @description unscale the current translate and then rescale with the new value
+ * @description return an object that has all the components for the setTransform() function besides that actual icon
  */
 function rescaleIconTransform ( oldscale, scale, x, y )
 {
