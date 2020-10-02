@@ -1,11 +1,10 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var fs = require('fs');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var compression = require('compression');
-var helmet = require('helmet');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const fs = require('fs');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const compression = require('compression');
 
 var indexRouter = require('./routes/index');
 var aboutRouter = require('./routes/about');
@@ -22,14 +21,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 app.use(compression())
-
-app.use(
-  helmet.contentSecurityPolicy({
-    defaultSrc: ["'self'", "blob:", "data:"],
-    styleSrc: ["'self'", "'unsafe-inline'"],
-    scriptSrc: ["'self'", "ajax.googleapis.com", "'unsafe-inline'"]
-  })
-)
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -48,7 +39,6 @@ app.use('/images',imageRouter);
 fs.readdir( path.join(__dirname, "public", "uploads"), ( err, files ) =>
 {
     if( err ){ return }
-
     files.forEach( filename =>
     {
         fs.unlink( path.join(__dirname, "public", "uploads", filename), () =>
