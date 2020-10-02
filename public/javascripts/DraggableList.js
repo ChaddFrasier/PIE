@@ -125,19 +125,9 @@ function DraggableList( inobject=undefined )
 
             // remove the options and other things for image
             draggableList.removeObject(parentBox)
-            svgcontainer.removeChild(svgObject)
 
-            // remove all icons using image remove btn
-            let testarr = ["northIcon-", "sunIcon-", "observerIcon-", "scalebarIcon-"]
-
-            testarr.forEach(iconString => {
-                if( document.getElementById( iconString + svgObject.id) )
-                {
-                    do{
-                    svgcontainer.removeChild(document.getElementById(iconString + svgObject.id))
-                    }while( document.getElementById(iconString + svgObject.id) )
-                }
-            });
+            // remove the image holder now
+            svgcontainer.removeChild(svgObject.parentElement)
 
             // update the count
             getObjectCount(-1 , typeofObject(svgObject.id))

@@ -446,6 +446,9 @@ $(document).ready(()=> {
             ycoordinput = document.createElement("input"),
             imagesvg = document.createElementNS(NS.svg, "image");
 
+        // TODO: this is the start of the image icon layer fix
+        var holdergroup = document.createElementNS(NS.svg, "g");
+
         // set the class for the options bar
         newoptionsbar.classList.add("windowoptionsbar")
         newoptionsbar.style.display = "flex"
@@ -701,9 +704,16 @@ $(document).ready(()=> {
         imagesvg.setAttribute("width", "1500")
         imagesvg.setAttribute("height", "1000")
         imagesvg.setAttribute("id", imageId)
+
+        //TODO: this is where the desfault image is set
         imagesvg.setAttribute("href", "test/moonphasestest.jpg")
 
-        draggableSvg.getContainerObject().appendChild(imagesvg)
+        holdergroup.appendChild(imagesvg)
+
+        // TODO: This is the box that will hold the image and the icons for said image
+        holdergroup.setAttribute("id", imageId+ "-hg")
+
+        draggableSvg.getContainerObject().appendChild(holdergroup)
 
         // add 1 to the totaly image count
         getObjectCount(1, "image")
@@ -961,7 +971,7 @@ $(document).ready(()=> {
                     console.error("Translate Values Failed")
                 }
                 // append the icon to the svg object
-                draggableSvg.getContainerObject().appendChild(icongroup)
+                document.getElementById(image.id+"-hg").appendChild(icongroup)
                 break
         
             case "sun":
@@ -1791,7 +1801,7 @@ function rescaleIconTransform ( oldscale, scale, x, y )
  * @description remove the icon tool box and the icon svg element
  */
 function removeIconWindow( event )
-{
+{   
     if( event.target.parentElement.attributes.objectid.value )
     {
         // remove the current options bar, its next child and the caption matching the same id
@@ -1803,7 +1813,7 @@ function removeIconWindow( event )
 
         imagetoolbox.removeChild( icontoolsbar )
         imagetoolbox.removeChild( toolsbox )
-        draggableSvg.getContainerObject().removeChild( iconsvg )
+        document.getElementById(icontoolsbar.attributes.objectid.value.split('-')[1] + "-hg").removeChild( iconsvg )
     }
 }
 
