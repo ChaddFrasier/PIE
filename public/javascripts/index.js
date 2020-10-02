@@ -1001,7 +1001,7 @@ $(document).ready(()=> {
                 }
 
                 // append the icon
-                draggableSvg.getContainerObject().appendChild(icongroup)
+                document.getElementById(image.id+"-hg").appendChild(icongroup)
                 break
         
             case "observer":
@@ -1031,7 +1031,7 @@ $(document).ready(()=> {
                 }
             
                 // append the icon
-                draggableSvg.getContainerObject().appendChild(icongroup)
+                document.getElementById(image.id+"-hg").appendChild(icongroup)
                 break
 
             case "scalebar":
@@ -1061,8 +1061,9 @@ $(document).ready(()=> {
                 }
             
                 // append the icon
-                draggableSvg.getContainerObject().appendChild(icongroup)
-                    break
+                document.getElementById(image.id+"-hg").appendChild(icongroup)
+                
+                break
         }
 
         // find proper tool box
