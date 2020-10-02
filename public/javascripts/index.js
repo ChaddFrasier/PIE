@@ -1777,11 +1777,9 @@ function updateIconScale( event )
  */
 function rescaleIconTransform ( oldscale, scale, x, y )
 {
-    console.log(x,y)
     let newx = x * oldscale / scale 
     let newy = y * oldscale / scale 
 
-    console.log(newx,newy)
     // return new transform dimensions
     return {sc: scale, x:newx, y:newy}
 }
