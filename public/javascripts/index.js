@@ -107,6 +107,10 @@ $(document).ready(()=> {
         optionsAction(event.target)
     })
 
+    $('#exportbtn').on("mousedown", function(event) {
+        console.log("Create a div input box thingy and save the file as whatever the user chooses.")       
+    })
+
     /** 
      * @function .toolboxminimizebtn.click() 
      * @description handler for the whole tool window mini button
@@ -130,6 +134,7 @@ $(document).ready(()=> {
             imgbtn.classList.add("disabled")
             capbtn.classList.add("disabled")
             event.target.innerHTML = "►"
+
         }
     })
 
@@ -446,6 +451,9 @@ $(document).ready(()=> {
             ycoordinput = document.createElement("input"),
             imagesvg = document.createElementNS(NS.svg, "image");
 
+        // TODO: this is the start of the image icon layer fix && comment this new stuff
+        var holdergroup = document.createElementNS(NS.svg, "g");
+
         // set the class for the options bar
         newoptionsbar.classList.add("windowoptionsbar")
         newoptionsbar.style.display = "flex"
@@ -701,9 +709,17 @@ $(document).ready(()=> {
         imagesvg.setAttribute("width", "1500")
         imagesvg.setAttribute("height", "1000")
         imagesvg.setAttribute("id", imageId)
+
+        //TODO: this is where the desfault image is set
         imagesvg.setAttribute("href", "test/moonphasestest.jpg")
 
-        draggableSvg.getContainerObject().appendChild(imagesvg)
+        holdergroup.appendChild(imagesvg)
+
+        // TODO: This is the box that will hold the image and the icons for said image
+        holdergroup.setAttribute("id", imageId+ "-hg")
+        holdergroup.classList.add("containingelement")
+
+        draggableSvg.getContainerObject().appendChild(holdergroup)
 
         // add 1 to the totaly image count
         getObjectCount(1, "image")
@@ -961,7 +977,7 @@ $(document).ready(()=> {
                     console.error("Translate Values Failed")
                 }
                 // append the icon to the svg object
-                draggableSvg.getContainerObject().appendChild(icongroup)
+                document.getElementById(image.id+"-hg").appendChild(icongroup)
                 break
         
             case "sun":
@@ -991,7 +1007,7 @@ $(document).ready(()=> {
                 }
 
                 // append the icon
-                draggableSvg.getContainerObject().appendChild(icongroup)
+                document.getElementById(image.id+"-hg").appendChild(icongroup)
                 break
         
             case "observer":
@@ -1021,7 +1037,7 @@ $(document).ready(()=> {
                 }
             
                 // append the icon
-                draggableSvg.getContainerObject().appendChild(icongroup)
+                document.getElementById(image.id+"-hg").appendChild(icongroup)
                 break
 
             case "scalebar":
@@ -1033,17 +1049,19 @@ $(document).ready(()=> {
                 icongroup = document.getElementById("scalebargroup").cloneNode(true)
                 icongroup.setAttribute("objectid", image.id)
                 icongroup.setAttribute("id", "scalebarIcon-" + image.id)
-                icongroup.style.scale = "0.5"
-    
+                
+
+                setTransform(icongroup, scaleString(0.25), translateString(0,0))
+
                 // set the location of the icon to where the mouse was released
-                newX = getScaledPoint( svgP.x, Number(icongroup.style.scale), 2000 )
-                newY = getScaledPoint( svgP.y, Number(icongroup.style.scale), 500 )
+                newX = getScaledPoint( svgP.x, getTransform("scale", icongroup), 2000 )
+                newY = getScaledPoint( svgP.y, getTransform("scale", icongroup), 500 )
             
-                //TODO: this is the old translateing section
+                // set transform if new location succeeds
                 if( !isNaN(newX) && !isNaN(newY))
                 {
                     // set translate
-                    icongroup.style.transform = translateString( newX, newY )
+                    setTransform(icongroup, scaleString( getTransform("scale", icongroup) ), translateString( newX, newY ) )
                 }
                 else
                 {
@@ -1051,8 +1069,9 @@ $(document).ready(()=> {
                 }
             
                 // append the icon
-                draggableSvg.getContainerObject().appendChild(icongroup)
-                    break
+                document.getElementById(image.id+"-hg").appendChild(icongroup)
+                
+                break
         }
 
         // find proper tool box
@@ -1604,15 +1623,13 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
 
         case "scalebar":
-                //TODO: Do the same thing to fix the scalebar and I did the north icon
+            //TODO: Do the same thing to fix the scalebar and I did the north icon
            
             let scalemaincolorinput = document.createElement("input")
             let scaleaccentcolorinput = document.createElement("input")
             let scaleaccentcolorlabel = document.createElement("label")
             let scalemaincolorlabel = document.createElement("label")
-            
             let scaleicontoolbox = document.createElement("div")
-
             let scaleoptionbar = document.createElement("div")
             let scaleoptionheader = document.createElement("h4")
             let deletebtn3 = document.createElement("button")
@@ -1719,7 +1736,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 function updateIconPosition ( event, attrId )
 {
     let object = document.getElementById( event.target.attributes.objectid.value )
-
     let scale = getTransform("scale", object)
 
     if( attrId == 0 )
@@ -1773,15 +1789,13 @@ function updateIconScale( event )
  * @param {number} scale - new scale 
  * @param {string} x - the transform x
  * @param {string} y - the transform y value
- * @description unscale the current translate and then rescale with the new value
+ * @description return an object that has all the components for the setTransform() function besides that actual icon
  */
 function rescaleIconTransform ( oldscale, scale, x, y )
 {
-    console.log(x,y)
     let newx = x * oldscale / scale 
     let newy = y * oldscale / scale 
 
-    console.log(newx,newy)
     // return new transform dimensions
     return {sc: scale, x:newx, y:newy}
 }
@@ -1793,7 +1807,7 @@ function rescaleIconTransform ( oldscale, scale, x, y )
  * @description remove the icon tool box and the icon svg element
  */
 function removeIconWindow( event )
-{
+{   
     if( event.target.parentElement.attributes.objectid.value )
     {
         // remove the current options bar, its next child and the caption matching the same id
@@ -1805,7 +1819,7 @@ function removeIconWindow( event )
 
         imagetoolbox.removeChild( icontoolsbar )
         imagetoolbox.removeChild( toolsbox )
-        draggableSvg.getContainerObject().removeChild( iconsvg )
+        document.getElementById(icontoolsbar.attributes.objectid.value.split('-')[1] + "-hg").removeChild( iconsvg )
     }
 }
 

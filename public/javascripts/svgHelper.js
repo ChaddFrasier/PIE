@@ -109,6 +109,7 @@ function getScaledPoint( p, scale, objectDim )
  */
 function moveSvgUp( element )
 {
+    // run the last insert to place the image on the bottom of the icons
     element.nextSibling.insertAdjacentElement("afterend", element)
 }
 
@@ -119,6 +120,7 @@ function moveSvgUp( element )
  */
 function moveSvgDown( element )
 {
+    // TODO: if the elemnt is an image, move all icons attached to the image
     document.getElementById("figurecontainer").insertBefore(element, element.previousSibling)
 }
 

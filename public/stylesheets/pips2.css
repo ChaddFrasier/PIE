@@ -527,7 +527,7 @@ button.selected {
 .toolboxminimizebtn {
     background: var(--bar-gradient);
     border-radius: 2px 2px;
-    font-size: var(--medium-font);
+    font-size: var(--small-font);
     vertical-align: top;
     padding: 1px;
     width: 100%;
@@ -728,6 +728,10 @@ svg.imagecontainer {
     padding: .5px;
     min-width: var(--min-svg-btn);
     text-align: center;
+}
+
+.containingelement {
+    cursor: none;
 }
 
 .windowsidebar > button:hover {
