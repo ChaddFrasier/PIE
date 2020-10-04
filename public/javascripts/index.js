@@ -107,6 +107,10 @@ $(document).ready(()=> {
         optionsAction(event.target)
     })
 
+    $('#exportbtn').on("mousedown", function(event) {
+        console.log("Create a div input box thingy and save the file as whatever the user chooses.")       
+    })
+
     /** 
      * @function .toolboxminimizebtn.click() 
      * @description handler for the whole tool window mini button
@@ -130,6 +134,7 @@ $(document).ready(()=> {
             imgbtn.classList.add("disabled")
             capbtn.classList.add("disabled")
             event.target.innerHTML = "►"
+
         }
     })
 

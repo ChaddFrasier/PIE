@@ -35,6 +35,10 @@ block content
                     label.text(for="backgroundcolor")="Select a background color"
                     br
                     input#backgroundcolor(type="color", name="backgroundcolor", value="#1D84B5")
+                    br
+                    label.text(for="backgroundcolor")="Export Figure as "
+                    br
+                    button#exportbtn(type="button", name="exportFigureButton")="Download"
 
                 .windowoptionsbar(style="display:flex;")
                     h4="Editing Tools"
@@ -149,8 +153,7 @@ block content
             //- Other Options Button Group
             .exportoptionsbar(style="display:flex;")
                 .buttongroup
-                    button#strtoverbtn(onclick="startOverFunction()")='Restart'
-                    button='Export'
+                    button#strtoverbtn.disabled(onclick="startOverFunction()")='Restart'
             //- svg figure location
           
             .svgholder
