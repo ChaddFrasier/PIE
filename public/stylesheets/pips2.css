@@ -373,6 +373,7 @@ button.disabled {
     min-height: var(--toolbox-min-height);
     max-height: var(--toolbox-max-height);
     background: var(--accent-color);
+    text-align: center;
     height: 25%;
     overflow-y: auto;
     overflow-x: hidden;
@@ -405,7 +406,7 @@ button.disabled {
 
 label.text {
     border-bottom: 1px solid white;
-    font-size: var(--xsmall-font);
+    font-size: var(--small-font);
     border-top: 1px solid white;
     color: white;
     padding: 2.5px 10px;
@@ -415,6 +416,7 @@ label.text {
 .edittoolsbox {
     border: 1.5px solid var(--primary-color);
     width: auto;
+    text-align: center;
     min-width: 100%;
     max-width: 100%;
     min-height: var(--toolbox-min-height);
