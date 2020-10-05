@@ -698,7 +698,7 @@ $(document).ready(()=> {
         // finish by appending the whole thing
         let holderbox = document.createElement("div")
         holderbox.setAttribute("class", "draggableToolbox")
-        holderbox.setAttribute("objectid", imageId)
+        holderbox.setAttribute("objectid", imageId+"-hg")
         holderbox.append(newoptionsbar, toolsarea)
 
         draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)

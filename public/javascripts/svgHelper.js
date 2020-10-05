@@ -111,6 +111,7 @@ function moveSvgUp( element )
 {
     // run the last insert to place the image on the bottom of the icons
     element.nextSibling.insertAdjacentElement("afterend", element)
+    
 }
 
 /**
