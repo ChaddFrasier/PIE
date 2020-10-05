@@ -413,6 +413,15 @@ label.text {
     text-align: center;
 }
 
+.concisebtngroup {
+    padding: 0px;
+    width: 100%;
+}
+
+#icongroup > button:hover {
+    cursor: grab;
+}
+
 .edittoolsbox {
     border: 1.5px solid var(--primary-color);
     width: auto;
