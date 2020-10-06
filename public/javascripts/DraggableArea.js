@@ -124,7 +124,24 @@ function DraggableArea( objectbox=undefined )
             // transform the mouse event location to the svg subspace
             let svgP = createSVGP(event.clientX, event.clientY)
 
-            if( draggingIcon.nodeName == "g" ) // 'groups' or 'g' nodes house complex icons like the north arrow
+            if( draggingIcon.nodeName == "g" && draggingIcon.getAttribute("id").indexOf("-hg") > -1)
+            {
+                // get the current mouse location with no object body attached
+                currentX = getScaledPoint(svgP.x, 1, 1)
+                currentY = getScaledPoint(svgP.y, 1, 1)
+
+                draggingIcon.childNodes.forEach(child => {
+                    let origX = getTransform("x", child)
+                    let origY = getTransform("y", child)
+
+                    // update the input fields using the id of the draggingObject
+                    updateInputField(child.getAttribute("id"), origX + (currentX - oldX), origY + (currentY - oldY))
+
+                    // set the new icon transform using the uniform setter function
+                    setTransform(child, scaleString(getTransform("scale", child)), translateString(origX + (currentX - oldX)/getTransform("scale", child), origY + (currentY - oldY)/getTransform("scale", child))) 
+                });                
+            }
+            else if( draggingIcon.nodeName == "g" ) // 'groups' or 'g' nodes house complex icons like the north arrow
             {
                 // get the scaled points from the svg transformed points and the icon dimensions
                 let scaledX = getScaledPoint(svgP.x, getTransform("scale", draggingIcon), draggingIcon.getBBox().width)
@@ -216,30 +233,27 @@ function DraggableArea( objectbox=undefined )
             let svgcontainer = DragBoxContainer
 
             // IF THE NODE IS AN IMAGE IGNORE
-            // TODO: consider removeing this because it could be a better useage if the user can drag images as well as icons and lines
-            if(event.target.nodeName != "image")
-            {
-                // get the parent container of the target if it is valid
-                draggingIcon = getIconParentContainer( event.target )
+        
+            // get the parent container of the target if it is valid
+            draggingIcon = getIconParentContainer( event.target )
 
-                console.log("The dragging object is: ")
-                console.log(draggingIcon)
+            console.log("The dragging object is: ")
+            console.log(draggingIcon)
 
-                // if the drag icon is found to be valid then initiate the dragging functions
-                if( draggingIcon != null )
-                {   
-                    // requires svgHelper.js
-                    let svgP = createSVGP( event.clientX, event.clientY )
-                    oldX = svgP.x
-                    oldY = svgP.y
-            
-                    svgcontainer.addEventListener("mousemove", dragObject )
-                    svgcontainer.addEventListener("mouseleave", endDrag )
-                    svgcontainer.addEventListener("mouseup", endDrag )
+            // if the drag icon is found to be valid then initiate the dragging functions
+            if( draggingIcon != null )
+            {   
+                // requires svgHelper.js
+                let svgP = createSVGP( event.clientX, event.clientY )
+                oldX = svgP.x
+                oldY = svgP.y
+        
+                svgcontainer.addEventListener("mousemove", dragObject )
+                svgcontainer.addEventListener("mouseleave", endDrag )
+                svgcontainer.addEventListener("mouseup", endDrag )
 
-                    draggingIcon.classList.add('dragging')
-                    svgcontainer.classList.add('dragging')
-                }
+                draggingIcon.classList.add('dragging')
+                svgcontainer.classList.add('dragging')
             }
         }
         // ---------------- End Private functions 2 --------------------------
