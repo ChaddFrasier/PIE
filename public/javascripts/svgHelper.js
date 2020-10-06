@@ -46,20 +46,44 @@ function setTransform( element, scaleString, translateString )
  */
 function getTransform( attr, object)
 {
-    switch( attr )
-    {
-        case "scale":
-            return parseFloat(object.style.transform.split("scale3d(")[1])
-
-        case "x":
-            return parseFloat(object.style.transform.split("translate(")[1])
-    
-        case "y":
-            return parseFloat(object.style.transform.split("translate(")[1].split(',')[1])
-        
-        default:
-            console.log("error")
-            break
+    try {
+            if( object.style.transform )
+            {
+                switch( attr )
+                {
+                    case "scale":
+                        return parseFloat(object.style.transform.split("scale3d(")[1])
+            
+                    case "x":
+                        return parseFloat(object.style.transform.split("translate(")[1])
+                
+                    case "y":
+                        return parseFloat(object.style.transform.split("translate(")[1].split(',')[1])
+                    
+                    default:
+                        throw -1
+                }
+            }
+            else
+            {
+                switch( attr )
+                {
+                    case "scale":
+                        return 1
+            
+                    case "x":
+                        return parseFloat(object.getAttribute("x"))
+                
+                    case "y":
+                        return parseFloat(object.getAttribute("y"))
+                    
+                    default:
+                        throw -1
+                }
+            }
+        } 
+    catch (error) {
+        console.log(error)
     }
 }
 
