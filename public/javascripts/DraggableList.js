@@ -127,7 +127,14 @@ function DraggableList( inobject=undefined )
             draggableList.removeObject(parentBox)
 
             // remove the image holder now
-            svgcontainer.removeChild(svgObject.parentElement)
+            if(svgcontainer === svgObject.parentElement)
+            {
+                svgcontainer.removeChild(svgObject)
+            }
+            else
+            {
+                svgcontainer.removeChild(svgObject.parentElement)
+            }
 
             // update the count
             getObjectCount(-1 , typeofObject(svgObject.id))

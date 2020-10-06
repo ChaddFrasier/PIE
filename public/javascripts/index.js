@@ -698,7 +698,7 @@ $(document).ready(()=> {
         // finish by appending the whole thing
         let holderbox = document.createElement("div")
         holderbox.setAttribute("class", "draggableToolbox")
-        holderbox.setAttribute("objectid", imageId)
+        holderbox.setAttribute("objectid", imageId+"-hg")
         holderbox.append(newoptionsbar, toolsarea)
 
         draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
@@ -3087,7 +3087,7 @@ function updateInputField( objectid, ...args )
             }
         }
     }
-    else if( objectid.indexOf("g") > -1)
+    else if( objectid.nodeName === "g")
     {
         var objectArr = document.getElementsByClassName("draggableToolbox") 
         
@@ -3100,6 +3100,24 @@ function updateInputField( objectid, ...args )
                 xinput.value = Number(args[0]).toFixed(0)
 
                 var yinput = objectArr[i].children[1].querySelector("input[name='iconycoordinput']")
+                yinput.value = Number(args[1]).toFixed(0)
+            }
+        }
+    }
+    else if( objectid.indexOf("image") > -1)
+    {
+        var objectArr = document.getElementsByClassName("draggableToolbox")
+        
+        // more than 1 toolbox present
+        for(let i = 0; i < objectArr.length; i++ ){
+            if( objectArr[i].getAttribute("objectid") == objectid )
+            {
+                console.log("THIS RUNS GOODIE GOODIE")
+                // set the ui input boxes
+                var xinput = objectArr[i].children[1].querySelector("input[name='xcoordinput']")
+                xinput.value = Number(args[0]).toFixed(0)
+
+                var yinput = objectArr[i].children[1].querySelector("input[name='ycoordinput']")
                 yinput.value = Number(args[1]).toFixed(0)
             }
         }
