@@ -131,18 +131,37 @@ function DraggableArea( objectbox=undefined )
                 currentY = getScaledPoint(svgP.y, 1, 1)
 
                 draggingIcon.childNodes.forEach(child => {
+                    let childScale = getTransform("scale", child)
                     let origX = getTransform("x", child)
                     let origY = getTransform("y", child)
 
-                    // update the input fields using the id of the draggingObject
-                    updateInputField(child.getAttribute("id"), origX + (currentX - oldX), origY + (currentY - oldY))
+                    let newX = origX + (currentX - oldX)/childScale
+                    let newY = origY + (currentY - oldY)/childScale
 
-                    // set the new icon transform using the uniform setter function
-                    setTransform(child, scaleString(getTransform("scale", child)), translateString(origX + (currentX - oldX)/getTransform("scale", child), origY + (currentY - oldY)/getTransform("scale", child))) 
+                    if( child.nodeName === "image")
+                    {
+                        // update the input fields using the id of the draggingObject
+                        updateInputField( child.getAttribute("id"), newX, newY )
+
+                        updateImageLocation( child.getAttribute("id"), newX, newY)
+                    }
+                    else
+                    {
+                        // update the input fields using the id of the draggingObject
+                        updateInputField( child.getAttribute("id"), newX*childScale, newY*childScale )
+
+                        // set the new icon transform using the uniform setter function
+                        setTransform(
+                            child, 
+                            scaleString( childScale ),
+                            translateString( newX , newY )
+                        )
+                    } 
                 });                
             }
             else if( draggingIcon.nodeName == "g" ) // 'groups' or 'g' nodes house complex icons like the north arrow
             {
+                console.log("this runs")
                 // get the scaled points from the svg transformed points and the icon dimensions
                 let scaledX = getScaledPoint(svgP.x, getTransform("scale", draggingIcon), draggingIcon.getBBox().width)
                 let scaledY = getScaledPoint(svgP.y, getTransform("scale", draggingIcon), draggingIcon.getBBox().height)

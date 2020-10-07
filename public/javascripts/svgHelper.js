@@ -31,11 +31,15 @@ function setSVGBackground( svg, color )
  */
 function setTransform( element, scaleString, translateString )
 {
-    element.style.webkitTransform = scaleString + " " + translateString;
-    element.style.MozTransform = scaleString + " " + translateString;
-    element.style.msTransform = scaleString + " " + translateString;
-    element.style.OTransform = scaleString + " " + translateString;
-    element.style.transform = scaleString + " " + translateString;
+    if( element.nodeName !== "image")
+    {
+        element.style.webkitTransform = scaleString + " " + translateString;
+        element.style.MozTransform = scaleString + " " + translateString;
+        element.style.msTransform = scaleString + " " + translateString;
+        element.style.OTransform = scaleString + " " + translateString;
+        element.style.transform = scaleString + " " + translateString;
+    
+    }
 }
 
 /**
@@ -165,13 +169,13 @@ function updateTranslate ( translateStr, attr, value, scale )
 
     if( attr == "x" )
     {
-        let y = parseInt( translateStr.split( "," )[ 1 ] )
+        let y = parseFloat( translateStr.split( "translate(" )[ 1 ].split( "," )[ 1 ] )
 
         return  translateString(value/scale, y) 
     }
     else if( attr == "y" )
     {
-        let x = parseInt( translateStr.split( "translate(" )[ 1 ].split( "," )[ 0 ] )
+        let x = parseFloat( translateStr.split( "translate(" )[ 1 ].split( "," )[ 0 ] )
 
         return  translateString(x, value/scale)
 
