@@ -743,6 +743,7 @@ svg.imagecontainer {
 
 .containingelement {
     cursor: none;
+    width: auto;
 }
 
 .windowsidebar > button:hover {
