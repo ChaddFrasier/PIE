@@ -161,16 +161,26 @@ function DraggableArea( objectbox=undefined )
             }
             else if( draggingIcon.nodeName == "g" ) // 'groups' or 'g' nodes house complex icons like the north arrow
             {
-                console.log("this runs")
-                // get the scaled points from the svg transformed points and the icon dimensions
-                let scaledX = getScaledPoint(svgP.x, getTransform("scale", draggingIcon), draggingIcon.getBBox().width)
-                let scaledY = getScaledPoint(svgP.y, getTransform("scale", draggingIcon), draggingIcon.getBBox().height)
+                // get only mouse position, not adjusted for icon size and convert to parent element matrix
+                currentX = getScaledPoint(svgP.x, 1, 1)
+                currentY = getScaledPoint(svgP.y, 1, 1)
+
+                let scale = getTransform("scale", draggingIcon)
+                let origX = getTransform("x", draggingIcon)
+                let origY = getTransform("y", draggingIcon)
+
+                let newX = origX + (currentX - oldX)/scale
+                let newY = origY + (currentY - oldY)/scale
 
                 // update the input fields using the id of the draggingObject
-                updateInputField(draggingIcon.getAttribute("id"), scaledX, scaledY)
+                updateInputField( draggingIcon.getAttribute("id"), newX*scale, newY*scale )
 
                 // set the new icon transform using the uniform setter function
-                setTransform(draggingIcon, scaleString(getTransform("scale", draggingIcon)), translateString(scaledX, scaledY))
+                setTransform(
+                    draggingIcon, 
+                    scaleString( scale ),
+                    translateString( newX , newY )
+                )
             }
             else if( draggingIcon.nodeName == "rect" )
             {

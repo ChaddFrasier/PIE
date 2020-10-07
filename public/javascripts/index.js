@@ -714,7 +714,7 @@ $(document).ready(()=> {
 
         holdergroup.appendChild(imagesvg)
 
-        // TODO: This is the box that will hold the image and the icons for said image
+        // This is the box that will hold the image and the icons for said image
         holdergroup.setAttribute("id", imageId+ "-hg")
         holdergroup.classList.add("containingelement")
 
@@ -1323,8 +1323,7 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
             // set event listeners
             iconscaleinput.addEventListener("change", updateIconScale)
-            // dispatch the event to update the scale
-            iconscaleinput.dispatchEvent(new Event("change", {value: '5'}))
+            
 
             iconmaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)})
             iconaccentcolorinput.addEventListener("change", function(event){updateIconColor(event, 1)})
@@ -1359,7 +1358,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             break
     
         case "sun":
-            //TODO: Do the same thing to fix the sun and I did the north icon
 
             let suniconscaleinput = document.createElement("input")
             let suniconmaincolorinput = document.createElement("input")
