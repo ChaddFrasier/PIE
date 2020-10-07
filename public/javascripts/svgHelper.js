@@ -149,7 +149,6 @@ function moveSvgUp( element )
  */
 function moveSvgDown( element )
 {
-    // TODO: if the elemnt is an image, move all icons attached to the image
     document.getElementById("figurecontainer").insertBefore(element, element.previousSibling)
 }
 
@@ -178,6 +177,5 @@ function updateTranslate ( translateStr, attr, value, scale )
         let x = parseFloat( translateStr.split( "translate(" )[ 1 ].split( "," )[ 0 ] )
 
         return  translateString(x, value/scale)
-
     }
 }
