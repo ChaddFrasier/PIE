@@ -14,10 +14,6 @@ router.post('/', ( req, res, next ) =>
         case "/api/gdal":
             console.log("GDAL COMMAND NEEDS TO RUN")
             break;
-
-        case "/api/export":
-            console.log("EXPORT THE SVG THAT WAS PASSED VIA HTTP")
-            break;
     
         default:
             console.debug("Uh Oh: There was no case that triggered in this switch statement.")
