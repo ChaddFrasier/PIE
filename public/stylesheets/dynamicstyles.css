@@ -63,7 +63,7 @@
 
         --toolbox-min-height: 0;
         --toolbox-max-height: 75px;
-        --toolbox-min-width: 100%;
+        --toolbox-min-width: 75px;
         --toolbox-max-width: 100px;
         --edittoolbox-max-height: 150px;
 
