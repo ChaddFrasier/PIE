@@ -633,7 +633,6 @@ $(document).ready(()=> {
             if(matchingCaption && !isNaN(Number(this.value)))
             {
                 matchingCaption.setAttribute("x", Number(this.value))
-                
             }
         })
         
@@ -715,7 +714,7 @@ $(document).ready(()=> {
 
         holdergroup.appendChild(imagesvg)
 
-        // TODO: This is the box that will hold the image and the icons for said image
+        // This is the box that will hold the image and the icons for said image
         holdergroup.setAttribute("id", imageId+ "-hg")
         holdergroup.classList.add("containingelement")
 
@@ -1324,8 +1323,7 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
             // set event listeners
             iconscaleinput.addEventListener("change", updateIconScale)
-            // dispatch the event to update the scale
-            iconscaleinput.dispatchEvent(new Event("change", {value: '5'}))
+            
 
             iconmaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)})
             iconaccentcolorinput.addEventListener("change", function(event){updateIconColor(event, 1)})
@@ -1360,7 +1358,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             break
     
         case "sun":
-            //TODO: Do the same thing to fix the sun and I did the north icon
 
             let suniconscaleinput = document.createElement("input")
             let suniconmaincolorinput = document.createElement("input")
@@ -1740,11 +1737,14 @@ function updateIconPosition ( event, attrId )
 
     if( attrId == 0 )
     {
-        setTransform( object, scaleString(scale), updateTranslate( object.style.transform, "x", Number( event.target.value ), scale ))
+        let translateStr = updateTranslate( object.style.transform, "x", parseFloat( event.target.value ), scale )
+        console.log(translateStr)
+        setTransform( object, scaleString(scale), translateStr)
     }
     else if( attrId == 1 )
     {
-        setTransform(object, scaleString(scale), updateTranslate( object.style.transform, "y", Number( event.target.value ), scale ))
+        let translateStr = updateTranslate( object.style.transform, "y", parseFloat( event.target.value ), scale )
+        setTransform(object, scaleString(scale), translateStr)
     }
 }
 
@@ -3044,6 +3044,18 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
 }
 
+function updateImageLocation( imageId, x, y )
+{
+    if(imageId)
+    {
+        let image = document.getElementById(imageId)
+
+        image.setAttribute("x",x)
+        image.setAttribute("y",y)
+    }
+}
+
+
 function updateInputField( objectid, ...args )
 {
     // dragging a line
@@ -3087,39 +3099,68 @@ function updateInputField( objectid, ...args )
             }
         }
     }
-    else if( objectid.nodeName === "g")
+    else if( objectid.indexOf("Icon") > -1 )
     {
         var objectArr = document.getElementsByClassName("draggableToolbox") 
-        
-        // more than 1 toolbox present
-        for(let i = 0; i < objectArr.length; i++ ){
-            if( objectArr[i].getAttribute("objectid") == objectid )
-            {
-                // set the ui input boxes
-                var xinput = objectArr[i].children[1].querySelector("input[name='iconxcoordinput']")
-                xinput.value = Number(args[0]).toFixed(0)
+ 
+        if( objectArr.length > 0)
+        {
+            // more than 1 toolbox present
+            for(let i = 0; i < objectArr.length; i++ ){
+                if( objectArr[i].getAttribute("objectid").indexOf(objectid.split("-")[1]) > -1 )
+                {
+                    // set the ui input boxes
+                    var xinput = objectArr[i].children[1].querySelectorAll("input[name='iconxcoordinput']")
+                    var yinput = objectArr[i].children[1].querySelectorAll("input[name='iconycoordinput']")
 
-                var yinput = objectArr[i].children[1].querySelector("input[name='iconycoordinput']")
-                yinput.value = Number(args[1]).toFixed(0)
+
+                    if(xinput.length > 0 && yinput.length > 0)
+                    {
+                        xinput.forEach(inputfield => {
+                            if(inputfield.getAttribute("objectid") === objectid)
+                            {
+                                inputfield.value = Number(args[0]).toFixed(0)
+                            }
+                        });
+
+                        yinput.forEach(inputfield => {
+                            if(inputfield.getAttribute("objectid") === objectid)
+                            {
+                                inputfield.value = Number(args[1]).toFixed(0)
+                            }
+                        });
+                    }
+                }
             }
         }
+        else
+        {
+            console.log("Something went wrong")
+        }
+        
     }
-    else if( objectid.indexOf("image") > -1)
+    else if( objectid.indexOf("image") > -1 )
     {
         var objectArr = document.getElementsByClassName("draggableToolbox")
         
-        // more than 1 toolbox present
-        for(let i = 0; i < objectArr.length; i++ ){
-            if( objectArr[i].getAttribute("objectid") == objectid )
-            {
-                console.log("THIS RUNS GOODIE GOODIE")
-                // set the ui input boxes
-                var xinput = objectArr[i].children[1].querySelector("input[name='xcoordinput']")
-                xinput.value = Number(args[0]).toFixed(0)
+        if(objectArr.length > 0)
+        {
+            // more than 1 toolbox present
+            for(let i = 0; i < objectArr.length; i++ ){
+                if( objectArr[i].getAttribute("objectid").split('-')[0] === objectid )
+                {
+                    // set the ui input boxes
+                    var xinput = objectArr[i].children[1].querySelector("input[name='xcoordinput']")
+                    xinput.value = Number(args[0]).toFixed(0)
 
-                var yinput = objectArr[i].children[1].querySelector("input[name='ycoordinput']")
-                yinput.value = Number(args[1]).toFixed(0)
+                    var yinput = objectArr[i].children[1].querySelector("input[name='ycoordinput']")
+                    yinput.value = Number(args[1]).toFixed(0)
+                }
             }
+        }
+        else
+        {
+            console.log("Something went wrong")
         }
     }
 }

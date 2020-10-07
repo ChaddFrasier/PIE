@@ -519,11 +519,12 @@ button.selected {
     border: 1px solid black;
     width: auto;
     color: white;
-    min-width: 100%;
+    min-width: var(--toolbox-min-width);
+    max-width: var(--toolbox-max-width);
     min-height: 0px;
     max-height: 200px;
     background: var(--accent-color);
-    height: 200px;
+    height: auto;
     padding: 0 2px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -743,6 +744,7 @@ svg.imagecontainer {
 
 .containingelement {
     cursor: none;
+    width: auto;
 }
 
 .windowsidebar > button:hover {
