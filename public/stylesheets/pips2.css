@@ -325,6 +325,42 @@ button.disabled {
     border: 1px solid transparent;
 }
 
+.exporttitlebox {
+    top: 0;
+    text-align: center;
+    color: black;
+    border-bottom: 2px solid black;
+    height: auto;
+}
+
+.exportbuttonholder {
+    min-height: 25px;
+    display: flex;
+    height: auto;
+    margin: auto 0 0 0;
+}
+
+.exportinputholder {
+    margin: 0 auto;
+    border: 5px red;
+    height: 80%;
+    width: 100%;
+}
+
+.exportmainbox {
+    background: var(--bar-gradient);
+    width: auto;
+    height: auto;
+    min-width: 30vw;
+    min-height: 20vw;
+    border-radius: 5px;
+    box-shadow: 2px 3px;
+    position: fixed;
+    left: 30vw;
+    top: 10vh;
+    border: 2px solid black;
+}
+
 .maincontent {
     display: flex; 
     height: auto;

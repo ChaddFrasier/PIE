@@ -12,6 +12,7 @@ var contactRouter = require('./routes/contact');
 var apiRouter = require('./routes/api');
 var faqRouter = require('./routes/faq');
 var uploadRouter = require('./routes/upload')
+var exportRouter = require('./routes/export')
 var imageRouter = require('./routes/images');
 
 var app = express();
@@ -35,6 +36,7 @@ app.use('/faq', faqRouter);
 app.use(['/api/isis','/api/gdal'], apiRouter);
 app.use('/upload', uploadRouter);
 app.use('/images',imageRouter);
+app.use('/export',exportRouter);
 
 fs.readdir( path.join(__dirname, "public", "uploads"), ( err, files ) =>
 {
@@ -42,6 +44,18 @@ fs.readdir( path.join(__dirname, "public", "uploads"), ( err, files ) =>
     files.forEach( filename =>
     {
         fs.unlink( path.join(__dirname, "public", "uploads", filename), () =>
+        {
+            console.log("Removed " + filename)
+        })
+    })
+})
+
+fs.readdir( path.join(__dirname, "public", "exports"), ( err, files ) =>
+{
+    if( err ){ return }
+    files.forEach( filename =>
+    {
+        fs.unlink( path.join(__dirname, "public", "exports", filename), () =>
         {
             console.log("Removed " + filename)
         })

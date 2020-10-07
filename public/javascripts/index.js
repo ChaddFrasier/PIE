@@ -108,7 +108,96 @@ $(document).ready(()=> {
     })
 
     $('#exportbtn').on("mousedown", function(event) {
-        console.log("Create a div input box thingy and save the file as whatever the user chooses.")       
+
+        let mainholder = document.createElement("div"),
+            titleholder = document.createElement("div"),
+            inputholder = document.createElement("div"),
+            buttonholder = document.createElement("div"),
+            title = document.createElement("h3"),
+            savebtn = document.createElement("button"),
+            cancelbtn = document.createElement("button"),
+            leftbox = document.createElement("div"),
+            centerbox = document.createElement("div"),
+            form = document.createElement("form"),
+            fileinputname = document.createElement("input"),
+            rightbox = document.createElement("div");
+
+        titleholder.classList.add("exporttitlebox");
+        inputholder.classList.add("exportinputholder");
+        buttonholder.classList.add("exportbuttonholder");
+
+        title.innerHTML = "Save Figure As ...";
+        titleholder.appendChild(title);
+
+        savebtn.innerHTML = "Download";
+        cancelbtn.innerHTML = "Cancel";
+
+        centerbox.style.width = "60%";
+
+        leftbox.appendChild(savebtn)
+        leftbox.style.textAlign = "right"
+        leftbox.style.width = "20%"
+
+        rightbox.appendChild(cancelbtn)
+        rightbox.style.width = "20%"
+        rightbox.style.textAlign = "left"
+
+        fileinputname.setAttribute("name", "exportfilename")
+        fileinputname.setAttribute("type", "text")
+
+        form.setAttribute("method", "post")
+        form.setAttribute("enctype", "multipart/form-data")
+        form.setAttribute("runat", "server")
+        form.setAttribute("action", "/export")
+
+        form.append( fileinputname )
+
+        inputholder.appendChild(form)
+
+        savebtn.addEventListener("click", function ( event )
+        {
+            event.preventDefault();
+            
+            var fd = new FormData(form)
+            var xhr = new XMLHttpRequest();
+
+            xhr.responseType = 'blob'
+
+            var data = 
+                '<?xml version="1.1" encoding="UTF-8"?>\n'
+                + (new XMLSerializer()).serializeToString(document.getElementById("figurecontainer"));
+
+            // creates a blob from the encoded svg and sets the type of the blob to and image svg
+            var svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
+            
+            fd.append("exportfile", svgBlob, "export.svg" )
+            // when the requests load handle the response
+            xhr.onloadend = () => {
+                // this is an effective way of recieving the response return
+                console.log("loaded finished")
+            }
+
+
+            // open the request and send the data
+            xhr.open('POST', "/export", true)
+            xhr.send(fd)
+            return false;
+        })
+        cancelbtn.addEventListener("click", (event) => {
+            console.log("CANCEL SAVING ACTION")
+        })
+
+        buttonholder.append(leftbox, centerbox, rightbox);
+
+        mainholder.append(titleholder, inputholder, buttonholder);
+        mainholder.classList.add("exportmainbox");
+        document.getElementById("maincontent").appendChild(mainholder);
+
+        /* TODO: the div box can be used as the form and then just attach the svg before it is submitted. This was 
+            I am required to make a <form> object just like before with /upload
+        */
+       
+        // TODO: right now, create a xhr reuest that sends the svg holder to the server and the server should print out the svg
     })
 
     /** 
@@ -551,8 +640,17 @@ $(document).ready(()=> {
                 
                 // when the requests load handle the response
                 xhr.onloadend = () => {
-                    // this is an effective way of recieving the response return
-                    document.getElementById(event.target.parentElement.attributes.objectid.value).setAttribute("href", URL.createObjectURL(xhr.response) )
+
+                    var reader = new FileReader()
+
+                    // occurs after readAsDataURL
+                    reader.onload = function(e) {
+                        // use jquery to update the image source
+                        $('#'+imageId).attr('href', e.target.result)
+                    }
+
+                    // convert to base64 string
+                    reader.readAsDataURL(xhr.response)
                 }
 
                 // open the request and send the data

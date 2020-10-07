@@ -1,7 +1,6 @@
 "use strict"
 
 const express = require('express');
-const fs  = require('fs');
 const multer = require('multer');
 const path  = require('path');
 const router = express.Router();

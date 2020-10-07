@@ -6,8 +6,10 @@
 *.cub
 *.CUB
 
+
 # Uploaded Files
 uploads/
+exports/
 
 # Logs
 logs
