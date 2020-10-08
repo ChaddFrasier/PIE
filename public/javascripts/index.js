@@ -107,6 +107,10 @@ $(document).ready(()=> {
         optionsAction(event.target)
     })
 
+    /**
+     * @function exportbtn.mousedown()
+     * @description drae the box that is used for inputing export information
+     */
     $('#exportbtn').on("mousedown", function(event) {
 
         let mainholder = document.createElement("div"),
@@ -154,15 +158,20 @@ $(document).ready(()=> {
 
         inputholder.appendChild(form)
 
+        // on click of the save btn send a post to the server to download an svg file of the svgcontainer
         savebtn.addEventListener("click", function ( event )
         {
+            // prevent submitting of the page
             event.preventDefault();
             
+            // create the request data using the form
             var fd = new FormData(form)
             var xhr = new XMLHttpRequest();
 
+            // set response type
             xhr.responseType = 'blob'
 
+            // append the xml header line to make an official svg file
             var data = 
                 '<?xml version="1.1" encoding="UTF-8"?>\n'
                 + (new XMLSerializer()).serializeToString(document.getElementById("figurecontainer"));
@@ -170,34 +179,36 @@ $(document).ready(()=> {
             // creates a blob from the encoded svg and sets the type of the blob to and image svg
             var svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
             
-            fd.append("exportfile", svgBlob, "export.svg" )
+            var name = "export.svg"
+
+            // append the svgBlob as a file with the name given the exportfile 
+            fd.append("exportfile", svgBlob, name )
+
             // when the requests load handle the response
             xhr.onloadend = () => {
                 // this is an effective way of recieving the response return
                 console.log("loaded finished")
             }
 
-
             // open the request and send the data
             xhr.open('POST', "/export", true)
             xhr.send(fd)
             return false;
         })
+
+        // cancel button listener
         cancelbtn.addEventListener("click", (event) => {
-            console.log("CANCEL SAVING ACTION")
+            document.getElementById("maincontent").removeChild()
         })
 
+        // append the main section boxes for the button holder
         buttonholder.append(leftbox, centerbox, rightbox);
 
         mainholder.append(titleholder, inputholder, buttonholder);
         mainholder.classList.add("exportmainbox");
+        // append the main content box
         document.getElementById("maincontent").appendChild(mainholder);
 
-        /* TODO: the div box can be used as the form and then just attach the svg before it is submitted. This was 
-            I am required to make a <form> object just like before with /upload
-        */
-       
-        // TODO: right now, create a xhr reuest that sends the svg holder to the server and the server should print out the svg
     })
 
     /** 
@@ -540,7 +551,7 @@ $(document).ready(()=> {
             ycoordinput = document.createElement("input"),
             imagesvg = document.createElementNS(NS.svg, "image");
 
-        // TODO: this is the start of the image icon layer fix && comment this new stuff
+        // create the main holder group for the image
         var holdergroup = document.createElementNS(NS.svg, "g");
 
         // set the class for the options bar
@@ -1851,8 +1862,6 @@ function updateIconPosition ( event, attrId )
  * @param {string} id 
  * @param {NodeList} array 
  * @description find the element with the id in the array
- * 
- * //TODO: this could be simplified; ithink
  * 
  */
 function findImageToolbox( id, array )
