@@ -47,13 +47,27 @@ $(document).ready(()=> {
     })
     
     $('#penciloptbtn').click( function( event ) {
+        event.preventDefault()
+
         if(PencilFlag)
         {
             // cancel the drawing functionality
             event.target.classList.remove("drawing")
-            document.getElementById("editbox").classList.remove("drawing")
+
+            // remove the pencil icon to the main box on hover
+            document.getElementById("maincontent").childNodes.forEach(childel => {
+                childel.classList.remove("drawing")
+            });
+
+            // remove the pencil icon to the main box on svg main elements
+            document.getElementById("figurecontainer").childNodes.forEach(childel => {
+                childel.classList.remove("drawing")
+            });
 
             changeButtonActivation("enable", 0)
+
+            // allow dragging again
+            draggableSvg.unpauseDraggables();
 
             // remove draw listeners
             draggableSvg.getContainerObject().removeEventListener("mousedown", drawMouseDownListener)
@@ -62,9 +76,21 @@ $(document).ready(()=> {
         {
             // start the draeing functionality
             event.target.classList.add("drawing")
-            document.getElementById("editbox").classList.add("drawing")
+            
+            // add the pencil cursor icon to the main content objects
+            document.getElementById("maincontent").childNodes.forEach((childel) => {
+                childel.classList.add("drawing")
+            });
+
+            // add the pencil cursor icon to the svg objects
+            document.getElementById("figurecontainer").childNodes.forEach((childel) => {
+                childel.classList.add("drawing")
+            });
 
             changeButtonActivation("disable", 0)
+
+            // pause the dragging function for now
+            draggableSvg.pauseDraggables()
 
             // add event listener for click on svg
             draggableSvg.getContainerObject().addEventListener("mousedown", drawMouseDownListener )
@@ -73,11 +99,27 @@ $(document).ready(()=> {
     })
 
     $('#outlinebtnopt').click( function( event ) {
+
+        event.preventDefault()
+
         if(OutlineFlag)
         {
             // cancel the drawing functionality
             document.getElementById("editbox").classList.remove("outlining")
             event.target.classList.remove("outlining")
+
+            // add the crosshair cursor icon to the main content objects
+            document.getElementById("maincontent").childNodes.forEach((childel) => {
+                childel.classList.remove("outlining")
+            });
+
+            // add the crosshair cursor icon to the svg objects
+            document.getElementById("figurecontainer").childNodes.forEach((childel) => {
+                childel.classList.remove("outlining")
+            });
+
+            // unblock dragging
+            draggableSvg.unpauseDraggables();
 
             changeButtonActivation("enable", 1)
 
@@ -90,8 +132,19 @@ $(document).ready(()=> {
             document.getElementById("editbox").classList.add("outlining")
             event.target.classList.add("outlining")
 
+            // add the crosshair cursor icon to the main content objects
+            document.getElementById("maincontent").childNodes.forEach((childel) => {
+                childel.classList.add("outlining")
+            });
 
+            // add the crosshair cursor icon to the svg objects
+            document.getElementById("figurecontainer").childNodes.forEach((childel) => {
+                childel.classList.add("outlining")
+            });
             changeButtonActivation("disable", 1)
+
+            // block dragging again
+            draggableSvg.pauseDraggables();
 
             // add event listener for click on svg
             draggableSvg.getContainerObject().addEventListener("mousedown", drawBoxMouseDownListener )
@@ -113,6 +166,11 @@ $(document).ready(()=> {
      */
     $('#exportbtn').on("mousedown", function(event) {
 
+        if( document.querySelectorAll("div[class='exportmainbox']").length !== 0 )
+        {
+            return false;
+        }
+
         let mainholder = document.createElement("div"),
             titleholder = document.createElement("div"),
             inputholder = document.createElement("div"),
@@ -124,6 +182,10 @@ $(document).ready(()=> {
             centerbox = document.createElement("div"),
             form = document.createElement("form"),
             fileinputname = document.createElement("input"),
+            fileinputtype = document.createElement("input"),
+            fileinputtypelabel = document.createElement("label"),
+            fileinputtypesvglabel = document.createElement("label"),
+            fileinputnamelabel = document.createElement("label"),
             rightbox = document.createElement("div");
 
         titleholder.classList.add("exporttitlebox");
@@ -136,25 +198,70 @@ $(document).ready(()=> {
         savebtn.innerHTML = "Download";
         cancelbtn.innerHTML = "Cancel";
 
-        centerbox.style.width = "60%";
+        centerbox.style.width = "40%";
 
         leftbox.appendChild(savebtn)
-        leftbox.style.textAlign = "right"
-        leftbox.style.width = "20%"
+        leftbox.style.textAlign = "center"
+        leftbox.style.width = "30%"
 
         rightbox.appendChild(cancelbtn)
-        rightbox.style.width = "20%"
-        rightbox.style.textAlign = "left"
+        rightbox.style.width = "30%"
+        rightbox.style.textAlign = "center"
 
         fileinputname.setAttribute("name", "exportfilename")
         fileinputname.setAttribute("type", "text")
+        fileinputnamelabel.innerHTML = "File Name: "
+        fileinputname.placeholder = "filename"
+        
+        fileinputtype.setAttribute("name", "exportfiletype-svg")
+        fileinputtype.setAttribute("type", "checkbox")
+        fileinputtypelabel.innerHTML = "Output Types: "
+
+        fileinputtypesvglabel.innerHTML = "SVG &rarr;"
+
+        var fileinputtype1 = fileinputtype.cloneNode(true);
+
+        let fileinputtypepnglabel = fileinputtypesvglabel.cloneNode(true)
+        fileinputtypepnglabel.innerHTML = "PNG &rarr;"
+
+        var fileinputtype2 = fileinputtype.cloneNode(true);
+
+        let fileinputtypetifflabel = fileinputtypesvglabel.cloneNode(true)
+        fileinputtypetifflabel.innerHTML = "GeoTIFF &rarr;"
+
+        // TODO: make an checkbox group to make the checkbox list better
 
         form.setAttribute("method", "post")
         form.setAttribute("enctype", "multipart/form-data")
         form.setAttribute("runat", "server")
         form.setAttribute("action", "/export")
 
-        form.append( fileinputname )
+        let formlabelbox = document.createElement("div")
+        let forminputbox = document.createElement("div")
+        let forminputcheckboxholder = document.createElement("div")
+
+        formlabelbox.classList.add("formlabelbox")
+        forminputbox.classList.add("forminputbox")
+        forminputcheckboxholder.classList.add("forminputcheckboxholder")
+
+        formlabelbox.append(fileinputnamelabel, document.createElement("br"),fileinputtypelabel )
+        forminputbox.append(fileinputname, forminputcheckboxholder )
+
+        let columnsvg = document.createElement("div")
+        let columnpng = document.createElement("div")
+        let columntiff = document.createElement("div")
+
+        columnsvg.classList.add("column")
+        columnpng.classList.add("column")
+        columntiff.classList.add("column")
+
+        columnsvg.append(fileinputtypesvglabel, document.createElement("br"), fileinputtype)
+        columnpng.append(fileinputtypepnglabel, document.createElement("br"), fileinputtype1)
+        columntiff.append(fileinputtypetifflabel, document.createElement("br"), fileinputtype2)
+
+        forminputcheckboxholder.append(columnsvg , columntiff, columnpng)
+
+        form.append( formlabelbox, forminputbox )
 
         inputholder.appendChild(form)
 
@@ -183,6 +290,10 @@ $(document).ready(()=> {
 
             // append the svgBlob as a file with the name given the exportfile 
             fd.append("exportfile", svgBlob, name )
+            fd.append("userfilename", fileinputname.value)
+            fd.append("svg", fileinputtype.checked)
+            fd.append("png", fileinputtype1.checked)
+            fd.append("tiff", fileinputtype2.checked)
 
             // when the requests load handle the response
             xhr.onloadend = () => {
@@ -193,22 +304,25 @@ $(document).ready(()=> {
             // open the request and send the data
             xhr.open('POST', "/export", true)
             xhr.send(fd)
+
+            // remove the UI download box
+            cancelbtn.click();
+
             return false;
         })
 
         // cancel button listener
         cancelbtn.addEventListener("click", (event) => {
-            document.getElementById("maincontent").removeChild()
+            document.getElementById("maincontent").removeChild(mainholder)
         })
 
         // append the main section boxes for the button holder
         buttonholder.append(leftbox, centerbox, rightbox);
 
-        mainholder.append(titleholder, inputholder, buttonholder);
+        mainholder.append(titleholder, inputholder, document.createElement("br"), buttonholder);
         mainholder.classList.add("exportmainbox");
         // append the main content box
         document.getElementById("maincontent").appendChild(mainholder);
-
     })
 
     /** 
@@ -859,9 +973,11 @@ $(document).ready(()=> {
      * @description this function starts the drag and drop logic for the north icon
      */
     $('#northarrowopt').on("mousedown", (event) => {
+        event.preventDefault()
+
         let btn = event.target
 
-        if( getObjectCount(0,"image") != 0)
+        if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
         {
             if(selectedObject){
                 selectedObject = null
@@ -889,7 +1005,7 @@ $(document).ready(()=> {
     $('#scalebarbtnopt').on("mousedown", (event) => {
         let btn = event.target
 
-        if( getObjectCount(0,"image") != 0)
+        if( getObjectCount(0,"image") != 0 && detectLeftMouse(event))
         {
             if(selectedObject){
                 selectedObject = null
@@ -914,10 +1030,12 @@ $(document).ready(()=> {
      * @description this function starts the drag and drop logic for the sun icon
      */
     $('#sunarrowopt').on("mousedown", (event) => {
+        event.preventDefault()
+
         let btn = event.target
 
         // check if there is an image
-        if( getObjectCount(0,"image") != 0 )
+        if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
         {
             // set selected and se selected UI
             if( selectedObject )
@@ -946,10 +1064,12 @@ $(document).ready(()=> {
      * @description this function starts the drag and drop logic for observer icon
      */
     $('#observerarrowopt').on("mousedown", (event) => {
+        event.preventDefault()
+
         let btn = event.target
 
         // if there is no image fail and alert
-        if( getObjectCount(0,"image") != 0)
+        if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
         {
             // if the selected object is not null set it to null
             if( selectedObject )
@@ -2247,6 +2367,7 @@ function drawMouseDownListener( event )
         }
 
         document.getElementById("penciloptbtn").click()
+
         draggableSvg.getContainerObject().removeEventListener( "mousemove", updateUI )
         draggableSvg.getContainerObject().removeEventListener( "mouseup", endDraw )
 

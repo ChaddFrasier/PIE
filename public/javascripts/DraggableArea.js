@@ -18,7 +18,8 @@ function DraggableArea( objectbox=undefined )
         oldX = null,
         oldY = null,
         currentX = null,
-        currentY = null;
+        currentY = null,
+        paused = false;
 
     // ---------------- Private functions --------------------------
 
@@ -266,11 +267,8 @@ function DraggableArea( objectbox=undefined )
             // get the parent container of the target if it is valid
             draggingIcon = getIconParentContainer( event.target )
 
-            console.log("The dragging object is: ")
-            console.log(draggingIcon)
-
             // if the drag icon is found to be valid then initiate the dragging functions
-            if( draggingIcon != null )
+            if( draggingIcon != null && !paused )
             {   
                 // requires svgHelper.js
                 let svgP = createSVGP( event.clientX, event.clientY )
@@ -306,6 +304,21 @@ function DraggableArea( objectbox=undefined )
              */
             svgAPI: (x, y) => {
                 return createSVGP( x, y )
+            },
+
+            /**
+             * 
+             */
+            pauseDraggables: () => {
+                DragBoxContainer.removeEventListener("mousedown", dragHandler )
+            },
+
+            /**
+             * 
+             */
+            unpauseDraggables: () => {
+                // add the main listener to the object targeted by DraggableArea() init function
+                DragBoxContainer.addEventListener("mousedown", dragHandler )
             }
         };
     }
