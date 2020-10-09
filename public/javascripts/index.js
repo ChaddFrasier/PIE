@@ -15,6 +15,8 @@
  */
 $(document).ready(()=> {
 
+    addCustomKeys();
+
     // conain the index homepage
     document.body.parentElement.setAttribute("class", "contained")
 
@@ -196,6 +198,9 @@ $(document).ready(()=> {
         titleholder.appendChild(title);
 
         savebtn.innerHTML = "Download";
+        savebtn.type = "button"
+        savebtn.setAttribute("id", "savebtn")
+
         cancelbtn.innerHTML = "Cancel";
 
         centerbox.style.width = "40%";
@@ -268,46 +273,46 @@ $(document).ready(()=> {
         // on click of the save btn send a post to the server to download an svg file of the svgcontainer
         savebtn.addEventListener("click", function ( event )
         {
-            // prevent submitting of the page
             event.preventDefault();
-            
-            // create the request data using the form
-            var fd = new FormData(form)
-            var xhr = new XMLHttpRequest();
+            if( fileinputname.value.length !== 0 )
+            {
+                // create the request data using the form
+                var fd = new FormData(form)
+                var xhr = new XMLHttpRequest();
 
-            // set response type
-            xhr.responseType = 'blob'
+                // set response type
+                xhr.responseType = 'blob'
 
-            // append the xml header line to make an official svg file
-            var data = 
-                '<?xml version="1.1" encoding="UTF-8"?>\n'
-                + (new XMLSerializer()).serializeToString(document.getElementById("figurecontainer"));
+                // append the xml header line to make an official svg file
+                var data = 
+                    '<?xml version="1.1" encoding="UTF-8"?>\n'
+                    + (new XMLSerializer()).serializeToString(document.getElementById("figurecontainer"));
 
-            // creates a blob from the encoded svg and sets the type of the blob to and image svg
-            var svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
-            
-            var name = "export.svg"
+                // creates a blob from the encoded svg and sets the type of the blob to and image svg
+                var svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
 
-            // append the svgBlob as a file with the name given the exportfile 
-            fd.append("exportfile", svgBlob, name )
-            fd.append("userfilename", fileinputname.value)
-            fd.append("svg", fileinputtype.checked)
-            fd.append("png", fileinputtype1.checked)
-            fd.append("tiff", fileinputtype2.checked)
+                // append the svgBlob as a file with the name given the exportfile 
+                fd.append("exportfile", svgBlob, "export.svg" )
+                fd.append("userfilename", fileinputname.value)
+                fd.append("svg", fileinputtype.checked)
+                fd.append("png", fileinputtype1.checked)
+                fd.append("tiff", fileinputtype2.checked)
 
-            // when the requests load handle the response
-            xhr.onloadend = () => {
-                // this is an effective way of recieving the response return
-                console.log("loaded finished")
+                // when the requests load handle the response
+                xhr.onloadend = () => {
+                    // this is an effective way of recieving the response return
+                    console.log("loaded finished")
+                    // TODO: iniate a download by either sending a fetch for the proper file address given by xhr.response or 
+                }
+
+                // open the request and send the data
+                xhr.open('POST', "/export", true)
+                xhr.send(fd)
+
+                // remove the UI download box
+                cancelbtn.click();
+                return false;
             }
-
-            // open the request and send the data
-            xhr.open('POST', "/export", true)
-            xhr.send(fd)
-
-            // remove the UI download box
-            cancelbtn.click();
-
             return false;
         })
 
@@ -1312,6 +1317,24 @@ $(document).ready(()=> {
 }) // end of jquery functions
 
 /* Helper functions */
+
+/**
+ * 
+ */
+function addCustomKeys()
+{
+    document.addEventListener("keydown", function( event ) {
+        switch( Number(event.keyCode) )
+        {
+            case 13:
+                document.getElementById("savebtn").click();
+                break;
+
+            default:
+                return true;
+        }
+    });
+}
 
 /**
  * @function minimizeToolsWindow
