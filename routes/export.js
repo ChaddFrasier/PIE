@@ -3,6 +3,8 @@
 const express = require('express');
 const multer = require('multer');
 const path  = require('path');
+const im = require("imagemagick");
+
 const router = express.Router();
 
 // init storage object to tell multer what to do
@@ -17,15 +19,14 @@ var storage = multer.diskStorage(
         filename: ( req, file, cb ) =>
         {
             cb( null, new Date().getTime() +"_"+ path.basename(file.originalname) )
-        }
+        } 
     }
 );
-    
+
 // set the upload object for multer
 var upload = multer( { storage: storage } );
 
 router.post('/', upload.single('exportfile') , (req, res, next) => {
-    console.log("hellow")
     console.log(req.body)
 })
 
