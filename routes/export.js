@@ -26,7 +26,7 @@ var upload = multer( { storage: storage } );
 
 router.post('/', upload.single('exportfile') , (req, res, next) => {
     console.log("hellow")
-    console.log(req.file)
+    console.log(req.body)
 })
 
 module.exports = router;
