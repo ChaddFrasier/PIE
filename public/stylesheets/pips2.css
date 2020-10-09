@@ -198,6 +198,9 @@ pre > i > b {
     text-align: center;
 }
 
+.column {
+    display: flex;
+}
 
 .basicpagecontent > img {
     text-align: center !important;
@@ -325,8 +328,12 @@ button.disabled {
     border: 1px solid transparent;
 }
 
+.exporttitlebox > h3 {
+    font-size: var(--sm-medium-font);
+    padding: 0;
+}
+
 .exporttitlebox {
-    top: 0;
     text-align: center;
     color: black;
     border-bottom: 2px solid black;
@@ -338,26 +345,60 @@ button.disabled {
     display: flex;
     height: auto;
     margin: auto 0 0 0;
+    bottom: 0;
 }
 
 .exportinputholder {
     margin: 0 auto;
-    border: 5px red;
+    display: flex;
     height: 80%;
     width: 100%;
+    padding: 0 5px 0 0;
 }
+
+.exportinputholder>form{
+    display: flex;
+    width: 100%;
+    height: auto;
+}
+
+.forminputcheckboxholder {
+    width: 100%;
+    margin: 0 0 0 auto;
+    display: block;
+    color: black;
+}
+
+.forminputbox {
+    width: auto;
+    margin: 0 auto;
+}
+
+.formlabelbox {
+    width: 100%;
+    margin: 0 auto 0 0;
+    display: block;
+    height: 100%;
+    padding: 3px;
+}
+
+.formlabelbox > label {
+    font-size: var(--medium-font);
+    width: 100%;
+}
+
 
 .exportmainbox {
     background: var(--bar-gradient);
     width: auto;
     height: auto;
-    min-width: 30vw;
-    min-height: 20vw;
-    border-radius: 5px;
-    box-shadow: 2px 3px;
+    min-height: var(--main-export-box-height);
+    min-width: var(--main-export-box-width);
+    max-height: var(--main-export-box-height);
+    padding: 0;
     position: fixed;
-    left: 30vw;
-    top: 10vh;
+    left: 45vw;
+    top: 20vh;
     border: 2px solid black;
 }
 
