@@ -16,6 +16,9 @@
         --max-title-width: 300px;
         --max-title-height: 100px;
 
+        --main-export-box-height: 200px;
+        --main-export-box-width: 300px;
+
         --toolbox-min-height: 0;
         --toolbox-max-height: 100px;
         --toolbox-min-width: 100%;
@@ -61,10 +64,14 @@
         --max-title-width: 300px;
         --max-title-height: 100px;
 
+        --main-export-box-height: 200px;
+        --main-export-box-width: 250px;
+
         --toolbox-min-height: 0;
-        --toolbox-max-height: 75px;
-        --toolbox-min-width: 75px;
-        --toolbox-max-width: 100px;
+        --toolbox-max-height: 100px;
+        --toolbox-min-width: 100%;
+        --toolbox-max-width: 150px;
+
         --edittoolbox-max-height: 150px;
 
         --toolbox-minibtn-min-width: 30px;
