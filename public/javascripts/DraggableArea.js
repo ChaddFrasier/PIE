@@ -45,6 +45,7 @@ function DraggableArea( objectbox=undefined )
     function validDraggableNode( nodeName )
     {
         var testarray = ["g", "line", "rect"]
+
         // check test nodes for the current node name
         return (testarray.indexOf(nodeName) > -1) ? true: false;
     }
@@ -89,7 +90,7 @@ function DraggableArea( objectbox=undefined )
     {
         try {
             while( !( target == null )
-            && !validDraggableNode(target.nodeName) )
+            && !validDraggableNode(target.nodeName) && target.classList.contains("holder") )
             {
                 target = target.parentElement
             }
@@ -185,6 +186,11 @@ function DraggableArea( objectbox=undefined )
             }
             else if( draggingIcon.nodeName == "rect" )
             {
+                if(draggingIcon.classList.contains("marker"))
+                {
+                    draggingIcon = draggingIcon.parentElement
+                }
+
                 // get the current mouse location with no body to the rect
                 currentX = getScaledPoint(svgP.x, 1, 1)
                 currentY = getScaledPoint(svgP.y, 1, 1)
