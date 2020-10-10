@@ -1911,6 +1911,10 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             scaleicontranslatex.setAttribute("type", "number")
             scaleicontranslatex.setAttribute("objectid", iconId)
             scaleicontranslatex.setAttribute("min", "0")
+
+            scaleicontranslatex.setAttribute("name", "iconxcoordinput")
+            scaleicontranslatey.setAttribute("name", "iconycoordinput")
+
             scaleicontranslatey.setAttribute("type", "number")
             scaleicontranslatey.setAttribute("objectid", iconId)
             scaleicontranslatey.setAttribute("min", "1")
@@ -3313,7 +3317,7 @@ function updateInputField( objectid, ...args )
     if( objectid.indexOf("line") > -1)
     {
         var objectArr = document.getElementsByClassName("draggableToolbox")
-    
+
         // more than 1 toolbox present
         for(let i = 0; i < objectArr.length; i++ ){
             if( objectArr[i].getAttribute("objectid") == objectid )
@@ -3352,10 +3356,13 @@ function updateInputField( objectid, ...args )
     }
     else if( objectid.indexOf("Icon") > -1 )
     {
+    
         var objectArr = document.getElementsByClassName("draggableToolbox") 
  
         if( objectArr.length > 0)
         {
+            console.log(objectid)
+         
             // more than 1 toolbox present
             for(let i = 0; i < objectArr.length; i++ ){
                 if( objectArr[i].getAttribute("objectid").indexOf(objectid.split("-")[1]) > -1 )
