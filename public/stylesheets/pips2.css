@@ -636,7 +636,7 @@ button.selected {
     pointer-events: none;
 }
 
-button#northarrowopt, button#sunarrowopt, button#observerarrowopt  {
+button#northarrowopt, button#sunarrowopt, button#observerarrowopt , button#scalebarbtnopt , button#penciloptbtn, button#outlinebtnopt{
     background: var(--bar-gradient);    
 }
 
@@ -743,9 +743,9 @@ svg.imagecontainer {
 }
 
 .svgholder {
-    margin: 0;
-    padding: 0;
-    width: var(--inner-main-content-max-width);
+    margin: auto auto;
+    padding: 10px;
+    width: auto;
     height: auto;
     max-height: var(--inner-main-content-max-height);
 }

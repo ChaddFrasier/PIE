@@ -270,10 +270,15 @@ $(document).ready(()=> {
 
         inputholder.appendChild(form)
 
-        // on click of the save btn send a post to the server to download an svg file of the svgcontainer
+        /**
+         * @function onclick savebtn
+         * @description send a post to the server to download an svg file of the svgcontainer
+         * */
         savebtn.addEventListener("click", function ( event )
         {
             event.preventDefault();
+
+            // send request if the filename input is not empty
             if( fileinputname.value.length !== 0 )
             {
                 // create the request data using the form
@@ -285,24 +290,28 @@ $(document).ready(()=> {
 
                 // append the xml header line to make an official svg file
                 var data = 
-                    '<?xml version="1.1" encoding="UTF-8"?>\n'
-                    + (new XMLSerializer()).serializeToString(document.getElementById("figurecontainer"));
+                    '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n'
+                    + (new XMLSerializer()).serializeToString( styles2Attributes(document.getElementById("figurecontainer")) );
 
                 // creates a blob from the encoded svg and sets the type of the blob to and image svg
                 var svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
 
                 // append the svgBlob as a file with the name given the exportfile 
-                fd.append("exportfile", svgBlob, "export.svg" )
-                fd.append("userfilename", fileinputname.value)
+                fd.append("exportfile", svgBlob, fileinputname.value+"_tmp.svg" )
                 fd.append("svg", fileinputtype.checked)
                 fd.append("png", fileinputtype1.checked)
-                fd.append("tiff", fileinputtype2.checked)
+                fd.append("tiff",fileinputtype2.checked)
+                fd.append("dims",figsizeselect.value)
+
+                // TODO: 
+                    // append the figure output dimensions to the request body
 
                 // when the requests load handle the response
                 xhr.onloadend = () => {
                     // this is an effective way of recieving the response return
                     console.log("loaded finished")
-                    // TODO: iniate a download by either sending a fetch for the proper file address given by xhr.response or 
+                    // TODO: iniate a download by sending a fetch for the proper file(s) given by xhr.response or use express to send the files without client
+
                 }
 
                 // open the request and send the data
@@ -770,7 +779,7 @@ $(document).ready(()=> {
                 
                 // when the requests load handle the response
                 xhr.onloadend = () => {
-
+                    
                     var reader = new FileReader()
 
                     // occurs after readAsDataURL
@@ -1008,8 +1017,7 @@ $(document).ready(()=> {
      * @description this function starts the drag and drop logic for the north icon
      */
     $('#scalebarbtnopt').on("mousedown", (event) => {
-        let btn = event.target
-
+        let btn = ( event.target.nodeName == "BUTTON" )? event.target: event.target.parentElement;
         if( getObjectCount(0,"image") != 0 && detectLeftMouse(event))
         {
             if(selectedObject){
@@ -1153,6 +1161,7 @@ $(document).ready(()=> {
             else
             {
                 console.log("Unknown Object ID = " + btn.id)
+                console.log(btn)
             }
             
             // draw the icon
