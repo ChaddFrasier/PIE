@@ -71,19 +71,30 @@ block content
                         button#scalebarbtnopt(type="button" title="Scale Bar")
                             svg.btnvectorgraphic(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 4500 700" width="27" height="27" )
                                 g#scalebargroup(stroke="black", fill="black")
-                                    g.holder(pointer-events="none")
-                                        rect(x="248.7" y="217.14" width="3953.1" height="463.01" stroke="#fff" stroke-width="39.57" )
-                                        rect(x="428.61" y="197.28" width="49.907" height="502.72" fill="#fff" )
-                                        rect(x="628.24" y="197.28" width="49.907" height="502.72" fill="#fff" )
-                                        rect(x="827.86" y="197.28" width="49.907" height="502.72" fill="#fff" )
-                                        rect(x="1027.5" y="197.28" width="49.907" height="502.72" fill="#fff" )
-                                        rect(x="1227.1" y="197.28" width="49.907" height="502.72" fill="#fff" )
-                                        rect(x="1426.7" y="197.28" width="49.907" height="502.72" fill="#fff" )
-                                        rect(x="1626.4" y="197.28" width="49.907" height="502.72" fill="#fff" )
-                                        rect(x="1826" y="197.28" width="49.907" height="502.72" fill="#fff" )
+                                    g.holder(pointer-events="none" stroke="none")
+                                        //- main conainting box bg
+                                        rect(x="248.7" y="217.14" width="3953.1" height="463.01" stroke="#fff" stroke-width="39.57")
+
+                                        //- main bg box parts
+                                        rect(x="2225.2" y="423.5" width="1996.3" height="50.272" fill="#fff")
+                                        rect(x="250" y="423.5" width="200" height="50.272" fill="#fff")
+                                        rect(x="650" y="423.5" width="200" height="50.272" fill="#fff")
+                                        rect(x="1050" y="423.5" width="200" height="50.272" fill="#fff")
+                                        rect(x="1450" y="423.5" width="200" height="50.272" fill="#fff")
+                                        rect(x="1850" y="423.5" width="200" height="50.272" fill="#fff")
+
+                                        //- vertical parts
+                                        rect(x="2225.2" y="197.28" width="49.907" height="502.72" fill="#fff")
                                         rect(x="2025.6" y="197.28" width="49.907" height="502.72" fill="#fff")
-                                        rect(x="2225.2" y="423.5" width="1996.3" height="50.272" fill="#fff" )
-                                        rect(x="2225.2" y="197.28" width="49.907" height="502.72" fill="#fff" )
+                                        rect(x="428.61" y="197.28" width="49.907" height="502.72" fill="#fff")
+                                        rect(x="628.24" y="197.28" width="49.907" height="502.72" fill="#fff")
+                                        rect(x="827.86" y="197.28" width="49.907" height="502.72" fill="#fff")
+                                        rect(x="1027.5" y="197.28" width="49.907" height="502.72" fill="#fff")
+                                        rect(x="1227.1" y="197.28" width="49.907" height="502.72" fill="#fff")
+                                        rect(x="1426.7" y="197.28" width="49.907" height="502.72" fill="#fff")
+                                        rect(x="1626.4" y="197.28" width="49.907" height="502.72" fill="#fff")
+                                        rect(x="1826" y="197.28" width="49.907" height="502.72" fill="#fff")
+                                        
                                         text(transform="matrix(.99813 0 0 1.0054 253.04 142.66)" font-size="40px" fill="#ffffff" font-family="sans-serif" style="line-height:1.25;shape-inside:url(#rect1085);white-space:pre" xml:space="preserve")
                                             tspan(x="1940.248" y="18.501405")
                                                 tspan(fill="#ffffff" font-size="192px")="0"
@@ -150,8 +161,6 @@ block content
                             circle(r="2.5" cx="2.5" cy="2.5" fill="#fff" stroke="transparent" stroke-width="2")
                         marker(id="squarehead"  viewBox="0 0 10 10" markerWidth="5px" markerHeight="5px" refX="0.1" refY="2.5" orient="auto")
                             polygon(points="0 0 0 5 5 5 5 0" fill="#fff" stroke="transparent" stroke-width="2")
-                    style
-                        include livestyle/svg.css
 
 block footer
     footer.mainfooter
