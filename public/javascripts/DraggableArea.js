@@ -317,6 +317,7 @@ function DraggableArea( objectbox=undefined )
              */
             pauseDraggables: () => {
                 DragBoxContainer.removeEventListener("mousedown", dragHandler )
+                paused = true;
             },
 
             /**
@@ -325,6 +326,7 @@ function DraggableArea( objectbox=undefined )
             unpauseDraggables: () => {
                 // add the main listener to the object targeted by DraggableArea() init function
                 DragBoxContainer.addEventListener("mousedown", dragHandler )
+                paused = false;
             }
         };
     }
