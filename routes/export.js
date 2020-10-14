@@ -3,6 +3,7 @@
 const express = require('express');
 const multer = require('multer');
 const path  = require('path');
+const fs = require('fs');
 const sharp  = require('sharp');
 
 const router = express.Router();
@@ -33,9 +34,6 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
 
     console.log(req.body)
 
-    // get the path of the svg that was saved by multer
-    let usersvg = path.join(EXPORT_FILE_PATH, req.file.originalname);
-
     // Gather all the information needed for the image manipulation
         
     // 1. What format(s) the user wanted for the output format(s)
@@ -50,10 +48,11 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
     // convert the image to the desired format(s)
 
     // TESTING convert svg image to png
-    await sharp(usersvg)
-        .png()
-        .toFile( path.join(EXPORT_FILE_PATH, newname+".png") )
+    await sharp( path.join(EXPORT_FILE_PATH, req.file.originalname) )
+        .jpeg()
+        .toFile( path.join(EXPORT_FILE_PATH, newname+".jpg") )
         .catch( err => {
+            console.log("ERROR HAPPNEED IN SHARP")
             if(err) throw err
         })
         .then(info => {

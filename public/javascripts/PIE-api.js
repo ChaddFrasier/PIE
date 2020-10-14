@@ -28,22 +28,17 @@ module.exports = {
             let chunks = filename.split(".");
             let ext = chunks[chunks.length-1];
 
-            let pngs = [ "png", "PNG" ];
-            let jpegs = [ "jpg", "jpeg", "JPEG", "JPG" ];
-            let vrts = ["vrt", "VRT" ];
+            let pngs = [ "PNG", "png" ];
+            let jpegs = [ "JPEG", "jpeg", "JPG", "jpg" ];
+            let vrts = ["VRT", "vrt" ];
+            let vrts = ["SVG", "svg" ];
 
-            if(jpegs.indexOf(ext) > -1)
-            {
-                return "JPEG";
-            }
-            else if(pngs.indexOf(ext) > -1)
-            {
-                return "PNG";
-            }
-            else if(vrts.indexOf(ext) > -1)
-            {
-                return "VRT";
-            }
+            [jpegs, pngs, vrts, svg].forEach(array => {
+                if(array.indexOf(ext) > -1)
+                {
+                    return array[0];
+                }    
+            });
         }
     
         return {
@@ -81,7 +76,7 @@ module.exports = {
                     // create a gdal_translate instance with args in the array
                     var child = spawn( "gdal_translate", [
                         "-of", outputtype,
-                        "-ot", "byte", 
+                        "-ot", "byte",
                         "-scale","-outsize", scale, scale,
                         inputfile, outputfile] )
 

@@ -273,6 +273,8 @@ function DraggableArea( objectbox=undefined )
             // get the parent container of the target if it is valid
             draggingIcon = getIconParentContainer( event.target )
 
+            console.log(draggingIcon)
+
             // if the drag icon is found to be valid then initiate the dragging functions
             if( draggingIcon != null && !paused )
             {   

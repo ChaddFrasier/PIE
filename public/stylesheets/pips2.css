@@ -483,11 +483,12 @@ button.disabled {
 
 label.text {
     border-bottom: 1px solid white;
-    font-size: var(--small-font);
+    font-size: auto;
     border-top: 1px solid white;
     color: white;
     padding: 2.5px 10px;
     text-align: center;
+    width: 100%;
 }
 
 .concisebtngroup {

@@ -290,8 +290,8 @@ $(document).ready(()=> {
 
                 // append the xml header line to make an official svg file
                 var data = 
-                    '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n'
-                    + (new XMLSerializer()).serializeToString( styles2Attributes(document.getElementById("figurecontainer")) );
+                    '<?xml version="1.0" encoding="UTF-8"?>\n'
+                    + (new XMLSerializer()).serializeToString( document.getElementById("figurecontainer") );
 
                 // creates a blob from the encoded svg and sets the type of the blob to and image svg
                 var svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
@@ -945,6 +945,7 @@ $(document).ready(()=> {
         imagesvg.setAttribute("width", "1500")
         imagesvg.setAttribute("height", "1000")
         imagesvg.setAttribute("id", imageId)
+        imagesvg.setAttribute("class", "holder")
 
         //TODO: this is where the desfault image is set
         imagesvg.setAttribute("href", "test/moonphasestest.jpg")
