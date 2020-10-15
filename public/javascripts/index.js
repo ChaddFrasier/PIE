@@ -17,7 +17,7 @@ $(document).ready(()=> {
 
     addCustomKeys();
 
-    // conain the index homepage
+    // contain the index homepage
     document.body.parentElement.setAttribute("class", "contained")
 
     // local jquery variables
@@ -302,9 +302,6 @@ $(document).ready(()=> {
                 fd.append("png", fileinputtype1.checked)
                 fd.append("tiff",fileinputtype2.checked)
                 fd.append("dims",figsizeselect.value)
-
-                // TODO: 
-                    // append the figure output dimensions to the request body
 
                 // when the requests load handle the response
                 xhr.onloadend = () => {
@@ -1202,18 +1199,19 @@ $(document).ready(()=> {
                 icongroup.setAttribute("objectid", image.id)
                 icongroup.setAttribute("id", "northIcon-" + image.id)
 
-                // using svg transform of every browser, set initial values * Needed Because getScaledPoint uses it*
-                setTransform( icongroup, scaleString(5), translateString(0, 0) )
-
                 // set the translate location of the icon to where the mouse was released
-                newX = getScaledPoint( svgP.x, getTransform("scale", icongroup), 27 )
-                newY = getScaledPoint( svgP.y, getTransform("scale", icongroup), 27 )
+                newX = getScaledPoint( svgP.x, 1, 27*5 )
+                newY = getScaledPoint( svgP.y, 1, 27*5 )
 
                 // test valid input and set the transform for all browsers
                 if( !isNaN(newX) && !isNaN(newY))
                 {
+                    // TODO: this needed to change because sharp cannot process it
                     // set translate
-                    setTransform(icongroup, scaleString(getTransform("scale",icongroup)), translateString( newX, newY ))
+                    icongroup.setAttribute("x", newX)
+                    icongroup.setAttribute("y", newY)
+                    icongroup.setAttribute("width", 27*5)
+                    icongroup.setAttribute("height", 27*5)
                 }
                 else
                 {
@@ -1232,17 +1230,19 @@ $(document).ready(()=> {
                 icongroup.setAttribute("objectid", image.id)
                 icongroup.setAttribute("id", "sunIcon-" + image.id)
             
-                setTransform(icongroup, scaleString(5), translateString(0,0))
+                // set the translate location of the icon to where the mouse was released
+                newX = getScaledPoint( svgP.x, 1, 27*5 )
+                newY = getScaledPoint( svgP.y, 1, 27*5 )
 
-                // set the location of the icon to where the mouse was released
-                newX = getScaledPoint( svgP.x, getTransform("scale",icongroup), 27 )
-                newY = getScaledPoint( svgP.y, getTransform("scale", icongroup), 27 )
-
-                // test for valid input of translate and set
+                // test valid input and set the transform for all browsers
                 if( !isNaN(newX) && !isNaN(newY))
                 {
+                    // TODO: this needed to change because sharp cannot process it
                     // set translate
-                    setTransform(icongroup, scaleString(getTransform("scale",icongroup)), translateString( newX, newY ))
+                    icongroup.setAttribute("x", newX)
+                    icongroup.setAttribute("y", newY)
+                    icongroup.setAttribute("width", 27*5)
+                    icongroup.setAttribute("height", 27*5)
                 }
                 else
                 {
@@ -1262,17 +1262,19 @@ $(document).ready(()=> {
                 icongroup.setAttribute("objectid", image.id)
                 icongroup.setAttribute("id", "observerIcon-" + image.id)
 
-                setTransform(icongroup, scaleString(5), translateString(0,0))
+                // set the translate location of the icon to where the mouse was released
+                newX = getScaledPoint( svgP.x, 1, 27*5 )
+                newY = getScaledPoint( svgP.y, 1, 27*5 )
 
-                // set the location of the icon to where the mouse was released
-                newX = getScaledPoint( svgP.x, getTransform("scale", icongroup), 27 )
-                newY = getScaledPoint( svgP.y, getTransform("scale", icongroup), 27 )
-            
-                // test for valid input of translate and set
+                // test valid input and set the transform for all browsers
                 if( !isNaN(newX) && !isNaN(newY))
                 {
+                    // TODO: this needed to change because sharp cannot process it
                     // set translate
-                    setTransform(icongroup, scaleString(getTransform("scale", icongroup)), translateString( newX, newY ))
+                    icongroup.setAttribute("x", newX)
+                    icongroup.setAttribute("y", newY)
+                    icongroup.setAttribute("width", 27*5)
+                    icongroup.setAttribute("height", 27*5)
                 }
                 else
                 {
@@ -1294,17 +1296,23 @@ $(document).ready(()=> {
                 icongroup.setAttribute("id", "scalebarIcon-" + image.id)
                 
 
-                setTransform(icongroup, scaleString(0.25), translateString(0,0))
+                // set the translate location of the icon to where the mouse was released
+                newX = getScaledPoint( svgP.x, 1, 1 )
+                newY = getScaledPoint( svgP.y, 1, 1 )
 
-                // set the location of the icon to where the mouse was released
-                newX = getScaledPoint( svgP.x, getTransform("scale", icongroup), 2000 )
-                newY = getScaledPoint( svgP.y, getTransform("scale", icongroup), 500 )
-            
-                // set transform if new location succeeds
+                // test valid input and set the transform for all browsers
                 if( !isNaN(newX) && !isNaN(newY))
                 {
+
+                    // TODO: calculate how big the scalebar needs to be
+
+
+                    // TODO: this needed to change because sharp cannot process it
                     // set translate
-                    setTransform(icongroup, scaleString( getTransform("scale", icongroup) ), translateString( newX, newY ) )
+                    icongroup.setAttribute("x", newX)
+                    icongroup.setAttribute("y", newY)
+                    icongroup.setAttribute("width", 4500*.25)
+                    icongroup.setAttribute("height", 700*.25)
                 }
                 else
                 {

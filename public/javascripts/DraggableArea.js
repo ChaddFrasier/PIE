@@ -152,45 +152,32 @@ function DraggableArea( objectbox=undefined )
                         // update the input fields using the id of the draggingObject
                         updateInputField( child.getAttribute("id"), newX*childScale, newY*childScale )
 
+                        // update the input fields using the id of the draggingObject
+                        updateInputField( child.getAttribute("id"), newX*childScale, newY*childScale )
+
                         // set the new icon transform using the uniform setter function
-                        setTransform(
-                            child, 
-                            scaleString( childScale ),
-                            translateString( newX , newY )
-                        )
+                        draggingIcon.setAttribute("x", newX)
+                        draggingIcon.setAttribute("y", newY)
                     } 
                 });                
             }
-            else if( draggingIcon.nodeName == "g" ) // 'groups' or 'g' nodes house complex icons like the north arrow
+            else if( draggingIcon.nodeName == "svg" ) // 'svg' nodes house complex icons like the north arrow
             {
                 // get only mouse position, not adjusted for icon size and convert to parent element matrix
-                currentX = getScaledPoint(svgP.x, 1, 1)
-                currentY = getScaledPoint(svgP.y, 1, 1)
+                currentX = getScaledPoint(svgP.x, 1, parseFloat(draggingIcon.getAttribute("width")) )
+                currentY = getScaledPoint(svgP.y, 1, parseFloat(draggingIcon.getAttribute("height")) )
 
-                let scale = getTransform("scale", draggingIcon)
-                let origX = getTransform("x", draggingIcon)
-                let origY = getTransform("y", draggingIcon)
-
-                let newX = origX + (currentX - oldX)/scale
-                let newY = origY + (currentY - oldY)/scale
+                let scale = 5;
 
                 // update the input fields using the id of the draggingObject
-                updateInputField( draggingIcon.getAttribute("id"), newX*scale, newY*scale )
+                updateInputField( draggingIcon.getAttribute("id"), currentX*scale, currentY*scale )
 
                 // set the new icon transform using the uniform setter function
-                setTransform(
-                    draggingIcon, 
-                    scaleString( scale ),
-                    translateString( newX , newY )
-                )
+                draggingIcon.setAttribute("x", currentX)
+                draggingIcon.setAttribute("y", currentY)
             }
             else if( draggingIcon.nodeName == "rect" )
             {
-                if(draggingIcon.classList.contains("marker"))
-                {
-                    draggingIcon = draggingIcon.parentElement
-                }
-
                 // get the current mouse location with no body to the rect
                 currentX = getScaledPoint(svgP.x, 1, 1)
                 currentY = getScaledPoint(svgP.y, 1, 1)
@@ -272,6 +259,11 @@ function DraggableArea( objectbox=undefined )
         
             // get the parent container of the target if it is valid
             draggingIcon = getIconParentContainer( event.target )
+
+            if(draggingIcon.classList.contains("marker"))
+            {
+                draggingIcon = draggingIcon.parentElement
+            }
 
             console.log(draggingIcon)
 

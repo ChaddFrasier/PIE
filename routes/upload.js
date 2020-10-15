@@ -42,7 +42,7 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
             path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "jpg"))
             );
 
-/** Temporary sectoion start  */
+/** TODO: Temporary sectoion start  */
         var promise2 = pieapi.gdal_virtual(
             path.join("public", "uploads", req.file.filename),
             path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "vrt"))
