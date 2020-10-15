@@ -34,8 +34,8 @@ function initShadowIcon( )
             let shadowdiv = document.createElement("div");
             shadowdiv.setAttribute("width", "50px");
             shadowdiv.setAttribute("height", "50px");
-            shadowdiv.innerHTML = event.target.innerHTML;
-
+            shadowdiv.innerHTML = (event.target.nodeName == "BUTTON") ? event.target.innerHTML: event.target.parentElement.parentElement.parentElement.innerHTML;
+            
             shadowdiv.style.opacity = .5;
             shadowdiv.style.position = "fixed";
             shadowdiv.style.left = event.pageX+'px';

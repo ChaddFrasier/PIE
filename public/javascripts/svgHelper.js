@@ -45,6 +45,15 @@ function detectLeftMouse(evt) {
     return button == 1;
 }
 
+
+// TODO: This function needs to return a new svg element that is an exact copy of the svg element given but every css rule needs to be changed into attributes( example: translate(374.3434, 326.472423) => <svg x="374.3434", y="326.472423" ... > )
+function styles2Attributes( svgElement )
+{
+    // TODO:
+
+        // convert all the transform parts into attrivute parts for the image converions 
+}
+
 /**
  * @function detectRightMouse
  * 

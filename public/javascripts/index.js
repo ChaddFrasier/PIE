@@ -15,6 +15,8 @@
  */
 $(document).ready(()=> {
 
+    addCustomKeys();
+
     // conain the index homepage
     document.body.parentElement.setAttribute("class", "contained")
 
@@ -196,6 +198,9 @@ $(document).ready(()=> {
         titleholder.appendChild(title);
 
         savebtn.innerHTML = "Download";
+        savebtn.type = "button"
+        savebtn.setAttribute("id", "savebtn")
+
         cancelbtn.innerHTML = "Cancel";
 
         centerbox.style.width = "40%";
@@ -265,49 +270,58 @@ $(document).ready(()=> {
 
         inputholder.appendChild(form)
 
-        // on click of the save btn send a post to the server to download an svg file of the svgcontainer
+        /**
+         * @function onclick savebtn
+         * @description send a post to the server to download an svg file of the svgcontainer
+         * */
         savebtn.addEventListener("click", function ( event )
         {
-            // prevent submitting of the page
             event.preventDefault();
-            
-            // create the request data using the form
-            var fd = new FormData(form)
-            var xhr = new XMLHttpRequest();
 
-            // set response type
-            xhr.responseType = 'blob'
+            // send request if the filename input is not empty
+            if( fileinputname.value.length !== 0 )
+            {
+                // create the request data using the form
+                var fd = new FormData(form)
+                var xhr = new XMLHttpRequest();
 
-            // append the xml header line to make an official svg file
-            var data = 
-                '<?xml version="1.1" encoding="UTF-8"?>\n'
-                + (new XMLSerializer()).serializeToString(document.getElementById("figurecontainer"));
+                // set response type
+                xhr.responseType = 'blob'
 
-            // creates a blob from the encoded svg and sets the type of the blob to and image svg
-            var svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
-            
-            var name = "export.svg"
+                // append the xml header line to make an official svg file
+                var data = 
+                    '<?xml version="1.0" encoding="UTF-8"?>\n'
+                    + (new XMLSerializer()).serializeToString( document.getElementById("figurecontainer") );
 
-            // append the svgBlob as a file with the name given the exportfile 
-            fd.append("exportfile", svgBlob, name )
-            fd.append("userfilename", fileinputname.value)
-            fd.append("svg", fileinputtype.checked)
-            fd.append("png", fileinputtype1.checked)
-            fd.append("tiff", fileinputtype2.checked)
+                // creates a blob from the encoded svg and sets the type of the blob to and image svg
+                var svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
 
-            // when the requests load handle the response
-            xhr.onloadend = () => {
-                // this is an effective way of recieving the response return
-                console.log("loaded finished")
+                // append the svgBlob as a file with the name given the exportfile 
+                fd.append("exportfile", svgBlob, fileinputname.value+"_tmp.svg" )
+                fd.append("svg", fileinputtype.checked)
+                fd.append("png", fileinputtype1.checked)
+                fd.append("tiff",fileinputtype2.checked)
+                fd.append("dims",figsizeselect.value)
+
+                // TODO: 
+                    // append the figure output dimensions to the request body
+
+                // when the requests load handle the response
+                xhr.onloadend = () => {
+                    // this is an effective way of recieving the response return
+                    console.log("loaded finished")
+                    // TODO: iniate a download by sending a fetch for the proper file(s) given by xhr.response or use express to send the files without client
+
+                }
+
+                // open the request and send the data
+                xhr.open('POST', "/export", true)
+                xhr.send(fd)
+
+                // remove the UI download box
+                cancelbtn.click();
+                return false;
             }
-
-            // open the request and send the data
-            xhr.open('POST', "/export", true)
-            xhr.send(fd)
-
-            // remove the UI download box
-            cancelbtn.click();
-
             return false;
         })
 
@@ -765,7 +779,7 @@ $(document).ready(()=> {
                 
                 // when the requests load handle the response
                 xhr.onloadend = () => {
-
+                    
                     var reader = new FileReader()
 
                     // occurs after readAsDataURL
@@ -931,6 +945,7 @@ $(document).ready(()=> {
         imagesvg.setAttribute("width", "1500")
         imagesvg.setAttribute("height", "1000")
         imagesvg.setAttribute("id", imageId)
+        imagesvg.setAttribute("class", "holder")
 
         //TODO: this is where the desfault image is set
         imagesvg.setAttribute("href", "test/moonphasestest.jpg")
@@ -1003,8 +1018,7 @@ $(document).ready(()=> {
      * @description this function starts the drag and drop logic for the north icon
      */
     $('#scalebarbtnopt').on("mousedown", (event) => {
-        let btn = event.target
-
+        let btn = ( event.target.nodeName == "BUTTON" )? event.target: event.target.parentElement;
         if( getObjectCount(0,"image") != 0 && detectLeftMouse(event))
         {
             if(selectedObject){
@@ -1148,6 +1162,7 @@ $(document).ready(()=> {
             else
             {
                 console.log("Unknown Object ID = " + btn.id)
+                console.log(btn)
             }
             
             // draw the icon
@@ -1312,6 +1327,24 @@ $(document).ready(()=> {
 }) // end of jquery functions
 
 /* Helper functions */
+
+/**
+ * 
+ */
+function addCustomKeys()
+{
+    document.addEventListener("keydown", function( event ) {
+        switch( Number(event.keyCode) )
+        {
+            case 13:
+                document.getElementById("savebtn").click();
+                break;
+
+            default:
+                return true;
+        }
+    });
+}
 
 /**
  * @function minimizeToolsWindow
@@ -1888,6 +1921,10 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             scaleicontranslatex.setAttribute("type", "number")
             scaleicontranslatex.setAttribute("objectid", iconId)
             scaleicontranslatex.setAttribute("min", "0")
+
+            scaleicontranslatex.setAttribute("name", "iconxcoordinput")
+            scaleicontranslatey.setAttribute("name", "iconycoordinput")
+
             scaleicontranslatey.setAttribute("type", "number")
             scaleicontranslatey.setAttribute("objectid", iconId)
             scaleicontranslatey.setAttribute("min", "1")
@@ -3290,7 +3327,7 @@ function updateInputField( objectid, ...args )
     if( objectid.indexOf("line") > -1)
     {
         var objectArr = document.getElementsByClassName("draggableToolbox")
-    
+
         // more than 1 toolbox present
         for(let i = 0; i < objectArr.length; i++ ){
             if( objectArr[i].getAttribute("objectid") == objectid )
@@ -3329,10 +3366,13 @@ function updateInputField( objectid, ...args )
     }
     else if( objectid.indexOf("Icon") > -1 )
     {
+    
         var objectArr = document.getElementsByClassName("draggableToolbox") 
  
         if( objectArr.length > 0)
         {
+            console.log(objectid)
+         
             // more than 1 toolbox present
             for(let i = 0; i < objectArr.length; i++ ){
                 if( objectArr[i].getAttribute("objectid").indexOf(objectid.split("-")[1]) > -1 )

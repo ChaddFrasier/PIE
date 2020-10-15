@@ -49,58 +49,71 @@ block content
                         button#northarrowopt(type="button" title="North Arrow")
                             svg.btnvectorgraphic(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 27 27" xml:space="preserve")
                                 g#northgroup
-                                    path(d="m12.171 7.8326v-3.9686h-1.5877l2.6458-3.7591 2.6458 3.7591h-1.588v3.8684z" fill="#000" stroke="#fff" stroke-linejoin="round" stroke-width="1")
-                                    ellipse(ellipse cx="13.229" cy="16.536" rx="9.2227" ry="9.2227" stroke-dashoffset="3.5906" stroke-width="1" stroke-linejoin="round"  fill="#000" stroke="#fff")
-                                    path(d="m8.1926 11.303h2.5183l5.0365 6.9878 4.3e-5 -6.9878h2.5183v10.073h-2.5183l-5.0365-7.0512-4.5e-5 7.0512h-2.5183z" stroke-width="1" stroke="#fff" fill="#fff" stroke-linejoin="round")
+                                    g.holder
+                                        path(d="m12.171 7.8326v-3.9686h-1.5877l2.6458-3.7591 2.6458 3.7591h-1.588v3.8684z" fill="#000" stroke="#fff" stroke-linejoin="round" stroke-width="1")
+                                        ellipse(ellipse cx="13.229" cy="16.536" rx="9.2227" ry="9.2227" stroke-dashoffset="3.5906" stroke-width="1" stroke-linejoin="round"  fill="#000" stroke="#fff")
+                                        path(d="m8.1926 11.303h2.5183l5.0365 6.9878 4.3e-5 -6.9878h2.5183v10.073h-2.5183l-5.0365-7.0512-4.5e-5 7.0512h-2.5183z" stroke-width="1" stroke="#fff" fill="#fff" stroke-linejoin="round")
+                                    rect.marker(width=30 height=30 fill="transparent" stroke="transparent")
+
                         button#sunarrowopt(type="button" title="Sun Azimuthal")
                             svg.btnvectorgraphic(viewBox="0 0 27 27")
-                                g#sungroup(width=25, height=25)
-                                    path(d="m12.171 7.8326v-3.9686h-1.5877l2.6458-3.7591 2.6458 3.7591h-1.588v3.8684z" stroke="#fff" fill="#000" stroke-linejoin="round" stroke-width="1.1")
-                                    ellipse(cx="13.229" cy="16.536" rx="9.3835" ry="9.3835" stroke="#fff" fill="#000" stroke-width="1.1" stroke-dashoffset="3.5906" stroke-linejoin="round")
-                                    ellipse( cx="13.229" cy="16.536" rx="3.0833" ry="3.0833" fill="#fff" stroke="#000" stroke-width="1.1" stroke-dashoffset="3.5906" stroke-linejoin="round")
+                                g#sungroup
+                                    g.holder
+                                        path(d="m12.171 7.8326v-3.9686h-1.5877l2.6458-3.7591 2.6458 3.7591h-1.588v3.8684z" stroke="#fff" fill="#000" stroke-linejoin="round" stroke-width="1.1")
+                                        ellipse(cx="13.229" cy="16.536" rx="9.3835" ry="9.3835" stroke="#fff" fill="#000" stroke-width="1.1" stroke-dashoffset="3.5906" stroke-linejoin="round")
+                                        ellipse( cx="13.229" cy="16.536" rx="3.0833" ry="3.0833" fill="#fff" stroke="#000" stroke-width="1.1" stroke-dashoffset="3.5906" stroke-linejoin="round")
+                                    rect.marker(width=30 height=30 fill="transparent" stroke="transparent")
                         br
                         button#observerarrowopt(type="button" title="Spacecraft Azimuthal")
                             svg.btnvectorgraphic(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 27 27" xml:space="preserve")
-                                g#observergroup(width=24 viewBox="0 0 24 24" height=24 xmlns="http://www.w3.org/2000/svg" stroke-width="1.5px")
-                                    path(d="m12.171 7.8326v-3.9686h-1.5877l2.6458-3.7591 2.6458 3.7591h-1.588v3.8684z" stroke="#fff" fill="#000" stroke-linejoin="round" stroke-width="1")
-                                    ellipse(cx="13.229" cy="16.536" rx="9.3835" ry="9.3835" stroke="#fff" fill="#000" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="1.5")
-                                    path(d="m4.8655 16.166c7.117-6.4931 10.277-6.4649 16.714 0.21304-6.6981 6.4146-9.1385 6.2371-16.714-0.21304z" stroke="#fff" fill="#000" stroke-width="1")
-                                    ellipse(cx="13.46" cy="16.251" rx="3.2148" ry="4.4747" fill="#fff" stroke="#fff" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="1.5")
-                                    ellipse(cx="13.459" cy="16.145" rx="1.4589" ry="2.1038" fill="#000" stroke="#000" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="1.5")
-                                    ellipse(cx="14.279" cy="14.784" rx=".72946" ry="1.0519" fill="#fff" stroke="#fff" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="1.5")
+                                g#observergroup
+                                    g.holder
+                                        path(d="m12.171 7.8326v-3.9686h-1.5877l2.6458-3.7591 2.6458 3.7591h-1.588v3.8684z" stroke="#fff" fill="#000" stroke-linejoin="round" stroke-width="1")
+                                        ellipse(cx="13.229" cy="16.536" rx="9.3835" ry="9.3835" stroke="#fff" fill="#000" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="1.5")
+                                        path(d="m4.8655 16.166c7.117-6.4931 10.277-6.4649 16.714 0.21304-6.6981 6.4146-9.1385 6.2371-16.714-0.21304z" stroke="#fff" fill="#000" stroke-width="1")
+                                        ellipse(cx="13.46" cy="16.251" rx="3.2148" ry="4.4747" fill="#fff" stroke="#fff" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="1.5")
+                                        ellipse(cx="13.459" cy="16.145" rx="1.4589" ry="2.1038" fill="#000" stroke="#000" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="1.5")
+                                        ellipse(cx="14.279" cy="14.784" rx=".72946" ry="1.0519" fill="#fff" stroke="#fff" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="1.5")
+                                    rect.marker(width=30 height=30 fill="transparent" stroke="transparent")
                         button#scalebarbtnopt(type="button" title="Scale Bar")
-                            svg.btnvectorgraphic(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="27px" height="27px" viewBox="0 200 1000 100" )
-                                g#scalebargroup(stroke="black", fill="black")
-                                    rect(x="7.2277" y="157.23" width="3985.5" height="335.54" fill-opacity=".99608" stroke="#fff" stroke-dashoffset="3.5906" stroke-miterlimit="5" stroke-width="14.456")
-                                    text(transform="matrix(1.764 0 0 1.9537 414.67 1135.6)" fill="#ffffff" font-family="sans-serif" font-size="67.63px" stroke-miterlimit="5" style="line-height:1.25;white-space:pre" xml:space="preserve")
-                                        tspan( x="880" y="-518.29937")
-                                            tspan(font-family="sans-serif" stroke-miterlimit="5")="0"
-                                    text( transform="matrix(2.1068 0 0 2.484 -1914.2 1443.2)" fill="#ffffff" font-family="sans-serif" font-size="54.64px" stroke-miterlimit="5" style="line-height:1.25;white-space:pre" xml:space="preserve")
-                                        tspan(x="880" y="-530.14982")
-                                            tspan(font-size="54.64px")="10"
-                                    text(transform="matrix(2.3816 0 0 2.5331 -1119.4 1469.2)" fill="#ffffff" font-family="sans-serif" font-size="53.191px" stroke-miterlimit="5" style="line-height:1.25;white-space:pre" xml:space="preserve")
-                                        tspan(x="880" y="-531.47206")
-                                            tspan(font-size="53.191px")="5"
-                                    text(transform="matrix(2.1068 0 0 2.484 1995.1 1447.4)" fill="#ffffff" font-family="sans-serif" font-size="54.64px" stroke-miterlimit="5" style="line-height:1.25;white-space:pre" xml:space="preserve")
-                                        tspan(x="880" y="-530.14982")
-                                            tspan(font-size="54.64px")="10km"
-                                    rect(x="2e3" y="308.13" width="2e3" height="34.339" fill="#fff")
-                                    rect(x="1985" y="153.61" width="50" height="343.39" fill="#fff")
-                                    rect(x="-1.2011e-5" y="308.13" width="200" height="34.339" fill="#fcffff")
-                                    rect(x="800" y="308.13" width="200" height="34.339" fill="#fcffff")
-                                    rect(x="400" y="308.13" width="200" height="34.339" fill="#fcffff")
-                                    rect(x="1200" y="308.13" width="200" height="34.339" fill="#fcffff")
-                                    rect(x="1600" y="308.13" width="200" height="34.339" fill="#fcffff")
-                                    rect(x="200" y="153.61" width="50" height="343.39" fill="#fff" fill-opacity=".99608")
-                                    rect(x="400" y="153.61" width="50" height="343.39" fill="#fff" fill-opacity=".99608")
-                                    rect(x="-1.2011e-5" y="153.61" width="50" height="343.39" fill="#fff" fill-opacity=".99608")
-                                    rect(x="600" y="153.61" width="50" height="343.39" fill="#fff" fill-opacity=".99608")
-                                    rect( x="800" y="153.61" width="50" height="343.39" fill="#fff" fill-opacity=".99608")
-                                    rect(x="1e3" y="153.61" width="50" height="343.39" fill="#fff" fill-opacity=".99608")
-                                    rect(x="1200" y="153.61" width="50" height="343.39" fill="#fff" fill-opacity=".99608")
-                                    rect(x="1400" y="153.61" width="50" height="343.39" fill="#fff" fill-opacity=".99608")
-                                    rect(x="1600" y="153.61" width="50" height="343.39" fill="#fff" fill-opacity=".99608")
-                                    rect(x="1800" y="153.61" width="50" height="343.39" fill="#fff" fill-opacity=".99608")
+                            svg.btnvectorgraphic(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 4500 700" width="27" height="27" )
+                                g#scalebargroup
+                                    g.holder
+                                        //- main conainting box bg
+                                        rect(x="248.7" y="217.14" width="3953.1" height="463.01" stroke="#fff" stroke-width="39.57")
+
+                                        //- main bg box parts
+                                        rect(x="2225.2" y="423.5" width="1996.3" height="50.272" fill="#fff")
+                                        rect(x="250" y="423.5" width="200" height="50.272" fill="#fff")
+                                        rect(x="650" y="423.5" width="200" height="50.272" fill="#fff")
+                                        rect(x="1050" y="423.5" width="200" height="50.272" fill="#fff")
+                                        rect(x="1450" y="423.5" width="200" height="50.272" fill="#fff")
+                                        rect(x="1850" y="423.5" width="200" height="50.272" fill="#fff")
+
+                                        //- vertical parts
+                                        rect(x="2225.2" y="197.28" width="49.907" height="502.72" fill="#fff")
+                                        rect(x="2025.6" y="197.28" width="49.907" height="502.72" fill="#fff")
+                                        rect(x="428.61" y="197.28" width="49.907" height="502.72" fill="#fff")
+                                        rect(x="628.24" y="197.28" width="49.907" height="502.72" fill="#fff")
+                                        rect(x="827.86" y="197.28" width="49.907" height="502.72" fill="#fff")
+                                        rect(x="1027.5" y="197.28" width="49.907" height="502.72" fill="#fff")
+                                        rect(x="1227.1" y="197.28" width="49.907" height="502.72" fill="#fff")
+                                        rect(x="1426.7" y="197.28" width="49.907" height="502.72" fill="#fff")
+                                        rect(x="1626.4" y="197.28" width="49.907" height="502.72" fill="#fff")
+                                        rect(x="1826" y="197.28" width="49.907" height="502.72" fill="#fff")
+                                        
+                                        text(transform="matrix(.99813 0 0 1.0054 253.04 142.66)" font-size="40px" fill="#ffffff" font-family="sans-serif" style="line-height:1.25;shape-inside:url(#rect1085);white-space:pre" xml:space="preserve")
+                                            tspan(x="1940.248" y="18.501405")
+                                                tspan(fill="#ffffff" font-size="192px")="0"
+                                        text(transform="matrix(.99813 0 0 1.0054 -1762.6 145.81)" font-size="40px" fill="#ffffff" font-family="sans-serif" style="line-height:1.25;shape-inside:url(#rect1085-2);white-space:pre" xml:space="preserve")
+                                            tspan(x="1940.248" y="18.501405")
+                                                tspan(font-size="192px")="1"
+                                        text(transform="matrix(.99813 0 0 1.0054 54.566 160.93)" font-size="192px" fill="#ffffff" font-family="sans-serif" style="line-height:1.25;shape-inside:url(#rect1120);white-space:pre" xml:space="preserve")
+                                            tspan(x="3910.623" y="0.42523331")
+                                                tspan(style="shape-inside:url(#rect1120)")="1 Km"
+                                    
+                                    rect.marker(x="241.67" y="210.06" width="3967.2" height="477.16" fill-opacity="0" stroke="#fff" stroke-width="50" fill="#ffffff" font-family="sans-serif" pointer-events="all")
+
                     br
                     label.text(for="annotategroup")="Annotation Tools"
                     #annotategroup.concisebtngroup
@@ -147,7 +160,7 @@ block content
             //- svg figure location
           
             .svgholder
-                svg#figurecontainer.imagecontainer(viewBox="0 0 1500 1500", xmlns="http://www.w3.org/2000/svg", version="1.1", width="100%", height="100%", preserveAspectRatio="xMidYMid meet")
+                svg#figurecontainer.imagecontainer(viewBox="0 0 1500 1500", xmlns="http://www.w3.org/2000/svg", xmlns:xlink="http://www.w3.org/2000/svg", version="1.0", width="100%", height="100%", preserveAspectRatio="xMidYMid meet")
                     defs#figdefs
                         //- markder endings can change size using markerHeight and markerWidth
                         marker(id="arrowhead" viewBox="0 0 10 10" markerWidth="5px" markerHeight="5px" refX="0.1" refY="2.5" orient="auto")
@@ -158,7 +171,6 @@ block content
                             polygon(points="0 0 0 5 5 5 5 0" fill="#fff" stroke="transparent" stroke-width="2")
                     style
                         include livestyle/svg.css
-
 block footer
     footer.mainfooter
         .leftfooter

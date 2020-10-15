@@ -45,6 +45,7 @@ function DraggableArea( objectbox=undefined )
     function validDraggableNode( nodeName )
     {
         var testarray = ["g", "line", "rect"]
+
         // check test nodes for the current node name
         return (testarray.indexOf(nodeName) > -1) ? true: false;
     }
@@ -89,7 +90,7 @@ function DraggableArea( objectbox=undefined )
     {
         try {
             while( !( target == null )
-            && !validDraggableNode(target.nodeName) )
+            && !validDraggableNode(target.nodeName) && target.classList.contains("holder") )
             {
                 target = target.parentElement
             }
@@ -185,6 +186,11 @@ function DraggableArea( objectbox=undefined )
             }
             else if( draggingIcon.nodeName == "rect" )
             {
+                if(draggingIcon.classList.contains("marker"))
+                {
+                    draggingIcon = draggingIcon.parentElement
+                }
+
                 // get the current mouse location with no body to the rect
                 currentX = getScaledPoint(svgP.x, 1, 1)
                 currentY = getScaledPoint(svgP.y, 1, 1)
@@ -267,6 +273,8 @@ function DraggableArea( objectbox=undefined )
             // get the parent container of the target if it is valid
             draggingIcon = getIconParentContainer( event.target )
 
+            console.log(draggingIcon)
+
             // if the drag icon is found to be valid then initiate the dragging functions
             if( draggingIcon != null && !paused )
             {   
@@ -311,6 +319,7 @@ function DraggableArea( objectbox=undefined )
              */
             pauseDraggables: () => {
                 DragBoxContainer.removeEventListener("mousedown", dragHandler )
+                paused = true;
             },
 
             /**
@@ -319,6 +328,7 @@ function DraggableArea( objectbox=undefined )
             unpauseDraggables: () => {
                 // add the main listener to the object targeted by DraggableArea() init function
                 DragBoxContainer.addEventListener("mousedown", dragHandler )
+                paused = false;
             }
         };
     }
