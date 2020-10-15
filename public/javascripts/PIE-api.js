@@ -31,7 +31,7 @@ module.exports = {
             let pngs = [ "PNG", "png" ];
             let jpegs = [ "JPEG", "jpeg", "JPG", "jpg" ];
             let vrts = ["VRT", "vrt" ];
-            let vrts = ["SVG", "svg" ];
+            let svg = ["SVG", "svg" ];
 
             [jpegs, pngs, vrts, svg].forEach(array => {
                 if(array.indexOf(ext) > -1)
