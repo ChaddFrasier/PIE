@@ -744,7 +744,7 @@ svg.imagecontainer {
 }
 
 .svgholder {
-    margin: auto auto;
+    margin: 0 10px 0 10px;
     padding: 10px;
     width: auto;
     height: auto;
