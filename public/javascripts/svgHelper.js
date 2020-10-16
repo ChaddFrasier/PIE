@@ -18,9 +18,9 @@ var NS = {
  * @param {string} color 
  * @description just changes the background of the specified element
  */
-function setSVGBackground( svg, color )
+function setSVGBackground( id, color )
 {
-    svg.style.background = color;
+    document.getElementById(id).setAttribute("fill", color);
 }
 
 /**

@@ -749,6 +749,7 @@ svg.imagecontainer {
     width: auto;
     height: auto;
     max-height: var(--inner-main-content-max-height);
+    background: black;
 }
 
 .progressBox {

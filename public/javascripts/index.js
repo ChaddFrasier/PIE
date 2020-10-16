@@ -38,7 +38,7 @@ $(document).ready(()=> {
     draggableList = DraggableList( document.getElementById("DraggableContainer") )
     
     // set background right away when page loads
-    setSVGBackground(draggableSvg.getContainerObject(), bgPicker.value)
+    setSVGBackground("bgelement", bgPicker.value)
 
     /**
      * @function .windowminimizebtn.click()
@@ -975,7 +975,7 @@ $(document).ready(()=> {
      * will be visible when exported
      */
     $('#backgroundcolor').on("change", () => {
-        setSVGBackground(draggableSvg.getContainerObject(), bgPicker.value)
+        setSVGBackground("bgelement", bgPicker.value)
     })
 
     /** Annotation buttons */
