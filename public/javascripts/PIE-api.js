@@ -23,22 +23,24 @@ module.exports = {
     PIEAPI: function()
     {
 
+        // TODO: this function is returning undefined for most cases. WHY?
         function getOutputFormat( filename )
         {
             let chunks = filename.split(".");
-            let ext = chunks[chunks.length-1];
+            var ext = chunks[chunks.length-1];
 
             let pngs = [ "PNG", "png" ];
             let jpegs = [ "JPEG", "jpeg", "JPG", "jpg" ];
             let vrts = ["VRT", "vrt" ];
-            let svg = ["SVG", "svg" ];
-
-            [jpegs, pngs, vrts, svg].forEach(array => {
-                if(array.indexOf(ext) > -1)
-                {
-                    return array[0];
-                }    
+            let svg = ["SVG", "svg" ];        
+            
+            Array(jpegs, pngs, vrts, svg).forEach(array => {
+                if(array.includes(ext))
+                { 
+                    ext = array[0];
+                }
             });
+            return ext
         }
     
         return {
@@ -71,7 +73,12 @@ module.exports = {
             gdal_rescale: function( inputfile=undefined, scale="50%", outputfile=undefined)
             {
                 return new Promise( (resolveFunc, rejectFunc) => {
+
                     var outputtype = getOutputFormat( outputfile )
+
+                    /* TODO: project: Purify
+                            - validate input before running
+                    */
 
                     // create a gdal_translate instance with args in the array
                     var child = spawn( "gdal_translate", [

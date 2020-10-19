@@ -27,18 +27,14 @@ $(document).ready(()=> {
         OutlineFlag = false,
         shadowIcon = initShadowIcon();
 
-
     // get the global figure element
     let svgContainer = document.getElementById("figurecontainer")
-
     // create the Draggable Object Container
     draggableSvg = DraggableArea( svgContainer )
-
     // create the DraggableList
     draggableList = DraggableList( document.getElementById("DraggableContainer") )
-    
     // set background right away when page loads
-    setSVGBackground(draggableSvg.getContainerObject(), bgPicker.value)
+    setSVGBackground("bgelement", bgPicker.value)
 
     /**
      * @function .windowminimizebtn.click()
@@ -48,6 +44,9 @@ $(document).ready(()=> {
         minimizeToolsWindow(event)
     })
     
+    /**
+     * 
+     */
     $('#penciloptbtn').click( function( event ) {
         event.preventDefault()
 
@@ -100,6 +99,9 @@ $(document).ready(()=> {
         PencilFlag = !(PencilFlag)
     })
 
+    /**
+     * 
+     */
     $('#outlinebtnopt').click( function( event ) {
 
         event.preventDefault()
@@ -234,6 +236,11 @@ $(document).ready(()=> {
         let fileinputtypetifflabel = fileinputtypesvglabel.cloneNode(true)
         fileinputtypetifflabel.innerHTML = "GeoTIFF &rarr;"
 
+        var fileinputtype3 = fileinputtype.cloneNode(true);
+
+        let fileinputtypejpeglabel = fileinputtypesvglabel.cloneNode(true)
+        fileinputtypejpeglabel.innerHTML = "JPEG &rarr;"
+
         // TODO: make an checkbox group to make the checkbox list better
 
         form.setAttribute("method", "post")
@@ -255,16 +262,19 @@ $(document).ready(()=> {
         let columnsvg = document.createElement("div")
         let columnpng = document.createElement("div")
         let columntiff = document.createElement("div")
+        let columnjpg = document.createElement("div")
 
         columnsvg.classList.add("column")
         columnpng.classList.add("column")
         columntiff.classList.add("column")
+        columnjpg.classList.add("column")
 
         columnsvg.append(fileinputtypesvglabel, document.createElement("br"), fileinputtype)
         columnpng.append(fileinputtypepnglabel, document.createElement("br"), fileinputtype1)
         columntiff.append(fileinputtypetifflabel, document.createElement("br"), fileinputtype2)
+        columnjpg.append(fileinputtypejpeglabel,  document.createElement("br"), fileinputtype3)
 
-        forminputcheckboxholder.append(columnsvg , columntiff, columnpng)
+        forminputcheckboxholder.append(columnsvg , columntiff, columnpng, columnjpg)
 
         form.append( formlabelbox, forminputbox )
 
@@ -301,6 +311,7 @@ $(document).ready(()=> {
                 fd.append("svg", fileinputtype.checked)
                 fd.append("png", fileinputtype1.checked)
                 fd.append("tiff",fileinputtype2.checked)
+                fd.append("jpeg",fileinputtype3.checked)
                 fd.append("dims",figsizeselect.value)
 
                 // when the requests load handle the response
@@ -366,6 +377,8 @@ $(document).ready(()=> {
     /**
      * @function button.toolboxaddcaptionbtn.click()
      * @description adds all caption elements to the svg and menu
+     * 
+     * TODO: foregnObject does ot work with the Sharp module
      */
     $('button.toolboxaddcaptionbtn').click(() => {
 
@@ -633,9 +646,15 @@ $(document).ready(()=> {
         textholder.setAttribute("class", "captionObject")
 
         const text = document.createElement("textarea")
-        text.classList.add('captions')
+        text.setAttribute("font-size", "30px")
+        text.setAttribute("width", "100%")
+        text.setAttribute("height", "100%")
+        text.setAttribute("background-color" , "linear-gradient(to bottom left, #ffffff, #d3d3d3)");
+
+
+
         text.setAttribute("id", captionId + "text")
-        text.style.fontFamily =  "'Times New Roman', Times, serif"
+        text.setAttribute("font-family", "'Times New Roman', Times, serif")
         text.setAttribute("x", "0")
         text.setAttribute("y", "0")
         text.setAttribute("width", "100%")
@@ -975,7 +994,7 @@ $(document).ready(()=> {
      * will be visible when exported
      */
     $('#backgroundcolor').on("change", () => {
-        setSVGBackground(draggableSvg.getContainerObject(), bgPicker.value)
+        setSVGBackground("bgelement", bgPicker.value)
     })
 
     /** Annotation buttons */

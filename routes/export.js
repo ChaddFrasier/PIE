@@ -37,7 +37,8 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
     // Gather all the information needed for the image manipulation
         
     // 1. What format(s) the user wanted for the output format(s)
-    let formatArr = [req.body.png, req.body.tiff, req.body.svg];
+    let formatArr = [req.body.png, req.body.jpeg, req.body.tiff, req.body.svg];
+    let nameArr = ["png", "jpeg", "tiff", "svg"];
 
     // 2. What was the new filename given by user
     let newname = req.body.exportfilename;
@@ -48,16 +49,59 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
     // convert the image to the desired format(s)
 
     // TESTING convert svg image to png
-    await sharp( path.join(EXPORT_FILE_PATH, req.file.originalname) )
-        .jpeg()
-        .toFile( path.join(EXPORT_FILE_PATH, newname+".jpg") )
-        .catch( err => {
-            console.log("ERROR HAPPNEED IN SHARP")
-            if(err) throw err
-        })
-        .then(info => {
-            console.log(info)
-        });
+
+    for (let i = 0; i < formatArr.length; i++) {
+        let use = formatArr[i];
+
+        if( use )
+        {
+            switch( nameArr[i] )
+            {
+                case "png":
+                    await sharp( path.join(EXPORT_FILE_PATH, req.file.originalname) )
+                    .png()
+                    .toFile( path.join(EXPORT_FILE_PATH, newname+".png") )
+                    .catch( err => {
+                        console.log("ERROR HAPPNEED IN SHARP")
+                        if(err) throw err
+                    })
+                    .then(info => {
+                        console.log(info)
+                    });
+                    break;
+                
+                case "jpeg":
+                    await sharp( path.join(EXPORT_FILE_PATH, req.file.originalname) )
+                    .jpeg()
+                    .toFile( path.join(EXPORT_FILE_PATH, newname+".jpg") )
+                    .catch( err => {
+                        console.log("ERROR HAPPNEED IN SHARP")
+                        if(err) throw err
+                    })
+                    .then(info => {
+                        console.log(info)
+                    });
+                    break;
+
+                case "svg":
+                    console.log("File is downloaded as a basic svg")
+                    break;
+
+                
+                case "tiff":
+                    // TODO: run the gdal operations to preserve the origional geospacialdata on this image with the icons added to it
+                    console.log("TIFF")
+                    break;
+
+                default:
+                    console.log("FORMAT UNKNOWN")
+                    break;
+            }
+        }
+    }
+
+
+    
     
     // send the new file(s) back to the client with the new name that the user input
 

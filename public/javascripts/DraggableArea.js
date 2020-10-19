@@ -123,6 +123,7 @@ function DraggableArea( objectbox=undefined )
          */
         function dragObject ( event )
         {
+            event.preventDefault();
             // transform the mouse event location to the svg subspace
             let svgP = createSVGP(event.clientX, event.clientY)
 
@@ -133,9 +134,10 @@ function DraggableArea( objectbox=undefined )
                 currentY = getScaledPoint(svgP.y, 1, 1)
 
                 draggingIcon.childNodes.forEach(child => {
-                    let childScale = getTransform("scale", child)
-                    let origX = getTransform("x", child)
-                    let origY = getTransform("y", child)
+
+                    let childScale = 1
+                    let origX = parseFloat(child.getAttribute("x"))
+                    let origY = parseFloat( child.getAttribute("y"))
 
                     let newX = origX + (currentX - oldX)/childScale
                     let newY = origY + (currentY - oldY)/childScale
@@ -152,13 +154,10 @@ function DraggableArea( objectbox=undefined )
                         // update the input fields using the id of the draggingObject
                         updateInputField( child.getAttribute("id"), newX*childScale, newY*childScale )
 
-                        // update the input fields using the id of the draggingObject
-                        updateInputField( child.getAttribute("id"), newX*childScale, newY*childScale )
-
                         // set the new icon transform using the uniform setter function
-                        draggingIcon.setAttribute("x", newX)
-                        draggingIcon.setAttribute("y", newY)
-                    } 
+                        child.setAttribute("x", newX)
+                        child.setAttribute("y", newY)
+                    }  
                 });                
             }
             else if( draggingIcon.nodeName == "svg" ) // 'svg' nodes house complex icons like the north arrow
@@ -253,6 +252,7 @@ function DraggableArea( objectbox=undefined )
          */
         function dragHandler ( event )
         {
+            event.preventDefault();
             let svgcontainer = DragBoxContainer
 
             // IF THE NODE IS AN IMAGE IGNORE
