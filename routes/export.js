@@ -9,6 +9,7 @@ const sharp  = require('sharp');
 const router = express.Router();
 
 const EXPORT_FILE_PATH = path.join(__dirname,"..","public","exports");
+const PUBLIC_EXPORT_FILE_PATH = path.join("public","exports");
 
 // init storage object to tell multer what to do
 var storage = multer.diskStorage(
@@ -40,6 +41,8 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
     let formatArr = [req.body.png, req.body.jpeg, req.body.tiff, req.body.svg];
     let nameArr = ["png", "jpeg", "tiff", "svg"];
 
+    var returnObject = {};
+
     // 2. What was the new filename given by user
     let newname = req.body.exportfilename;
     
@@ -53,7 +56,7 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
     for (let i = 0; i < formatArr.length; i++) {
         let use = formatArr[i];
 
-        if( use )
+        if( use == 'true' )
         {
             switch( nameArr[i] )
             {
@@ -67,6 +70,7 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
                     })
                     .then(info => {
                         console.log(info)
+                        returnObject["png"] = path.join(PUBLIC_EXPORT_FILE_PATH, newname+".png")
                     });
                     break;
                 
@@ -80,17 +84,21 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
                     })
                     .then(info => {
                         console.log(info)
+                        returnObject["jpg"] = path.join(PUBLIC_EXPORT_FILE_PATH, newname+".jpg")
                     });
                     break;
 
                 case "svg":
                     console.log("File is downloaded as a basic svg")
+
+                    returnObject["svg"] = path.join(PUBLIC_EXPORT_FILE_PATH, newname+"_tmp.svg")
                     break;
 
                 
                 case "tiff":
                     // TODO: run the gdal operations to preserve the origional geospacialdata on this image with the icons added to it
                     console.log("TIFF")
+
                     break;
 
                 default:
@@ -100,18 +108,12 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
         }
     }
 
-
+    res.send(returnObject)
     
     
     // send the new file(s) back to the client with the new name that the user input
 
     // Send fail codes for 505(internal) or ()
-
-
-
-
-
-
 
 })
 

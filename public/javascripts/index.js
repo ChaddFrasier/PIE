@@ -296,7 +296,7 @@ $(document).ready(()=> {
                 var xhr = new XMLHttpRequest();
 
                 // set response type
-                xhr.responseType = 'blob'
+                xhr.responseType = 'json'
 
                 // append the xml header line to make an official svg file
                 var data = 
@@ -318,8 +318,10 @@ $(document).ready(()=> {
                 xhr.onloadend = () => {
                     // this is an effective way of recieving the response return
                     console.log("loaded finished")
-                    // TODO: iniate a download by sending a fetch for the proper file(s) given by xhr.response or use express to send the files without client
 
+
+                    // TODO: iniate a download by sending a fetch for the proper file(s) given by xhr.response
+                    console.log(xhr.response)
                 }
 
                 // open the request and send the data
