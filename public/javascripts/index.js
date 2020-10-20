@@ -2074,7 +2074,8 @@ function updateIconScale( event )
     var inputvalue = parseFloat( event.target.value )
     if( !isNaN( inputvalue ) )
     {   
-        setTransform(icon, scaleString(inputvalue), translateString(getTransform("x", icon), getTransform("y", icon)) )
+        icon.setAttribute("width", 27*inputvalue)
+        icon.setAttribute("height", 27*inputvalue)
     }
 }
 
