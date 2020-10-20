@@ -1231,8 +1231,10 @@ $(document).ready(()=> {
                     // set translate
                     icongroup.setAttribute("x", newX)
                     icongroup.setAttribute("y", newY)
-                    icongroup.setAttribute("width", 27*5)
-                    icongroup.setAttribute("height", 27*5)
+                    icongroup.setAttribute("scale", 5)
+
+                    icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale"))
+                    icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale"))
                 }
                 else
                 {
@@ -1262,8 +1264,10 @@ $(document).ready(()=> {
                     // set translate
                     icongroup.setAttribute("x", newX)
                     icongroup.setAttribute("y", newY)
-                    icongroup.setAttribute("width", 27*5)
-                    icongroup.setAttribute("height", 27*5)
+                    icongroup.setAttribute("scale", 5)
+
+                    icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale") )
+                    icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale") )
                 }
                 else
                 {
@@ -1294,8 +1298,10 @@ $(document).ready(()=> {
                     // set translate
                     icongroup.setAttribute("x", newX)
                     icongroup.setAttribute("y", newY)
-                    icongroup.setAttribute("width", 27*5)
-                    icongroup.setAttribute("height", 27*5)
+                    icongroup.setAttribute("scale", 5)
+
+                    icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale") )
+                    icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale") )
                 }
                 else
                 {
@@ -1602,8 +1608,8 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             northicontranslatey.setAttribute("name", "iconycoordinput")
 
             // set translate value based on icon scale and fix to integer
-            northicontranslatex.value = (transX*iconscaleinput.value).toFixed(0)
-            northicontranslatey.value = (transY*iconscaleinput.value).toFixed(0)
+            northicontranslatex.value = (transX).toFixed(0)
+            northicontranslatey.value = (transY).toFixed(0)
 
             // set translate labels
             northicontranslateylabel.innerHTML = "North Y: "
@@ -1727,10 +1733,10 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             sunscalelabel.setAttribute("for", "iconscaleinput")
 
             // set translate value
-            sunicontranslatex.value = (transX*suniconscaleinput.value).toFixed(0)
+            sunicontranslatex.value = (transX).toFixed(0)
             sunicontranslatex.setAttribute("name", "iconxcoordinput")
 
-            sunicontranslatey.value = (transY*suniconscaleinput.value).toFixed(0)
+            sunicontranslatey.value = (transY).toFixed(0)
             sunicontranslatey.setAttribute("name", "iconycoordinput")
 
             // main color input
@@ -1843,8 +1849,8 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             obsiconscaleinput.setAttribute("min", "1")
             obsiconscaleinput.setAttribute("name", "iconscaleinput")
 
-            obsicontranslatex.value = (transX*obsiconscaleinput.value).toFixed(0)
-            obsicontranslatey.value = (transY*obsiconscaleinput.value).toFixed(0)
+            obsicontranslatex.value = (transX).toFixed(0)
+            obsicontranslatey.value = (transY).toFixed(0)
 
             // create labels
             obsmaincolorlabel.innerHTML = "Observer Main Color: "
@@ -2028,18 +2034,14 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 function updateIconPosition ( event, attrId )
 {
     let object = document.getElementById( event.target.attributes.objectid.value )
-    let scale = getTransform("scale", object)
 
     if( attrId == 0 )
     {
-        let translateStr = updateTranslate( object.style.transform, "x", parseFloat( event.target.value ), scale )
-        console.log(translateStr)
-        setTransform( object, scaleString(scale), translateStr)
+        updateTranslate( object, "x", parseFloat( event.target.value ) )
     }
     else if( attrId == 1 )
     {
-        let translateStr = updateTranslate( object.style.transform, "y", parseFloat( event.target.value ), scale )
-        setTransform(object, scaleString(scale), translateStr)
+        updateTranslate( object, "y", parseFloat( event.target.value ) )
     }
 }
 
@@ -2196,23 +2198,22 @@ function changeIconColor( colorid, colorval, icon )
             if( icon.id.indexOf( "north" ) > -1 )
             {
                 // change all three children of the north icon
-                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "stroke", "stroke fill" )
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "stroke", "stroke", "stroke fill" )
             }
             else if( icon.id.indexOf( "sun" ) > -1 )
             {
                 // change the primary of the sun icon
-                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "stroke", "fill" )
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "stroke", "stroke", "fill" )
             }
             else if( icon.id.indexOf( "observer" ) > -1 )
             {
                 // change the primary of the observer icon
-                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "stroke", "stroke", "fill stroke", "", "stroke fill" )
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "stroke", "stroke", "stroke", "fill stroke", "", "stroke fill" )
             }
             else if( icon.id.indexOf( "scalebar" ) > -1 )
             {
                 // change the primary of the observer icon
-                console.log(icon.childNodes.length)
-                changeColorsOfChildren( icon.childNodes, colorval, "stroke", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill" )
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "stroke", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "stroke")
             }
             break
         case 1:
@@ -2220,22 +2221,22 @@ function changeIconColor( colorid, colorval, icon )
             if( icon.id.indexOf( "north" ) > -1 )
             {
                 // change the secondary of the north icon
-                changeColorsOfChildren( icon.childNodes, colorval, "fill", "fill", "" )
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "fill", "fill", "" )
             }
             else if( icon.id.indexOf( "sun" ) > -1 )
             {
                 // change the secondary of the sun icon
-                changeColorsOfChildren( icon.childNodes, colorval, "fill", "fill", "stroke" )
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "fill", "fill", "stroke" )
             }
             else if( icon.id.indexOf( "observer" ) > -1 )
             {
                 // change the secondary of the observer icon
-                changeColorsOfChildren( icon.childNodes, colorval, "fill", "fill", "fill", "", "fill stroke", "")
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "fill", "fill", "fill", "", "fill stroke", "")
             }
             else if( icon.id.indexOf( "scalebar" ) > -1 )
             {
                 // change the primary of the observer icon
-                changeColorsOfChildren( icon.childNodes, colorval, "fill", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" )
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "fill", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" )
             }
     }
 }

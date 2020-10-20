@@ -202,24 +202,11 @@ function moveSvgDown( element )
  * @param {string} translateStr - translate string for the translate
  * @param {string} attr - the attribute to update
  * @param {number} value - the new value
- * @param {number} scale - the current scale
  * @description update just one part of the translate. either x or y and return translateString()
  */
-function updateTranslate ( translateStr, attr, value, scale )
+function updateTranslate ( object, attr, value )
 {
     // quick fix for unknown javascript 0px error that changes the transform string
     value = ( value == 0 ) ? 1 : value
-
-    if( attr == "x" )
-    {
-        let y = parseFloat( translateStr.split( "translate(" )[ 1 ].split( "," )[ 1 ] )
-
-        return  translateString(value/scale, y) 
-    }
-    else if( attr == "y" )
-    {
-        let x = parseFloat( translateStr.split( "translate(" )[ 1 ].split( "," )[ 0 ] )
-
-        return  translateString(x, value/scale)
-    }
+    object.setAttribute(attr, value)
 }
