@@ -166,10 +166,10 @@ function DraggableArea( objectbox=undefined )
                 currentX = getScaledPoint(svgP.x, 1, parseFloat(draggingIcon.getAttribute("width")) )
                 currentY = getScaledPoint(svgP.y, 1, parseFloat(draggingIcon.getAttribute("height")) )
 
-                let scale = 5;
+                let scale = draggingIcon.getAttribute("scale");
 
                 // update the input fields using the id of the draggingObject
-                updateInputField( draggingIcon.getAttribute("id"), currentX*scale, currentY*scale )
+                updateInputField( draggingIcon.getAttribute("id"), currentX, currentY )
 
                 // set the new icon transform using the uniform setter function
                 draggingIcon.setAttribute("x", currentX)

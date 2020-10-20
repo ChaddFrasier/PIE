@@ -42,7 +42,7 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
             path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "jpg"))
             );
 
-/** TODO: Temporary sectoion start  */
+        /** TODO: Temporary sectoion start  */
         var promise2 = pieapi.gdal_virtual(
             path.join("public", "uploads", req.file.filename),
             path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "vrt"))
@@ -50,10 +50,11 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
 
         // runn a single promise
         promise2.then((vrtfile) => {
+            console.log("Promise 2 finished with >")
             console.log(vrtfile)
             });
 
-/** Temporary end */
+        /** Temporary end */
        
         // the promise function runs and finishes
         promise
