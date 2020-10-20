@@ -638,8 +638,9 @@ $(document).ready(()=> {
 
         draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
 
-        /** Add a caption box in the svg area */
-        const textholder = document.createElementNS(NS.svg, "foreignObject")
+        /** TODO: foreignObject does not work with Sharp
+         * Add a caption box in the svg area */
+        const textholder = document.createElementNS(NS.svg, "text")
         textholder.setAttribute("id", captionId)
         textholder.setAttribute("x", "0")
         textholder.setAttribute("y", "0")
@@ -647,20 +648,12 @@ $(document).ready(()=> {
         textholder.setAttribute("height", "100")
         textholder.setAttribute("class", "captionObject")
 
-        const text = document.createElement("textarea")
-        text.setAttribute("font-size", "30px")
-        text.setAttribute("width", "100%")
-        text.setAttribute("height", "100%")
-        text.setAttribute("background-color" , "linear-gradient(to bottom left, #ffffff, #d3d3d3)");
-
-
-
+        const text = document.createElementNS(NS.svg, "tspan")
+        
         text.setAttribute("id", captionId + "text")
-        text.setAttribute("font-family", "'Times New Roman', Times, serif")
         text.setAttribute("x", "0")
-        text.setAttribute("y", "0")
-        text.setAttribute("width", "100%")
-        text.setAttribute("height", "100%")
+        text.setAttribute("y", "30")
+        text.setAttribute("font-size", "30")
         
         text.innerHTML = "This is the caption"
 
@@ -2337,7 +2330,7 @@ function updateCaptionTextColor ( color, objectid )
     // change color if it is valid; error otherwise
     if( obj )
     {
-        obj.firstChild.style.color = color
+        obj.firstChild.setAttribute( "fill", color )
     }
     else
     {
@@ -2359,7 +2352,7 @@ function updateCaptionBoxColor ( color, objectid )
     //change color if its valid throw error otherwise
     if ( obj )
     {
-        obj.firstChild.style.background = color
+        obj.setAttribute( "stroke", color )
     }
     else
     {
