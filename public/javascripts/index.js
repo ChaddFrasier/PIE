@@ -478,6 +478,10 @@ $(document).ready(()=> {
 
         // pass the keyup listener to update the text input
         textinput.addEventListener("keyup", function(){
+
+            // TODO: when the user is typeing into the box the caption will register the length of the lines and group each line into it's own tspan element
+
+
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value+"text" )
             // updpate the text inside once found
@@ -638,24 +642,23 @@ $(document).ready(()=> {
 
         draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
 
-        /** TODO: foreignObject does not work with Sharp
-         * Add a caption box in the svg area */
-        const textholder = document.createElementNS(NS.svg, "text")
+        /** Add a caption box in the svg area */
+        const textholder = document.createElementNS(NS.svg, "svg")
         textholder.setAttribute("id", captionId)
         textholder.setAttribute("x", "0")
         textholder.setAttribute("y", "0")
         textholder.setAttribute("width", "1500")
         textholder.setAttribute("height", "100")
-        textholder.setAttribute("class", "captionObject")
 
-        const text = document.createElementNS(NS.svg, "tspan")
+        const text = document.createElementNS(NS.svg, "text")
         
         text.setAttribute("id", captionId + "text")
-        text.setAttribute("x", "0")
-        text.setAttribute("y", "30")
+        text.setAttribute("width", "100%")
+        text.setAttribute("height", "100%")
         text.setAttribute("font-size", "30")
         
-        text.innerHTML = "This is the caption"
+        // TODO: use this as an example for how to display the caption text
+        text.innerHTML = "<tspan x='0' y='30'>This is the first line of the caption. how long can this go and what does the container sdo?</tspan><tspan x='0' y='60'> and this is the second line of the caption.</tspan>"
 
         // finish by adding them to the document
         textholder.appendChild(text)
@@ -1362,14 +1365,17 @@ $(document).ready(()=> {
 function addCustomKeys()
 {
     document.addEventListener("keydown", function( event ) {
-        switch( Number(event.keyCode) )
+        if( document.getElementById("savebtn") )
         {
-            case 13:
-                document.getElementById("savebtn").click();
-                break;
+            switch( Number(event.keyCode) )
+            {
+                case 13:
+                    document.getElementById("savebtn").click();
+                    break;
 
-            default:
-                return true;
+                default:
+                    return true;
+            }
         }
     });
 }
