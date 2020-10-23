@@ -3574,7 +3574,7 @@ function text2PieText( text, captionWidth, fontsize )
             var wordPixels = word.length * fontsize/2
 
             // check to see of this word goes over the limit of the line
-            if( (wordPixels + usedPixels) >= captionWidth)
+            if( (wordPixels + usedPixels) >= captionWidth - fontsize*2)
             {
                 // The limit was reached on the last word
                 // reset the used pixel count
