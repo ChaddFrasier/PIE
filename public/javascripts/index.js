@@ -666,7 +666,7 @@ $(document).ready(()=> {
         text.setAttribute("font-size", "30px")
         
         // TODO: use this as an example for how to display the caption text
-        text.innerHTML = "<tspan x='0' y='30'>Caption Can Go Here</tspan>"
+        text.innerHTML = "<tspan x='0' y='30'>Type your caption here</tspan>"
 
         // finish by adding them to the document
         textholder.append(rect, text)
@@ -1794,7 +1794,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             break
     
         case "observer":
-                //TODO: Do the same thing to fix the observer
 
             let obsiconscaleinput = document.createElement("input")
             let obsiconmaincolorinput = document.createElement("input")
@@ -3534,8 +3533,9 @@ function updateObjectUI( objectid, ...args )
  */
 function text2PieText( text, captionWidth, fontsize )
 {
-    // create return data and helper array
+    // create return data and helper data
     let paragraphArr = [],
+        paragraphStart = 0,
         constructorArray = [],
         paragraphText = "",
         pieText = "",
@@ -3550,27 +3550,24 @@ function text2PieText( text, captionWidth, fontsize )
     // get an array of all the seperate paragraphs
     paragraphArr = text.split("\n");
 
-    var paragraphStart = 0
-
     // iterate over each paragraph
     paragraphArr.forEach(ptextwhole => 
     {
-        // TODO: For Each Paragraph I have to
-
         // create a line element to use for adding lines quicker
         var lineObject = document.createElementNS(NS.svg, "tspan")
 
+        // set the init location of the inner line
         lineObject.setAttribute("x", fontsize)
         lineObject.setAttribute("dy", 0)
 
         // split paragragh into seperate words
         let wordArr = ptextwhole.split(" ");
             
-        //-> iterate over each word
+        // iterate over each word
         for (let i = 0; i < wordArr.length; i++)
         {
             const word = wordArr[i];
-            // calculate the word length in pixels
+            // estimate the word length in pixels
             var wordPixels = word.length * fontsize/2
 
             // check to see of this word goes over the limit of the line
@@ -3582,52 +3579,70 @@ function text2PieText( text, captionWidth, fontsize )
 
                 // append the current line to the lineObject and start a new line
                 lineObject.innerHTML = constructorArray.join(' ');
+
+                // append the new line to the paragraphText holder object
                 paragraphText += lineObject.outerHTML;
+                // set the new dy for the next line
                 lineObject.setAttribute("dy", fontsize)
-                
+                // cpture the 1 word that did not fit on this line and set it to the next line
                 constructorArray = [word];
-                
             }
             else
             {
                 // add the word to the line
                 constructorArray.push(word)
-
                 // update the curret line pixel count
                 usedPixels += wordPixels
             }
         }
-
+        
+        // as soon as the paragraph finishes clear the used pixels
         usedPixels = 0
 
+        // check for word overflow. 
         if( constructorArray.length !== 0 )
         {
-            // append the current line to the lineObject and start a new line
+            // append the overflow line to the lineObject to start a new line
             lineObject.innerHTML = constructorArray.join(' ');
-            console.log(p1.innerHTML.length)
+            
+            // if the length of the paragraphText is 0 then this is the only line
             if( paragraphText.length === 0 )
             {
+                // set 0 if this is the only line
                 lineObject.setAttribute("dy", 0)
             }
             else
             {
+                // move fontsize down from the last sibling
                 lineObject.setAttribute("dy", fontsize)
             }
+            // append the overflow line to the paragraph string
             paragraphText += lineObject.outerHTML;
+
+            // clear data from next run
             constructorArray = [];
         }
 
+        // set the innerHTML of the paragraph to the string we created
         p1.innerHTML = paragraphText;
+
+        // we need to set the new y for the paragraph based on the height if the last paragraph
         p1.setAttribute("y", fontsize + paragraphStart);
 
+        // clear strings and objects used for creating the innerHTML
         paragraphText = ""
         lineObject.innerHTML = ""
 
+        // append the paragraph HTML to the pieText string object
         pieText += p1.outerHTML;
 
-        paragraphStart = parseInt(p1.getAttribute("y")) + (30 * p1.childElementCount-1)
+        // calculate the new y for the next paragraph
+        paragraphStart = parseInt(p1.getAttribute("y")) + (30 * p1.childElementCount-1);
+
+        // reset the paragraph element
         p1.innerHTML = paragraphText
     });
-    
+
+    // lastly return the HTML string that is the caption
     return pieText;
 }
