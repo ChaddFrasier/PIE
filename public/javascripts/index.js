@@ -380,7 +380,6 @@ $(document).ready(()=> {
      * @function button.toolboxaddcaptionbtn.click()
      * @description adds all caption elements to the svg and menu
      * 
-     * TODO: foregnObject does ot work with the Sharp module
      */
     $('button.toolboxaddcaptionbtn').click(() => {
 
@@ -479,15 +478,15 @@ $(document).ready(()=> {
         // pass the keyup listener to update the text input
         textinput.addEventListener("keyup", function(){
 
-            // TODO: when the user is typeing into the box the caption will register the length of the lines and group each line into it's own tspan element
-
-
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value+"text" )
+
+
             // updpate the text inside once found
             if(matchingCaption)
             {
-                matchingCaption.innerHTML = this.value
+                // TODO: dynamic font size; hard coded 30
+                matchingCaption.innerHTML = text2PieText(this.value, parseFloat(matchingCaption.parentElement.getAttribute("width")), 30);
             }
         })
 
@@ -649,19 +648,28 @@ $(document).ready(()=> {
         textholder.setAttribute("y", "0")
         textholder.setAttribute("width", "1500")
         textholder.setAttribute("height", "100")
+        textholder.setAttribute("preserveAspectRatio", "xMidYMid meet")
+
+        const rect = document.createElementNS(NS.svg,"rect");
+        rect.setAttribute("id", captionId+"bg");
+        rect.setAttribute("width", "100%");
+        rect.setAttribute("height", "100%");
+        rect.setAttribute("fill", "#fff");
+        rect.setAttribute("x", "0");
+        rect.setAttribute("y", "0");
 
         const text = document.createElementNS(NS.svg, "text")
         
         text.setAttribute("id", captionId + "text")
         text.setAttribute("width", "100%")
         text.setAttribute("height", "100%")
-        text.setAttribute("font-size", "30")
+        text.setAttribute("font-size", "30px")
         
         // TODO: use this as an example for how to display the caption text
-        text.innerHTML = "<tspan x='0' y='30'>This is the first line of the caption. how long can this go and what does the container sdo?</tspan><tspan x='0' y='60'> and this is the second line of the caption.</tspan>"
+        text.innerHTML = "<tspan x='0' y='30'>Caption Can Go Here</tspan>"
 
         // finish by adding them to the document
-        textholder.appendChild(text)
+        textholder.append(rect, text)
         draggableSvg.getContainerObject().appendChild(textholder)
 
         getObjectCount(1, "caption")
@@ -1223,12 +1231,14 @@ $(document).ready(()=> {
                 // test valid input and set the transform for all browsers
                 if( !isNaN(newX) && !isNaN(newY))
                 {
-                    // TODO: this needed to change because sharp cannot process it
-                    // set translate
+                    // set the x and y location
                     icongroup.setAttribute("x", newX)
                     icongroup.setAttribute("y", newY)
+                    
+                    // create the scale attribute
                     icongroup.setAttribute("scale", 5)
 
+                    // set the height and width using the scale
                     icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale"))
                     icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale"))
                 }
@@ -1256,12 +1266,14 @@ $(document).ready(()=> {
                 // test valid input and set the transform for all browsers
                 if( !isNaN(newX) && !isNaN(newY))
                 {
-                    // TODO: this needed to change because sharp cannot process it
-                    // set translate
+                    // set the x and y location
                     icongroup.setAttribute("x", newX)
                     icongroup.setAttribute("y", newY)
+
+                    // set the scale
                     icongroup.setAttribute("scale", 5)
 
+                    // set the width and height
                     icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale") )
                     icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale") )
                 }
@@ -1290,12 +1302,9 @@ $(document).ready(()=> {
                 // test valid input and set the transform for all browsers
                 if( !isNaN(newX) && !isNaN(newY))
                 {
-                    // TODO: this needed to change because sharp cannot process it
-                    // set translate
                     icongroup.setAttribute("x", newX)
                     icongroup.setAttribute("y", newY)
                     icongroup.setAttribute("scale", 5)
-
                     icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale") )
                     icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale") )
                 }
@@ -2336,7 +2345,7 @@ function updateCaptionTextColor ( color, objectid )
     // change color if it is valid; error otherwise
     if( obj )
     {
-        obj.firstChild.setAttribute( "fill", color )
+        obj.setAttribute( "fill", color )
     }
     else
     {
@@ -2353,12 +2362,12 @@ function updateCaptionTextColor ( color, objectid )
 function updateCaptionBoxColor ( color, objectid )
 {
     // get object
-    let obj = document.getElementById( objectid )
+    let obj = document.getElementById( objectid + "bg")
 
     //change color if its valid throw error otherwise
     if ( obj )
     {
-        obj.setAttribute( "stroke", color )
+        obj.setAttribute( "fill", color )
     }
     else
     {
@@ -3515,4 +3524,110 @@ function updateObjectUI( objectid, ...args )
             }
         }
     }
+}
+
+/**
+ * 
+ * @param {*} text 
+ * @param {*} captionWidth 
+ * @param {*} fontsize 
+ */
+function text2PieText( text, captionWidth, fontsize )
+{
+    // create return data and helper array
+    let paragraphArr = [],
+        constructorArray = [],
+        paragraphText = "",
+        pieText = "",
+        usedPixels = 0;
+
+    // create the first paragraph of the caption
+    var p1 = document.createElementNS(NS.svg, "tspan");
+
+    // set the x and y so that the text displays the whole word
+    p1.setAttribute("x", fontsize);
+
+    // get an array of all the seperate paragraphs
+    paragraphArr = text.split("\n");
+
+    var paragraphStart = 0
+
+    // iterate over each paragraph
+    paragraphArr.forEach(ptextwhole => 
+    {
+        // TODO: For Each Paragraph I have to
+
+        // create a line element to use for adding lines quicker
+        var lineObject = document.createElementNS(NS.svg, "tspan")
+
+        lineObject.setAttribute("x", fontsize)
+        lineObject.setAttribute("dy", 0)
+
+        // split paragragh into seperate words
+        let wordArr = ptextwhole.split(" ");
+            
+        //-> iterate over each word
+        for (let i = 0; i < wordArr.length; i++)
+        {
+            const word = wordArr[i];
+            // calculate the word length in pixels
+            var wordPixels = word.length * fontsize/2
+
+            // check to see of this word goes over the limit of the line
+            if( (wordPixels + usedPixels) >= captionWidth)
+            {
+                // The limit was reached on the last word
+                // reset the used pixel count
+                usedPixels = 0
+
+                // append the current line to the lineObject and start a new line
+                lineObject.innerHTML = constructorArray.join(' ');
+                paragraphText += lineObject.outerHTML;
+                lineObject.setAttribute("dy", fontsize)
+                
+                constructorArray = [word];
+                
+            }
+            else
+            {
+                // add the word to the line
+                constructorArray.push(word)
+
+                // update the curret line pixel count
+                usedPixels += wordPixels
+            }
+        }
+
+        usedPixels = 0
+
+        if( constructorArray.length !== 0 )
+        {
+            // append the current line to the lineObject and start a new line
+            lineObject.innerHTML = constructorArray.join(' ');
+            console.log(p1.innerHTML.length)
+            if( paragraphText.length === 0 )
+            {
+                lineObject.setAttribute("dy", 0)
+            }
+            else
+            {
+                lineObject.setAttribute("dy", fontsize)
+            }
+            paragraphText += lineObject.outerHTML;
+            constructorArray = [];
+        }
+
+        p1.innerHTML = paragraphText;
+        p1.setAttribute("y", fontsize + paragraphStart);
+
+        paragraphText = ""
+        lineObject.innerHTML = ""
+
+        pieText += p1.outerHTML;
+
+        paragraphStart = parseInt(p1.getAttribute("y")) + (30 * p1.childElementCount-1)
+        p1.innerHTML = paragraphText
+    });
+    
+    return pieText;
 }
