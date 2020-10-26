@@ -791,6 +791,16 @@ $(document).ready(()=> {
             }
             else if( isisregexp.test(this.value))
             {
+                // get the button group
+                var iconbtngroup = document.getElementsByClassName("concisebtngroup")[0];
+
+                iconbtngroup.childNodes.forEach( btn => {
+                    try 
+                    {
+                        btn.classList.remove("disabled");
+                    }catch(err){ return }
+                });
+
                 // prevent page default submit
                 event.preventDefault()
                 // create a form data and request object to call the server
@@ -808,6 +818,8 @@ $(document).ready(()=> {
                     reader.onload = function(e) {
                         // use jquery to update the image source
                         $('#'+imageId).attr('href', e.target.result)
+
+                        $('#'+imageId).attr('GEO', 'true')
                     }
 
                     // convert to base64 string
@@ -1014,7 +1026,11 @@ $(document).ready(()=> {
 
         let btn = event.target
 
-        if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
+        if( btn.classList.contains("disabled") )
+        {
+            return false;
+        }
+        else if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
         {
             if(selectedObject){
                 selectedObject = null
@@ -1041,7 +1057,11 @@ $(document).ready(()=> {
      */
     $('#scalebarbtnopt').on("mousedown", (event) => {
         let btn = ( event.target.nodeName == "BUTTON" )? event.target: event.target.parentElement;
-        if( getObjectCount(0,"image") != 0 && detectLeftMouse(event))
+        if( btn.classList.contains("disabled") )
+        {
+            return false;
+        }
+        else if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
         {
             if(selectedObject){
                 selectedObject = null
@@ -1070,8 +1090,12 @@ $(document).ready(()=> {
 
         let btn = event.target
 
+        if( btn.classList.contains("disabled") )
+        {
+            return false;
+        }
         // check if there is an image
-        if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
+        else if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
         {
             // set selected and se selected UI
             if( selectedObject )
@@ -1104,8 +1128,12 @@ $(document).ready(()=> {
 
         let btn = event.target
 
+        if( btn.classList.contains("disabled") )
+        {
+            return false;
+        }
         // if there is no image fail and alert
-        if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
+        else if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
         {
             // if the selected object is not null set it to null
             if( selectedObject )
@@ -1145,7 +1173,7 @@ $(document).ready(()=> {
 
         shadowIcon.icon = null
 
-        if(typeofObject(event.target.id) == "image")
+        if(typeofObject(event.target.id) == "image" && event.target.getAttribute("GEO") == "true")
         {
             // set element
             selectedObject = event.target
@@ -1279,7 +1307,7 @@ $(document).ready(()=> {
                 }
                 else
                 {
-                    console.error("Translate Values Failed")
+                    console.log("Translate Values Failed")
                 }
 
                 // append the icon

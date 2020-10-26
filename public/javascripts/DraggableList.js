@@ -136,8 +136,14 @@ function DraggableList( inobject=undefined )
                 svgcontainer.removeChild(svgObject.parentElement)
             }
 
+            let objType = typeofObject(svgObject.id);
             // update the count
-            getObjectCount(-1 , typeofObject(svgObject.id))
+            if( (getObjectCount(-1 , objType) == 0 && objType == "image") || (document.querySelectorAll("image[GEO='true']").length === 0 ))
+            {
+                document.getElementsByClassName("concisebtngroup")[0].childNodes.forEach( btn => {
+                    btn.classList.add("disabled")
+                });
+            }
         }
     }
 
