@@ -60,6 +60,7 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
         promise
             // then() -> just send the resulting file back to the client for displaying
             .then( (newfilename) => {
+                res.cookie("filepath", path.basename(newfilename))
                 res.sendFile( path.resolve("./"+newfilename) );
             }).catch( (err) => {
                 console.debug(err);
