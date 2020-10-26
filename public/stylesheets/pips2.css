@@ -24,6 +24,10 @@ html.contained {
     overflow-y: hidden;
 }
 
+.marker:hover {
+    cursor: grab;
+}
+
 .linklist > a {
     color: var(--contrast-color);
     margin: auto auto;
