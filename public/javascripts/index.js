@@ -793,16 +793,7 @@ $(document).ready(()=> {
             }
             else if( isisregexp.test(this.value))
             {
-                // get the button group
-                var iconbtngroup = document.getElementsByClassName("concisebtngroup")[0];
-
-                iconbtngroup.childNodes.forEach( btn => {
-                    try 
-                    {
-                        btn.classList.remove("disabled");
-                    }catch(err){ return }
-                });
-
+                
                 // prevent page default submit
                 event.preventDefault()
                 // create a form data and request object to call the server
@@ -822,6 +813,17 @@ $(document).ready(()=> {
                         $('#'+imageId).attr('href', e.target.result)
 
                         $('#'+imageId).attr('GEO', 'true')
+
+                        // get the button group
+                        var iconbtngroup = document.getElementsByClassName("concisebtngroup")[0];
+
+                        iconbtngroup.childNodes.forEach( btn => {
+                            try 
+                            {
+                                btn.classList.remove("disabled");
+                            }catch(err){ return }
+                        });
+
                     }
 
                     // convert to base64 string
