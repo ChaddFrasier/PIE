@@ -657,6 +657,7 @@ $(document).ready(()=> {
         rect.setAttribute("fill", "#fff");
         rect.setAttribute("x", "0");
         rect.setAttribute("y", "0");
+        rect.classList.add("marker")
 
         const text = document.createElementNS(NS.svg, "text")
         
@@ -664,6 +665,7 @@ $(document).ready(()=> {
         text.setAttribute("width", "100%")
         text.setAttribute("height", "100%")
         text.setAttribute("font-size", "30px")
+        text.setAttribute("pointer-events", "none")
         
         // TODO: use this as an example for how to display the caption text
         text.innerHTML = "<tspan x='0' y='30'>Type your caption here</tspan>"
