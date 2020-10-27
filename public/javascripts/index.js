@@ -319,9 +319,17 @@ $(document).ready(()=> {
                     // this is an effective way of recieving the response return
                     console.log("loaded finished")
 
-
                     // TODO: iniate a download by sending a fetch for the proper file(s) given by xhr.response
                     console.log(xhr.response)
+
+                    // response has all the links for downloading images
+                    Object.keys(xhr.response).forEach( filetype => {
+                        const filepath = xhr.response[filetype];
+
+                        // TODO: download the filepath
+
+                        console.log(`Download the ${filetype} file at ${filepath}`)
+                    });
                 }
 
                 // open the request and send the data
@@ -791,7 +799,7 @@ $(document).ready(()=> {
                     reader.readAsDataURL(this.files[0])
                 }
             }
-            else if( isisregexp.test(this.value))
+            else if( isisregexp.test(this.value) )
             {
                 
                 // prevent page default submit
@@ -1021,7 +1029,6 @@ $(document).ready(()=> {
     })
 
     /** Annotation buttons */
-
     /**
      * @function northarrowopt.onmousedown
      * @description this function starts the drag and drop logic for the north icon
