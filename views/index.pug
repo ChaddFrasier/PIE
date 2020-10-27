@@ -46,7 +46,7 @@ block content
                 #edittoolsbox.edittoolsbox.closed
                     label.text(for="icongroup")="Geospacial Icons"
                     #icongroup.concisebtngroup
-                        button#northarrowopt(type="button" title="North Arrow")
+                        button#northarrowopt.disabled(type="button" title="North Arrow")
                             svg.btnvectorgraphic(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 27 27" xml:space="preserve")
                                 svg#northgroup(viewBox="0 0 27 27")
                                     g.holder
@@ -55,7 +55,7 @@ block content
                                         path(d="m8.1926 11.303h2.5183l5.0365 6.9878 4.3e-5 -6.9878h2.5183v10.073h-2.5183l-5.0365-7.0512-4.5e-5 7.0512h-2.5183z" stroke-width="1" stroke="#fff" fill="#fff" stroke-linejoin="round")
                                     rect.marker(width="100%" height="100%" fill="transparent" stroke="transparent")
 
-                        button#sunarrowopt(type="button" title="Sun Azimuthal")
+                        button#sunarrowopt.disabled(type="button" title="Sun Azimuthal")
                             svg.btnvectorgraphic(viewBox="0 0 27 27")
                                 svg#sungroup(viewBox="0 0 27 27")
                                     g.holder
@@ -64,7 +64,7 @@ block content
                                         ellipse( cx="13.229" cy="16.536" rx="3.0833" ry="3.0833" fill="#fff" stroke="#000" stroke-width="1.1" stroke-dashoffset="3.5906" stroke-linejoin="round")
                                     rect.marker(width=30 height=30 fill="transparent" stroke="transparent")
                         br
-                        button#observerarrowopt(type="button" title="Spacecraft Azimuthal")
+                        button#observerarrowopt.disabled(type="button" title="Spacecraft Azimuthal")
                             svg.btnvectorgraphic(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 27 27" xml:space="preserve")
                                 svg#observergroup(viewBox="0 0 27 27")
                                     g.holder
@@ -75,7 +75,7 @@ block content
                                         ellipse(cx="13.459" cy="16.145" rx="1.4589" ry="2.1038" fill="#000" stroke="#000" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="1.5")
                                         ellipse(cx="14.279" cy="14.784" rx=".72946" ry="1.0519" fill="#fff" stroke="#fff" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="1.5")
                                     rect.marker(width=30 height=30 fill="transparent" stroke="transparent")
-                        button#scalebarbtnopt(type="button" title="Scale Bar")
+                        button#scalebarbtnopt.disabled(type="button" title="Scale Bar")
                             svg.btnvectorgraphic(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 4500 700" width="27" height="27" )
                                 svg#scalebargroup(viewBox="0 0 4500 700")
                                     g.holder

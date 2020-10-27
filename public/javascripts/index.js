@@ -316,12 +316,18 @@ $(document).ready(()=> {
 
                 // when the requests load handle the response
                 xhr.onloadend = () => {
-                    // this is an effective way of recieving the response return
-                    console.log("loaded finished")
-
-
+                    
                     // TODO: iniate a download by sending a fetch for the proper file(s) given by xhr.response
                     console.log(xhr.response)
+
+                    // response has all the links for downloading images
+                    Object.keys(xhr.response).forEach( filetype => {
+                        const filepath = xhr.response[filetype];
+
+                        // TODO: download the filepath
+
+                        console.log(`Download the ${filetype} file at ${filepath}`)
+                    });
                 }
 
                 // open the request and send the data
@@ -380,7 +386,6 @@ $(document).ready(()=> {
      * @function button.toolboxaddcaptionbtn.click()
      * @description adds all caption elements to the svg and menu
      * 
-     * TODO: foregnObject does ot work with the Sharp module
      */
     $('button.toolboxaddcaptionbtn').click(() => {
 
@@ -478,12 +483,16 @@ $(document).ready(()=> {
 
         // pass the keyup listener to update the text input
         textinput.addEventListener("keyup", function(){
+
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value+"text" )
+
+
             // updpate the text inside once found
             if(matchingCaption)
             {
-                matchingCaption.innerHTML = this.value
+                // TODO: dynamic font size; hard coded 30
+                matchingCaption.innerHTML = text2PieText(this.value, parseFloat(matchingCaption.parentElement.getAttribute("width")), 30);
             }
         })
 
@@ -639,33 +648,36 @@ $(document).ready(()=> {
         draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
 
         /** Add a caption box in the svg area */
-        const textholder = document.createElementNS(NS.svg, "foreignObject")
+        const textholder = document.createElementNS(NS.svg, "svg")
         textholder.setAttribute("id", captionId)
         textholder.setAttribute("x", "0")
         textholder.setAttribute("y", "0")
         textholder.setAttribute("width", "1500")
         textholder.setAttribute("height", "100")
-        textholder.setAttribute("class", "captionObject")
+        textholder.setAttribute("preserveAspectRatio", "xMidYMid meet")
 
-        const text = document.createElement("textarea")
-        text.setAttribute("font-size", "30px")
-        text.setAttribute("width", "100%")
-        text.setAttribute("height", "100%")
-        text.setAttribute("background-color" , "linear-gradient(to bottom left, #ffffff, #d3d3d3)");
+        const rect = document.createElementNS(NS.svg,"rect");
+        rect.setAttribute("id", captionId+"bg");
+        rect.setAttribute("width", "100%");
+        rect.setAttribute("height", "100%");
+        rect.setAttribute("fill", "#fff");
+        rect.setAttribute("x", "0");
+        rect.setAttribute("y", "0");
+        rect.classList.add("marker")
 
-
-
-        text.setAttribute("id", captionId + "text")
-        text.setAttribute("font-family", "'Times New Roman', Times, serif")
-        text.setAttribute("x", "0")
-        text.setAttribute("y", "0")
-        text.setAttribute("width", "100%")
-        text.setAttribute("height", "100%")
+        const text = document.createElementNS(NS.svg, "text")
         
-        text.innerHTML = "This is the caption"
+        text.setAttribute("id", captionId + "text")
+        text.setAttribute("width", "100%")
+        text.setAttribute("height", "100%")
+        text.setAttribute("font-size", "30px")
+        text.setAttribute("pointer-events", "none")
+        
+        // TODO: use this as an example for how to display the caption text
+        text.innerHTML = "<tspan x='0' y='30'>Type your caption here</tspan>"
 
         // finish by adding them to the document
-        textholder.appendChild(text)
+        textholder.append(rect, text)
         draggableSvg.getContainerObject().appendChild(textholder)
 
         getObjectCount(1, "caption")
@@ -785,8 +797,9 @@ $(document).ready(()=> {
                     reader.readAsDataURL(this.files[0])
                 }
             }
-            else if( isisregexp.test(this.value))
+            else if( isisregexp.test(this.value) )
             {
+                
                 // prevent page default submit
                 event.preventDefault()
                 // create a form data and request object to call the server
@@ -804,6 +817,20 @@ $(document).ready(()=> {
                     reader.onload = function(e) {
                         // use jquery to update the image source
                         $('#'+imageId).attr('href', e.target.result)
+
+                        $('#'+imageId).attr('GEO', 'true')
+                        $('#'+imageId).attr('filePath', getCookie("filepath"))
+
+                        // get the button group
+                        var iconbtngroup = document.getElementsByClassName("concisebtngroup")[0];
+
+                        iconbtngroup.childNodes.forEach( btn => {
+                            try 
+                            {
+                                btn.classList.remove("disabled");
+                            }catch(err){ return }
+                        });
+
                     }
 
                     // convert to base64 string
@@ -1000,7 +1027,6 @@ $(document).ready(()=> {
     })
 
     /** Annotation buttons */
-
     /**
      * @function northarrowopt.onmousedown
      * @description this function starts the drag and drop logic for the north icon
@@ -1010,7 +1036,11 @@ $(document).ready(()=> {
 
         let btn = event.target
 
-        if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
+        if( btn.classList.contains("disabled") )
+        {
+            return false;
+        }
+        else if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
         {
             if(selectedObject){
                 selectedObject = null
@@ -1037,7 +1067,11 @@ $(document).ready(()=> {
      */
     $('#scalebarbtnopt').on("mousedown", (event) => {
         let btn = ( event.target.nodeName == "BUTTON" )? event.target: event.target.parentElement;
-        if( getObjectCount(0,"image") != 0 && detectLeftMouse(event))
+        if( btn.classList.contains("disabled") )
+        {
+            return false;
+        }
+        else if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
         {
             if(selectedObject){
                 selectedObject = null
@@ -1066,8 +1100,12 @@ $(document).ready(()=> {
 
         let btn = event.target
 
+        if( btn.classList.contains("disabled") )
+        {
+            return false;
+        }
         // check if there is an image
-        if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
+        else if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
         {
             // set selected and se selected UI
             if( selectedObject )
@@ -1100,8 +1138,12 @@ $(document).ready(()=> {
 
         let btn = event.target
 
+        if( btn.classList.contains("disabled") )
+        {
+            return false;
+        }
         // if there is no image fail and alert
-        if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
+        else if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
         {
             // if the selected object is not null set it to null
             if( selectedObject )
@@ -1141,7 +1183,7 @@ $(document).ready(()=> {
 
         shadowIcon.icon = null
 
-        if(typeofObject(event.target.id) == "image")
+        if(typeofObject(event.target.id) == "image" && event.target.getAttribute("GEO") == "true")
         {
             // set element
             selectedObject = event.target
@@ -1227,12 +1269,14 @@ $(document).ready(()=> {
                 // test valid input and set the transform for all browsers
                 if( !isNaN(newX) && !isNaN(newY))
                 {
-                    // TODO: this needed to change because sharp cannot process it
-                    // set translate
+                    // set the x and y location
                     icongroup.setAttribute("x", newX)
                     icongroup.setAttribute("y", newY)
+                    
+                    // create the scale attribute
                     icongroup.setAttribute("scale", 5)
 
+                    // set the height and width using the scale
                     icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale"))
                     icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale"))
                 }
@@ -1260,18 +1304,20 @@ $(document).ready(()=> {
                 // test valid input and set the transform for all browsers
                 if( !isNaN(newX) && !isNaN(newY))
                 {
-                    // TODO: this needed to change because sharp cannot process it
-                    // set translate
+                    // set the x and y location
                     icongroup.setAttribute("x", newX)
                     icongroup.setAttribute("y", newY)
+
+                    // set the scale
                     icongroup.setAttribute("scale", 5)
 
+                    // set the width and height
                     icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale") )
                     icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale") )
                 }
                 else
                 {
-                    console.error("Translate Values Failed")
+                    console.log("Translate Values Failed")
                 }
 
                 // append the icon
@@ -1294,12 +1340,9 @@ $(document).ready(()=> {
                 // test valid input and set the transform for all browsers
                 if( !isNaN(newX) && !isNaN(newY))
                 {
-                    // TODO: this needed to change because sharp cannot process it
-                    // set translate
                     icongroup.setAttribute("x", newX)
                     icongroup.setAttribute("y", newY)
                     icongroup.setAttribute("scale", 5)
-
                     icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale") )
                     icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale") )
                 }
@@ -1369,14 +1412,17 @@ $(document).ready(()=> {
 function addCustomKeys()
 {
     document.addEventListener("keydown", function( event ) {
-        switch( Number(event.keyCode) )
+        if( document.getElementById("savebtn") )
         {
-            case 13:
-                document.getElementById("savebtn").click();
-                break;
+            switch( Number(event.keyCode) )
+            {
+                case 13:
+                    document.getElementById("savebtn").click();
+                    break;
 
-            default:
-                return true;
+                default:
+                    return true;
+            }
         }
     });
 }
@@ -1786,7 +1832,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             break
     
         case "observer":
-                //TODO: Do the same thing to fix the observer
 
             let obsiconscaleinput = document.createElement("input")
             let obsiconmaincolorinput = document.createElement("input")
@@ -2337,7 +2382,7 @@ function updateCaptionTextColor ( color, objectid )
     // change color if it is valid; error otherwise
     if( obj )
     {
-        obj.firstChild.style.color = color
+        obj.setAttribute( "fill", color )
     }
     else
     {
@@ -2354,12 +2399,12 @@ function updateCaptionTextColor ( color, objectid )
 function updateCaptionBoxColor ( color, objectid )
 {
     // get object
-    let obj = document.getElementById( objectid )
+    let obj = document.getElementById( objectid + "bg")
 
     //change color if its valid throw error otherwise
     if ( obj )
     {
-        obj.firstChild.style.background = color
+        obj.setAttribute( "fill", color )
     }
     else
     {
@@ -3516,4 +3561,151 @@ function updateObjectUI( objectid, ...args )
             }
         }
     }
+}
+
+/**
+ * 
+ * @param {*} text 
+ * @param {*} captionWidth 
+ * @param {*} fontsize 
+ */
+function text2PieText( text, captionWidth, fontsize )
+{
+    // create return data and helper data
+    let paragraphArr = [],
+        paragraphStart = 0,
+        constructorArray = [],
+        paragraphText = "",
+        pieText = "",
+        usedPixels = 0;
+
+    // create the first paragraph of the caption
+    var p1 = document.createElementNS(NS.svg, "tspan");
+
+    // set the x and y so that the text displays the whole word
+    p1.setAttribute("x", fontsize);
+
+    // get an array of all the seperate paragraphs
+    paragraphArr = text.split("\n");
+
+    // iterate over each paragraph
+    paragraphArr.forEach(ptextwhole => 
+    {
+        // create a line element to use for adding lines quicker
+        var lineObject = document.createElementNS(NS.svg, "tspan")
+
+        // set the init location of the inner line
+        lineObject.setAttribute("x", fontsize)
+        lineObject.setAttribute("dy", 0)
+
+        // split paragragh into seperate words
+        let wordArr = ptextwhole.split(" ");
+            
+        // iterate over each word
+        for (let i = 0; i < wordArr.length; i++)
+        {
+            const word = wordArr[i];
+            // estimate the word length in pixels
+            var wordPixels = word.length * fontsize/2
+
+            // check to see of this word goes over the limit of the line
+            if( (wordPixels + usedPixels) >= captionWidth - fontsize*2)
+            {
+                // The limit was reached on the last word
+                // reset the used pixel count
+                usedPixels = 0
+
+                // append the current line to the lineObject and start a new line
+                lineObject.innerHTML = constructorArray.join(' ');
+
+                // append the new line to the paragraphText holder object
+                paragraphText += lineObject.outerHTML;
+                // set the new dy for the next line
+                lineObject.setAttribute("dy", fontsize)
+                // cpture the 1 word that did not fit on this line and set it to the next line
+                constructorArray = [word];
+            }
+            else
+            {
+                // add the word to the line
+                constructorArray.push(word)
+                // update the curret line pixel count
+                usedPixels += wordPixels
+            }
+        }
+        
+        // as soon as the paragraph finishes clear the used pixels
+        usedPixels = 0
+
+        // check for word overflow. 
+        if( constructorArray.length !== 0 )
+        {
+            // append the overflow line to the lineObject to start a new line
+            lineObject.innerHTML = constructorArray.join(' ');
+            
+            // if the length of the paragraphText is 0 then this is the only line
+            if( paragraphText.length === 0 )
+            {
+                // set 0 if this is the only line
+                lineObject.setAttribute("dy", 0)
+            }
+            else
+            {
+                // move fontsize down from the last sibling
+                lineObject.setAttribute("dy", fontsize)
+            }
+            // append the overflow line to the paragraph string
+            paragraphText += lineObject.outerHTML;
+
+            // clear data from next run
+            constructorArray = [];
+        }
+
+        // set the innerHTML of the paragraph to the string we created
+        p1.innerHTML = paragraphText;
+
+        // we need to set the new y for the paragraph based on the height if the last paragraph
+        p1.setAttribute("y", fontsize + paragraphStart);
+
+        // clear strings and objects used for creating the innerHTML
+        paragraphText = ""
+        lineObject.innerHTML = ""
+
+        // append the paragraph HTML to the pieText string object
+        pieText += p1.outerHTML;
+
+        // calculate the new y for the next paragraph
+        paragraphStart = parseInt(p1.getAttribute("y")) + (30 * p1.childElementCount-1);
+
+        // reset the paragraph element
+        p1.innerHTML = paragraphText
+    });
+
+    // lastly return the HTML string that is the caption
+    return pieText;
+}
+
+function getCookie(cname){
+    // atach the '=' to the name
+    var name = cname + "=";
+    // get the string version of the object
+    var decodedCookie = decodeURIComponent(document.cookie);
+    // get array of every cookie found
+    var cookieArr = decodedCookie.split(';');
+    // loop through the cookies and match the name
+    for(var i = 0; i < cookieArr.length; i++){
+        var cookie = cookieArr[i];
+        // if the first character is a space, find the start of the cookie name
+        while (cookie.charAt(0) == ' '){
+            // get a substring of the cookie with the ' ' removed
+            cookie = cookie.substring(1);
+        }
+        // if the cookie string contains the cname+'='
+        if (cookie.indexOf(name) == 0){
+            // return that cookie
+            return cookie.substring(name.length, cookie.length);
+        }
+    }
+    // not found
+    return "";
 }
