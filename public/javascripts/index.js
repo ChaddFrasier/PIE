@@ -316,9 +316,7 @@ $(document).ready(()=> {
 
                 // when the requests load handle the response
                 xhr.onloadend = () => {
-                    // this is an effective way of recieving the response return
-                    console.log("loaded finished")
-
+                    
                     // TODO: iniate a download by sending a fetch for the proper file(s) given by xhr.response
                     console.log(xhr.response)
 
