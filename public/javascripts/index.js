@@ -327,6 +327,16 @@ $(document).ready(()=> {
                         // TODO: download the filepath
 
                         console.log(`Download the ${filetype} file at ${filepath}`)
+
+                        // set the anchor click to a function that redirects the page
+                        $('#downloadAnchor').click( function( event )
+                        {
+                            event.preventDefault();
+                            window.location.href = filepath;
+                        });
+                        
+                        // click it
+                        $("#downloadAnchor").click()
                     });
                 }
 
