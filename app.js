@@ -14,6 +14,7 @@ var faqRouter = require('./routes/faq');
 var uploadRouter = require('./routes/upload')
 var exportRouter = require('./routes/export')
 var imageRouter = require('./routes/images');
+var downloadRouter = require('./routes/download');
 
 var app = express();
 
@@ -37,6 +38,7 @@ app.use(['/api/isis','/api/gdal'], apiRouter);
 app.use('/upload', uploadRouter);
 app.use('/images',imageRouter);
 app.use('/export',exportRouter);
+app.use('/download', downloadRouter);
 
 fs.readdir( path.join(__dirname, "public", "uploads"), ( err, files ) =>
 {
