@@ -336,15 +336,13 @@ $(document).ready(()=> {
 
                         var xhrd = new XMLHttpRequest();
 
-                        xhrd.open('POST', '/download/'+filename, true);
+                        xhrd.open('GET', '/download/'+filename, true);
                         
                         xhrd.responseType = 'blob';
                         xhrd.onload = function (event) {
                             var blob = this.response;
-                            var contentDispo = this.getResponseHeader('Content-Disposition');
-                            // https://stackoverflow.com/a/23054920/
-                            var fileName = contentDispo.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1];
-                            saveBlob(blob, fileName);
+                            
+                            saveBlob(blob, filename);
                         }
                         xhrd.send(postData);
                     });
