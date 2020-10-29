@@ -322,11 +322,29 @@ $(document).ready(()=> {
 
                     // response has all the links for downloading images
                     Object.keys(xhr.response).forEach( filetype => {
-                        const filepath = xhr.response[filetype];
+                        const filename = xhr.response[filetype];
 
                         // TODO: download the filepath
 
-                        console.log(`Download the ${filetype} file at ${filepath}`)
+                        console.log(`Download the ${filetype} file at ${filename}`)
+
+                        // TODO: craft and xhr request for every filename
+
+
+                        var postData = new FormData();
+                        postData.append('fileName', filename);
+
+                        var xhrd = new XMLHttpRequest();
+
+                        xhrd.open('GET', '/download/'+filename, true);
+                        
+                        xhrd.responseType = 'blob';
+                        xhrd.onload = function (event) {
+                            var blob = this.response;
+                            
+                            saveBlob(blob, filename);
+                        }
+                        xhrd.send(postData);
                     });
                 }
 
@@ -3708,4 +3726,12 @@ function getCookie(cname){
     }
     // not found
     return "";
+}
+
+function saveBlob(blob, fileName)
+{
+    var a = document.createElement('a');
+    a.href = window.URL.createObjectURL(blob);
+    a.download = fileName;
+    a.dispatchEvent(new MouseEvent('click'));
 }

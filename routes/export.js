@@ -8,8 +8,7 @@ const sharp  = require('sharp');
 
 const router = express.Router();
 
-const EXPORT_FILE_PATH = path.join(__dirname,"..","public","exports");
-const PUBLIC_EXPORT_FILE_PATH = path.join("public","exports");
+const EXPORT_FILE_PATH = path.join( __dirname, "..", "public", "exports" );
 
 // init storage object to tell multer what to do
 var storage = multer.diskStorage(
@@ -70,7 +69,7 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
                     })
                     .then(info => {
                         console.log(info)
-                        returnObject["png"] = path.join(PUBLIC_EXPORT_FILE_PATH, newname+".png")
+                        returnObject["png"] = newname+".png"
                     });
                     break;
                 
@@ -84,14 +83,14 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
                     })
                     .then(info => {
                         console.log(info)
-                        returnObject["jpg"] = path.join(PUBLIC_EXPORT_FILE_PATH, newname+".jpg")
+                        returnObject["jpg"] = newname+".jpg"
                     });
                     break;
 
                 case "svg":
                     console.log("File is downloaded as a basic svg")
 
-                    returnObject["svg"] = path.join(PUBLIC_EXPORT_FILE_PATH, newname+"_tmp.svg")
+                    returnObject["svg"] = newname+"_tmp.svg"
                     break;
 
                 
