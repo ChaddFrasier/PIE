@@ -63,7 +63,7 @@ block content
                                         ellipse(cx="13.229" cy="16.536" rx="9.3835" ry="9.3835" stroke="#fff" fill="#000" stroke-width="1.1" stroke-dashoffset="3.5906" stroke-linejoin="round")
                                         ellipse( cx="13.229" cy="16.536" rx="3.0833" ry="3.0833" fill="#fff" stroke="#000" stroke-width="1.1" stroke-dashoffset="3.5906" stroke-linejoin="round")
                                     rect.marker(width=30 height=30 fill="transparent" stroke="transparent")
-                        br
+                        
                         button#observerarrowopt.disabled(type="button" title="Spacecraft Azimuthal")
                             svg.btnvectorgraphic(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 27 27" xml:space="preserve")
                                 svg#observergroup(viewBox="0 0 27 27")
@@ -113,7 +113,7 @@ block content
                                                 tspan(style="shape-inside:url(#rect1120)")="1 Km"
                                         rect(x="241.67" y="210.06" width="3967.2" height="477.16" fill-opacity="0" stroke="#fff" stroke-width="50" fill="#ffffff" font-family="sans-serif")
                                         
-                                    rect.marker(x="0" y="0" width="4500" height="700" fill-opacity="0" stroke="transparent" pointer-events="all")
+                                    rect.marker(x="0" y="0" width="4500" height="700" fill-opacity="0" stroke="transparent" pointer-events="inherit")
 
                     br
                     label.text(for="annotategroup")="Annotation Tools"
@@ -148,7 +148,7 @@ block content
           
             //- this is the sidebar of the tool area
             .windowsidebar
-                button.toolboxminimizebtn(title="Toggle Tools")='◄'
+                button.toolboxminimizebtn(title="Toggle Tools")='⇤'
                 button#addimagebtn.toolboxaddimagebtn(title="Add Image")
                     img.svgimg(src="/images/addPlanetImage.svg")
                 button#addcaptionbtn.toolboxaddcaptionbtn(title="Add Caption")
