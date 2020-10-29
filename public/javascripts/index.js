@@ -170,6 +170,9 @@ $(document).ready(()=> {
      */
     $('#exportbtn').on("mousedown", function(event) {
 
+        // TODO: format the output box better
+
+        
         if( document.querySelectorAll("div[class='exportmainbox']").length !== 0 )
         {
             return false;
@@ -2346,43 +2349,50 @@ function changeColorsOfChildren( children, color , ...order )
  */
 function changeButtonActivation( ActivationCode, code )
 {
-    switch( code ) 
+    if( getObjectCount(0, "image") !== 0 )
     {
-        case 0:
-            // enable or disable buttons depending on code
-            if( ActivationCode == "enable" )
-            {
-                document.getElementById( "northarrowopt" ).classList.remove( "disabled" )
-                document.getElementById( "observerarrowopt" ).classList.remove( "disabled" )
-                document.getElementById( "sunarrowopt" ).classList.remove( "disabled" )
-                document.getElementById( "outlinebtnopt" ).classList.remove( "disabled" )
-            }
-            else if( ActivationCode == "disable" )
-            {
-                document.getElementById( "northarrowopt" ).classList.add( "disabled" )
-                document.getElementById( "observerarrowopt" ).classList.add( "disabled" )
-                document.getElementById( "sunarrowopt" ).classList.add( "disabled" )
-                document.getElementById( "outlinebtnopt" ).classList.add( "disabled" )
-            }
-            break
-        
-        case 1:
-            // enable or disable buttons depending on code
-            if( ActivationCode == "enable" )
-            {
-                document.getElementById( "northarrowopt" ).classList.remove( "disabled" )
-                document.getElementById( "observerarrowopt" ).classList.remove( "disabled" )
-                document.getElementById( "sunarrowopt" ).classList.remove( "disabled" )
-                document.getElementById( "penciloptbtn" ).classList.remove( "disabled" )
-            }
-            else if( ActivationCode == "disable" )
-            {
-                document.getElementById( "northarrowopt" ).classList.add( "disabled" )
-                document.getElementById( "observerarrowopt" ).classList.add( "disabled" )
-                document.getElementById( "sunarrowopt" ).classList.add( "disabled" )
-                document.getElementById( "penciloptbtn" ).classList.add( "disabled" )
-            }
-            break
+        switch( code ) 
+        {
+            case 0:
+                // enable or disable buttons depending on code
+                if( ActivationCode == "enable" )
+                {
+                    document.getElementById( "northarrowopt" ).classList.remove( "disabled" )
+                    document.getElementById( "observerarrowopt" ).classList.remove( "disabled" )
+                    document.getElementById( "sunarrowopt" ).classList.remove( "disabled" )
+                    document.getElementById( "scalebarbtnopt" ).classList.remove( "disabled" )
+                    document.getElementById( "outlinebtnopt" ).classList.remove( "disabled" )
+                }
+                else if( ActivationCode == "disable" )
+                {
+                    document.getElementById( "northarrowopt" ).classList.add( "disabled" )
+                    document.getElementById( "observerarrowopt" ).classList.add( "disabled" )
+                    document.getElementById( "scalebarbtnopt" ).classList.add( "disabled" )
+                    document.getElementById( "sunarrowopt" ).classList.add( "disabled" )
+                    document.getElementById( "outlinebtnopt" ).classList.add( "disabled" )
+                }
+                break
+            
+            case 1:
+                // enable or disable buttons depending on code
+                if( ActivationCode == "enable" )
+                {
+                    document.getElementById( "northarrowopt" ).classList.remove( "disabled" )
+                    document.getElementById( "observerarrowopt" ).classList.remove( "disabled" )
+                    document.getElementById( "scalebarbtnopt" ).classList.remove( "disabled" )
+                    document.getElementById( "sunarrowopt" ).classList.remove( "disabled" )
+                    document.getElementById( "penciloptbtn" ).classList.remove( "disabled" )
+                }
+                else if( ActivationCode == "disable" )
+                {
+                    document.getElementById( "northarrowopt" ).classList.add( "disabled" )
+                    document.getElementById( "observerarrowopt" ).classList.add( "disabled" )
+                    document.getElementById( "scalebarbtnopt" ).classList.add( "disabled" )
+                    document.getElementById( "sunarrowopt" ).classList.add( "disabled" )
+                    document.getElementById( "penciloptbtn" ).classList.add( "disabled" )
+                }
+                break
+        }
     }
 }
 
