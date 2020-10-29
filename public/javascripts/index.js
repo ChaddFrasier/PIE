@@ -2636,32 +2636,42 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 
         try{
             let markerEndid = lineelement.style.markerEnd.split('#')[1].replace('")','')
-            let markerStartid = lineelement.style.markerStart.split('#')[1].replace('")','')
 
             if( markerEndid )
             {
                 let newEndMarker = document.getElementById( markerEndid )
                 // set attributes for new marker
-                newEndMarker.setAttribute("id", objectid + "-marker")
+                newEndMarker.setAttribute("id", `${objectid}-marker`)
                 newEndMarker.firstChild.setAttribute("fill", this.value)
                 lineelement.style.markerEnd = `url("#${newEndMarker.getAttribute("id")}")`
 
                 // add the new marker
                 document.getElementById("figdefs").appendChild(newEndMarker)
             }
+        }
+        catch(err)
+        {
+            console.log("Line Has No End")
+        }
+         
+        try 
+        {
+            let markerStartid = lineelement.style.markerStart.split('#')[1].replace('")','')
 
             if( markerStartid )
             {
                 let newStartMarker = document.getElementById( markerStartid )
                 // set attributes for new marker
-                newStartMarker.setAttribute("id", objectid + "-markerEnd")
+                newStartMarker.setAttribute("id", `${objectid}-markerEnd`)
                 newStartMarker.firstChild.setAttribute("fill", this.value)
                 lineelement.style.markerStart = `url("#${newStartMarker.getAttribute("id")}")`
 
                 // add the new marker
                 document.getElementById("figdefs").appendChild(newStartMarker)
             }
-        }catch(err){
+        }
+        catch(err)
+        {
             console.error("Line Has No Head")
         }
     })
