@@ -268,7 +268,7 @@ function DraggableArea( objectbox=undefined )
             console.log(draggingIcon)
 
             // if the drag icon is found to be valid then initiate the dragging functions
-            if( draggingIcon != null && !paused )
+            if( draggingIcon != null && !paused && draggingIcon.getAttribute("id") != "bgelement")
             {   
                 // requires svgHelper.js
                 let svgP = createSVGP( event.clientX, event.clientY )
