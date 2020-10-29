@@ -331,9 +331,6 @@ $(document).ready(()=> {
 
                         console.log(`Download the ${filetype} file at ${filename}`)
 
-                        // TODO: craft and xhr request for every filename
-
-
                         var postData = new FormData();
                         postData.append('fileName', filename);
 
@@ -391,14 +388,14 @@ $(document).ready(()=> {
             // reactivate the other buttons
             imgbtn.classList.remove("disabled")
             capbtn.classList.remove("disabled")
-            event.target.innerHTML = "◄"
+            event.target.innerHTML = "&larrb;"
         }
         else{
             toolbox.classList.add('closed')
             // disable the other buttons to help focus on editing image
             imgbtn.classList.add("disabled")
             capbtn.classList.add("disabled")
-            event.target.innerHTML = "►"
+            event.target.innerHTML = "&rarrb;"
 
         }
     })
@@ -3623,6 +3620,8 @@ function text2PieText( text, captionWidth, fontsize )
     // set the x and y so that the text displays the whole word
     p1.setAttribute("x", fontsize);
 
+    text = convertSpecialCharacters( text );
+
     // get an array of all the seperate paragraphs
     paragraphArr = text.split("\n");
 
@@ -3721,6 +3720,13 @@ function text2PieText( text, captionWidth, fontsize )
 
     // lastly return the HTML string that is the caption
     return pieText;
+}
+
+function convertSpecialCharacters( text )
+{
+    var returnText = text
+
+    return returnText
 }
 
 function getCookie(cname){
