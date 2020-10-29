@@ -7,7 +7,7 @@
     --hover-contrast-color: rgba(62, 149, 163, 0.846);
     --footer-button-disabled-color: rgba(27, 114, 128, 0.541);
     --disabled-button-gradient: linear-gradient(to top right,rgb(106, 106, 106), rgb(181, 181, 181));
-    --bar-gradient: linear-gradient(to top right,rgb(237, 237, 237), rgb(156, 156, 156));
+    --bar-gradient: linear-gradient(to bottom right,rgb(237, 237, 237), rgb(156, 156, 156));
     --transition-time: 0.125s;
 }
 
@@ -666,7 +666,7 @@ button.selected {
 }
 
 button#northarrowopt, button#sunarrowopt, button#observerarrowopt , button#scalebarbtnopt , button#penciloptbtn, button#outlinebtnopt{
-    background: var(--bar-gradient);    
+    background: var(--bar-gradient);
 }
 
 button#northarrowopt:hover, button#sunarrowopt:hover, button#observerarrowopt:hover , button#scalebarbtnopt:hover , button#penciloptbtn:hover, button#outlinebtnopt:hover{
