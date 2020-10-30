@@ -6,6 +6,9 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const compression = require('compression');
 
+const UPLOAD_PATH = path.join(__dirname, "public", "uploads")
+const EXPORT_PATH = path.join(__dirname, "public", "exports")
+
 var indexRouter = require('./routes/index');
 var aboutRouter = require('./routes/about');
 var contactRouter = require('./routes/contact');
@@ -40,29 +43,45 @@ app.use('/images',imageRouter);
 app.use('/export',exportRouter);
 app.use('/download', downloadRouter);
 
-fs.readdir( path.join(__dirname, "public", "uploads"), ( err, files ) =>
+if( !fs.existsSync( UPLOAD_PATH ) )
 {
-    if( err ){ return }
-    files.forEach( filename =>
+    fs.mkdirSync( UPLOAD_PATH );
+    console.log(`Created Directory ${UPLOAD_PATH}`)
+}
+else
+{
+    fs.readdir( UPLOAD_PATH, ( err, files ) =>
     {
-        fs.unlink( path.join(__dirname, "public", "uploads", filename), () =>
+        if( err ){ return }
+        files.forEach( filename =>
         {
-            console.log("Removed " + filename)
+            fs.unlink( path.resolve(`${UPLOAD_PATH}/${filename}`), () =>
+            {
+                console.log("Removed " + filename)
+            })
         })
     })
-})
+}
 
-fs.readdir( path.join(__dirname, "public", "exports"), ( err, files ) =>
+if( !fs.existsSync( EXPORT_PATH ) )
 {
-    if( err ){ return }
-    files.forEach( filename =>
+    fs.mkdirSync( EXPORT_PATH );
+    console.log(`Created Directory ${EXPORT_PATH}`)
+}
+else
+{
+    fs.readdir( EXPORT_PATH, ( err, files ) =>
     {
-        fs.unlink( path.join(__dirname, "public", "exports", filename), () =>
+        if( err ){ return }
+        files.forEach( filename =>
         {
-            console.log("Removed " + filename)
+            fs.unlink( path.resolve(`${EXPORT_PATH}/${filename}`), () =>
+            {
+                console.log("Removed " + filename)
+            })
         })
     })
-})
+}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
