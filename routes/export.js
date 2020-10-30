@@ -88,9 +88,10 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
                     break;
 
                 case "svg":
-                    console.log("File is downloaded as a basic svg")
-
-                    returnObject["svg"] = newname+"_tmp.svg"
+                    
+                    // create a new svg file that is cleanly formated and properly layed out for other programs to use
+                    beautifySVG( newname+"_tmp.svg", newname+".svg")
+                    returnObject["svg"] = newname+".svg"
                     break;
 
                 
@@ -115,5 +116,36 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
     // Send fail codes for 505(internal) or ()
 
 })
+
+// TODO: format the svg so more people can read and use it in other program viewers
+/**
+ * 
+ * @param {*} from 
+ * @param {*} to 
+ */
+function beautifySVG( from, to )
+{   
+    const keep = ['svg', 'defs', 'marker', 'rect', 'g', 'image']
+    // read the raw svg data from the web page
+    var filecontent = fs.readFileSync( path.join( EXPORT_FILE_PATH, from) ).toString("utf-8");
+
+    // open a new filestream for appending
+    var fileStream = fs.createWriteStream( path.join(EXPORT_FILE_PATH, to), {flags: 'a'} )
+
+    filecontent.replace(/>/g, ">\n").split("\n").forEach( line => {
+        console.log(line)
+
+        /* TODO: 
+            1. verify what type of svg element is in the line 
+            2. set the flag to either a containing element or an inner element
+            3. read inner elements into the parent recursivly lowering the number of tabs being used
+            4. outer elements should set the inner flag and then read all the child elements until the matching close tag is found.
+        */
+        // begin cleaning and copying the svg_tmp to the new svg file
+        fileStream.write(`${line}\n`);
+    });
+
+    fileStream.end();
+}
 
 module.exports = router;

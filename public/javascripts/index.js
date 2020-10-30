@@ -331,14 +331,16 @@ $(document).ready(()=> {
 
                         console.log(`Download the ${filetype} file at ${filename}`)
 
+                        // create new formdata to tell the server what to download
                         var postData = new FormData();
                         postData.append('fileName', filename);
 
+                        // set up the XMLHttp request to the download link
                         var xhrd = new XMLHttpRequest();
-
                         xhrd.open('GET', '/download/'+filename, true);
-                        
                         xhrd.responseType = 'blob';
+
+                        // download the blob as a file
                         xhrd.onload = function (event) {
                             var blob = this.response;
                             
@@ -1011,7 +1013,7 @@ $(document).ready(()=> {
         imagesvg.setAttribute("class", "holder")
 
         //TODO: this is where the desfault image is set
-        imagesvg.setAttribute("href", "test/moonphasestest.jpg")
+        imagesvg.setAttribute("href", "#")
 
         holdergroup.appendChild(imagesvg)
 
@@ -3729,7 +3731,8 @@ function convertSpecialCharacters( text )
     return returnText
 }
 
-function getCookie(cname){
+function getCookie(cname)
+{
     // atach the '=' to the name
     var name = cname + "=";
     // get the string version of the object
@@ -3754,10 +3757,21 @@ function getCookie(cname){
     return "";
 }
 
+/**
+ * @function saveBlob
+ * @param {Blob} blob the blob data of the file 
+ * @param {string} fileName the filename that the blob should be saved as
+ * @description save the file data as the filename to the client
+ */
 function saveBlob(blob, fileName)
 {
+    // create the anchor for downloading
     var a = document.createElement('a');
+
+    // set the download link to the blob object URL
     a.href = window.URL.createObjectURL(blob);
+    // set the download name
     a.download = fileName;
+    // start the download
     a.dispatchEvent(new MouseEvent('click'));
 }
