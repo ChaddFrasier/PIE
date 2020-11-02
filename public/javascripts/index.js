@@ -185,28 +185,30 @@ $(document).ready(()=> {
 
         savebtn.innerHTML = "Download";
         savebtn.type = "button"
+        savebtn.classList.add("exportpanelbtn")
         savebtn.setAttribute("id", "savebtn")
 
         cancelbtn.innerHTML = "Cancel";
+        cancelbtn.classList.add("exportpanelbtn")
 
-        centerbox.style.width = "40%";
+        centerbox.style.width = "30%";
 
-        leftbox.appendChild(savebtn)
+        leftbox.appendChild(cancelbtn)
         leftbox.style.textAlign = "center"
         leftbox.style.width = "30%"
 
-        rightbox.appendChild(cancelbtn)
+        rightbox.appendChild(savebtn)
         rightbox.style.width = "30%"
         rightbox.style.textAlign = "center"
 
         fileinputname.setAttribute("name", "exportfilename")
         fileinputname.setAttribute("type", "text")
-        fileinputnamelabel.innerHTML = "File Name: "
+        fileinputnamelabel.innerHTML = "File Name:  "
         fileinputname.placeholder = "filename"
         
         fileinputtype.setAttribute("name", "exportfiletype-svg")
         fileinputtype.setAttribute("type", "checkbox")
-        fileinputtypelabel.innerHTML = "Output Types: "
+        fileinputtypelabel.innerHTML = "Output Types:   "
 
         fileinputtypesvglabel.innerHTML = "SVG &rarr;"
 
@@ -240,8 +242,8 @@ $(document).ready(()=> {
         forminputbox.classList.add("forminputbox")
         forminputcheckboxholder.classList.add("forminputcheckboxholder")
 
-        formlabelbox.append(fileinputnamelabel, document.createElement("br"),fileinputtypelabel )
-        forminputbox.append(fileinputname, forminputcheckboxholder )
+        formlabelbox.append( fileinputnamelabel, document.createElement("br"),  document.createElement("br"), fileinputtypelabel )
+        forminputbox.append( fileinputname, forminputcheckboxholder )
 
         let columnsvg = document.createElement("div")
         let columnpng = document.createElement("div")
@@ -272,7 +274,7 @@ $(document).ready(()=> {
         {
             event.preventDefault();
 
-            var regexp = new RegExp("^([A-Z]|[0-9]|[a-z]|(_|-|.))*(?:\.(png|PNG|jpg|JPG|SVG|svg))"),
+            var regexp = new RegExp( /([A-Z]|[0-9])*(?:\.(png|jpg|svg)|\s)/i ),
                 breakFlag = false;
 
             // change the color of the borde for bad filename
