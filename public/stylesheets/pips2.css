@@ -335,8 +335,8 @@ button.disabled {
 }
 
 .exporttitlebox > h3 {
-    font-size: var(--sm-medium-font);
-    padding: 0;
+    font-size: var(--main-export-title-font);
+    padding: 0px;
 }
 
 .exporttitlebox {
@@ -344,6 +344,7 @@ button.disabled {
     color: black;
     border-bottom: 2px solid black;
     height: auto;
+    padding: 0px;
 }
 
 .exportbuttonholder {
@@ -358,8 +359,8 @@ button.disabled {
     margin: 0 auto;
     display: flex;
     height: 80%;
-    width: 100%;
-    padding: 0 5px 0 0;
+    width: 95%;
+    padding: 0 10px 0 0;
 }
 
 .exportinputholder>form{
@@ -369,8 +370,8 @@ button.disabled {
 }
 
 .forminputcheckboxholder {
-    width: 100%;
-    margin: 0 0 0 auto;
+    width: auto;
+    margin: .5em 0 0 2em;
     display: block;
     color: black;
 }
@@ -378,6 +379,16 @@ button.disabled {
 .forminputbox {
     width: auto;
     margin: 0 auto;
+}
+
+.forminputbox > input[name="exportfilename"] {
+    width: auto;
+    height: auto;
+    font-size: var(--sm-medium-font);
+}
+
+.invalid {
+    border: 2px dotted red;
 }
 
 .formlabelbox {
@@ -392,7 +403,6 @@ button.disabled {
     font-size: var(--medium-font);
     width: 100%;
 }
-
 
 .exportmainbox {
     background: var(--bar-gradient);

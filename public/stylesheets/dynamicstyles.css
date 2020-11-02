@@ -16,8 +16,9 @@
         --max-title-width: 300px;
         --max-title-height: 100px;
 
-        --main-export-box-height: 200px;
+        --main-export-box-height: 225px;
         --main-export-box-width: 300px;
+        --main-export-title-font: 22px;
 
         --toolbox-min-height: 0;
         --toolbox-max-height: 100px;
@@ -64,8 +65,9 @@
         --max-title-width: 300px;
         --max-title-height: 100px;
 
-        --main-export-box-height: 200px;
-        --main-export-box-width: 250px;
+        --main-export-box-height: 250px;
+        --main-export-box-width: 300px;
+        --main-export-title-font: larger;
 
         --toolbox-min-height: 0;
         --toolbox-max-height: 100px;
@@ -104,6 +106,10 @@
 
         --usgs-image-height: 75px;
         --usgs-image-width: 250px;
+
+        --main-export-box-height: 250px;
+        --main-export-box-width: 300px;
+        --main-export-title-font: larger;
 
         --max-image-width: 125px;
 
