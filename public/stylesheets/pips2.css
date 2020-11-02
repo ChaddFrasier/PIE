@@ -363,6 +363,11 @@ button.disabled {
     padding: 0 10px 0 0;
 }
 
+.exportpanelbtn {
+    border-radius: 5px 5px;
+    font-size: var(--medium-font);
+}
+
 .exportinputholder>form{
     display: flex;
     width: 100%;
@@ -377,14 +382,15 @@ button.disabled {
 }
 
 .forminputbox {
-    width: auto;
+    width: 100%;
     margin: 0 auto;
 }
 
 .forminputbox > input[name="exportfilename"] {
-    width: auto;
+    width: 100%;
     height: auto;
     font-size: var(--sm-medium-font);
+    border-radius: 3px 3px;
 }
 
 .invalid {
@@ -396,12 +402,15 @@ button.disabled {
     margin: 0 auto 0 0;
     display: block;
     height: 100%;
-    padding: 3px;
+    padding: 3px 3px;
+    text-align: left;
 }
 
 .formlabelbox > label {
-    font-size: var(--medium-font);
-    width: 100%;
+    font-size: var(--large-font);
+    margin: 0 10px;
+    color: black;
+    width: 75%;
 }
 
 .exportmainbox {
@@ -413,9 +422,10 @@ button.disabled {
     max-height: var(--main-export-box-height);
     padding: 0;
     position: fixed;
-    left: 45vw;
+    left: 35vw;
     top: 20vh;
-    border: 2px solid black;
+    border: 3px solid black;
+    border-radius: 3px 3px;
 }
 
 .maincontent {

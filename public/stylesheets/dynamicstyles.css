@@ -16,7 +16,7 @@
         --max-title-width: 300px;
         --max-title-height: 100px;
 
-        --main-export-box-height: 225px;
+        --main-export-box-height: auto;
         --main-export-box-width: 300px;
         --main-export-title-font: 22px;
 
