@@ -1,9 +1,7 @@
 /**
- * 
  * @file svgHelper.js
  * @fileoverview file for helping the DraggableArea and DraggableList files
 */
-
 "use strict";
 
 // Namespaces Global
@@ -25,9 +23,7 @@ function setSVGBackground( id, color )
 
 /**
  * @function detectLeftMouse
- * 
  * @param { event } evt 
- * 
  * @see https://github.com/ChaddFrasier/PIPS/blob/master/js/index.js detectLeftButton
  * @description this function takes in an event and checks to see if it was a left click event
 */
@@ -47,9 +43,7 @@ function detectLeftMouse(evt) {
 
 /**
  * @function detectRightMouse
- * 
- * @param { event } evt 
- * 
+ * @param { event } evt
  * @see https://github.com/ChaddFrasier/PIPS/blob/master/js/index.js detectRightButton
  * @description this function takes in an event and checks to see if it was a left click event
 */
@@ -82,7 +76,6 @@ function setTransform( element, scaleString, translateString )
         element.style.msTransform = scaleString + " " + translateString;
         element.style.OTransform = scaleString + " " + translateString;
         element.style.transform = scaleString + " " + translateString;
-    
     }
 }
 

@@ -1,3 +1,5 @@
+"use strict";
+
 var express = require('express');
 var router = express.Router();
 
@@ -6,8 +8,8 @@ var router = express.Router();
  */
 router.get('/', ( req, res ) =>
 {
-    console.log(req.url)
-    res.render( 'contact', {title: "Contact Us"} )
+    console.log(req.url);
+    res.render( 'contact', {title: "Contact Us"} );
 });
 
 module.exports = router;

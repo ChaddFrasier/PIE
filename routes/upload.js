@@ -1,10 +1,10 @@
-"use strict"
+"use strict";
 
 const express = require('express');
 const multer = require('multer');
 const path  = require('path');
 const router = express.Router();
-var PIEAPI = require('../public/javascripts/PIE-api.js')
+var PIEAPI = require('../public/javascripts/PIE-api.js');
 
 // init storage object to tell multer what to do
 var storage = multer.diskStorage(
@@ -12,12 +12,12 @@ var storage = multer.diskStorage(
         // tell multer where the destination is
         destination: ( req, file, cb ) =>
         {
-            cb( null, 'public/uploads' )
+            cb( null, 'public/uploads' );
         },
         // tell multer how to name the file
         filename: ( req, file, cb ) =>
         {
-            cb( null, new Date().getTime() +"_"+ path.basename(file.originalname) )
+            cb( null, new Date().getTime() +"_"+ path.basename(file.originalname) );
         }
     }
 );
@@ -31,7 +31,7 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
     if( isisregexp.test(req.file.filename) )
     {
         // if a tiff or cube file is detected
-        console.debug("GEO FILE DETECTED")
+        console.debug("GEO FILE DETECTED");
 
         var pieapi = PIEAPI.PIEAPI();
 
@@ -60,7 +60,7 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
         promise
             // then() -> just send the resulting file back to the client for displaying
             .then( (newfilename) => {
-                res.cookie("filepath", path.basename(newfilename))
+                res.cookie("filepath", path.basename(newfilename));
                 res.sendFile( path.resolve("./"+newfilename) );
             }).catch( (err) => {
                 console.debug(err);
