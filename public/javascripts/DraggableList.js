@@ -3,7 +3,6 @@
  * @requires svgHelper.js
  * @fileoverview This will a file that generates a draggable list box and an ordered array of list objects
 */
-
 "use strict";
 
 /**
@@ -14,16 +13,13 @@
 */
 function DraggableList( inobject=undefined )
 {
-    var DraggableList = [];
-    var DraggableListContainer = inobject;
-
-    var shiftObjects,
-        lowerObject, 
-        upperObject;
-
-
     /** Setup a function to track the mouse movement of the user */
-    var xDirection = "",
+    var DraggableList = [],
+        DraggableListContainer = inobject,
+        shiftObjects,
+        lowerObject, 
+        upperObject,
+        xDirection = "",
         yDirection = "",
         oldX = 0,
         update = false,
@@ -41,45 +37,41 @@ function DraggableList( inobject=undefined )
         if ( oldX + sensitivity < e.pageX )
         {
             // update right
-            update = true
-            xDirection = "right"
-
+            update = true;
+            xDirection = "right";
             // new anchor point
-            oldX = e.pageX
+            oldX = e.pageX;
         } 
         else if( oldX - sensitivity > e.pageX )
         {
             // set update left
-            update = true
-            xDirection = "left"
-
+            update = true;
+            xDirection = "left";
             // set new anchor point
-            oldX = e.pageX
+            oldX = e.pageX;
         }
 
         //deal with the vertical case
         if ( oldY + sensitivity < e.pageY )
         {
             // set update down
-            yDirection = "down"
-            update = true
-
+            yDirection = "down";
+            update = true;
             // set new anchor point
-            oldY = e.pageY
+            oldY = e.pageY;
         }
         else if ( oldY - sensitivity > e.pageY )
         {
             // update the page and set direction up
-            update = true
-            yDirection = "up"
-
+            update = true;
+            yDirection = "up";
             // set new anchor point
-            oldY = e.pageY
+            oldY = e.pageY;
         }
         else
         {
             // direction not determined
-            yDirection = ""
+            yDirection = "";
         }
     }
         
@@ -94,16 +86,14 @@ function DraggableList( inobject=undefined )
         if( upperObject.getAttribute("objectid") )
         {
             // insert the element above the sifting elements
-            draggableList.getContainerObject().insertBefore(shiftObjects, upperObject)
-
+            draggableList.getContainerObject().insertBefore(shiftObjects, upperObject);
             // move up one layer
-            moveSvgUp(document.getElementById(shiftObjects.attributes.objectid.value))
-
+            moveSvgUp(document.getElementById(shiftObjects.attributes.objectid.value));
             // clear elements
-            lowerObject = upperObject
-            upperObject = shiftObjects.previousElementSibling
-            yDirection = ""
-            oldY = newY
+            lowerObject = upperObject;
+            upperObject = shiftObjects.previousElementSibling;
+            yDirection = "";
+            oldY = newY;
         }
     }
 
@@ -118,30 +108,30 @@ function DraggableList( inobject=undefined )
         if(event.target.parentElement.attributes.objectid.value)
         {
             // remove the current options bar, its next child and the caption matching the same id
-            let parentBox = event.target.parentElement.parentElement
-            let svgObject = document.getElementById(event.target.parentElement.attributes.objectid.value)
-
-            let svgcontainer = draggableSvg.getContainerObject()
+            var parentBox = event.target.parentElement.parentElement,
+                svgObject = document.getElementById(event.target.parentElement.attributes.objectid.value),
+                svgcontainer = draggableSvg.getContainerObject()
 
             // remove the options and other things for image
             draggableList.removeObject(parentBox)
 
             // remove the image holder now
-            if(svgcontainer === svgObject.parentElement)
+            if( svgcontainer === svgObject.parentElement )
             {
-                svgcontainer.removeChild(svgObject)
+                svgcontainer.removeChild(svgObject);
             }
             else
             {
-                svgcontainer.removeChild(svgObject.parentElement)
+                svgcontainer.removeChild(svgObject.parentElement);
             }
 
             let objType = typeofObject(svgObject.id);
-            // update the count
+
+            // update the count and disable buttons if it is neededß
             if( (getObjectCount(-1 , objType) == 0 && objType == "image") || (document.querySelectorAll("image[GEO='true']").length === 0 ))
             {
                 document.getElementsByClassName("concisebtngroup")[0].childNodes.forEach( btn => {
-                    btn.classList.add("disabled")
+                    btn.classList.add("disabled");
                 });
             }
         }
@@ -158,16 +148,14 @@ function DraggableList( inobject=undefined )
         // check for an object below
         if( lowerObject )
         {
-            lowerObject.insertAdjacentElement("afterend", shiftObjects)
-
+            lowerObject.insertAdjacentElement("afterend", shiftObjects);
             // move up one layer
-            moveSvgDown(document.getElementById(shiftObjects.attributes.objectid.value))
-
+            moveSvgDown(document.getElementById(shiftObjects.attributes.objectid.value));
             // clear elements
-            upperObject = lowerObject
-            lowerObject = shiftObjects.nextElementSibling
-            oldY = newY
-            yDirection = ""
+            upperObject = lowerObject;
+            lowerObject = shiftObjects.nextElementSibling;
+            oldY = newY;
+            yDirection = "";
         }
     }
 
@@ -180,26 +168,26 @@ function DraggableList( inobject=undefined )
     {
         // try to remove the mouse events for the dragging
         try{
-            document.getElementById("toolbox").removeEventListener("mousemove", docucmentMouseOverHandler)
-            toggleLayerUI("remove")
-            window.removeEventListener("mouseup", documentMouseUpListener)
-            document.removeEventListener("mousemove", getMouseDirection)
+            document.getElementById("toolbox").removeEventListener("mousemove", docucmentMouseOverHandler);
+            toggleLayerUI("remove");
+            window.removeEventListener("mouseup", documentMouseUpListener);
+            document.removeEventListener("mousemove", getMouseDirection);
         }
         catch(err)
         {
-            console.log("document listener remove failed")
+            console.log("document listener remove failed");
         }
 
         // remove the selected class indicator for CSS and JS listeners
         if( shiftObjects ){ shiftObjects.classList.remove("selectedBox") }
 
         // remove element markers
-        lowerObject = null
-        upperObject = null
-        shiftObjects = null
-        oldX = 0
-        oldY = 0
-        yDirection = ""
+        lowerObject = null;
+        upperObject = null;
+        shiftObjects = null;
+        oldX = 0;
+        oldY = 0;
+        yDirection = "";
     }
 
     /**
@@ -210,33 +198,33 @@ function DraggableList( inobject=undefined )
     function draggableStart(event)
     {  
         // capture the start y when the click happens
-        oldY = event.pageY
+        oldY = event.pageY;
 
-        toggleLayerUI("add")
+        toggleLayerUI("add");
 
-        event.target.addEventListener("mouseup", documentMouseUpListener, false)
-        document.addEventListener("mousemove", getMouseDirection, false)
+        event.target.addEventListener("mouseup", documentMouseUpListener, false);
+        document.addEventListener("mousemove", getMouseDirection, false);
 
         // objects that need to shift
         try {
-            shiftObjects = event.target.parentElement.parentElement
+            shiftObjects = event.target.parentElement.parentElement;
 
             // the element to put things below
-            lowerObject = shiftObjects.nextElementSibling
+            lowerObject = shiftObjects.nextElementSibling;
 
             // the element to put things above
-            upperObject = shiftObjects.previousElementSibling
+            upperObject = shiftObjects.previousElementSibling;
 
             // put dragging stuff here
-            document.getElementById("toolbox").addEventListener("mousemove", docucmentMouseOverHandler)
+            document.getElementById("toolbox").addEventListener("mousemove", docucmentMouseOverHandler);
 
             // set shiftObjects css
-            shiftObjects.classList.add("selectedBox")
+            shiftObjects.classList.add("selectedBox");
         }
         catch(err)
         {
             console.log(err)
-            upperObject, lowerObject, shiftObjects = null
+            upperObject, lowerObject, shiftObjects = null;
         }
     }
 
@@ -251,7 +239,7 @@ function DraggableList( inobject=undefined )
             // shift up of both objects are there
             if(shiftObjects && upperObject)
             {
-                shiftUp( event.pageY )
+                shiftUp( event.pageY );
             }
         }
         else if(yDirection == "down")
@@ -259,7 +247,7 @@ function DraggableList( inobject=undefined )
             // shift down of both objects are there
             if(shiftObjects && lowerObject)
             {
-                shiftDown( event.pageY )
+                shiftDown( event.pageY );
             }
         }
     }

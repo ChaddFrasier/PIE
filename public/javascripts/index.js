@@ -15,7 +15,8 @@
  */
 $(document).ready(()=> {
 
-    addCustomKeys();
+    // add the custom key listeners
+    addCustomKeys()
 
     // contain the index homepage
     document.body.parentElement.setAttribute("class", "contained")
@@ -45,31 +46,26 @@ $(document).ready(()=> {
     })
     
     /**
-     * 
+     * @function #penciloptbtn.click()
+     * @description this function activates the drawing listeners and handles multiple click instances.
      */
     $('#penciloptbtn').click( function( event ) {
         event.preventDefault()
-
-        if(PencilFlag)
+        if( PencilFlag )
         {
             // cancel the drawing functionality
             event.target.classList.remove("drawing")
-
             // remove the pencil icon to the main box on hover
             document.getElementById("maincontent").childNodes.forEach(childel => {
                 childel.classList.remove("drawing")
             });
-
             // remove the pencil icon to the main box on svg main elements
             document.getElementById("figurecontainer").childNodes.forEach(childel => {
                 childel.classList.remove("drawing")
             });
-
             changeButtonActivation("enable", 0)
-
             // allow dragging again
-            draggableSvg.unpauseDraggables();
-
+            draggableSvg.unpauseDraggables()
             // remove draw listeners
             draggableSvg.getContainerObject().removeEventListener("mousedown", drawMouseDownListener)
         }
@@ -77,22 +73,17 @@ $(document).ready(()=> {
         {
             // start the draeing functionality
             event.target.classList.add("drawing")
-            
             // add the pencil cursor icon to the main content objects
             document.getElementById("maincontent").childNodes.forEach((childel) => {
                 childel.classList.add("drawing")
             });
-
             // add the pencil cursor icon to the svg objects
             document.getElementById("figurecontainer").childNodes.forEach((childel) => {
                 childel.classList.add("drawing")
             });
-
             changeButtonActivation("disable", 0)
-
             // pause the dragging function for now
             draggableSvg.pauseDraggables()
-
             // add event listener for click on svg
             draggableSvg.getContainerObject().addEventListener("mousedown", drawMouseDownListener )
         }
@@ -100,33 +91,27 @@ $(document).ready(()=> {
     })
 
     /**
-     * 
+     * @function #outlinebtnopt.click()
+     * @description activate and deactivate the drawing capability of the rectangles 
      */
     $('#outlinebtnopt').click( function( event ) {
-
         event.preventDefault()
-
-        if(OutlineFlag)
+        if( OutlineFlag )
         {
             // cancel the drawing functionality
             document.getElementById("editbox").classList.remove("outlining")
             event.target.classList.remove("outlining")
-
             // add the crosshair cursor icon to the main content objects
             document.getElementById("maincontent").childNodes.forEach((childel) => {
                 childel.classList.remove("outlining")
             });
-
             // add the crosshair cursor icon to the svg objects
             document.getElementById("figurecontainer").childNodes.forEach((childel) => {
                 childel.classList.remove("outlining")
             });
-
             // unblock dragging
-            draggableSvg.unpauseDraggables();
-
+            draggableSvg.unpauseDraggables()
             changeButtonActivation("enable", 1)
-
             // remove draw listeners
             draggableSvg.getContainerObject().removeEventListener("mousedown", drawBoxMouseDownListener )
         }
@@ -135,21 +120,17 @@ $(document).ready(()=> {
             // start the drawing functionality
             document.getElementById("editbox").classList.add("outlining")
             event.target.classList.add("outlining")
-
             // add the crosshair cursor icon to the main content objects
             document.getElementById("maincontent").childNodes.forEach((childel) => {
                 childel.classList.add("outlining")
             });
-
             // add the crosshair cursor icon to the svg objects
             document.getElementById("figurecontainer").childNodes.forEach((childel) => {
                 childel.classList.add("outlining")
             });
             changeButtonActivation("disable", 1)
-
             // block dragging again
-            draggableSvg.pauseDraggables();
-
+            draggableSvg.pauseDraggables()
             // add event listener for click on svg
             draggableSvg.getContainerObject().addEventListener("mousedown", drawBoxMouseDownListener )
         }
@@ -172,8 +153,8 @@ $(document).ready(()=> {
 
         // TODO: format the output box better
 
-        
-        if( document.querySelectorAll("div[class='exportmainbox']").length !== 0 )
+        // if the exportbox exists cancel btn click
+        if( document.querySelectorAll("div[class='exportmainbox']").length !== 0)
         {
             return false;
         }
@@ -204,28 +185,30 @@ $(document).ready(()=> {
 
         savebtn.innerHTML = "Download";
         savebtn.type = "button"
+        savebtn.classList.add("exportpanelbtn")
         savebtn.setAttribute("id", "savebtn")
 
         cancelbtn.innerHTML = "Cancel";
+        cancelbtn.classList.add("exportpanelbtn")
 
-        centerbox.style.width = "40%";
+        centerbox.style.width = "30%";
 
-        leftbox.appendChild(savebtn)
+        leftbox.appendChild(cancelbtn)
         leftbox.style.textAlign = "center"
         leftbox.style.width = "30%"
 
-        rightbox.appendChild(cancelbtn)
+        rightbox.appendChild(savebtn)
         rightbox.style.width = "30%"
         rightbox.style.textAlign = "center"
 
         fileinputname.setAttribute("name", "exportfilename")
         fileinputname.setAttribute("type", "text")
-        fileinputnamelabel.innerHTML = "File Name: "
+        fileinputnamelabel.innerHTML = "File Name:  "
         fileinputname.placeholder = "filename"
         
         fileinputtype.setAttribute("name", "exportfiletype-svg")
         fileinputtype.setAttribute("type", "checkbox")
-        fileinputtypelabel.innerHTML = "Output Types: "
+        fileinputtypelabel.innerHTML = "Output Types:   "
 
         fileinputtypesvglabel.innerHTML = "SVG &rarr;"
 
@@ -244,8 +227,6 @@ $(document).ready(()=> {
         let fileinputtypejpeglabel = fileinputtypesvglabel.cloneNode(true)
         fileinputtypejpeglabel.innerHTML = "JPEG &rarr;"
 
-        // TODO: make an checkbox group to make the checkbox list better
-
         form.setAttribute("method", "post")
         form.setAttribute("enctype", "multipart/form-data")
         form.setAttribute("runat", "server")
@@ -259,8 +240,8 @@ $(document).ready(()=> {
         forminputbox.classList.add("forminputbox")
         forminputcheckboxholder.classList.add("forminputcheckboxholder")
 
-        formlabelbox.append(fileinputnamelabel, document.createElement("br"),fileinputtypelabel )
-        forminputbox.append(fileinputname, forminputcheckboxholder )
+        formlabelbox.append( fileinputnamelabel, document.createElement("br"),  document.createElement("br"), fileinputtypelabel )
+        forminputbox.append( fileinputname, forminputcheckboxholder )
 
         let columnsvg = document.createElement("div")
         let columnpng = document.createElement("div")
@@ -291,8 +272,33 @@ $(document).ready(()=> {
         {
             event.preventDefault();
 
+            var regexp = new RegExp( /([A-Z]|[0-9])*(?:\.(png|jpg|svg|tiff|tif)|\s)/i ),
+                breakFlag = false;
+
+            // change the color of the borde for bad filename
+            if(  regexp.test(fileinputname.value) || fileinputname.value.length == 0 )
+            {
+                fileinputname.classList.add("invalid")
+                breakFlag = true;
+            }
+            else
+            {
+                fileinputname.classList.remove("invalid")
+            }
+
+            // change color of the input box if needed
+            if( validFileTypes( fileinputtype.checked, fileinputtype1.checked, fileinputtype2.checked, fileinputtype3.checked) )
+            {
+                forminputcheckboxholder.classList.remove("invalid")
+            }
+            else
+            {
+                forminputcheckboxholder.classList.add("invalid")
+                breakFlag = true;
+            }
+
             // send request if the filename input is not empty
-            if( fileinputname.value.length !== 0 )
+            if( fileinputname.value.length !== 0 && !breakFlag )
             {
                 // create the request data using the form
                 var fd = new FormData(form)
@@ -301,21 +307,23 @@ $(document).ready(()=> {
                 // set response type
                 xhr.responseType = 'json'
 
+                var temp = cleanSVG( document.getElementById("figurecontainer").cloneNode(true) )
+
                 // append the xml header line to make an official svg file
                 var data = 
-                    '<?xml version="1.0" encoding="UTF-8"?>\n'
-                    + (new XMLSerializer()).serializeToString( document.getElementById("figurecontainer") );
+                    '<?xml version="1.0" encoding="UTF-8"?>'
+                    + (new XMLSerializer()).serializeToString( temp );
 
                 // creates a blob from the encoded svg and sets the type of the blob to and image svg
                 var svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
 
                 // append the svgBlob as a file with the name given the exportfile 
                 fd.append("exportfile", svgBlob, fileinputname.value+"_tmp.svg" )
-                fd.append("svg", fileinputtype.checked)
-                fd.append("png", fileinputtype1.checked)
-                fd.append("tiff",fileinputtype2.checked)
-                fd.append("jpeg",fileinputtype3.checked)
-                fd.append("dims",figsizeselect.value)
+                fd.append("svg", fileinputtype.checked )
+                fd.append("png", fileinputtype1.checked )
+                fd.append("tiff",fileinputtype2.checked )
+                fd.append("jpeg",fileinputtype3.checked )
+                fd.append("dims",figsizeselect.value )
 
                 // when the requests load handle the response
                 xhr.onloadend = () => {
@@ -327,18 +335,19 @@ $(document).ready(()=> {
                     Object.keys(xhr.response).forEach( filetype => {
                         const filename = xhr.response[filetype];
 
-                        // TODO: download the filepath
-
+                        // download the filepath
                         console.log(`Download the ${filetype} file at ${filename}`)
 
+                        // create new formdata to tell the server what to download
                         var postData = new FormData();
                         postData.append('fileName', filename);
 
+                        // set up the XMLHttp request to the download link
                         var xhrd = new XMLHttpRequest();
-
                         xhrd.open('GET', '/download/'+filename, true);
-                        
                         xhrd.responseType = 'blob';
+
+                        // download the blob as a file
                         xhrd.onload = function (event) {
                             var blob = this.response;
                             
@@ -691,7 +700,7 @@ $(document).ready(()=> {
         text.setAttribute("font-size", "30px")
         text.setAttribute("pointer-events", "none")
         
-        // TODO: use this as an example for how to display the caption text
+        // how to display the caption text
         text.innerHTML = "<tspan x='0' y='30'>Type your caption here</tspan>"
 
         // finish by adding them to the document
@@ -1010,8 +1019,8 @@ $(document).ready(()=> {
         imagesvg.setAttribute("id", imageId)
         imagesvg.setAttribute("class", "holder")
 
-        //TODO: this is where the desfault image is set
-        imagesvg.setAttribute("href", "test/moonphasestest.jpg")
+        // this is where the desfault image is set
+        imagesvg.setAttribute("href", "#")
 
         holdergroup.appendChild(imagesvg)
 
@@ -3729,7 +3738,8 @@ function convertSpecialCharacters( text )
     return returnText
 }
 
-function getCookie(cname){
+function getCookie(cname)
+{
     // atach the '=' to the name
     var name = cname + "=";
     // get the string version of the object
@@ -3754,10 +3764,77 @@ function getCookie(cname){
     return "";
 }
 
+/**
+ * @function saveBlob
+ * @param {Blob} blob the blob data of the file 
+ * @param {string} fileName the filename that the blob should be saved as
+ * @description save the file data as the filename to the client
+ */
 function saveBlob(blob, fileName)
 {
+    // create the anchor for downloading
     var a = document.createElement('a');
+
+    // set the download link to the blob object URL
     a.href = window.URL.createObjectURL(blob);
+    // set the download name
     a.download = fileName;
+    // start the download
     a.dispatchEvent(new MouseEvent('click'));
+}
+
+function cleanSVG( clone )
+{
+
+    /**
+     * TODO: 
+     * 
+     * With this function i want to do through the whole clone and remove 
+     * the id and class of every element and nested child inside of the svg so that the server has an easier time handling it
+     */
+
+    console.log( clone )
+
+    removeAttributes(clone, "id", "class")
+
+    // recursivly remove all ids, classes, styles
+    return clone
+}
+
+/**
+ * 
+ * @param {DOM Object} object 
+ * @param  {...any} attrs 
+ */
+function removeAttributes ( object, ...attrs )
+{
+    if( object.childNodes )
+    {
+        object.childNodes.forEach( child => {
+            removeAttributes(child, "id", "class")
+        })
+    }
+
+    attrs.forEach( attr => {
+        try
+        {
+            object.removeAttribute(attr)
+        }catch(err){}
+    })
+}
+
+/**
+ * 
+ * @param  {...any} arr 
+ */
+function validFileTypes( ...arr )
+{
+    for(let i = 0; i < arr.length; i++)
+    {
+        if( arr[i] )
+        {
+            return true;
+        }
+    }
+    return false;
 }

@@ -31,7 +31,7 @@ function DraggableArea( objectbox=undefined )
      */
     function validNode( nodeName )
     {
-        var testarray = ["svg"]
+        var testarray = ["svg"];
         // check test nodes for the current node name
         return (testarray.indexOf(nodeName) > -1) ? true: false;
     }
@@ -44,7 +44,7 @@ function DraggableArea( objectbox=undefined )
      */
     function validDraggableNode( nodeName )
     {
-        var testarray = ["g", "line", "rect"]
+        var testarray = ["g", "line", "rect"];
 
         // check test nodes for the current node name
         return (testarray.indexOf(nodeName) > -1) ? true: false;
@@ -60,11 +60,11 @@ function DraggableArea( objectbox=undefined )
     function createSVGP( x, y )
     {
         // create a blank svg point on screen
-        let pt = DragBoxContainer.createSVGPoint()
+        let pt = DragBoxContainer.createSVGPoint();
         
         // Then Scale the x and y into the point object 
-        pt.x = parseFloat( x )
-        pt.y = parseFloat( y )
+        pt.x = parseFloat( x );
+        pt.y = parseFloat( y );
 
         if( !isNaN( pt.x ) && !isNaN( pt.y ) )
         {
@@ -72,7 +72,7 @@ function DraggableArea( objectbox=undefined )
              * Apply a matrix tranform on the new point using the transform matrix of the target svg
              *  Note: must inverse the matrix before tranforming the points
              * */ 
-            return pt.matrixTransform( DragBoxContainer.getScreenCTM().inverse() )
+            return pt.matrixTransform( DragBoxContainer.getScreenCTM().inverse() );
         }
         else
         {
@@ -92,14 +92,14 @@ function DraggableArea( objectbox=undefined )
             while( !( target == null )
             && !validDraggableNode(target.nodeName) && target.classList.contains("holder") )
             {
-                target = target.parentElement
+                target = target.parentElement;
             }
         }catch(err)
         {
-            console.log(err)
+            console.log(err);
         }
 
-        return target
+        return target;
     }
 
     // ---------------- ^ End Private functions ^ --------------------------
@@ -125,91 +125,91 @@ function DraggableArea( objectbox=undefined )
         {
             event.preventDefault();
             // transform the mouse event location to the svg subspace
-            let svgP = createSVGP(event.clientX, event.clientY)
+            let svgP = createSVGP(event.clientX, event.clientY);
 
             if( draggingIcon.nodeName == "g" && draggingIcon.getAttribute("id").indexOf("-hg") > -1)
             {
                 // get the current mouse location with no object body attached
-                currentX = getScaledPoint(svgP.x, 1, 1)
-                currentY = getScaledPoint(svgP.y, 1, 1)
+                currentX = getScaledPoint(svgP.x, 1, 1);
+                currentY = getScaledPoint(svgP.y, 1, 1);
 
                 draggingIcon.childNodes.forEach(child => {
 
-                    let childScale = 1
-                    let origX = parseFloat(child.getAttribute("x"))
-                    let origY = parseFloat( child.getAttribute("y"))
+                    let childScale = 1;
+                    let origX = parseFloat(child.getAttribute("x"));
+                    let origY = parseFloat( child.getAttribute("y"));
 
-                    let newX = origX + (currentX - oldX)/childScale
-                    let newY = origY + (currentY - oldY)/childScale
+                    let newX = origX + (currentX - oldX)/childScale;
+                    let newY = origY + (currentY - oldY)/childScale;
 
                     if( child.nodeName === "image")
                     {
                         // update the input fields using the id of the draggingObject
-                        updateInputField( child.getAttribute("id"), newX, newY )
+                        updateInputField( child.getAttribute("id"), newX, newY );
 
-                        updateImageLocation( child.getAttribute("id"), newX, newY)
+                        updateImageLocation( child.getAttribute("id"), newX, newY);
                     }
                     else
                     {
                         // update the input fields using the id of the draggingObject
-                        updateInputField( child.getAttribute("id"), newX*childScale, newY*childScale )
+                        updateInputField( child.getAttribute("id"), newX*childScale, newY*childScale );
 
                         // set the new icon transform using the uniform setter function
-                        child.setAttribute("x", newX)
-                        child.setAttribute("y", newY)
+                        child.setAttribute("x", newX);
+                        child.setAttribute("y", newY);
                     }  
                 });                
             }
             else if( draggingIcon.nodeName == "svg" ) // 'svg' nodes house complex icons like the north arrow
             {
                 // get only mouse position, not adjusted for icon size and convert to parent element matrix
-                currentX = getScaledPoint(svgP.x, 1, parseFloat(draggingIcon.getAttribute("width")) )
-                currentY = getScaledPoint(svgP.y, 1, parseFloat(draggingIcon.getAttribute("height")) )
+                currentX = getScaledPoint(svgP.x, 1, parseFloat(draggingIcon.getAttribute("width")) );
+                currentY = getScaledPoint(svgP.y, 1, parseFloat(draggingIcon.getAttribute("height")) );
 
                 let scale = draggingIcon.getAttribute("scale");
 
                 // update the input fields using the id of the draggingObject
-                updateInputField( draggingIcon.getAttribute("id"), currentX, currentY )
+                updateInputField( draggingIcon.getAttribute("id"), currentX, currentY );
 
                 // set the new icon transform using the uniform setter function
-                draggingIcon.setAttribute("x", currentX)
-                draggingIcon.setAttribute("y", currentY)
+                draggingIcon.setAttribute("x", currentX);
+                draggingIcon.setAttribute("y", currentY);
             }
             else if( draggingIcon.nodeName == "rect" )
             {
                 // get the current mouse location with no body to the rect
-                currentX = getScaledPoint(svgP.x, 1, 1)
-                currentY = getScaledPoint(svgP.y, 1, 1)
+                currentX = getScaledPoint(svgP.x, 1, 1);
+                currentY = getScaledPoint(svgP.y, 1, 1);
 
                 // get the x and y of the new point using the diffrence of the old and current mouse locations
-                let y = Number(draggingIcon.getAttribute("y")) + (currentY - oldY)
-                let x = Number(draggingIcon.getAttribute("x")) + (currentX - oldX)
+                let y = Number(draggingIcon.getAttribute("y")) + (currentY - oldY);
+                let x = Number(draggingIcon.getAttribute("x")) + (currentX - oldX);
 
                 // set the icon x and y
-                draggingIcon.setAttribute("x", x)
-                draggingIcon.setAttribute("y", y)
+                draggingIcon.setAttribute("x", x);
+                draggingIcon.setAttribute("y", y);
                 // update the input fields
-                updateInputField(draggingIcon.getAttribute("id"), x, y)
+                updateInputField(draggingIcon.getAttribute("id"), x, y);
 
             }
             else if( draggingIcon.nodeName == "line" )
             {
                 // get transformed mouse position
-                currentX = getScaledPoint(svgP.x, 1, 1)
-                currentY = getScaledPoint(svgP.y, 1, 1)
+                currentX = getScaledPoint(svgP.x, 1, 1);
+                currentY = getScaledPoint(svgP.y, 1, 1);
 
                 // get the new location of all the points of the line element
-                let x1 = Number(draggingIcon.getAttribute("x1")) + (currentX - oldX)
-                let y1 = Number(draggingIcon.getAttribute("y1")) + (currentY - oldY)
-                let x2 = Number(draggingIcon.getAttribute("x2")) + (currentX - oldX)
-                let y2 = Number(draggingIcon.getAttribute("y2")) + (currentY - oldY)
+                let x1 = Number(draggingIcon.getAttribute("x1")) + (currentX - oldX);
+                let y1 = Number(draggingIcon.getAttribute("y1")) + (currentY - oldY);
+                let x2 = Number(draggingIcon.getAttribute("x2")) + (currentX - oldX);
+                let y2 = Number(draggingIcon.getAttribute("y2")) + (currentY - oldY);
                 
                 // set the new location of the line and uodate the line input fields
-                draggingIcon.setAttribute("x1", x1)
-                draggingIcon.setAttribute("y1", y1)
-                draggingIcon.setAttribute("x2", x2)
-                draggingIcon.setAttribute("y2", y2)
-                updateInputField(draggingIcon.getAttribute("id"), x1, y1, x2, y2)
+                draggingIcon.setAttribute("x1", x1);
+                draggingIcon.setAttribute("y1", y1);
+                draggingIcon.setAttribute("x2", x2);
+                draggingIcon.setAttribute("y2", y2);
+                updateInputField(draggingIcon.getAttribute("id"), x1, y1, x2, y2);
             }
 
             // update the old location to the current after every cycle
@@ -224,25 +224,25 @@ function DraggableArea( objectbox=undefined )
          */
         function endDrag( )
         {
-            let svgcontainer = DragBoxContainer
+            let svgcontainer = DragBoxContainer;
 
             try{
-                svgcontainer.removeEventListener("mousemove", dragObject )
-                svgcontainer.removeEventListener("mouseleave", endDrag )
-                svgcontainer.removeEventListener("mouseup", endDrag )
+                svgcontainer.removeEventListener("mousemove", dragObject );
+                svgcontainer.removeEventListener("mouseleave", endDrag );
+                svgcontainer.removeEventListener("mouseup", endDrag );
             }catch( err )
             {
                 console.log(err)
             }
 
-            draggingIcon.classList.remove('dragging')
-            svgcontainer.classList.remove('dragging')
+            draggingIcon.classList.remove('dragging');
+            svgcontainer.classList.remove('dragging');
 
-            draggingIcon = null
-            oldX = null
-            oldY = null
-            currentX = null
-            currentY = null
+            draggingIcon = null;
+            oldX = null;
+            oldY = null;
+            currentX = null;
+            currentY = null;
         }
 
         /**
@@ -253,16 +253,16 @@ function DraggableArea( objectbox=undefined )
         function dragHandler ( event )
         {
             event.preventDefault();
-            let svgcontainer = DragBoxContainer
+            let svgcontainer = DragBoxContainer;
 
             // IF THE NODE IS AN IMAGE IGNORE
         
             // get the parent container of the target if it is valid
-            draggingIcon = getIconParentContainer( event.target )
+            draggingIcon = getIconParentContainer( event.target );
 
             if(draggingIcon.classList.contains("marker"))
             {
-                draggingIcon = draggingIcon.parentElement
+                draggingIcon = draggingIcon.parentElement;
             }
 
             console.log(draggingIcon)
@@ -271,23 +271,23 @@ function DraggableArea( objectbox=undefined )
             if( draggingIcon != null && !paused && draggingIcon.getAttribute("id") != "bgelement")
             {   
                 // requires svgHelper.js
-                let svgP = createSVGP( event.clientX, event.clientY )
-                oldX = svgP.x
-                oldY = svgP.y
+                let svgP = createSVGP( event.clientX, event.clientY );
+                oldX = svgP.x;
+                oldY = svgP.y;
         
-                svgcontainer.addEventListener("mousemove", dragObject )
-                svgcontainer.addEventListener("mouseleave", endDrag )
-                svgcontainer.addEventListener("mouseup", endDrag )
+                svgcontainer.addEventListener("mousemove", dragObject );
+                svgcontainer.addEventListener("mouseleave", endDrag );
+                svgcontainer.addEventListener("mouseup", endDrag );
 
-                draggingIcon.classList.add('dragging')
-                svgcontainer.classList.add('dragging')
+                draggingIcon.classList.add('dragging');
+                svgcontainer.classList.add('dragging');
             }
         }
         // ---------------- End Private functions 2 --------------------------
 
 
         // add the main listener to the object targeted by DraggableArea() init function
-        DragBoxContainer.addEventListener("mousedown", dragHandler )
+        DragBoxContainer.addEventListener("mousedown", dragHandler );
 
         // return the DraggableArea object function helpers
         return {
@@ -303,14 +303,14 @@ function DraggableArea( objectbox=undefined )
              * @description
              */
             svgAPI: (x, y) => {
-                return createSVGP( x, y )
+                return createSVGP( x, y );
             },
 
             /**
              * 
              */
             pauseDraggables: () => {
-                DragBoxContainer.removeEventListener("mousedown", dragHandler )
+                DragBoxContainer.removeEventListener("mousedown", dragHandler );
                 paused = true;
             },
 
@@ -319,7 +319,7 @@ function DraggableArea( objectbox=undefined )
              */
             unpauseDraggables: () => {
                 // add the main listener to the object targeted by DraggableArea() init function
-                DragBoxContainer.addEventListener("mousedown", dragHandler )
+                DragBoxContainer.addEventListener("mousedown", dragHandler );
                 paused = false;
             }
         };
