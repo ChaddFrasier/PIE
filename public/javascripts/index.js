@@ -227,8 +227,6 @@ $(document).ready(()=> {
         let fileinputtypejpeglabel = fileinputtypesvglabel.cloneNode(true)
         fileinputtypejpeglabel.innerHTML = "JPEG &rarr;"
 
-        // TODO: make an checkbox group to make the checkbox list better
-
         form.setAttribute("method", "post")
         form.setAttribute("enctype", "multipart/form-data")
         form.setAttribute("runat", "server")
@@ -274,7 +272,7 @@ $(document).ready(()=> {
         {
             event.preventDefault();
 
-            var regexp = new RegExp( /([A-Z]|[0-9])*(?:\.(png|jpg|svg)|\s)/i ),
+            var regexp = new RegExp( /([A-Z]|[0-9])*(?:\.(png|jpg|svg|tiff|tif)|\s)/i ),
                 breakFlag = false;
 
             // change the color of the borde for bad filename
@@ -702,7 +700,7 @@ $(document).ready(()=> {
         text.setAttribute("font-size", "30px")
         text.setAttribute("pointer-events", "none")
         
-        // TODO: use this as an example for how to display the caption text
+        // how to display the caption text
         text.innerHTML = "<tspan x='0' y='30'>Type your caption here</tspan>"
 
         // finish by adding them to the document
@@ -1021,7 +1019,7 @@ $(document).ready(()=> {
         imagesvg.setAttribute("id", imageId)
         imagesvg.setAttribute("class", "holder")
 
-        //TODO: this is where the desfault image is set
+        // this is where the desfault image is set
         imagesvg.setAttribute("href", "#")
 
         holdergroup.appendChild(imagesvg)
