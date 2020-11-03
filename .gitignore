@@ -10,6 +10,7 @@
 # Uploaded Files
 uploads/
 exports/
+cypress/integration/examples/
 
 # Logs
 logs
