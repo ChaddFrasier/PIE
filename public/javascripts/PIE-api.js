@@ -74,11 +74,8 @@ module.exports = {
             {
                 return new Promise( (resolveFunc, rejectFunc) => {
 
-                    var outputtype = getOutputFormat( outputfile )
-
-                    /* TODO: project: Purify
-                            - validate input before running
-                    */
+                    var outputtype = getOutputFormat( outputfile ),
+                        errorBuf = undefined;
 
                     // create a gdal_translate instance with args in the array
                     var child = spawn( "gdal_translate", [
@@ -89,7 +86,8 @@ module.exports = {
 
                     child.stdout.on("data", data => { console.log(`stdout: ${data}`) });
 
-                    child.stderr.on("data", data => { console.log(`stderr: ${data}`) });
+                    // append the buffer data into the error data stream
+                    child.stderr.on("data", data => { errorBuf += data });
 
                     child.on('error', (error) => {
                         console.log(`error: ${error.message}`);
@@ -98,9 +96,16 @@ module.exports = {
 
                     // when the response is ready to close
                     child.on("close", code => {
-                        console.log(`child process exited with code ${code}`);
-                        // if the gdal command exited with 0
-                        resolveFunc(outputfile);
+                        if( code !== 0 )
+                        {
+                            // if the gdal command is not successful return the errorBuffer
+                            rejectFunc(errorBuf);
+                        }
+                        else
+                        {
+                            // if the gdal command exited with 0
+                            resolveFunc(outputfile);
+                        }
                     });
                 });
             },

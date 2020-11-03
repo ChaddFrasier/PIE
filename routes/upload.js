@@ -3,6 +3,7 @@
 const express = require('express');
 const multer = require('multer');
 const path  = require('path');
+const fs  = require('fs');
 const router = express.Router();
 var PIEAPI = require('../public/javascripts/PIE-api.js');
 
@@ -48,11 +49,6 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
             path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "vrt"))
             );
 
-        // runn a single promise
-        promise2.then((vrtfile) => {
-            console.log("Promise 2 finished with >")
-            console.log(vrtfile)
-            });
 
         /** Temporary end */
        
@@ -60,10 +56,26 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
         promise
             // then() -> just send the resulting file back to the client for displaying
             .then( (newfilename) => {
-                res.cookie("filepath", path.basename(newfilename));
-                res.sendFile( path.resolve("./"+newfilename) );
+                if( fs.existsSync(path.resolve("./"+newfilename)) )
+                {
+                    res.cookie("filepath", path.basename(newfilename));
+                    res.sendFile( path.resolve("./"+newfilename) );
+                }
+                else
+                {
+                    res.send("FAILED")
+                }
+                
             }).catch( (err) => {
-                console.debug(err);
+                res.send(err.toString("UTF-8"))
+            });
+
+            // runn a single promise
+        promise2.then((vrtfile) => {
+            console.log("Promise 2 finished with >")
+            console.log(vrtfile)
+            }).catch( (err) => {
+                console.log(err)
             });
     }
     else
