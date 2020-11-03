@@ -76,7 +76,6 @@ context('Navigation Tests', () => {
     });
   });
 
-
   describe("Contact Page Link Tests -> ", ()=>{
     beforeEach(() => {
       cy.visit('http://localhost:8080/')

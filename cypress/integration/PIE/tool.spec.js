@@ -26,7 +26,6 @@ context('Tools Tests', () => {
       });
     });
 
-
     describe("Image Tests -> ", () =>{ 
         it( "Should add caption when add caption button is clicked." ,() => {
           cy.get("image.holder").should("exist")
