@@ -695,6 +695,7 @@ $(document).ready(()=> {
         const text = document.createElementNS(NS.svg, "text")
         
         text.setAttribute("id", captionId + "text")
+        text.setAttribute("data-cy", "caption")
         text.setAttribute("width", "100%")
         text.setAttribute("height", "100%")
         text.setAttribute("font-size", "30px")
