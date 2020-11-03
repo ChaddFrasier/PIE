@@ -6,7 +6,7 @@
     "start": "node ./bin/www",
     "debug:win": "SET DEBUG=pie:* & node ./bin/www",
     "debug:mac": "set DEBUG=pie:* & node ./bin/www",
-    "cy:dev": "./node_modules/.bin/cypress open"
+    "cy:dev": "node ./bin/www & ./node_modules/.bin/cypress open"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
