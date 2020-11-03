@@ -4,6 +4,7 @@ context('Tools Tests', () => {
     beforeEach(() => {
       cy.visit('http://localhost:8080/')
       cy.get("#addcaptionbtn").click()
+      cy.get("#addimagebtn").click()
     })
   
     // https://on.cypress.io/interacting-with-elements
@@ -24,4 +25,11 @@ context('Tools Tests', () => {
         cy.get("text[data-cy='caption']>tspan>tspan").should("have.html", "This is a test to see if typing inside of the editable textarea changes html")
       });
     });
+
+
+    describe("Image Tests -> ", () =>{ 
+        it( "Should add caption when add caption button is clicked." ,() => {
+          cy.get("image.holder").should("exist")
+        });
+      });
 });
