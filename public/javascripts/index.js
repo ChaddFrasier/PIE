@@ -830,6 +830,7 @@ $(document).ready(()=> {
                 
                 // prevent page default submit
                 event.preventDefault()
+
                 // create a form data and request object to call the server
                 var fd = new FormData(form)
                 var xhr = new XMLHttpRequest()
@@ -841,28 +842,41 @@ $(document).ready(()=> {
                     
                     var reader = new FileReader()
 
-                    // occurs after readAsDataURL
-                    reader.onload = function(e) {
-                        // use jquery to update the image source
-                        $('#'+imageId).attr('href', e.target.result)
+                    if( xhr.response.type == "text/html" )
+                    {
+                        // occurs after readAsText()
+                        reader.onload = function(e) {
+                            // remove the btn after displaying the error to the user
+                            var imgRemoveBtn = document.querySelector(`.windowoptionsbar[objectid='${imageId}']>.windowremovebtn`);
+                            alert(`Image Failed to Upload:\nError: ${e.target.result}`)
+                            imgRemoveBtn.click()
+                        }
+                        reader.readAsText(xhr.response)
+                    }
+                    else
+                    {
+                        // occurs after readAsDataURL
+                        reader.onload = function(e) {
+                            // use jquery to update the image source
+                            $('#'+imageId).attr('href', e.target.result)
+                            $('#'+imageId).attr('GEO', 'true')
+                            $('#'+imageId).attr('filePath', getCookie("filepath"))
 
-                        $('#'+imageId).attr('GEO', 'true')
-                        $('#'+imageId).attr('filePath', getCookie("filepath"))
+                            // get the button group
+                            var iconbtngroup = document.getElementsByClassName("concisebtngroup")[0];
 
-                        // get the button group
-                        var iconbtngroup = document.getElementsByClassName("concisebtngroup")[0];
+                            iconbtngroup.childNodes.forEach( btn => {
+                                try 
+                                {
+                                    btn.classList.remove("disabled");
+                                }catch(err){ return }
+                            });
 
-                        iconbtngroup.childNodes.forEach( btn => {
-                            try 
-                            {
-                                btn.classList.remove("disabled");
-                            }catch(err){ return }
-                        });
-
+                        }    
+                        // convert to base64 string
+                        reader.readAsDataURL(xhr.response)
                     }
 
-                    // convert to base64 string
-                    reader.readAsDataURL(xhr.response)
                 }
 
                 // open the request and send the data
