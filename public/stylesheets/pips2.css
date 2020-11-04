@@ -42,7 +42,7 @@ html.contained {
 }
 
 .leftcontainer {
-    margin: auto auto auto 0;
+    margin: auto auto auto 1em;
     width: 33.3%;
     height: var(--header-height);
 }
@@ -54,7 +54,7 @@ html.contained {
 }
 
 .rightcontainer {
-    margin: auto 0 auto auto;
+    margin: auto 1em auto auto;
     width: 33.3%;
     height: var(--header-height);
 }
@@ -302,6 +302,7 @@ button.disabled {
     width: auto;
     max-width: var(--usgs-image-width);
     min-height: var(--usgs-image-height);
+    margin: 0 0 0 auto;
 }
 
 .pips2header {
@@ -337,6 +338,10 @@ button.disabled {
 .exporttitlebox > h3 {
     font-size: var(--main-export-title-font);
     padding: 0px;
+}
+
+#exportbtn {
+    font-size: var(--small-font);
 }
 
 .exporttitlebox {
@@ -493,7 +498,7 @@ button.disabled {
 .dividerline {
     width: 100%;
     height: auto;
-    font-size: var(--medium-font);
+    font-size: var(--large-font);
     min-height: var(--toolbox-min-height);
     max-height: var(--toolbox-max-height);
     background: var(--secondary-color);
@@ -515,6 +520,7 @@ label.text {
     padding: 2.5px 10px;
     text-align: center;
     width: 100%;
+    font-size: var(--medium-font);
 }
 
 .concisebtngroup {
@@ -524,7 +530,6 @@ label.text {
 
 .concisebtngroup > button {
     padding: 2px;
-    width: 3rem;
     height: auto;
     border: none;
 }
@@ -659,16 +664,14 @@ button.selected {
 .toolboxminimizebtn {
     background: var(--bar-gradient);
     border-radius: 2px 2px;
-    font-size: var(--large-font);
+    font-size: var(--medium-font);
     vertical-align: top;
-    padding: 1px 1px;
-    width: 100%;
+    padding: 0;
+    width: auto;
     height: auto;
     box-shadow: 2px 2px rgb(177, 177, 177);
-    min-width: var(--toolbox-minibtn-min-width);
-    max-width: var(--toolbox-minibtn-max-width);
-    min-height: var(--toolbox-minibtn-min-height);
-    max-height: var(--toolbox-minibtn-max-height);
+    min-width: var(--min-svg-btn);
+    min-height: var(--min-svg-btn);
 }
 
 .btnvectorgraphic{
@@ -774,7 +777,7 @@ button:hover {
     text-decoration: none;
     margin: auto 5px auto 5px;
     padding: 5px;
-    font-size: var(--sm-medium-font);
+    font-size: var(--large-font);
     box-shadow: 0 2px var(--contrast-color);
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
@@ -841,7 +844,7 @@ svg.imagecontainer {
 }
 
 .windowoptionsbar>h4{
-    font-size: var(--small-font);
+    font-size: var(--large-font);
     vertical-align: middle;
     margin: auto auto auto 0;
     pointer-events: none;
@@ -909,7 +912,7 @@ svg.imagecontainer {
     margin: auto 0 auto auto;
     width: 30%;
     pointer-events: none;
-    font-size: var(--small-font);
+    font-size: var(--medium-font);
 }
 
 .closed {
@@ -919,6 +922,11 @@ svg.imagecontainer {
 .toolboxcontainer.closed {
     width: var(--min-svg-btn) !important;
     min-width: 0% !important;
+}
+
+input[type="color"]{
+    width: var(--color-input-width);
+    height: var(--color-input-height);
 }
 
 .toolboxcontainer {

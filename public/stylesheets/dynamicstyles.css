@@ -98,23 +98,29 @@
 /* Native 4k+ Resolution */
 @media only screen and (min-width:2500px) {
     :root {
-        --large-font: 27px;
+        --large-font: 26px;
         --medium-font: 22px;
         --sm-medium-font: 20px;
         --small-font: 18px;
         --xsmall-font: 15px;
 
-        --usgs-image-height: 75px;
-        --usgs-image-width: 250px;
+        --usgs-image-height: 6em;
+        --usgs-image-width: 18em;
+
+        --color-input-width: 10em;
+        --color-input-height: 3em;
+
+        --select-input-width: 10em;
+        --select-input-height: auto;
 
         --main-export-box-height: 250px;
         --main-export-box-width: 300px;
         --main-export-title-font: larger;
 
-        --max-image-width: 125px;
+        --max-image-width: 10em;
 
-        --max-title-width: 400px;
-        --max-title-height: 125px;
+        --max-title-width: 20em;
+        --max-title-height: auto;
 
         --toolbox-min-height: 0;
         --toolbox-max-height: 100px;
@@ -122,15 +128,10 @@
         --toolbox-max-width: 150px;
         --edittoolbox-max-height: 200px;
 
-        --toolbox-minibtn-min-width: 40px;
-        --toolbox-minibtn-max-width: 40px;
-        --toolbox-minibtn-min-height: 35px;
-        --toolbox-minibtn-max-height: 40px;
-
         --inner-main-content-max-height: 86vh;
 
-        --min-svg-btn: 40px;
-        --max-svg-btn: 40px;
+        --min-svg-btn: 2em;
+        --max-svg-btn: 2em;
 
         --svg-icon-width: 30px;
 
