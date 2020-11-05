@@ -3,10 +3,10 @@
 {
     :root {
         --large-font: 14px;
-        --medium-font: 13px;
+        --medium-font: 14px;
         --sm-medium-font: 15px;
-        --small-font: 12px;
-        --xsmall-font: 10px;
+        --small-font: 13px;
+        --xsmall-font: 12px;
 
         --usgs-image-height: 50px;
         --usgs-image-width: 200px;
