@@ -210,22 +210,27 @@ $(document).ready(()=> {
         fileinputtype.setAttribute("type", "checkbox")
         fileinputtypelabel.innerHTML = "Output Types:   "
 
-        fileinputtypesvglabel.innerHTML = "SVG &rarr;"
+        fileinputtypesvglabel.innerHTML = "SVG"
+        fileinputtypesvglabel.style.margin = "0 auto 0 0"
+        fileinputtypesvglabel.style.width = "3em"
 
         var fileinputtype1 = fileinputtype.cloneNode(true);
 
         let fileinputtypepnglabel = fileinputtypesvglabel.cloneNode(true)
-        fileinputtypepnglabel.innerHTML = "PNG &rarr;"
+        fileinputtypepnglabel.innerHTML = "PNG"
 
         var fileinputtype2 = fileinputtype.cloneNode(true);
 
         let fileinputtypetifflabel = fileinputtypesvglabel.cloneNode(true)
-        fileinputtypetifflabel.innerHTML = "GeoTIFF &rarr;"
+        fileinputtypetifflabel.innerHTML = "GeoTIFF"
+        
+        //TODO:  disabled this checkbox
+        fileinputtype2.classList.add("disabled")        
 
         var fileinputtype3 = fileinputtype.cloneNode(true);
 
         let fileinputtypejpeglabel = fileinputtypesvglabel.cloneNode(true)
-        fileinputtypejpeglabel.innerHTML = "JPEG &rarr;"
+        fileinputtypejpeglabel.innerHTML = "JPEG"
 
         form.setAttribute("method", "post")
         form.setAttribute("enctype", "multipart/form-data")
@@ -235,6 +240,11 @@ $(document).ready(()=> {
         let formlabelbox = document.createElement("div")
         let forminputbox = document.createElement("div")
         let forminputcheckboxholder = document.createElement("div")
+        let dividericonbox = document.createElement("div")
+
+        dividericonbox.innerHTML ="&rarr;"
+        dividericonbox.style.margin ="0 auto 0 0"
+        dividericonbox.style.width = "1em"
 
         formlabelbox.classList.add("formlabelbox")
         forminputbox.classList.add("forminputbox")
@@ -253,10 +263,10 @@ $(document).ready(()=> {
         columntiff.classList.add("column")
         columnjpg.classList.add("column")
 
-        columnsvg.append(fileinputtypesvglabel, document.createElement("br"), fileinputtype)
-        columnpng.append(fileinputtypepnglabel, document.createElement("br"), fileinputtype1)
-        columntiff.append(fileinputtypetifflabel, document.createElement("br"), fileinputtype2)
-        columnjpg.append(fileinputtypejpeglabel,  document.createElement("br"), fileinputtype3)
+        columnsvg.append(fileinputtypesvglabel, dividericonbox , fileinputtype)
+        columnpng.append(fileinputtypepnglabel, dividericonbox.cloneNode(true), fileinputtype1)
+        columntiff.append(fileinputtypetifflabel, dividericonbox.cloneNode(true), fileinputtype2)
+        columnjpg.append(fileinputtypejpeglabel,  dividericonbox.cloneNode(true), fileinputtype3)
 
         forminputcheckboxholder.append(columnsvg , columntiff, columnpng, columnjpg)
 

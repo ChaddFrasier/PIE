@@ -29,8 +29,9 @@ block content
                     label.text(for="figureoutputsize")="Figure Size"
                     br
                     select#figsizeselect
-                        each figsize in ["1500x1500", "2500x2000"]
-                            option(value=fidsize) #{figsize}
+                        optgroup
+                            each figsize in ["1500x1500", "2500x2000"]
+                                option(value=fidsize) #{figsize}
                     br
                     label.text(for="backgroundcolor")="Background Color"
                     br
