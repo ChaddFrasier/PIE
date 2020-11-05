@@ -223,6 +223,8 @@ $(document).ready(()=> {
 
         let fileinputtypetifflabel = fileinputtypesvglabel.cloneNode(true)
         fileinputtypetifflabel.innerHTML = "GeoTIFF"
+        
+        //TODO:  disabled this checkbox
 
         var fileinputtype3 = fileinputtype.cloneNode(true);
 

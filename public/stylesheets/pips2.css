@@ -208,6 +208,10 @@ pre > i > b {
     display: flex;
 }
 
+.column > label {
+    font-size: var(--small-font);
+}
+
 .basicpagecontent > img {
     text-align: center !important;
 }
@@ -531,7 +535,8 @@ label.text {
 .concisebtngroup > button {
     padding: 2px;
     height: auto;
-    border: none;
+    border: 5px solid black;
+    padding: 2px 2px;
 }
 
 .concisebtngroup > .disabled {
@@ -676,8 +681,8 @@ button.selected {
 
 .btnvectorgraphic{
     width: auto;
-    min-width: var(--min-svg-btn);
-    max-width: var(--max-svg-btn);
+    min-width: var(--svg-icon-width);
+    max-width: var(--svg-icon-width);
     height: auto;
     pointer-events: none;
 }
@@ -685,11 +690,12 @@ button.selected {
 #scalebarbtnopt > .btnvectorgraphic {
     width: 100%;
     max-width: inherit;
-    height: 3em;
+    height: var(--svg-icon-height);
 }
 
 button#northarrowopt, button#sunarrowopt, button#observerarrowopt , button#scalebarbtnopt , button#penciloptbtn, button#outlinebtnopt{
     background: var(--bar-gradient);
+    border: 3px solid black;
 }
 
 button#northarrowopt:hover, button#sunarrowopt:hover, button#observerarrowopt:hover , button#scalebarbtnopt:hover , button#penciloptbtn:hover, button#outlinebtnopt:hover{
@@ -698,7 +704,6 @@ button#northarrowopt:hover, button#sunarrowopt:hover, button#observerarrowopt:ho
 
 button#scalebarbtnopt  {
     width: 85%;
-    border: none;
 }
 
 .btnvectorgraphic>svg {
@@ -765,6 +770,7 @@ button:hover {
     border-right: 1px solid black;
     color: white;
     border-radius: 2px 2px;
+    font-size: var(--header-btn-font);
 }
 
 .footerbuttongroup {

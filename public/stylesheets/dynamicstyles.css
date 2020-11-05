@@ -2,8 +2,8 @@
 @media only screen and (min-width: 700px)
 {
     :root {
-        --large-font: 17px;
-        --medium-font: 16px;
+        --large-font: 14px;
+        --medium-font: 13px;
         --sm-medium-font: 15px;
         --small-font: 12px;
         --xsmall-font: 10px;
@@ -11,13 +11,16 @@
         --usgs-image-height: 50px;
         --usgs-image-width: 200px;
 
+        --color-input-width: 5em;
+        --color-input-height: 2em;
+
         --max-image-width: 100px;
 
         --max-title-width: 300px;
         --max-title-height: 100px;
 
         --main-export-box-height: auto;
-        --main-export-box-width: 300px;
+        --main-export-box-width: 14em;
         --main-export-title-font: 22px;
 
         --toolbox-min-height: 0;
@@ -36,6 +39,9 @@
         --min-svg-btn: 30px;
         --max-svg-btn: 30px;
 
+        --svg-icon-width: 27px;
+        --svg-icon-height: 2.5em;
+
         --svg-icon-width: 30px;
 
         --header-height: 5%;
@@ -51,22 +57,28 @@
 /* Pretty Large Screen */
 @media only screen and (min-width:1500px) {
     :root {
-        --large-font: 21px;
-        --medium-font: 20px;
-        --sm-medium-font: 18px;
+        --large-font: 16px;
+        --medium-font: 14px;
+        --sm-medium-font: 12px;
         --small-font: 15px;
-        --xsmall-font: 12px;
+        --xsmall-font: 10px;
 
         --usgs-image-height: 50px;
         --usgs-image-width: 200px;
+
+        --color-input-width: 7em;
+        --color-input-height: 2em;
+
+        --select-input-width: 10em;
+        --select-input-height: auto;
 
         --max-image-width: 100px;
 
         --max-title-width: 300px;
         --max-title-height: 100px;
 
-        --main-export-box-height: 250px;
-        --main-export-box-width: 300px;
+        --main-export-box-height: auto;
+        --main-export-box-width: 22em;
         --main-export-title-font: larger;
 
         --toolbox-min-height: 0;
@@ -87,6 +99,7 @@
         --max-svg-btn: 35px;
 
         --svg-icon-width: 27px;
+        --svg-icon-height: 2.5em;
 
         --header-height: 5%;
         --main-content-height: 80vh;
@@ -98,7 +111,7 @@
 /* Native 4k+ Resolution */
 @media only screen and (min-width:2500px) {
     :root {
-        --large-font: 26px;
+        --large-font: 24px;
         --medium-font: 22px;
         --sm-medium-font: 20px;
         --small-font: 18px;
@@ -108,13 +121,13 @@
         --usgs-image-width: 18em;
 
         --color-input-width: 10em;
-        --color-input-height: 3em;
+        --color-input-height: 2.5em;
 
         --select-input-width: 10em;
         --select-input-height: auto;
 
-        --main-export-box-height: 250px;
-        --main-export-box-width: 300px;
+        --main-export-box-height: auto;
+        --main-export-box-width: 30em;
         --main-export-title-font: larger;
 
         --max-image-width: 10em;
@@ -131,9 +144,12 @@
         --inner-main-content-max-height: 86vh;
 
         --min-svg-btn: 2em;
-        --max-svg-btn: 2em;
+        --max-svg-btn: 2.2em;
 
-        --svg-icon-width: 30px;
+        --header-btn-font: 15px;
+
+        --svg-icon-width: 6em;
+        --svg-icon-height: 3em;
 
         --header-height: 5%;
         --main-content-height: 86vh;
