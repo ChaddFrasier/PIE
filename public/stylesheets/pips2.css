@@ -212,6 +212,10 @@ pre > i > b {
     font-size: var(--small-font);
 }
 
+.column > input[type="checkbox"].disabled {
+    pointer-events: none;
+}
+
 .basicpagecontent > img {
     text-align: center !important;
 }

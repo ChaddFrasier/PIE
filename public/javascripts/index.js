@@ -225,6 +225,7 @@ $(document).ready(()=> {
         fileinputtypetifflabel.innerHTML = "GeoTIFF"
         
         //TODO:  disabled this checkbox
+        fileinputtype2.classList.add("disabled")        
 
         var fileinputtype3 = fileinputtype.cloneNode(true);
 
