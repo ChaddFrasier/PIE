@@ -94,5 +94,16 @@ or you can start the code in debug mode `debug:win` for windows users and `debug
 ```
 npm run debug:win
 ```
+
+## Contribute
+Pull the repository down to your own branch, make your changes and then push the branch. Repository managers will merge or reject your changes within a week.
+
+#### Running Tests
+*In order to run tests you need to install development dependencies.*
+
+Run the cypress command to start the testing UI.
+```
+npm run cy:dev
+```
 -----------------------
 [USGS-Astrogeology](https://www.usgs.gov/centers/astrogeology-science-center)

@@ -813,7 +813,7 @@ $(document).ready(()=> {
         form.appendChild(fileinput)
 
         // listener for when the user changes the image of the input field
-        fileinput.onchange = function(event){
+        fileinput.addEventListener("change", function(event){
             // use regexp to test the acceptable file types and handle either way
             let imgregexp = new RegExp("^.*\.(png|PNG|jpg|JPG|SVG|svg)")
             let isisregexp = new RegExp("^.*\.(CUB|cub|tif|TIF)")
@@ -899,7 +899,7 @@ $(document).ready(()=> {
             else{
                 alert("File Type Not Supported")
             }
-        }
+        });
 
         // width input field
         widthlabel.innerHTML = "Image Width: "
@@ -2246,14 +2246,14 @@ function removeLineWindow( event )
         draggableSvg.getContainerObject().removeChild( linesvg )
 
         // remove marker if there is one
-        if( linesvg.style.markerEnd != "" )
+        if( linesvg.getAttribute("marker-end") != "" )
         {
-            removeMarker(linesvg.style.markerEnd)
+            removeMarker(linesvg.getAttribute("marker-end") )
         }
 
-        if( linesvg.style.markerStart != "" )
+        if( linesvg.getAttribute("marker-start")  != "" )
         {
-            removeMarker(linesvg.style.markerStart)
+            removeMarker(linesvg.getAttribute("marker-start") )
         }
     }
 }
@@ -2514,6 +2514,8 @@ function drawMouseDownListener( event )
     line.setAttribute( "stroke-width", "10" )
     line.setAttribute( "x2", svgP.x )
     line.setAttribute( "y2", svgP.y )
+    line.setAttributeNS(NS.svg, "marker-start", "")
+    line.setAttributeNS(NS.svg, "marker-end", "")
 
     // create the inner draw listener
     function endDraw( event )
@@ -2676,7 +2678,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         lineelement.setAttribute("stroke", this.value )
 
         try{
-            let markerEndid = lineelement.style.markerEnd.split('#')[1].replace('")','')
+            let markerEndid = lineelement.getAttribute("marker-end").split('#')[1].replace('")','')
 
             if( markerEndid )
             {
@@ -2684,7 +2686,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
                 // set attributes for new marker
                 newEndMarker.setAttribute("id", `${objectid}-marker`)
                 newEndMarker.firstChild.setAttribute("fill", this.value)
-                lineelement.style.markerEnd = `url("#${newEndMarker.getAttribute("id")}")`
+                lineelement.setAttribute("marker-end", `url("#${newEndMarker.getAttribute("id")}")`)
 
                 // add the new marker
                 document.getElementById("figdefs").appendChild(newEndMarker)
@@ -2697,7 +2699,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
          
         try 
         {
-            let markerStartid = lineelement.style.markerStart.split('#')[1].replace('")','')
+            let markerStartid = lineelement.getAttribute("marker-start").split('#')[1].replace('")','')
 
             if( markerStartid )
             {
@@ -2705,7 +2707,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
                 // set attributes for new marker
                 newStartMarker.setAttribute("id", `${objectid}-markerEnd`)
                 newStartMarker.firstChild.setAttribute("fill", this.value)
-                lineelement.style.markerStart = `url("#${newStartMarker.getAttribute("id")}")`
+                lineelement.setAttribute("marker-start", `url("#${newStartMarker.getAttribute("id")}")`)
 
                 // add the new marker
                 document.getElementById("figdefs").appendChild(newStartMarker)
@@ -2862,17 +2864,17 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
             switch( event.target.value )
             {
                 case "arrow":
-                    createMarker(line.style.markerEnd, line.id, "arrow", 0 )
+                    createMarker(line.getAttributeNS(NS.svg, "marker-end"), line.id, "arrow", 0 )
                     break
                 case "square":
-                    createMarker(object.style.markerEnd, line.id, "square", 0 )
+                    createMarker(line.getAttributeNS(NS.svg, "marker-end"), line.id, "square", 0 )
                     break
                 case "circle":
-                    createMarker(object.style.markerEnd, line.id, "circle", 0 )
+                    createMarker(line.getAttributeNS(NS.svg, "marker-end"), line.id, "circle", 0 )
                     break
                 default:
-                    object.style.markerEnd = "";
-                    document.getElementById("figdefs").removeChild(document.getElementById(line.id+"-marker"))
+                    object.setAttributeNS(NS.svg, "marker-end","");
+                    document.getElementById("figdefs").removeChild(document.getElementById(`${line.id}-marker`))
             }
         }
         else
@@ -2902,17 +2904,19 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
             // switch on the option
             switch( event.target.value )
             {
+
                 case "arrow":
-                    createMarker(line.style.markerStart, line.id, "arrow", 1 )
+                    console.log(line.getAttributeNS(NS.svg, "marker-start"))
+                    createMarker(line.getAttributeNS(NS.svg, "marker-start"), line.id, "arrow", 1 )
                     break
                 case "square":
-                    createMarker(object.style.markerStart, line.id, "square", 1 )
+                    createMarker(line.getAttributeNS(NS.svg, "marker-start"), line.id, "square", 1 )
                     break
                 case "circle":
-                    createMarker(object.style.markerStart, line.id, "circle", 1 )
+                    createMarker(line.getAttributeNS(NS.svg, "marker-start"), line.id, "circle", 1 )
                     break
                 default:
-                    object.style.markerStart = "";
+                    object.setAttributeNS(NS.svg, "marker-start", "");
                     document.getElementById("figdefs").removeChild(document.getElementById(line.id+"-markerEnd"))
             }
         }
@@ -2975,6 +2979,8 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
  * @param {string} headcode - string telling the type of head icon
  * @param {number} endCode - the code to tell what end of the line to place the marker
  * @description create and remove markers for customizing lines
+
+ // TODO: there is a problem with using the attribute marker stuff.
  */
 function createMarker( markerString, lineid, headcode, endCode )
 {
@@ -3014,11 +3020,15 @@ function createMarker( markerString, lineid, headcode, endCode )
                 // set new attributes
                 newmarker.setAttribute( "id", lineid + "-marker" )
                 newmarker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )
-
                 // append the new marker
                 document.getElementById("figdefs").appendChild(newmarker)
+                newmarker.setAttribute("data-cy", "markerhead")
+
 
                 // set line marker end
+                line.setAttributeNS(NS.svg,"marker-end", `url(#${newmarker.id})`)
+                
+                // TODO: same problem here as below
                 line.style.markerEnd = `url(#${newmarker.id})`
             }
         }
@@ -3060,11 +3070,15 @@ function createMarker( markerString, lineid, headcode, endCode )
                 newmarker.setAttribute( "id", lineid + "-markerEnd" )
                 newmarker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )     
                 newmarker.setAttribute("orient", "auto-start-reverse")
+                newmarker.setAttribute("data-cy", "markertail")
 
                 // append the new marker
                 document.getElementById("figdefs").appendChild(newmarker)
 
                 // set line marker end
+                line.setAttributeNS(NS.svg, "marker-start", `url(#${newmarker.id})`)
+
+                // TODO: the css here will not work for Sharp
                 line.style.markerStart = `url(#${newmarker.id})`
             }
         }

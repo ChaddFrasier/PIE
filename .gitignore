@@ -1,12 +1,3 @@
-# ISIS Files
-*.tif
-*.TIF
-*.TIFF
-*.tiff
-*.cub
-*.CUB
-
-
 # Uploaded Files
 uploads/
 exports/
