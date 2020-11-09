@@ -253,7 +253,6 @@ function DraggableArea( objectbox=undefined )
         function dragHandler ( event )
         {
             event.preventDefault();
-            let svgcontainer = DragBoxContainer;
 
             // IF THE NODE IS AN IMAGE IGNORE
         
@@ -275,12 +274,12 @@ function DraggableArea( objectbox=undefined )
                 oldX = svgP.x;
                 oldY = svgP.y;
         
-                svgcontainer.addEventListener("mousemove", dragObject );
-                svgcontainer.addEventListener("mouseleave", endDrag );
-                svgcontainer.addEventListener("mouseup", endDrag );
+                DragBoxContainer.addEventListener("mousemove", dragObject );
+                DragBoxContainer.addEventListener("mouseleave", endDrag );
+                DragBoxContainer.addEventListener("mouseup", endDrag );
 
                 draggingIcon.classList.add('dragging');
-                svgcontainer.classList.add('dragging');
+                DragBoxContainer.classList.add('dragging');
             }
         }
         // ---------------- End Private functions 2 --------------------------

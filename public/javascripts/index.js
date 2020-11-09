@@ -338,9 +338,6 @@ $(document).ready(()=> {
                 // when the requests load handle the response
                 xhr.onloadend = () => {
                     
-                    // TODO: iniate a download by sending a fetch for the proper file(s) given by xhr.response
-                    console.log(xhr.response)
-
                     // response has all the links for downloading images
                     Object.keys(xhr.response).forEach( filetype => {
                         const filename = xhr.response[filetype];
@@ -1718,7 +1715,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
             // set event listeners
             iconscaleinput.addEventListener("change", updateIconScale)
-            
 
             iconmaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)})
             iconaccentcolorinput.addEventListener("change", function(event){updateIconColor(event, 1)})
@@ -2172,6 +2168,9 @@ function updateIconScale( event )
     if( !isNaN( inputvalue ) )
     {   
         icon.setAttribute("scale", inputvalue)
+
+        icon.setAttribute("width", parseFloat(icon.getAttribute("viewBox").split(" 0 ")[1])*inputvalue )
+        icon.setAttribute("height", parseFloat(icon.getAttribute("viewBox").split(" 0 ")[1])*inputvalue )
     }
 }
 
