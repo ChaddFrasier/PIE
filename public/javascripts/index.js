@@ -1715,7 +1715,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
             // set event listeners
             iconscaleinput.addEventListener("change", updateIconScale)
-            
 
             iconmaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)})
             iconaccentcolorinput.addEventListener("change", function(event){updateIconColor(event, 1)})
