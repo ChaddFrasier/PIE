@@ -2168,6 +2168,9 @@ function updateIconScale( event )
     if( !isNaN( inputvalue ) )
     {   
         icon.setAttribute("scale", inputvalue)
+
+        icon.setAttribute("width", parseFloat(icon.getAttribute("viewBox").split(" 0 ")[1])*inputvalue )
+        icon.setAttribute("height", parseFloat(icon.getAttribute("viewBox").split(" 0 ")[1])*inputvalue )
     }
 }
 
