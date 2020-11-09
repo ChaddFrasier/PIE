@@ -9,6 +9,46 @@ context('Tools Tests', () => {
   
     // https://on.cypress.io/interacting-with-elements
 
+    describe("Image Tests -> ", () =>{ 
+      it( "Should add caption w/ default config when add caption button is clicked." ,() => {
+        cy.get("image.holder").should("exist")
+        cy.get("image.holder").should("have.attr", "href", "#")
+        cy.get("input[type='file']").attachFile('testimg.jpg')
+        cy.get("image.holder").should("not.have.attr", "href", "#")
+      });
+
+      it( "Should change image dimensions and position when input changes." ,() => {
+        cy.get("input[type='file']").attachFile('testimg.jpg')
+
+        cy.get('input[name="widthinput"]').first().clear().type("750{enter}")
+        cy.get('image.holder').should("have.attr", "width", "750")
+        cy.get('input[name="heightinput"]').first().clear().type("1000{enter}")
+        cy.get('image.holder').should("have.attr", "height", "1000")
+
+        cy.get('input[name="xcoordinput"]').first().clear().type("200{enter}")
+        cy.get('image.holder').should("have.attr", "x", "200")
+        cy.get('input[name="ycoordinput"]').first().clear().type("1500{enter}")
+        cy.get('image.holder').should("have.attr", "y", "1500")
+      });
+
+      it('Should display a cub image on upload', () => {
+        cy.get("input[type='file']").attachFile('M102200199CE.vis.even.band0004.geo.cub').then(() =>
+        {
+          cy.get('image.holder').invoke("attr", "href").should("match", /^(data\:image\/jpeg;base64,)/i)
+        });
+      });
+
+      it("Should fail and delete the image on failure.", () => {
+        // test failure
+        cy.get("input[type='file']").attachFile('failuretest.cub').then(() =>
+        {
+          cy.get('image.holder').invoke("attr", "href").should("not.match", /^(data\:image\/jpeg;base64,)/i)
+            .then(() => {
+              cy.get('image.holder').should("not.exist")
+            })
+        });
+      });
+    });
 
     describe("Line Tests -> ", () => {
       beforeEach(() => {
@@ -79,6 +119,13 @@ context('Tools Tests', () => {
       it("Should change the thickness of the outline.", () => {
         cy.get("input[name='rectthicknessinput']").clear().type('24{enter}')
         cy.get('rect.placed').should("have.attr", "stroke-width", 24)
+      });
+
+      it("Should bea able to add custom width and height.", () => {
+        cy.get("input[name='rectwidthinput']").clear().type('202{enter}')
+        cy.get("input[name='rectheightinput']").clear().type('500{enter}')
+        cy.get('rect.placed').should("have.attr", "width", 202)
+        cy.get('rect.placed').should("have.attr", "height", 500)
       });
     });
 
@@ -182,23 +229,4 @@ context('Tools Tests', () => {
         cy.get("svg>text").parent().should("have.attr", "fill", "#ffffff")
       });
     });
-
-    describe("Image Tests -> ", () =>{ 
-        it( "Should add caption w/ default config when add caption button is clicked." ,() => {
-          cy.get("image.holder").should("exist")
-          cy.get("image.holder").should("have.attr", "href", "#")
-        });
-
-        it( "Should change image dimensions and position when input changes." ,() => {
-          cy.get('input[name="widthinput"]').first().clear().type("750{enter}")
-          cy.get('image.holder').should("have.attr", "width", "750")
-          cy.get('input[name="heightinput"]').first().clear().type("1000{enter}")
-          cy.get('image.holder').should("have.attr", "height", "1000")
-
-          cy.get('input[name="xcoordinput"]').first().clear().type("200{enter}")
-          cy.get('image.holder').should("have.attr", "x", "200")
-          cy.get('input[name="ycoordinput"]').first().clear().type("1500{enter}")
-          cy.get('image.holder').should("have.attr", "y", "1500")
-        });
-      });
 });
