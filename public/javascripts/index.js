@@ -813,7 +813,7 @@ $(document).ready(()=> {
         form.appendChild(fileinput)
 
         // listener for when the user changes the image of the input field
-        fileinput.onchange = function(event){
+        fileinput.addEventListener("change", function(event){
             // use regexp to test the acceptable file types and handle either way
             let imgregexp = new RegExp("^.*\.(png|PNG|jpg|JPG|SVG|svg)")
             let isisregexp = new RegExp("^.*\.(CUB|cub|tif|TIF)")
@@ -899,7 +899,7 @@ $(document).ready(()=> {
             else{
                 alert("File Type Not Supported")
             }
-        }
+        });
 
         // width input field
         widthlabel.innerHTML = "Image Width: "
