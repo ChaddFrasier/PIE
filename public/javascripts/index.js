@@ -338,9 +338,6 @@ $(document).ready(()=> {
                 // when the requests load handle the response
                 xhr.onloadend = () => {
                     
-                    // TODO: iniate a download by sending a fetch for the proper file(s) given by xhr.response
-                    console.log(xhr.response)
-
                     // response has all the links for downloading images
                     Object.keys(xhr.response).forEach( filetype => {
                         const filename = xhr.response[filetype];
