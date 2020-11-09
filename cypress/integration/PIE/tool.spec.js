@@ -25,12 +25,22 @@ context('Tools Tests', () => {
         });
       });
 
+      it("Should scale the icon when input updates.", () => {
+        var oldscale = cy.get('rect.marker').last().invoke("attr","scale")
+
+        cy.get("input[name='iconscaleinput']").clear().type("10{enter}")
+        cy.get('rect.marker').last().invoke("attr", "scale").should("not.eq", oldscale)
+
+        cy.get('rect.marker').last().parent().invoke("attr", "scale").should("eq", '10')
+      });
+
       it("Should have all the icons on the uploaded image.", () => {
 
         cy.get("#sunarrowopt").trigger("mousedown", {which: 1}).then((btn) => {
           cy.document().trigger("mousmove", {pageX: 2000, pageY: 2000})
           cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), force:true})
         });
+
         cy.get("#observerarrowopt").trigger("mousedown", {which: 1}).then((btn) => {
           cy.document().trigger("mousmove", {pageX: 2000, pageY: 1500})
           cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), force:true})
@@ -48,6 +58,20 @@ context('Tools Tests', () => {
         cy.get("image.holder").next().next().next().next().invoke("attr", "id").should("match", /^scalebarIcon-.*/i)
       });
 
+      it("Should be able to change the x and y input for the icons.", () => {
+        var oldx = cy.get('rect.marker').last().invoke("attr","x")
+        var oldy = cy.get('rect.marker').last().invoke("attr","y")
+
+        cy.get("input[name='iconxcoordinput']").clear().type("200{enter}")
+        cy.get("input[name='iconycoordinput']").clear().type("400{enter}")
+
+        cy.get('rect.marker').last().invoke("attr", "x").should("not.eq", oldx)
+        cy.get('rect.marker').last().invoke("attr", "y").should("not.eq", oldy)
+
+        cy.get('rect.marker').last().parent().invoke("attr", "x").should("eq", '200')
+        cy.get('rect.marker').last().parent().invoke("attr", "y").should("eq", '400')
+      });
+
       it("Should be able to drag each of the icons.", () => { 
         var oldx = cy.get('rect.marker').last().invoke("attr","x")
         var oldy = cy.get('rect.marker').last().invoke("attr","y")
@@ -59,6 +83,68 @@ context('Tools Tests', () => {
           .trigger("mouseup").then( ()=> {
             cy.get('rect.marker').last().invoke("attr", "x").should("not.eq", oldx)
             cy.get('rect.marker').last().invoke("attr", "y").should("not.eq", oldy)
+
+            cy.get('.windowremovebtn').eq(1).click()
+          });
+        });
+
+        cy.get("#sunarrowopt").trigger("mousedown", {which: 1}).then((btn) => {
+          cy.document().trigger("mousmove", {pageX: 2000, pageY: 2000})
+          cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), force:true})
+        });
+
+        oldx = cy.get('rect.marker').last().invoke("attr","x")
+        oldy = cy.get('rect.marker').last().invoke("attr","y")
+
+        cy.get("image.holder").last().then( () => {
+          cy.get("svg#figurecontainer")
+          .trigger("mousedown", {target: cy.get('rect.marker').last()})
+          .trigger("mousemove",{clientX: 1000, clientY: 400})
+          .trigger("mouseup").then( ()=> {
+            cy.get('rect.marker').last().invoke("attr", "x").should("not.eq", oldx)
+            cy.get('rect.marker').last().invoke("attr", "y").should("not.eq", oldy)
+
+            cy.get('.windowremovebtn').eq(1).click()
+          });
+        });
+
+        cy.get("#observerarrowopt").trigger("mousedown", {which: 1}).then((btn) => {
+          cy.document().trigger("mousmove", {pageX: 2000, pageY: 1500})
+          cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), force:true})
+        });
+
+        oldx = cy.get('rect.marker').last().invoke("attr","x")
+        oldy = cy.get('rect.marker').last().invoke("attr","y")
+
+        cy.get("image.holder").last().then( () => {
+          cy.get("svg#figurecontainer")
+          .trigger("mousedown", {target: cy.get('rect.marker').last()})
+          .trigger("mousemove",{clientX: 1000, clientY: 400})
+          .trigger("mouseup").then( ()=> {
+            cy.get('rect.marker').last().invoke("attr", "x").should("not.eq", oldx)
+            cy.get('rect.marker').last().invoke("attr", "y").should("not.eq", oldy)
+
+            cy.get('.windowremovebtn').eq(1).click()
+          });
+        });
+
+        cy.get("#scalebarbtnopt").trigger("mousedown", {which: 1}).then((btn) => {
+          cy.document().trigger("mousmove", {pageX: 2000, pageY: 2500})
+          cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), force:true})
+        });
+
+        oldx = cy.get('rect.marker').last().invoke("attr","x")
+        oldy = cy.get('rect.marker').last().invoke("attr","y")
+
+        cy.get("image.holder").last().then( () => {
+          cy.get("svg#figurecontainer")
+          .trigger("mousedown", {target: cy.get('rect.marker').last()})
+          .trigger("mousemove",{clientX: 1000, clientY: 400})
+          .trigger("mouseup").then( ()=> {
+            cy.get('rect.marker').last().invoke("attr", "x").should("not.eq", oldx)
+            cy.get('rect.marker').last().invoke("attr", "y").should("not.eq", oldy)
+
+            cy.get('.windowremovebtn').eq(1).click()
           });
         });
       });
