@@ -9,7 +9,46 @@ context('Tools Tests', () => {
   
     // https://on.cypress.io/interacting-with-elements
 
-    describe("Image Tests -> ", () =>{ 
+    describe("Icon Tests ->", () => {
+
+      beforeEach(() => {
+        cy.get("input[type='file']").attachFile('M102200199CE.vis.even.band0004.geo.cub').then(() =>
+        {
+          cy.get('image.holder').invoke("attr", "href").should("match", /^(data\:image\/jpeg;base64,)/i)
+        });
+
+        // drag icons into the image
+        cy.get(".windowminimizebtn").eq(1).click()
+        cy.get("#northarrowopt").trigger("mousedown", {which: 1}).then((btn) => {
+          cy.document().trigger("mousmove", {pageX: 2000, pageY: 2000})
+          cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), pageY: 1100})
+        });
+        
+        cy.get("#sunarrowopt").trigger("mousedown", {which: 1}).then((btn) => {
+          cy.document().trigger("mousmove", {pageX: 2000, pageY: 2000})
+          cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), pageY: 1500, force:true})
+        });
+        cy.get("#observerarrowopt").trigger("mousedown", {which: 1}).then((btn) => {
+          cy.document().trigger("mousmove", {pageX: 2000, pageY: 2000})
+          cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), pageY: 1400, force:true})
+        });
+
+        cy.get("#scalebarbtnopt").trigger("mousedown", {which: 1}).then((btn) => {
+          cy.document().trigger("mousmove", {pageX: 2000, pageY: 2000})
+          cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), pageY: 1500, force:true})
+        });
+      });
+
+      it("Should have all the icons on the uploaded image.", () => {
+        cy.get("image.holder").should("exist")
+        cy.get("image.holder").next().invoke("attr", "id").should("match", /^northIcon-.*/i)
+        cy.get("image.holder").next().next().invoke("attr", "id").should("match", /^sunIcon-.*/i)
+        cy.get("image.holder").next().next().next().invoke("attr", "id").should("match", /^observerIcon-.*/i)
+        cy.get("image.holder").next().next().next().next().invoke("attr", "id").should("match", /^scalebarIcon-.*/i)
+      });
+    });
+
+    describe("Image Tests ->", () =>{ 
       it( "Should add caption w/ default config when add caption button is clicked." ,() => {
         cy.get("image.holder").should("exist")
         cy.get("image.holder").should("have.attr", "href", "#")
@@ -48,6 +87,18 @@ context('Tools Tests', () => {
             })
         });
       });
+
+      it("Should be able to upload a png.", () => {
+        cy.get("input[type='file']").attachFile('testpng.png').then(() =>
+        {
+          cy.get('image.holder').invoke("attr", "href").should("match", /^(data\:image\/png;base64,)/i)
+            .then(() => {
+              cy.get('image.holder').should("exist")
+            })
+        });
+      });
+
+      // TODO: upload a geotiff
     });
 
     describe("Line Tests -> ", () => {
@@ -149,6 +200,23 @@ context('Tools Tests', () => {
         cy.get("button.toolboxminimizebtn").click()
 
         cy.get(".toolboxcontainer.closed").should("exist")
+      });
+
+      it("Should be able to drag toolboxes to shift the svg layers.", () => {
+        const startTopObject = {
+          toolbox: cy.get('.draggableToolbox').first(),
+          svg: cy.get('#figurecontainer').children().last()
+        };
+        cy.get("button.windowminimizebtn").eq(2).click()
+        cy.get("button.windoworderingbtn").first()
+          .trigger("mousedown")
+          .then(() => {
+            cy.document().trigger("mousemove", {pageY:1300, pageX:293})
+            cy.get("#toolbox").trigger("mousemove", {pageY:1300, pageX:293})
+          })
+          
+          cy.get('#figurecontainer').children().last().should('not.eq', startTopObject.svg)
+          cy.get('.draggableToolbox').first().should('not.eq', startTopObject.toolbox)
       });
     });
   
