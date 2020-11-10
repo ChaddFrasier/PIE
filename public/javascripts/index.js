@@ -3068,8 +3068,8 @@ function createMarker( markerString, lineid, headcode, endCode )
                 // set new attributes
                 newmarker.setAttribute( "id", lineid + "-markerEnd" )
                 newmarker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )     
-                newmarker.setAttribute("orient", "auto-start-reverse")
-                newmarker.setAttribute("data-cy", "markertail")
+                newmarker.setAttributeNS(NS.svg, "orient", "auto-start-reverse")
+                newmarker.setAttribute( "data-cy", "markertail")
 
                 // append the new marker
                 document.getElementById("figdefs").appendChild(newmarker)
@@ -3846,7 +3846,7 @@ function cleanSVG( clone )
  */
 function removeAttributes ( object, ...attrs )
 {
-    if( object.childNodes )
+    if( object.childNodes && object.nodeName != "defs" )
     {
         object.childNodes.forEach( child => {
             removeAttributes(child, "id", "class")
