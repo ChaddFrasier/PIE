@@ -34,6 +34,22 @@ context('Tools Tests', () => {
         cy.get('rect.marker').last().parent().invoke("attr", "scale").should("eq", '10')
       });
 
+      it("Should change the main color of the icon when input updates.", () => {
+        var oldGroup = cy.get("g.holder").children().first()
+
+        cy.get("input[name='iconmaincolorinput']").invoke("val", "#ff0000").trigger("change")
+
+        cy.get("g.holder").children().first().should("not.eq", oldGroup)
+      });
+
+      it("Should change the secondary color of the icon when input updates.", () => {
+        var oldGroup = cy.get("g.holder").children().first()
+
+        cy.get("input[name='iconsecondarycolorinput']").invoke("val", "#00fff0").trigger("change")
+
+        cy.get("g.holder").children().first().should("not.eq", oldGroup)
+      });
+
       it("Should have all the icons on the uploaded image.", () => {
 
         cy.get("#sunarrowopt").trigger("mousedown", {which: 1}).then((btn) => {
@@ -232,7 +248,6 @@ context('Tools Tests', () => {
 
       it("Should change colors of the line after add head and the colors should match.", () => {
         cy.get('select[name="lineheadinput"]').select("Arrow Head")
-
 
         cy.get("input[name='linecolorinput']").invoke("val", "#ff0000").trigger("change")
         cy.get("line.placed").should("have.attr", "stroke", "#ff0000")
