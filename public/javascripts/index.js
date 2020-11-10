@@ -2677,15 +2677,16 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         lineelement.setAttribute("stroke", this.value )
 
         try{
-            let markerEndid = lineelement.getAttribute("marker-end").split('#')[1].replace('")','')
+            let markerEndid = lineelement.getAttribute("marker-end").split('#')[1].replace(')','')
 
             if( markerEndid )
             {
                 let newEndMarker = document.getElementById( markerEndid )
+
                 // set attributes for new marker
                 newEndMarker.setAttribute("id", `${objectid}-marker`)
                 newEndMarker.firstChild.setAttribute("fill", this.value)
-                lineelement.setAttribute("marker-end", `url("#${newEndMarker.getAttribute("id")}")`)
+                lineelement.setAttributeNS(NS.svg, "marker-end", `url(#${newEndMarker.getAttribute("id")})`)
 
                 // add the new marker
                 document.getElementById("figdefs").appendChild(newEndMarker)
@@ -2693,12 +2694,12 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         }
         catch(err)
         {
-            console.log("Line Has No End")
+            console.error("Line Has No End")
         }
          
         try 
         {
-            let markerStartid = lineelement.getAttribute("marker-start").split('#')[1].replace('")','')
+            let markerStartid = lineelement.getAttribute("marker-start").split('#')[1].replace(')','')
 
             if( markerStartid )
             {
@@ -2706,7 +2707,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
                 // set attributes for new marker
                 newStartMarker.setAttribute("id", `${objectid}-markerEnd`)
                 newStartMarker.firstChild.setAttribute("fill", this.value)
-                lineelement.setAttribute("marker-start", `url("#${newStartMarker.getAttribute("id")}")`)
+                lineelement.setAttribute("marker-start", `url(#${newStartMarker.getAttribute("id")})`)
 
                 // add the new marker
                 document.getElementById("figdefs").appendChild(newStartMarker)
