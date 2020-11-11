@@ -23,7 +23,6 @@ module.exports = {
     PIEAPI: function()
     {
 
-        // TODO: this function is returning undefined for most cases. WHY?
         function getOutputFormat( filename )
         {
             let chunks = filename.split(".");
@@ -140,6 +139,52 @@ module.exports = {
                     // create a gdal_translate instance with args in the array
                     var child = spawn( "campt", [
                             "FORMAT=","PVL",
+                            "FROM=", inputfile, 
+                            "TO=", outputfile] )
+        
+                    child.on('error', (error) => {
+                        console.log(`error: ${error.message}`);
+                        rejectFunc(error.message);
+                    });
+        
+                    // when the response is ready to close
+                    child.on("close", code => {
+                        console.log(`child process exited with code ${code}`);
+                        // if the gdal command exited with 0
+                        resolveFunc(code);
+                    });
+                });
+            },
+
+            isis_catlab: function( inputfile=undefined, outputfile=undefined)
+            {
+                return new Promise( (resolveFunc, rejectFunc) => {
+                    // create a gdal_translate instance with args in the array
+                    var child = spawn( "catlab", [
+                            "APPEND=", "true",
+                            "FROM=", inputfile, 
+                            "TO=", outputfile] )
+        
+                    child.on('error', (error) => {
+                        console.log(`error: ${error.message}`);
+                        rejectFunc(error.message);
+                    });
+        
+                    // when the response is ready to close
+                    child.on("close", code => {
+                        console.log(`child process exited with code ${code}`);
+                        // if the gdal command exited with 0
+                        resolveFunc(code);
+                    });
+                });
+            },
+            
+            isis_catoriglab: function( inputfile=undefined, outputfile=undefined)
+            {
+                return new Promise( (resolveFunc, rejectFunc) => {
+                    // create a gdal_translate instance with args in the array
+                    var child = spawn( "catoriglab", [
+                            "APPEND=", "true",
                             "FROM=", inputfile, 
                             "TO=", outputfile] )
         
