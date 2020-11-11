@@ -10,6 +10,62 @@ context('Tools Tests', () => {
   
   // https://on.cypress.io/interacting-with-elements
 
+  describe("Outline Box Tests -> ", () => {
+    beforeEach(() => {
+      cy.get(".windowminimizebtn").eq(1).click()
+      cy.get("#outlinebtnopt").click()
+      cy.get("#figurecontainer")
+        .trigger("mousedown", {which:1, clientX: 500, clientY: 150})
+        .trigger("mousemove", {clienX: 700, clientY: 300})
+        .trigger("mouseup")
+    });
+
+    // test that drawing works
+    it("Should draw an outline when the button is clicked and then drag and drop occurs.", () => {
+      cy.get("rect.placed").should("exist")
+    })
+
+    // test that color change works
+    it("Should be able to change the color of the rectangle outline.", () => {
+      cy.get('input[name="rectcolorinput"]').invoke("val", "#00ffff").trigger("change")
+      cy.get("rect.placed").should("have.attr","stroke", "#00ffff")
+    })
+
+    // test that the x and y position can update
+    it("Should change the x position and y position.", () => {
+      cy.get("input[name='rectxinput']").clear().type('200{enter}')
+      cy.get("input[name='rectyinput']").clear().type('200{enter}')
+      cy.get('rect.placed').should("have.attr", "x", 200).should("have.attr", "y", 200)
+    });
+
+    // test that the outline thickness works
+    it("Should change the thickness of the outline.", () => {
+      cy.get("input[name='rectthicknessinput']").clear().type('24{enter}')
+      cy.get('rect.placed').should("have.attr", "stroke-width", 24)
+    });
+
+    // test that custome width height works for the images
+    it("Should be able to add custom width and height.", () => {
+      cy.get("input[name='rectwidthinput']").clear().type('202{enter}')
+      cy.get("input[name='rectheightinput']").clear().type('500{enter}')
+      cy.get('rect.placed').should("have.attr", "width", 202)
+      cy.get('rect.placed').should("have.attr", "height", 500)
+    });
+
+    it("Should be able to drag the outline around around.", () => {
+      var oldx = cy.get('rect.placed[fill="none"]').invoke("attr", "x")
+      var oldy = cy.get('rect.placed[fill="none"]').invoke("attr", "y")
+    
+      cy.get("svg#figurecontainer")
+      .trigger("mousedown", {target: cy.get('rect.placed'), force: true})
+      .trigger("mousemove",{clientX: 400, clientY: 500, force: true})
+      .trigger("mouseup", {force:true}).then( ()=> {
+        cy.get('rect.placed').invoke("attr", "x").should("not.eq", oldx)
+        cy.get('rect.placed').invoke("attr", "y").should("not.eq", oldy)
+      });
+    });
+  });
+
   describe("Line Tests -> ", () => {
     // TODO: more to come here
     beforeEach(() => {
@@ -97,48 +153,20 @@ context('Tools Tests', () => {
       cy.get("marker").last().children().first().should("have.attr", "fill", "#00ff00")
 
     });
-  });
 
-  describe("Outline Box Tests -> ", () => {
-    beforeEach(() => {
-      cy.get(".windowminimizebtn").eq(1).click()
-      cy.get("#outlinebtnopt").click()
-      cy.get("#figurecontainer")
-        .trigger("mousedown", {which:1, clientX: 500, clientY: 150})
-        .trigger("mousemove", {clienX: 700, clientY: 300})
-        .trigger("mouseup")
-    });
+    it("Should be able to drag the line around.", () => {
 
-    // test that drawing works
-    it("Should draw an outline when the button is clicked and then drag and drop occurs.", () => {
-      cy.get("rect.placed").should("exist")
-    })
+      var oldx = cy.get('line.placed').last().invoke("attr", "x")
+      var oldy = cy.get('line.placed').last().invoke("attr", "y")
 
-    // test that color change works
-    it("Should be able to change the color of the rectangle outline.", () => {
-      cy.get('input[name="rectcolorinput"]').invoke("val", "#00ffff").trigger("change")
-      cy.get("rect.placed").should("have.attr","stroke", "#00ffff")
-    })
-
-    // test that the x and y position can update
-    it("Should change the x position and y position.", () => {
-      cy.get("input[name='rectxinput']").clear().type('200{enter}')
-      cy.get("input[name='rectyinput']").clear().type('200{enter}')
-      cy.get('rect.placed').should("have.attr", "x", 200).should("have.attr", "y", 200)
-    });
-
-    // test that the outline thickness works
-    it("Should change the thickness of the outline.", () => {
-      cy.get("input[name='rectthicknessinput']").clear().type('24{enter}')
-      cy.get('rect.placed').should("have.attr", "stroke-width", 24)
-    });
-
-    // test that custome width height works for the images
-    it("Should be able to add custom width and height.", () => {
-      cy.get("input[name='rectwidthinput']").clear().type('202{enter}')
-      cy.get("input[name='rectheightinput']").clear().type('500{enter}')
-      cy.get('rect.placed').should("have.attr", "width", 202)
-      cy.get('rect.placed').should("have.attr", "height", 500)
+      cy.get("svg#figurecontainer")
+        .trigger("mousedown", {target: cy.get('line.placed').last()})
+        .trigger("mousemove",{clientX: 1000, clientY: 400})
+        .trigger("mouseup").then( ()=> {
+          cy.get('line.placed').last().invoke("attr", "x").should("not.eq", oldx)
+          cy.get('line.placed').last().invoke("attr", "y").should("not.eq", oldy)
+          cy.get('.windowremovebtn').eq(1).click()
+        });
     });
   });
 
