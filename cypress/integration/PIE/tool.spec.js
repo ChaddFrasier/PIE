@@ -271,7 +271,7 @@ context('Tools Tests', () => {
       cy.get("input[type='file']").attachFile('M102200199CE.vis.even.band0004.geo.cub').then(() =>
       {
         // validate when upload finishes
-        cy.get('image.holder').invoke("attr", "href").should("match", /^(data\:image\/jpeg;base64,)/i)
+        cy.get('image.holder').invoke("attr", "href").should("match", /^(data\:image\/jpeg;base64,).*/i)
       });
 
       // drag north icon into the image
