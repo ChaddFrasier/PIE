@@ -1,7 +1,13 @@
+/** 
+ * Main Testing File 
+ * 
+ * This file will be the main testing file that must be run before pushing any docker container or code to the main docker image
+ * */
+
 /// <reference types="cypress" />
 
 context('Tools Tests', () => {
-  // add n image and caption element before each testing set
+  // add an image and caption element before each testing set
   beforeEach(() => {
     cy.visit('http://localhost:8080/')
     cy.get("#addcaptionbtn").click()
@@ -10,6 +16,254 @@ context('Tools Tests', () => {
   
   // https://on.cypress.io/interacting-with-elements
 
+  /** Outline Tests */
+  describe("Outline Box Tests -> ", () => {
+    beforeEach(() => {
+      cy.get(".windowminimizebtn").eq(1).click()
+      cy.get("#outlinebtnopt").click()
+      cy.get("#figurecontainer")
+        .trigger("mousedown", {which:1, clientX: 500, clientY: 150})
+        .trigger("mousemove", {clienX: 700, clientY: 300})
+        .trigger("mouseup")
+    });
+    // test that drawing works
+    it("Should draw an outline when the button is clicked and then drag and drop occurs.", () => {
+      cy.get("rect.placed").should("exist")
+    })
+    // test that color change works
+    it("Should be able to change the color of the rectangle outline.", () => {
+      cy.get('input[name="rectcolorinput"]').invoke("val", "#00ffff").trigger("change")
+      cy.get("rect.placed").should("have.attr","stroke", "#00ffff")
+    })
+    // test that the x and y position can update
+    it("Should change the x position and y position.", () => {
+      cy.get("input[name='rectxinput']").clear().type('200{enter}')
+      cy.get("input[name='rectyinput']").clear().type('200{enter}')
+      cy.get('rect.placed').should("have.attr", "x", 200).should("have.attr", "y", 200)
+    });
+    // test that the outline thickness works
+    it("Should change the thickness of the outline.", () => {
+      cy.get("input[name='rectthicknessinput']").clear().type('24{enter}')
+      cy.get('rect.placed').should("have.attr", "stroke-width", 24)
+    });
+    // test that custome width height works for the images
+    it("Should be able to add custom width and height.", () => {
+      cy.get("input[name='rectwidthinput']").clear().type('202{enter}')
+      cy.get("input[name='rectheightinput']").clear().type('500{enter}')
+      cy.get('rect.placed').should("have.attr", "width", 202)
+      cy.get('rect.placed').should("have.attr", "height", 500)
+    });
+    // test that the user can drag and drop the outline
+    it("Should be able to drag the outline around around.", () => {
+      var oldx = cy.get('rect.placed[fill="none"]').invoke("attr", "x")
+      var oldy = cy.get('rect.placed[fill="none"]').invoke("attr", "y")
+      cy.get("svg#figurecontainer")
+      .trigger("mousedown", {target: cy.get('rect.placed'), force: true})
+      .trigger("mousemove",{clientX: 400, clientY: 500, force: true})
+      .trigger("mouseup", {force:true}).then( ()=> {
+        cy.get('rect.placed').invoke("attr", "x").should("not.eq", oldx)
+        cy.get('rect.placed').invoke("attr", "y").should("not.eq", oldy)
+      });
+    });
+  });
+
+  /** Line Tests */
+  describe("Line Tests -> ", () => {
+    beforeEach(() => {
+      cy.get(".windowminimizebtn").eq(1).click()
+      cy.get("#penciloptbtn").click()
+      cy.get("#figurecontainer")
+        .trigger("mousedown", {which:1, clientX: 500, clientY: 150})
+        .trigger("mousemove", {clienX: 700, clientY: 300})
+        .trigger("mouseup")
+    });
+    // Line should be on screen
+    it("Should draw a line when the button is clicked and then drag and drop occurs.", () => {
+      cy.get("line.placed").should("exist")
+    })
+    // line can change colors with no head or tail
+    it("Should change colors of the line when there is no heads.", () => {
+        cy.get("input[name='linecolorinput']").invoke("val", "#ff0000").trigger("change")
+        cy.get("line.placed").should("have.attr", "stroke", "#ff0000")
+    })
+    // can add a head and tail
+    it("Should add an arrow head and a circle to the head and tail respectivley", () => {
+      cy.get('select[name="lineheadinput"]').select("Arrow Head")
+      cy.get('select[name="linetailinput"]').select("Circle Head")
+      cy.get("marker[data-cy='markerhead']").should("exist")
+      cy.get("marker[data-cy='markertail']").should("exist")
+    });
+    // can change color of the markers after they have been added
+    it("Should change colors of the line after add head and the colors should match.", () => {
+      cy.get('select[name="lineheadinput"]').select("Arrow Head")
+      cy.get('select[name="linetailinput"]').select("Square Head")
+      cy.get("input[name='linecolorinput']").invoke("val", "#ff0000").trigger("change")
+      cy.get("line.placed").should("have.attr", "stroke", "#ff0000")
+      cy.get("marker").last().children().first().should("have.attr", "fill", "#ff0000")
+      cy.get("marker").last().prev().children().first().should("have.attr", "fill", "#ff0000")
+    });
+    // can change add markers with any color
+    it("Should change colors of the line and add head of same color.", () => {
+      cy.get("input[name='linecolorinput']").invoke("val", "#ff0000").trigger("change")
+      cy.get("line.placed").should("have.attr", "stroke", "#ff0000")
+      cy.get('select[name="lineheadinput"]').select("Arrow Head")
+      cy.get('select[name="linetailinput"]').select("Circle Head")
+      cy.get("marker").last().children().first().should("have.attr", "fill", "#ff0000")
+      cy.get("marker").last().prev().children().first().should("have.attr", "fill", "#ff0000")
+    });
+    // can change marker thickness and still have markers
+    it("Should be able to add markers after changing thickness.", () => {
+      cy.get('input[name="linethicknessinput"]').clear().type("20{enter}")
+      cy.get('select[name="lineheadinput"]').select("Arrow Head")
+      cy.get('select[name="linetailinput"]').select("Circle Head")
+      cy.get("marker[data-cy='markerhead']").should("exist")
+      cy.get("marker[data-cy='markertail']").should("exist")
+    });
+    // can have lines with markers that are different colors
+    it("Should be able to add multiple lines with different colored markers.", () => {
+      // first line
+      cy.get('select[name="lineheadinput"]').first().select("Arrow Head")
+      cy.get('select[name="linetailinput"]').first().select("Square Head")
+      cy.get("input[name='linecolorinput']").first().invoke("val", "#ff0000").trigger("change")
+      cy.get("line.placed").last().should("have.attr", "stroke", "#ff0000")
+      cy.get("marker").last().children().first().should("have.attr", "fill", "#ff0000")
+      cy.get("marker").last().prev().children().first().should("have.attr", "fill", "#ff0000")
+
+      cy.get("#penciloptbtn").click()
+      cy.get("#figurecontainer")
+        .trigger("mousedown", {which:1, clientX: 700, clientY: 200})
+        .trigger("mousemove", {clienX: 900, clientY: 1000})
+        .trigger("mouseup")
+      // second line
+      cy.get('select[name="lineheadinput"]').first().select("Arrow Head")
+      cy.get('select[name="linetailinput"]').first().select("Square Head")
+      cy.get("input[name='linecolorinput']").first().invoke("val", "#00ff00").trigger("change")
+      cy.get("line.placed").last().should("have.attr", "stroke", "#00ff00")
+      cy.get("marker").eq(5).children().first().should("have.attr", "fill", "#00ff00")
+      cy.get("marker").last().children().first().should("have.attr", "fill", "#00ff00")
+    });
+    // drag lines with the mouse
+    it("Should be able to drag the line around.", () => {
+      var oldx = cy.get('line.placed').last().invoke("attr", "x")
+      var oldy = cy.get('line.placed').last().invoke("attr", "y")
+      cy.get("svg#figurecontainer")
+        .trigger("mousedown", {target: cy.get('line.placed').last()})
+        .trigger("mousemove",{clientX: 1000, clientY: 400})
+        .trigger("mouseup").then( ()=> {
+          cy.get('line.placed').last().invoke("attr", "x").should("not.eq", oldx)
+          cy.get('line.placed').last().invoke("attr", "y").should("not.eq", oldy)
+          cy.get('.windowremovebtn').eq(1).click()
+        });
+    });
+  });
+
+  /** Main Tests */
+  describe("Main Editor Tests -> ", () => {
+    // test that the background color can change
+    it("Background should change when the main background color input changes.", () => {
+      cy.get("button.windowminimizebtn").first().click()
+      cy.get("input[type='color']").first().invoke("val", '#ffeebb').trigger("change")
+      cy.get('#bgelement').should("have.attr", "fill", "#ffeebb")
+    });
+    // test that the dimensions work
+    it("Figure dimensions should change when the selected figure size changes.", () => {
+      cy.get("button.windowminimizebtn").first().click()
+      cy.get("select#figsizeselect").select("2500x2000")
+      cy.get("svg#figurecontainer").should("have.attr", "viewBox", "0 0 2500 2000")
+    });
+    // test that the toolbox can be hidden.
+    it("Should be able to minimize or close thetoolbox", () => {
+      cy.get("button.toolboxminimizebtn").click()
+      cy.get(".toolboxcontainer.closed").should("exist")
+    });
+    // test that the toolbox can be dragged and change the svg layers.
+    it("Should be able to drag toolboxes to shift the svg layers.", () => {
+      const startTopObject = {
+        toolbox: cy.get('.draggableToolbox').first(),
+        svg: cy.get('#figurecontainer').children().last()
+      };
+      cy.get("button.windowminimizebtn").eq(2).click()
+      cy.get("button.windoworderingbtn").first()
+        .trigger("mousedown")
+        .then(() => {
+          cy.document().trigger("mousemove", {pageY:1300, pageX:293})
+          cy.get("#toolbox").trigger("mousemove", {pageY:1300, pageX:293})
+        })
+        cy.get('#figurecontainer').children().last().should('not.eq', startTopObject.svg)
+        cy.get('.draggableToolbox').first().should('not.eq', startTopObject.toolbox)
+    });
+  });
+
+  /** Caption Tests */
+  describe("Caption Tests -> ", () =>{ 
+    // test that it starts on the home page
+    it( "Should start on home page." ,() => {
+      cy.url().should('eq', 'http://localhost:8080/')
+    });
+    // test that the caption object is on screen
+    it( "Should add caption when add caption button is clicked." ,() => {
+      cy.get("svg>text").should("exist")
+    });
+    // test that the input box will update the text in the caption
+    it("Change the text should also change the text inside the caption", () => {
+      cy.fixture("data").then(json => {
+        cy.get("textarea[name='captiontextinput']")
+        .type(json["LoremIpsum"])
+        cy.get("text[data-cy='caption']>tspan>tspan").should("not.have.html", json["LoremIpsum"])
+      });
+      cy.get("textarea[name='captiontextinput']").clear().type("This is a short test")
+      cy.get("text[data-cy='caption']>tspan>tspan").should("have.html", "This is a short test")
+    });
+    // be able to change the width nd height input
+    it( "Should change caption width when caption input changes." ,() => {
+      cy.get('input[name="widthinput"]').last().clear().type("540{enter}")
+      cy.get('text[data-cy="caption"]').parent().should("have.attr", "width", "540")
+      cy.get('input[name="heightinput"]').last().clear().type("250{enter}")
+      cy.get('text[data-cy="caption"]').parent().should("have.attr", "height", "250")
+    });
+    // test that the x and y positions can chnage
+    it( "Should change position coordinates x and y when caption input changes." ,() => {
+      cy.get('button.windowminimizebtn').eq(2).click();
+      cy.get('input[name="xcoordinput"]').last().clear().type("540{enter}");
+      cy.get('text[data-cy="caption"]').parent().should("have.attr", "x", "540");
+      cy.get('input[name="ycoordinput"]').last().clear().type("250{enter}");
+      cy.get('text[data-cy="caption"]').parent().should("have.attr", "y", "250");
+    });
+    // test that removing the caption works
+    it('Should remove the caption when the button is clicked.', () => {
+      cy.get('button.windowremovebtn').eq(1).click()
+      cy.get("svg>text").should("not.exist")
+    });
+    // input can handle error tests
+    it('Should handle invalid input.', () => {
+      cy.get('button.windowminimizebtn').eq(2).click();
+      cy.get('input[name="widthinput"]').last().clear().type("abcdlookatme{enter}")
+      cy.get('text[data-cy="caption"]').parent().should("have.attr", "width", "500")
+      cy.get('input[name="heightinput"]').last().clear().type("thisshouldgotominimum{enter}")
+      cy.get('text[data-cy="caption"]').parent().should("have.attr", "height", "100")
+
+      cy.get('input[name="xcoordinput"]').last().clear().type("abcdlookatme{enter}")
+      cy.get('text[data-cy="caption"]').parent().should("have.attr", "x", "0")
+      cy.get('input[name="ycoordinput"]').last().clear().type("thisshouldgotominimum{enter}")
+      cy.get('text[data-cy="caption"]').parent().should("have.attr", "y", "0")
+    });
+    // test the caption color functionality
+    it("Should be able to change color of the background and text.", () => {
+      cy.get('button.windowminimizebtn').eq(2).click();
+      // change background
+      cy.get("input[type='color']").eq(2)
+        .invoke('val', '#ff0000')
+        .trigger('change');
+      cy.get("svg>text").prev().should("have.attr", "fill", "#ff0000")
+      // change text
+      cy.get("input[type='color']").eq(1)
+        .invoke('val', '#ffffff')
+        .trigger('change');
+      cy.get("svg>text").parent().should("have.attr", "fill", "#ffffff")
+    });
+  });
+
+  /** Icon Tests */
   describe("Icon Tests ->", () => {
     // run before each icon test set
     beforeEach(() => {
@@ -172,6 +426,7 @@ context('Tools Tests', () => {
     });
   });
 
+  /** Image Tests */
   describe("Image Tests ->", () => { 
     // check that the default information is at the start of the tests
     it( "Should add caption w/ default config when add caption button is clicked." ,() => {
@@ -228,205 +483,5 @@ context('Tools Tests', () => {
     });
 
     // TODO: upload a geotiff
-  });
-
-  describe("Line Tests -> ", () => {
-    // TODO: more to come here
-    beforeEach(() => {
-      cy.get(".windowminimizebtn").eq(1).click()
-      cy.get("#penciloptbtn").click()
-      cy.get("#figurecontainer")
-        .trigger("mousedown", {which:1, clientX: 500, clientY: 150})
-        .trigger("mousemove", {clienX: 700, clientY: 300})
-        .trigger("mouseup")
-    });
-
-    it("Should draw a line when the button is clicked and then drag and drop occurs.", () => {
-      cy.get("line.placed").should("exist")
-    })
-
-    it("Should change colors of the line when there is no heads.", () => {
-        cy.get("input[name='linecolorinput']").invoke("val", "#ff0000").trigger("change")
-        cy.get("line.placed").should("have.attr", "stroke", "#ff0000")
-    })
-
-    it("Should add an arrow head and a circle to the head and tail repectivley", () => {
-      cy.get('select[name="lineheadinput"]').select("Arrow Head")
-      cy.get('select[name="linetailinput"]').select("Circle Head")
-
-      cy.get("marker[data-cy='markerhead']").should("exist")
-      cy.get("marker[data-cy='markertail']").should("exist")
-    });
-
-    it("Should change colors of the line after add head and the colors should match.", () => {
-      cy.get('select[name="lineheadinput"]').select("Arrow Head")
-
-      cy.get("input[name='linecolorinput']").invoke("val", "#ff0000").trigger("change")
-      cy.get("line.placed").should("have.attr", "stroke", "#ff0000")
-    })
-
-    it("Should change colors of the line and add head of same color.", () => {
-      cy.get("input[name='linecolorinput']").invoke("val", "#ff0000").trigger("change")
-      cy.get("line.placed").should("have.attr", "stroke", "#ff0000")
-    })
-  });
-
-  describe("Outline Box Tests -> ", () => {
-    beforeEach(() => {
-      cy.get(".windowminimizebtn").eq(1).click()
-      cy.get("#outlinebtnopt").click()
-      cy.get("#figurecontainer")
-        .trigger("mousedown", {which:1, clientX: 500, clientY: 150})
-        .trigger("mousemove", {clienX: 700, clientY: 300})
-        .trigger("mouseup")
-    });
-
-    // test that drawing works
-    it("Should draw an outline when the button is clicked and then drag and drop occurs.", () => {
-      cy.get("rect.placed").should("exist")
-    })
-
-    // test that color change works
-    it("Should be able to change the color of the rectangle outline.", () => {
-      cy.get('input[name="rectcolorinput"]').invoke("val", "#00ffff").trigger("change")
-      cy.get("rect.placed").should("have.attr","stroke", "#00ffff")
-    })
-
-    // test that the x and y position can update
-    it("Should change the x position and y position.", () => {
-      cy.get("input[name='rectxinput']").clear().type('200{enter}')
-      cy.get("input[name='rectyinput']").clear().type('200{enter}')
-      cy.get('rect.placed').should("have.attr", "x", 200).should("have.attr", "y", 200)
-    });
-
-    // test that the outline thickness works
-    it("Should change the thickness of the outline.", () => {
-      cy.get("input[name='rectthicknessinput']").clear().type('24{enter}')
-      cy.get('rect.placed').should("have.attr", "stroke-width", 24)
-    });
-
-    // test that custome width height works for the images
-    it("Should be able to add custom width and height.", () => {
-      cy.get("input[name='rectwidthinput']").clear().type('202{enter}')
-      cy.get("input[name='rectheightinput']").clear().type('500{enter}')
-      cy.get('rect.placed').should("have.attr", "width", 202)
-      cy.get('rect.placed').should("have.attr", "height", 500)
-    });
-  });
-
-  describe("Main Editor Tests -> ", () => {
-    // test that the background color can change
-    it("Background should change when the main background color input changes.", () => {
-      cy.get("button.windowminimizebtn").first().click()
-      cy.get("input[type='color']").first().invoke("val", '#ffeebb').trigger("change")
-      cy.get('#bgelement').should("have.attr", "fill", "#ffeebb")
-    });
-
-    // test that the dimensions work
-    it("Figure dimensions should change when the selected figure size changes.", () => {
-      cy.get("button.windowminimizebtn").first().click()
-      cy.get("select#figsizeselect").select("2500x2000")
-      cy.get("svg#figurecontainer").should("have.attr", "viewBox", "0 0 2500 2000")
-    });
-
-    // test that the toolbox can be hidden.
-    it("Should be able to minimize or close thetoolbox", () => {
-      cy.get("button.toolboxminimizebtn").click()
-      cy.get(".toolboxcontainer.closed").should("exist")
-    });
-
-    // test that the toolbox can be dragged and change the svg layers.
-    it("Should be able to drag toolboxes to shift the svg layers.", () => {
-      const startTopObject = {
-        toolbox: cy.get('.draggableToolbox').first(),
-        svg: cy.get('#figurecontainer').children().last()
-      };
-      cy.get("button.windowminimizebtn").eq(2).click()
-      cy.get("button.windoworderingbtn").first()
-        .trigger("mousedown")
-        .then(() => {
-          cy.document().trigger("mousemove", {pageY:1300, pageX:293})
-          cy.get("#toolbox").trigger("mousemove", {pageY:1300, pageX:293})
-        })
-        cy.get('#figurecontainer').children().last().should('not.eq', startTopObject.svg)
-        cy.get('.draggableToolbox').first().should('not.eq', startTopObject.toolbox)
-    });
-  });
-
-  describe("Caption Tests -> ", () =>{ 
-
-    // test that it starts on the home page
-    it( "Should start on home page." ,() => {
-      cy.url().should('eq', 'http://localhost:8080/')
-    });
-
-    // test that the caption object is on screen
-    it( "Should add caption when add caption button is clicked." ,() => {
-      cy.get("svg>text").should("exist")
-    });
-
-    // test that the input box will update the text in the caption
-    it("Change the text should also change the text inside the caption", () => {
-      cy.fixture("data").then(json => {
-        cy.get("textarea[name='captiontextinput']")
-        .type(json["LoremIpsum"])
-        cy.get("text[data-cy='caption']>tspan>tspan").should("not.have.html", json["LoremIpsum"])
-      });
-      cy.get("textarea[name='captiontextinput']").clear().type("This is a short test")
-      cy.get("text[data-cy='caption']>tspan>tspan").should("have.html", "This is a short test")
-    });
-
-    // be able to change the width nd height input
-    it( "Should change caption width when caption input changes." ,() => {
-      cy.get('input[name="widthinput"]').last().clear().type("540{enter}")
-      cy.get('text[data-cy="caption"]').parent().should("have.attr", "width", "540")
-      cy.get('input[name="heightinput"]').last().clear().type("250{enter}")
-      cy.get('text[data-cy="caption"]').parent().should("have.attr", "height", "250")
-    });
-
-    // test that the x and y positions can chnage
-    it( "Should change position coordinates x and y when caption input changes." ,() => {
-      cy.get('button.windowminimizebtn').eq(2).click();
-      cy.get('input[name="xcoordinput"]').last().clear().type("540{enter}");
-      cy.get('text[data-cy="caption"]').parent().should("have.attr", "x", "540");
-      cy.get('input[name="ycoordinput"]').last().clear().type("250{enter}");
-      cy.get('text[data-cy="caption"]').parent().should("have.attr", "y", "250");
-    });
-
-    // test that removing the caption works
-    it('Should remove the caption when the button is clicked.', () => {
-      cy.get('button.windowremovebtn').eq(1).click()
-      cy.get("svg>text").should("not.exist")
-    });
-
-    // input can handle error tests
-    it('Should handle invalid input.', () => {
-      cy.get('button.windowminimizebtn').eq(2).click();
-
-      cy.get('input[name="widthinput"]').last().clear().type("abcdlookatme{enter}")
-      cy.get('text[data-cy="caption"]').parent().should("have.attr", "width", "500")
-      cy.get('input[name="heightinput"]').last().clear().type("thisshouldgotominimum{enter}")
-      cy.get('text[data-cy="caption"]').parent().should("have.attr", "height", "100")
-
-      cy.get('input[name="xcoordinput"]').last().clear().type("abcdlookatme{enter}")
-      cy.get('text[data-cy="caption"]').parent().should("have.attr", "x", "0")
-      cy.get('input[name="ycoordinput"]').last().clear().type("thisshouldgotominimum{enter}")
-      cy.get('text[data-cy="caption"]').parent().should("have.attr", "y", "0")
-    });
-
-    // test the caption color functionality
-    it("Should be able to change color of the background and text.", () => {
-      cy.get('button.windowminimizebtn').eq(2).click();
-      // change background
-      cy.get("input[type='color']").eq(2)
-        .invoke('val', '#ff0000')
-        .trigger('change');
-      cy.get("svg>text").prev().should("have.attr", "fill", "#ff0000")
-      // change text
-      cy.get("input[type='color']").eq(1)
-        .invoke('val', '#ffffff')
-        .trigger('change');
-      cy.get("svg>text").parent().should("have.attr", "fill", "#ffffff")
-    });
   });
 });
