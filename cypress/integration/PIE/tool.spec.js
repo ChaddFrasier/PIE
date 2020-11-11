@@ -481,7 +481,6 @@ context('Tools Tests', () => {
           })
       });
     });
-
     // TODO: upload a geotiff
   });
 });
