@@ -556,6 +556,8 @@ $(document).ready(()=> {
                 {
                     matchingCaption.setAttribute("width", Number(this.value))
                 }
+
+                matchingCaption.lastChild.innerHTML = text2PieText(textinput.value, parseFloat(matchingCaption.getAttribute("width")), 30)
             }
         })
 
@@ -3647,10 +3649,12 @@ function updateObjectUI( objectid, ...args )
 }
 
 /**
+ * @function text2PieText
+ * @param {string} text raw text that needs to be formated
+ * @param {number} captionWidth width of the caption object
+ * @param {number} fontsize size of the font in the caption
  * 
- * @param {*} text 
- * @param {*} captionWidth 
- * @param {*} fontsize 
+ * @description this function takes the text of the caption and formats it for the caption object in the svg element.
  */
 function text2PieText( text, captionWidth, fontsize )
 {
@@ -3667,8 +3671,6 @@ function text2PieText( text, captionWidth, fontsize )
 
     // set the x and y so that the text displays the whole word
     p1.setAttribute("x", fontsize);
-
-    text = convertSpecialCharacters( text );
 
     // get an array of all the seperate paragraphs
     paragraphArr = text.split("\n");
@@ -3698,7 +3700,7 @@ function text2PieText( text, captionWidth, fontsize )
             {
                 // The limit was reached on the last word
                 // reset the used pixel count
-                usedPixels = 0
+                usedPixels = 70
 
                 // append the current line to the lineObject and start a new line
                 lineObject.innerHTML = constructorArray.join(' ');
@@ -3759,8 +3761,8 @@ function text2PieText( text, captionWidth, fontsize )
         // append the paragraph HTML to the pieText string object
         pieText += p1.outerHTML;
 
-        // calculate the new y for the next paragraph
-        paragraphStart = parseInt(p1.getAttribute("y")) + (30 * p1.childElementCount-1);
+        // calculate the new y for the next paragraph // TODO: this uses a hard coded font-size
+        paragraphStart = parseInt(p1.getAttribute("y")) + (fontsize * p1.childElementCount-1);
 
         // reset the paragraph element
         p1.innerHTML = paragraphText
@@ -3768,13 +3770,6 @@ function text2PieText( text, captionWidth, fontsize )
 
     // lastly return the HTML string that is the caption
     return pieText;
-}
-
-function convertSpecialCharacters( text )
-{
-    var returnText = text
-
-    return returnText
 }
 
 function getCookie(cname)
