@@ -67,7 +67,6 @@ context('Tools Tests', () => {
   });
 
   describe("Line Tests -> ", () => {
-    // TODO: more to come here
     beforeEach(() => {
       cy.get(".windowminimizebtn").eq(1).click()
       cy.get("#penciloptbtn").click()
