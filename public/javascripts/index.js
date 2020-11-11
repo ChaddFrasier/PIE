@@ -556,6 +556,8 @@ $(document).ready(()=> {
                 {
                     matchingCaption.setAttribute("width", Number(this.value))
                 }
+
+                matchingCaption.lastChild.innerHTML = text2PieText(textinput.value, parseFloat(matchingCaption.getAttribute("width")), 30)
             }
         })
 
@@ -2470,7 +2472,10 @@ function updateCaptionBoxColor ( color, objectid )
     }
 }
 
-
+/**
+ * 
+ * @param {*} activation 
+ */
 function toggleLayerUI( activation )
 {
     let requiredLayers = [ document.getElementById("toolbox"), document.getElementById("editbox") ]
@@ -2979,8 +2984,6 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
  * @param {string} headcode - string telling the type of head icon
  * @param {number} endCode - the code to tell what end of the line to place the marker
  * @description create and remove markers for customizing lines
-
- // TODO: there is a problem with using the attribute marker stuff.
  */
 function createMarker( markerString, lineid, headcode, endCode )
 {
@@ -3027,8 +3030,7 @@ function createMarker( markerString, lineid, headcode, endCode )
 
                 // set line marker end
                 line.setAttributeNS(NS.svg,"marker-end", `url(#${newmarker.id})`)
-                
-                // TODO: same problem here as below
+                // add style
                 line.style.markerEnd = `url(#${newmarker.id})`
             }
         }
@@ -3077,8 +3079,7 @@ function createMarker( markerString, lineid, headcode, endCode )
 
                 // set line marker end
                 line.setAttributeNS(NS.svg, "marker-start", `url(#${newmarker.id})`)
-
-                // TODO: the css here will not work for Sharp
+                // style
                 line.style.markerStart = `url(#${newmarker.id})`
             }
         }
@@ -3467,18 +3468,27 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
 }
 
+/**
+ * @function updateImageLocation
+ * @param {string} imageId the id of the image element
+ * @param {number} x the new x coord of the image
+ * @param {number} y the new y coord
+ */
 function updateImageLocation( imageId, x, y )
 {
     if(imageId)
     {
         let image = document.getElementById(imageId)
-
         image.setAttribute("x",x)
         image.setAttribute("y",y)
     }
 }
 
-
+/**
+ * @function updateInputField
+ * @param {string} objectid the object id to change
+ * @param  {...any} args list of the values to update in order of input fields for each object
+ */
 function updateInputField( objectid, ...args )
 {
     // dragging a line
@@ -3591,6 +3601,14 @@ function updateInputField( objectid, ...args )
     }
 }
 
+/**
+ * @description distance
+ * @param {number} x1 point 1 x coord
+ * @param {number} y1 point 1 y coord
+ * @param {number} x2 point 2 x coord
+ * @param {number} y2 point 2 y coord
+ * @description calculate the distance of the line
+ */
 function distance( x1, y1, x2, y2 )
 {
     return Math.sqrt( 
@@ -3604,6 +3622,11 @@ function NewFigure()
     location.reload()
 }
 
+/**
+ * @function navigateTo
+ * @param {string} url the url to navigate the client to
+ * @description changes page location
+ */
 function navigateTo( url )
 {
     location.href = url
@@ -3614,43 +3637,13 @@ function LastFigure()
     // TODO: undo the figure if possible
 }
 
-function updateObjectUI( objectid, ...args )
-{
-    if(objectid.indexOf("line") > -1)
-    {
-        let objectArr = document.getElementsByClassName("draggableToolbox")
-    
-        // more than 1 toolbox present
-        for(let i = 0; i < objectArr.length; i++ ){
-            if( objectArr[i].getAttribute("objectid") == objectid )
-            { 
-                // set the ui input boxes
-                let thickness = objectArr[i].children[1].querySelector("input[name='linethicknessinput']")
-                thickness.value = Number(args[0]).toFixed(0)
-            }
-        }
-    }
-    else if(objectid.indexOf("rect") > -1)
-    {
-        let objectArr = document.getElementsByClassName("draggableToolbox")
-    
-        // more than 1 toolbox present
-        for(let i = 0; i < objectArr.length; i++ ){
-            if( objectArr[i].getAttribute("objectid") == objectid )
-            { 
-                // set the ui input boxes
-                let thickness = objectArr[i].children[1].querySelector("input[name='rectthicknessinput']")
-                thickness.value = Number(args[0]).toFixed(0)
-            }
-        }
-    }
-}
-
 /**
+ * @function text2PieText
+ * @param {string} text raw text that needs to be formated
+ * @param {number} captionWidth width of the caption object
+ * @param {number} fontsize size of the font in the caption
  * 
- * @param {*} text 
- * @param {*} captionWidth 
- * @param {*} fontsize 
+ * @description this function takes the text of the caption and formats it for the caption object in the svg element.
  */
 function text2PieText( text, captionWidth, fontsize )
 {
@@ -3667,8 +3660,6 @@ function text2PieText( text, captionWidth, fontsize )
 
     // set the x and y so that the text displays the whole word
     p1.setAttribute("x", fontsize);
-
-    text = convertSpecialCharacters( text );
 
     // get an array of all the seperate paragraphs
     paragraphArr = text.split("\n");
@@ -3698,7 +3689,7 @@ function text2PieText( text, captionWidth, fontsize )
             {
                 // The limit was reached on the last word
                 // reset the used pixel count
-                usedPixels = 0
+                usedPixels = 70
 
                 // append the current line to the lineObject and start a new line
                 lineObject.innerHTML = constructorArray.join(' ');
@@ -3760,7 +3751,7 @@ function text2PieText( text, captionWidth, fontsize )
         pieText += p1.outerHTML;
 
         // calculate the new y for the next paragraph
-        paragraphStart = parseInt(p1.getAttribute("y")) + (30 * p1.childElementCount-1);
+        paragraphStart = parseInt(p1.getAttribute("y")) + (fontsize * p1.childElementCount-1);
 
         // reset the paragraph element
         p1.innerHTML = paragraphText
@@ -3770,13 +3761,11 @@ function text2PieText( text, captionWidth, fontsize )
     return pieText;
 }
 
-function convertSpecialCharacters( text )
-{
-    var returnText = text
-
-    return returnText
-}
-
+/**
+ * @function getCookie
+ * @param {string} cname the name of the cookie
+ * @description return a cookie from the users cookie object 
+ */
 function getCookie(cname)
 {
     // atach the '=' to the name
@@ -3822,6 +3811,12 @@ function saveBlob(blob, fileName)
     a.dispatchEvent(new MouseEvent('click'));
 }
 
+/**
+ * @function cleanSVG
+ * @param {DOM Object} clone the clone of the svg element we want to prepair for export
+ * @description this function cleans out un-needed parts of the svg as well as formating existing elements in a way that is efficent for other svg softwares.
+ * @todo this may need d3 or something similar to format the whole thing properly.
+ */
 function cleanSVG( clone )
 {
 
@@ -3841,9 +3836,9 @@ function cleanSVG( clone )
 }
 
 /**
- * 
- * @param {DOM Object} object 
- * @param  {...any} attrs 
+ * @function removeAttribute
+ * @param {DOM Object} object the object to manipulate 
+ * @param  {...any} attrs a list of attributes to remove from the object
  */
 function removeAttributes ( object, ...attrs )
 {
@@ -3863,8 +3858,9 @@ function removeAttributes ( object, ...attrs )
 }
 
 /**
- * 
- * @param  {...any} arr 
+ * @function validFileTypes
+ * @param  {...any} arr array of true or false values
+ * @description this function will iterate trough the given argumnet array and return true if any true value is found
  */
 function validFileTypes( ...arr )
 {

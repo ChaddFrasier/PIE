@@ -24,7 +24,7 @@
         --main-export-title-font: 22px;
 
         --toolbox-min-height: 0;
-        --toolbox-max-height: 100px;
+        --toolbox-max-height: 130px;
         --toolbox-min-width: 100%;
         --toolbox-max-width: 100px;
         --edittoolbox-max-height: 175px;
@@ -82,11 +82,11 @@
         --main-export-title-font: larger;
 
         --toolbox-min-height: 0;
-        --toolbox-max-height: 100px;
+        --toolbox-max-height: 200px;
         --toolbox-min-width: 100%;
         --toolbox-max-width: 150px;
 
-        --edittoolbox-max-height: 150px;
+        --edittoolbox-max-height: 200px;
 
         --toolbox-minibtn-min-width: 35px;
         --toolbox-minibtn-max-width: 35px;
@@ -136,10 +136,10 @@
         --max-title-height: auto;
 
         --toolbox-min-height: 0;
-        --toolbox-max-height: 100px;
+        --toolbox-max-height: 250px;
         --toolbox-min-width: 100%;
         --toolbox-max-width: 150px;
-        --edittoolbox-max-height: 200px;
+        --edittoolbox-max-height: 250px;
 
         --inner-main-content-max-height: 86vh;
 

@@ -351,6 +351,9 @@ button.disabled {
 
 #exportbtn {
     font-size: var(--small-font);
+    border-radius: 3px 3px;
+    padding: 2px;
+    background: var(--bar-gradient);
 }
 
 .exporttitlebox {
