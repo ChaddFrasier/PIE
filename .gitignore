@@ -2,6 +2,7 @@
 uploads/
 exports/
 cypress/integration/examples/
+print.prt
 
 # Logs
 logs
