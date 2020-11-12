@@ -419,7 +419,6 @@ $(document).ready(()=> {
     /**
      * @function button.toolboxaddcaptionbtn.click()
      * @description adds all caption elements to the svg and menu
-     * 
      */
     $('button.toolboxaddcaptionbtn').click(() => {
 
@@ -2296,7 +2295,7 @@ function changeIconColor( colorid, colorval, icon )
             if( icon.id.indexOf( "north" ) > -1 )
             {
                 // change all three children of the north icon
-                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "stroke", "stroke", "stroke fill" )
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "", "", "", "", "","fill", "fill", "fill", "fill", "fill")
             }
             else if( icon.id.indexOf( "sun" ) > -1 )
             {
@@ -2319,7 +2318,7 @@ function changeIconColor( colorid, colorval, icon )
             if( icon.id.indexOf( "north" ) > -1 )
             {
                 // change the secondary of the north icon
-                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "fill", "fill", "" )
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "stroke", "fill stroke", "fill stroke", "fill stroke", "fill stroke", "stroke", "stroke", "stroke", "stroke", "stroke" )
             }
             else if( icon.id.indexOf( "sun" ) > -1 )
             {
