@@ -14,8 +14,29 @@ block content
         .mainaboutbox
             h2.basicpageheader="How to get started"
             #aboutcontent1.basicpagecontent
-                pre.basicpagecontent
-                    
+                .basicpagecontent
+                    text="In Order to use this web service you need to obtain map projected images or plain still images. " 
+                    text="You could obtain map projected images either by using USGS's POW web service or you can choose to process the "
+                    text="IMG files from the PDS database yourself by hand but some inconsistencies with GDAL may occur. "
+                br
+
+                h2.basicpageheader="PIE Main Controls"
+                pre
+                    i
+                        img.pilotstepsimage(alt="UI1", src="/images/UI1.png")
+
+                //- caption object stuff
+
+                //- Move into the image objects controls
+
+                //- then icon controls and how to
+
+                //- then annotation tools
+
+                //- finish by mentioning that the export file should not have an ext
+
+                h2.basicpageheader="Using PILOT to Find Images"
+                pre
                     i
                         b="Navigate to "
                             a.desanchor(href='https://pilot.wr.usgs.gov/', target='_blank')="PILOT"
@@ -78,6 +99,8 @@ block content
                                 b=" 7. Click Submit."
                             br
                             img.pilotstepsimage(alt='pilotimage8' src='/images/pilot8.PNG')
+                            br
+                            br
 
 block footer
     footer.mainfooter

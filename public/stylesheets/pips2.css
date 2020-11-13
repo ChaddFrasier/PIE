@@ -93,7 +93,7 @@ html.contained {
 }
 
 i>b {
-    font-size: var(--medium-font);
+    font-size: var(--large-font);
 }
 
 i>b>a, i>b>a:visited {
@@ -105,9 +105,9 @@ i>b>a, i>b>a:visited {
 }
 
 .pilotstepsimage {
-    width: 80vw;
+    width: 75vw;
     height: auto;
-    margin: 0 auto 0 auto;
+    margin: 0 10vw 0 10vw;
     text-align: center;
 }
 
@@ -126,6 +126,16 @@ i>b>a, i>b>a:visited {
     display: flex;
     background-color: rgba(0,0,0,.1);
     padding: 0;
+}
+
+.uiImageLeft {
+    left: 0;
+    width: 50vw;
+}
+
+.uiImageRight {
+    right: 0;
+    width: 50vw;
 }
 
 .answerBox {
@@ -222,10 +232,10 @@ pre > i > b {
 
 
 .mainaboutbox {
-    margin: 0 auto;
+    margin: 0 2vw;
     text-align: left;
     padding: 1em;
-    min-width: 45em;
+    min-width: 30em;
     height: auto;
     text-align: center;
     background: var(--accent-color);
