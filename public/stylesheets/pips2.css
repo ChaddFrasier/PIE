@@ -232,10 +232,10 @@ pre > i > b {
 
 
 .mainaboutbox {
-    margin: 0 auto;
+    margin: 0 2vw;
     text-align: left;
     padding: 1em;
-    min-width: 45em;
+    min-width: 30em;
     height: auto;
     text-align: center;
     background: var(--accent-color);
