@@ -290,6 +290,7 @@ $(document).ready(()=> {
             {
                 fileinputname.classList.add("invalid")
                 breakFlag = true;
+                alert("User Error: filename should not include any file extension.\n Example: 'test.png' should be 'test'.")
             }
             else
             {
@@ -297,14 +298,15 @@ $(document).ready(()=> {
             }
 
             // change color of the input box if needed
-            if( validFileTypes( fileinputtype.checked, fileinputtype1.checked, fileinputtype2.checked, fileinputtype3.checked) )
+            if( validFileTypes( fileinputtype.checked, fileinputtype1.checked, fileinputtype2.checked, fileinputtype3.checked) && !breakFlag )
             {
                 forminputcheckboxholder.classList.remove("invalid")
             }
-            else
+            else if( !breakFlag )
             {
                 forminputcheckboxholder.classList.add("invalid")
                 breakFlag = true;
+                alert("User Error: Must select an export type from the checkboxes.")
             }
 
             // send request if the filename input is not empty
