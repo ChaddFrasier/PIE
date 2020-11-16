@@ -366,6 +366,11 @@ button.disabled {
     background: var(--bar-gradient);
 }
 
+#exportbtn > svg {
+    width: var(--export-btn-width);
+    height: var(--export-btn-height);
+}
+
 .exporttitlebox {
     text-align: center;
     color: black;
