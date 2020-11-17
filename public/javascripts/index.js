@@ -13,7 +13,7 @@
  * @function document.ready()
  * @description Function that runs when the page is done loading
  */
-$(document).on("ready", function( event ) {
+$(function( ) {
     
     // contain the index homepage
     document.body.parentElement.setAttribute("class", "contained")
@@ -43,7 +43,7 @@ $(document).on("ready", function( event ) {
      */
     $('button.windowminimizebtn').on( "click", function(event) {
         minimizeToolsWindow(event)
-    })
+    });
     
     /**
      * @function #penciloptbtn.click()
@@ -395,7 +395,7 @@ $(document).on("ready", function( event ) {
      * @function .toolboxminimizebtn.click() 
      * @description handler for the whole tool window mini button
      */
-    $('.toolboxminimizebtn').on("click", (function(event) {
+    $('.toolboxminimizebtn').on("click", function(event) {
         let toolbox = document.getElementById('toolbox'),
             imgbtn = document.getElementById('addimagebtn'),
             capbtn = document.getElementById('addcaptionbtn')
