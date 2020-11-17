@@ -23,6 +23,9 @@
         --main-export-box-width: 14em;
         --main-export-title-font: 22px;
 
+        --export-btn-width: 33px;
+        --export-btn-height: 30px;
+
         --toolbox-min-height: 0;
         --toolbox-max-height: 130px;
         --toolbox-min-width: 100%;
@@ -36,8 +39,8 @@
 
         --inner-main-content-max-height: 79vh;
 
-        --min-svg-btn: 30px;
-        --max-svg-btn: 30px;
+        --min-svg-btn: 25px;
+        --max-svg-btn: 25px;
 
         --svg-icon-width: 27px;
         --svg-icon-height: 2.5em;
@@ -80,6 +83,9 @@
         --main-export-box-height: auto;
         --main-export-box-width: 22em;
         --main-export-title-font: larger;
+
+        --export-btn-width: 35px;
+        --export-btn-height: 35px;
 
         --toolbox-min-height: 0;
         --toolbox-max-height: 200px;
@@ -129,6 +135,9 @@
         --main-export-box-height: auto;
         --main-export-box-width: 30em;
         --main-export-title-font: larger;
+
+        --export-btn-width: 48px;
+        --export-btn-height: 45px;
 
         --max-image-width: 10em;
 

@@ -13,20 +13,24 @@
  * @function document.ready()
  * @description Function that runs when the page is done loading
  */
-$(document).ready(()=> {
+$( function() {
 
-    // add the custom key listeners
-    addCustomKeys()
+    // add the custom keys back 
+    document.addEventListener("keydown", customKeys);
 
     // contain the index homepage
     document.body.parentElement.setAttribute("class", "contained")
+
+    // disable contextmenu listener for the page
+    document.getElementById('figurecontainer').setAttribute("oncontextmenu", "return false;")
 
     // local jquery variables
     var bgPicker = document.getElementById("backgroundcolor"),
         PencilFlag = false,
         selectedObject = null,
         OutlineFlag = false,
-        shadowIcon = initShadowIcon();
+        shadowIcon = initShadowIcon(),
+        activeEventManager = startActiveEM();
 
     // get the global figure element
     let svgContainer = document.getElementById("figurecontainer")
@@ -38,54 +42,124 @@ $(document).ready(()=> {
     setSVGBackground("bgelement", bgPicker.value)
 
     /**
+     * 
+     * @param {Keydown Event} event 
+     */
+    function customKeys( event )
+    {
+        // cross broswer key grab that works with older versions and newer versions of all browsers
+        var key = event.key || event.keyCode
+
+        // escape listener
+        if( key === 'Escape' || key === 'Esc' || key === 27 )
+        {
+            event.preventDefault()
+            // TODO: comment this
+            let children = draggableSvg.getContainerObject().children;
+            let rmChild = children[children.length - 1]
+
+            if( PencilFlag )
+            {
+                if( String(rmChild.nodeName).toUpperCase() === "LINE" && !rmChild.classList.contains("placed") )
+                {
+                    draggableSvg.getContainerObject().removeChild(rmChild)
+                }
+                else
+                {
+                    $("button.drawing").trigger("click")
+                }
+            }
+
+            if( OutlineFlag )
+            {
+                if( String(rmChild.nodeName).toUpperCase() === "RECT" && !rmChild.classList.contains("placed") && rmChild.getAttribute("id") !== "bgelement" )
+                {
+                    draggableSvg.getContainerObject().removeChild(rmChild)
+                }
+                else
+                {
+                    $("button.outlining").trigger("click")
+                }
+            }
+        }
+        else if( key === "Enter" || key === 'enter' || key === 13 )
+        {
+            if( document.getElementById("savebtn") )
+            {
+                document.getElementById("savebtn").click()
+            }
+        }
+
+        console.log(`Key & Code: \n\n\tKey: '${event.key}' \n\tCode: ${event.keyCode}`)
+
+    }
+
+    /**
      * @function .windowminimizebtn.click()
      * @description Show and hide contents of the tool windows works generically so we can add more later
      */
-    $('button.windowminimizebtn').click(function(event) {
+    $('button.windowminimizebtn').on( "click", function(event) {
         minimizeToolsWindow(event)
-    })
+    });
     
     /**
      * @function #penciloptbtn.click()
      * @description this function activates the drawing listeners and handles multiple click instances.
      */
-    $('#penciloptbtn').click( function( event ) {
+    $('#penciloptbtn').on("click", function( event ) {
+        
         event.preventDefault()
         if( PencilFlag )
         {
-            // cancel the drawing functionality
-            event.target.classList.remove("drawing")
-            // remove the pencil icon to the main box on hover
-            document.getElementById("maincontent").childNodes.forEach(childel => {
-                childel.classList.remove("drawing")
-            });
-            // remove the pencil icon to the main box on svg main elements
-            document.getElementById("figurecontainer").childNodes.forEach(childel => {
-                childel.classList.remove("drawing")
-            });
-            changeButtonActivation("enable", 0)
-            // allow dragging again
-            draggableSvg.unpauseDraggables()
-            // remove draw listeners
-            draggableSvg.getContainerObject().removeEventListener("mousedown", drawMouseDownListener)
+            if( !activeEventManager.activateEvent() )
+            {
+                // cancel the drawing functionality
+                event.target.classList.remove("drawing")
+                // remove the pencil icon to the main box on hover
+                document.getElementById("maincontent").childNodes.forEach(childel => {
+                    childel.classList.remove("drawing")
+                });
+                // remove the pencil icon to the main box on svg main elements
+                document.getElementById("figurecontainer").childNodes.forEach(childel => {
+                    childel.classList.remove("drawing")
+                });
+                changeButtonActivation("enable", 0)
+                // allow dragging again
+                draggableSvg.unpauseDraggables()
+                // remove draw listeners
+                draggableSvg.getContainerObject().removeEventListener("mousedown", drawMouseDownListener)
+
+                // TODO: remove the escape key listner right here
+
+                activeEventManager.setEventFlag(undefined)
+                activeEventManager.reactivateBtn( 'outlinebtnopt' )
+            }
         }
         else
         {
-            // start the draeing functionality
-            event.target.classList.add("drawing")
-            // add the pencil cursor icon to the main content objects
-            document.getElementById("maincontent").childNodes.forEach((childel) => {
-                childel.classList.add("drawing")
-            });
-            // add the pencil cursor icon to the svg objects
-            document.getElementById("figurecontainer").childNodes.forEach((childel) => {
-                childel.classList.add("drawing")
-            });
-            changeButtonActivation("disable", 0)
-            // pause the dragging function for now
-            draggableSvg.pauseDraggables()
-            // add event listener for click on svg
-            draggableSvg.getContainerObject().addEventListener("mousedown", drawMouseDownListener )
+            if( activeEventManager.activateEvent() )
+            {
+                // start the drawing functionality
+                event.target.classList.add("drawing")
+                // add the pencil cursor icon to the main content objects
+                document.getElementById("maincontent").childNodes.forEach((childel) => {
+                    childel.classList.add("drawing")
+                });
+                // add the pencil cursor icon to the svg objects
+                document.getElementById("figurecontainer").childNodes.forEach((childel) => {
+                    childel.classList.add("drawing")
+                });
+                changeButtonActivation("disable", 0)
+                // pause the dragging function for now
+                draggableSvg.pauseDraggables()
+                // add event listener for click on svg
+                draggableSvg.getContainerObject().addEventListener("mousedown", drawMouseDownListener )
+
+                // TODO: add an escape key listner right here
+
+                activeEventManager.setEventFlag(true)
+                activeEventManager.deactivateBtn( 'outlinebtnopt' )
+            }
         }
         PencilFlag = !(PencilFlag)
     })
@@ -94,45 +168,61 @@ $(document).ready(()=> {
      * @function #outlinebtnopt.click()
      * @description activate and deactivate the drawing capability of the rectangles 
      */
-    $('#outlinebtnopt').click( function( event ) {
+    $('#outlinebtnopt').on("click", function( event ) {
         event.preventDefault()
         if( OutlineFlag )
         {
-            // cancel the drawing functionality
-            document.getElementById("editbox").classList.remove("outlining")
-            event.target.classList.remove("outlining")
-            // add the crosshair cursor icon to the main content objects
-            document.getElementById("maincontent").childNodes.forEach((childel) => {
-                childel.classList.remove("outlining")
-            });
-            // add the crosshair cursor icon to the svg objects
-            document.getElementById("figurecontainer").childNodes.forEach((childel) => {
-                childel.classList.remove("outlining")
-            });
-            // unblock dragging
-            draggableSvg.unpauseDraggables()
-            changeButtonActivation("enable", 1)
-            // remove draw listeners
-            draggableSvg.getContainerObject().removeEventListener("mousedown", drawBoxMouseDownListener )
+            if( !activeEventManager.activateEvent() )
+            {
+                // cancel the drawing functionality
+                document.getElementById("editbox").classList.remove("outlining")
+                event.target.classList.remove("outlining")
+                // add the crosshair cursor icon to the main content objects
+                document.getElementById("maincontent").childNodes.forEach((childel) => {
+                    childel.classList.remove("outlining")
+                });
+                // add the crosshair cursor icon to the svg objects
+                document.getElementById("figurecontainer").childNodes.forEach((childel) => {
+                    childel.classList.remove("outlining")
+                });
+                // unblock dragging
+                draggableSvg.unpauseDraggables()
+                changeButtonActivation("enable", 1)
+                // remove draw listeners
+                draggableSvg.getContainerObject().removeEventListener("mousedown", drawBoxMouseDownListener )
+
+                // TODO: remove the same listener here but for the outline box
+                
+                activeEventManager.setEventFlag(undefined)
+                activeEventManager.reactivateBtn( 'penciloptbtn' )
+            }
         }
         else
         {
-            // start the drawing functionality
-            document.getElementById("editbox").classList.add("outlining")
-            event.target.classList.add("outlining")
-            // add the crosshair cursor icon to the main content objects
-            document.getElementById("maincontent").childNodes.forEach((childel) => {
-                childel.classList.add("outlining")
-            });
-            // add the crosshair cursor icon to the svg objects
-            document.getElementById("figurecontainer").childNodes.forEach((childel) => {
-                childel.classList.add("outlining")
-            });
-            changeButtonActivation("disable", 1)
-            // block dragging again
-            draggableSvg.pauseDraggables()
-            // add event listener for click on svg
-            draggableSvg.getContainerObject().addEventListener("mousedown", drawBoxMouseDownListener )
+            if ( activeEventManager.activateEvent() )
+            {
+                // start the drawing functionality
+                document.getElementById("editbox").classList.add("outlining")
+                event.target.classList.add("outlining")
+                // add the crosshair cursor icon to the main content objects
+                document.getElementById("maincontent").childNodes.forEach((childel) => {
+                    childel.classList.add("outlining")
+                });
+                // add the crosshair cursor icon to the svg objects
+                document.getElementById("figurecontainer").childNodes.forEach((childel) => {
+                    childel.classList.add("outlining")
+                });
+                changeButtonActivation("disable", 1)
+                // block dragging again
+                draggableSvg.pauseDraggables()
+                // add event listener for click on svg
+                draggableSvg.getContainerObject().addEventListener("mousedown", drawBoxMouseDownListener )
+
+                // TODO: add the same listener here but for the outline box
+
+                activeEventManager.setEventFlag(true)
+                activeEventManager.deactivateBtn( 'penciloptbtn' )
+            }
         }
         OutlineFlag = !(OutlineFlag)
     })
@@ -395,26 +485,28 @@ $(document).ready(()=> {
      * @function .toolboxminimizebtn.click() 
      * @description handler for the whole tool window mini button
      */
-    $('.toolboxminimizebtn').click(function(event) {
+    $('.toolboxminimizebtn').on("click", function(event)
+    {
         let toolbox = document.getElementById('toolbox'),
             imgbtn = document.getElementById('addimagebtn'),
             capbtn = document.getElementById('addcaptionbtn')
 
         // check if the box is already closed, if true, open it, otherwise close
-        if( toolbox.classList.contains('closed') ){
+        if( toolbox.classList.contains('closed') )
+        {
             toolbox.classList.remove('closed')
             // reactivate the other buttons
             imgbtn.classList.remove("disabled")
             capbtn.classList.remove("disabled")
             event.target.innerHTML = "&larrb;"
         }
-        else{
+        else
+        {
             toolbox.classList.add('closed')
             // disable the other buttons to help focus on editing image
             imgbtn.classList.add("disabled")
             capbtn.classList.add("disabled")
             event.target.innerHTML = "&rarrb;"
-
         }
     })
 
@@ -422,8 +514,8 @@ $(document).ready(()=> {
      * @function button.toolboxaddcaptionbtn.click()
      * @description adds all caption elements to the svg and menu
      */
-    $('button.toolboxaddcaptionbtn').click(() => {
-
+    $('button.toolboxaddcaptionbtn').on("click", () =>
+    {
         // used for identifying the tool box for each caption in the image 
         let captionId = randomId("caption"),
             newoptionsbar = document.createElement("div"),
@@ -725,7 +817,8 @@ $(document).ready(()=> {
      * @function button.toolboxaddimagebtn.click()
      * @description add the image to the svg and the toolbox stuff
      */
-    $('button.toolboxaddimagebtn').click(() => {
+    $('button.toolboxaddimagebtn').on("click", () =>
+    {
 
         // used for identifying the tool box for each caption in the image 
         let imageId = randomId("image"),
@@ -1063,7 +1156,8 @@ $(document).ready(()=> {
      * @function figsizeselect.onchange
      * @description changes the viewbox setting of the output figure
      */
-    $('#figsizeselect').on("change", (event) => {
+    $('#figsizeselect').on("change", (event) =>
+    {
         // update the svgContainer size
         let tmp = event.target.value.split("x")
         draggableSvg.getContainerObject().setAttribute("viewBox", "0 0 " + tmp[0] + ' ' + tmp[1])
@@ -1083,7 +1177,8 @@ $(document).ready(()=> {
      * @function northarrowopt.onmousedown
      * @description this function starts the drag and drop logic for the north icon
      */
-    $('#northarrowopt').on("mousedown", (event) => {
+    $('#northarrowopt').on("mousedown", (event) =>
+    {
         event.preventDefault()
 
         let btn = event.target
@@ -1117,7 +1212,8 @@ $(document).ready(()=> {
      * @function scalebarbtnopt.onmousedown
      * @description this function starts the drag and drop logic for the north icon
      */
-    $('#scalebarbtnopt').on("mousedown", (event) => {
+    $('#scalebarbtnopt').on("mousedown", (event) =>
+    {
         let btn = ( event.target.nodeName == "BUTTON" )? event.target: event.target.parentElement;
         if( btn.classList.contains("disabled") )
         {
@@ -1147,7 +1243,8 @@ $(document).ready(()=> {
      * @function sunarrowopt.onmousedown
      * @description this function starts the drag and drop logic for the sun icon
      */
-    $('#sunarrowopt').on("mousedown", (event) => {
+    $('#sunarrowopt').on("mousedown", (event) =>
+    {
         event.preventDefault()
 
         let btn = event.target
@@ -1185,7 +1282,8 @@ $(document).ready(()=> {
      * @function observerharrowopt.onmousedown
      * @description this function starts the drag and drop logic for observer icon
      */
-    $('#observerarrowopt').on("mousedown", (event) => {
+    $('#observerarrowopt').on("mousedown", (event) =>
+    {
         event.preventDefault()
 
         let btn = event.target
@@ -1453,31 +1551,53 @@ $(document).ready(()=> {
         // draw the tool box based on the icon type
         drawToolbox( imagetoolbox, icontype, icongroup.id, newX, newY )
     }
-
 }) // end of jquery functions
 
 /* Helper functions */
 
-/**
- * 
- */
-function addCustomKeys()
-{
-    document.addEventListener("keydown", function( event ) {
-        if( document.getElementById("savebtn") )
-        {
-            switch( Number(event.keyCode) )
-            {
-                case 13:
-                    document.getElementById("savebtn").click();
-                    break;
+var startActiveEM = function() {
 
-                default:
-                    return true;
+    var RunningEvent = undefined;
+
+    return {
+        activateEvent: function()
+        {
+            // TODO: if there is no event running then return true otherwise false
+            if( RunningEvent )
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        },
+
+        setEventFlag: function( val ) {
+            // TODO: should use the key to verify the proper event is currently running and the user wants to stop it.
+            RunningEvent = val;
+        },
+
+        deactivateBtn: function( id )
+        {
+            var btn = document.getElementById(id)
+            if( btn )
+            {
+                btn.classList.add("disabled")
+            }
+        },
+
+        reactivateBtn: function( id )
+        {
+            var btn = document.getElementById(id)
+            if( btn )
+            {
+                btn.classList.remove("disabled")
             }
         }
-    });
+    };
 }
+
 
 /**
  * @function minimizeToolsWindow
@@ -2502,73 +2622,81 @@ function toggleLayerUI( activation )
  */
 function drawMouseDownListener( event )
 {
-    // prevent defaults to stop dragging
-    event.preventDefault()
-
-    let line = document.createElementNS( NS.svg, "line" ),
-        lineId = randomId("line");
-
-    // get transformed svg point where click occured
-    let svgP = draggableSvg.svgAPI( event.clientX, event.clientY )
-
-    // set line attributes
-    line.setAttribute( "x1", svgP.x )
-    line.setAttribute( "y1", svgP.y )
-    line.setAttribute( "stroke", "white" )
-    line.setAttribute( "id", lineId )
-    line.setAttribute( "stroke-width", "10" )
-    line.setAttribute( "x2", svgP.x )
-    line.setAttribute( "y2", svgP.y )
-    line.setAttributeNS(NS.svg, "marker-start", "")
-    line.setAttributeNS(NS.svg, "marker-end", "")
-
-    // create the inner draw listener
-    function endDraw( event )
+    if( leftClick(event.button) )
     {
-        let svgP = draggableSvg.svgAPI( event.clientX, event.clientY )
-        // calculate distance or length of the line
-        let linedist = distance ( line.getAttribute("x1"), line.getAttribute("y1"), svgP.x, svgP.y )
-        if( linedist > 50 )
-        {
-            // update the position
-            line.setAttribute( "x2", svgP.x )
-            line.setAttribute( "y2", svgP.y )
+        // prevent defaults to stop dragging
+        event.preventDefault()
 
-            // must add tool box because this is a valid line
-            createLineToolBox( lineId, line.getAttribute("x1"), line.getAttribute("y1"), svgP.x, svgP.y, line.getAttribute('stroke-width') )
-        }
-        else
-        {
-            draggableSvg.getContainerObject().removeChild(line)
-            // no need to add tool box
-            alert("Your line was too short please draw a larger line")
-        }
+        let line = document.createElementNS( NS.svg, "line" ),
+            lineId = randomId("line");
 
-        document.getElementById("penciloptbtn").click()
-
-        draggableSvg.getContainerObject().removeEventListener( "mousemove", updateUI )
-        draggableSvg.getContainerObject().removeEventListener( "mouseup", endDraw )
-
-        line.classList.add("placed")
-    }
-
-    // sets the end of the line to where the mouse is
-    draggableSvg.getContainerObject().addEventListener( "mouseup", endDraw , false)
-
-    // set the update function
-    function updateUI ( event )
-    {
+        // get transformed svg point where click occured
         let svgP = draggableSvg.svgAPI( event.clientX, event.clientY )
 
+        // set line attributes
+        line.setAttribute( "x1", svgP.x )
+        line.setAttribute( "y1", svgP.y )
+        line.setAttribute( "stroke", "white" )
+        line.setAttribute( "id", lineId )
+        line.setAttribute( "stroke-width", "10" )
         line.setAttribute( "x2", svgP.x )
         line.setAttribute( "y2", svgP.y )
+        line.setAttributeNS(NS.svg, "marker-start", "")
+        line.setAttributeNS(NS.svg, "marker-end", "")
+
+        // create the inner draw listener
+        function endDraw( event )
+        {
+            if ( document.getElementById(lineId) )
+            {
+                let svgP = draggableSvg.svgAPI( event.clientX, event.clientY )
+                // calculate distance or length of the line
+                let linedist = distance ( line.getAttribute("x1"), line.getAttribute("y1"), svgP.x, svgP.y )
+                if( linedist > 50 )
+                {
+                    // update the position
+                    line.setAttribute( "x2", svgP.x )
+                    line.setAttribute( "y2", svgP.y )
+
+                    // must add tool box because this is a valid line
+                    createLineToolBox( lineId, line.getAttribute("x1"), line.getAttribute("y1"), svgP.x, svgP.y, line.getAttribute('stroke-width') )
+                }
+                else
+                {
+                    draggableSvg.getContainerObject().removeChild(line)
+                    // no need to add tool box
+                    alert("Your line was too short please draw a larger line")
+                }
+
+                document.getElementById("penciloptbtn").click()
+
+                draggableSvg.getContainerObject().removeEventListener( "mousemove", updateUI )
+                draggableSvg.getContainerObject().removeEventListener( "mouseup", endDraw )
+                draggableSvg.getContainerObject().removeEventListener( "mouseleave", endDraw )
+
+                line.classList.add("placed")
+            }
+        }
+
+        // sets the end of the line to where the mouse is
+        draggableSvg.getContainerObject().addEventListener( "mouseup", endDraw , false)
+        draggableSvg.getContainerObject().addEventListener( "mouseleave", endDraw , false)
+
+        // set the update function
+        function updateUI ( event )
+        {
+            let svgP = draggableSvg.svgAPI( event.clientX, event.clientY )
+
+            line.setAttribute( "x2", svgP.x )
+            line.setAttribute( "y2", svgP.y )
+        }
+
+        // event listener for mousemove
+        draggableSvg.getContainerObject().addEventListener( "mousemove", updateUI , false)
+
+        // put the line on the svg image
+        draggableSvg.getContainerObject().appendChild(line)
     }
-
-    // event listener for mousemove
-    draggableSvg.getContainerObject().addEventListener( "mousemove", updateUI , false)
-
-    // put the line on the svg image
-    draggableSvg.getContainerObject().appendChild(line)
 }
 
 /**
@@ -3101,6 +3229,18 @@ function optionsAction( target )
     }
 }
 
+function leftClick ( buttonid )
+{
+    if( buttonid === 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 /**
  * @function drawBoxMouseDownListener
  * @param {_Event} event - the click event
@@ -3109,90 +3249,99 @@ function optionsAction( target )
 function drawBoxMouseDownListener( event )
 {
     // prevent defaults to stop dragging
-    event.preventDefault()
+    console.log(event.button)
 
-    let rect = document.createElementNS( NS.svg, "rect" ),
-        rectId = randomId("rect"),
-        startClickX, startClickY;
+    if( leftClick(event.button) )
+    {
+        event.preventDefault()
+        
+        let rect = document.createElementNS( NS.svg, "rect" ),
+            rectId = randomId("rect"),
+            startClickX, startClickY;
 
-    // get transformed svg point where click occured
-    let svgP = draggableSvg.svgAPI( event.clientX, event.clientY )
+        // get transformed svg point where click occured
+        let svgP = draggableSvg.svgAPI( event.clientX, event.clientY )
 
-    startClickX = svgP.x
-    startClickY = svgP.y
+        startClickX = svgP.x
+        startClickY = svgP.y
 
-    // set rectangle attributes
-    rect.setAttribute( "x", svgP.x )
-    rect.setAttribute( "y", svgP.y )
-    rect.setAttribute( "stroke", "#ffffff" )
-    rect.setAttribute( "fill", "none" )
-    rect.setAttribute( "id", rectId )
-    rect.setAttribute( "stroke-width", "10" )
-    rect.setAttribute( "height", 20 )
-    rect.setAttribute( "width", 20 )
+        // set rectangle attributes
+        rect.setAttribute( "x", svgP.x )
+        rect.setAttribute( "y", svgP.y )
+        rect.setAttribute( "stroke", "#ffffff" )
+        rect.setAttribute( "fill", "none" )
+        rect.setAttribute( "id", rectId )
+        rect.setAttribute( "stroke-width", "10" )
+        rect.setAttribute( "height", 20 )
+        rect.setAttribute( "width", 20 )
 
-    
-    // create the inner outline draw listener
-    function endBoxDraw( )
+        // create the inner outline draw listener
+        function endBoxDraw( )
         {
-            document.getElementById("outlinebtnopt").click()
-            draggableSvg.getContainerObject().removeEventListener( "mousemove", updateBoxUI )
-            draggableSvg.getContainerObject().removeEventListener( "mouseup", endBoxDraw )
+            if( document.getElementById(rectId) )
+            {
+                document.getElementById("outlinebtnopt").click()
+                draggableSvg.getContainerObject().removeEventListener( "mousemove", updateBoxUI )
+                draggableSvg.getContainerObject().removeEventListener( "mouseup", endBoxDraw )
+                draggableSvg.getContainerObject().removeEventListener( "mouseleave", endBoxDraw )
 
-            // create the toolbox when the rect finished being drawn by the user
-            createOutlineToolbox( 
-                rectId, 
-                rect.getAttribute("x"),
-                rect.getAttribute("y"),
-                rect.getAttribute("width"),
-                rect.getAttribute("height"),
-                rect.getAttribute("stroke"))
-            
-            rect.classList.add("placed")
+                // create the toolbox when the rect finished being drawn by the user
+                createOutlineToolbox( 
+                    rectId, 
+                    rect.getAttribute("x"),
+                    rect.getAttribute("y"),
+                    rect.getAttribute("width"),
+                    rect.getAttribute("height"),
+                    rect.getAttribute("stroke"))
+                
+                rect.classList.add("placed")
+            }
         }
 
-    // sets the end of the line to where the mouse is
-    draggableSvg.getContainerObject().addEventListener( "mouseup", endBoxDraw , false)
+        // sets the end of the line to where the mouse is
+        draggableSvg.getContainerObject().addEventListener( "mouseup", endBoxDraw , false)
+        draggableSvg.getContainerObject().addEventListener( "mouseleave", endBoxDraw , false)
 
-    // set the update function
-    function updateBoxUI ( event )
-    {
-            let svgP = draggableSvg.svgAPI( event.clientX, event.clientY )
+        // set the update function
+        function updateBoxUI ( event )
+        {
+                let svgP = draggableSvg.svgAPI( event.clientX, event.clientY )
 
-            // if newx is lt startclick X  + left 20px 
-            if( svgP.x < startClickX - 20 )
-            {
-                // newx = mouse location
-                rect.setAttribute("x", svgP.x)
-                // new width = startlocation - mouseX
-                rect.setAttribute("width", startClickX - svgP.x)
-            }
-            else if( svgP.x > startClickX + 20 )
-            {
-                // calculate difference in x values to get width
-                rect.setAttribute("x", startClickX)
-                rect.setAttribute("width", svgP.x - Number(rect.getAttribute("x")) )
-            }
+                // if newx is lt startclick X  + left 20px 
+                if( svgP.x < startClickX - 20 )
+                {
+                    // newx = mouse location
+                    rect.setAttribute("x", svgP.x)
+                    // new width = startlocation - mouseX
+                    rect.setAttribute("width", startClickX - svgP.x)
+                }
+                else if( svgP.x > startClickX + 20 )
+                {
+                    // calculate difference in x values to get width
+                    rect.setAttribute("x", startClickX)
+                    rect.setAttribute("width", svgP.x - Number(rect.getAttribute("x")) )
+                }
 
-            // check if the new y is less than the start point
-            if( svgP.y < startClickY - 20)
-            {
-                // update the new x location
-                rect.setAttribute("y", svgP.y)
-                rect.setAttribute("height", startClickY - svgP.y)
-            }
-            else if( svgP.y > startClickY + 20 )
-            {
-                rect.setAttribute("y", startClickY)
-                rect.setAttribute("height", svgP.y - Number(rect.getAttribute("y")) )
-            }
+                // check if the new y is less than the start point
+                if( svgP.y < startClickY - 20)
+                {
+                    // update the new x location
+                    rect.setAttribute("y", svgP.y)
+                    rect.setAttribute("height", startClickY - svgP.y)
+                }
+                else if( svgP.y > startClickY + 20 )
+                {
+                    rect.setAttribute("y", startClickY)
+                    rect.setAttribute("height", svgP.y - Number(rect.getAttribute("y")) )
+                }
+        }
+
+        // event listener for mousemove
+        draggableSvg.getContainerObject().addEventListener( "mousemove", updateBoxUI )
+
+        // put the line on the svg image
+        draggableSvg.getContainerObject().appendChild(rect)
     }
-
-    // event listener for mousemove
-    draggableSvg.getContainerObject().addEventListener( "mousemove", updateBoxUI )
-
-    // put the line on the svg image
-    draggableSvg.getContainerObject().appendChild(rect)
 }
 
 /**

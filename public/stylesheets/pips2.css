@@ -364,6 +364,13 @@ button.disabled {
     border-radius: 3px 3px;
     padding: 2px;
     background: var(--bar-gradient);
+    cursor: pointer;
+}
+
+#exportbtn > svg {
+    width: var(--export-btn-width);
+    height: var(--export-btn-height);
+    pointer-events: none;
 }
 
 .exporttitlebox {

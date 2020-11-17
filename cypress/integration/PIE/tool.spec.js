@@ -22,7 +22,7 @@ context('Tools Tests', () => {
       cy.get(".windowminimizebtn").eq(1).click()
       cy.get("#outlinebtnopt").click()
       cy.get("#figurecontainer")
-        .trigger("mousedown", {which:1, clientX: 500, clientY: 150})
+        .trigger("mousedown", {button:0, clientX: 500, clientY: 150})
         .trigger("mousemove", {clienX: 700, clientY: 300})
         .trigger("mouseup")
     });
@@ -73,7 +73,7 @@ context('Tools Tests', () => {
       cy.get(".windowminimizebtn").eq(1).click()
       cy.get("#penciloptbtn").click()
       cy.get("#figurecontainer")
-        .trigger("mousedown", {which:1, clientX: 500, clientY: 150})
+        .trigger("mousedown", {button:0, clientX: 500, clientY: 150})
         .trigger("mousemove", {clienX: 700, clientY: 300})
         .trigger("mouseup")
     });
@@ -139,7 +139,7 @@ context('Tools Tests', () => {
       cy.get('select[name="linetailinput"]').first().select("Square Head")
       cy.get("input[name='linecolorinput']").first().invoke("val", "#00ff00").trigger("change")
       cy.get("line.placed").last().should("have.attr", "stroke", "#00ff00")
-      cy.get("marker").eq(5).children().first().should("have.attr", "fill", "#00ff00")
+      cy.get("marker").eq(4).children().first().should("have.attr", "fill", "#00ff00")
       cy.get("marker").last().children().first().should("have.attr", "fill", "#00ff00")
     });
     // drag lines with the mouse
