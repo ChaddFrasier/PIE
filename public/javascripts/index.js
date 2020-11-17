@@ -13,13 +13,13 @@
  * @function document.ready()
  * @description Function that runs when the page is done loading
  */
-$(document).ready(()=> {
-
-    // add the custom key listeners
-    addCustomKeys()
-
+$(document).on("ready", function( event ) {
+    
     // contain the index homepage
     document.body.parentElement.setAttribute("class", "contained")
+
+    // disable contextmenu listener for the page
+    document.getElementById('figurecontainer').setAttribute("oncontextmenu", "return false;")
 
     // local jquery variables
     var bgPicker = document.getElementById("backgroundcolor"),
@@ -41,7 +41,7 @@ $(document).ready(()=> {
      * @function .windowminimizebtn.click()
      * @description Show and hide contents of the tool windows works generically so we can add more later
      */
-    $('button.windowminimizebtn').click(function(event) {
+    $('button.windowminimizebtn').on( "click", function(event) {
         minimizeToolsWindow(event)
     })
     
@@ -49,7 +49,7 @@ $(document).ready(()=> {
      * @function #penciloptbtn.click()
      * @description this function activates the drawing listeners and handles multiple click instances.
      */
-    $('#penciloptbtn').click( function( event ) {
+    $('#penciloptbtn').on("click", function( event ) {
         event.preventDefault()
         if( PencilFlag )
         {
@@ -395,7 +395,7 @@ $(document).ready(()=> {
      * @function .toolboxminimizebtn.click() 
      * @description handler for the whole tool window mini button
      */
-    $('.toolboxminimizebtn').click(function(event) {
+    $('.toolboxminimizebtn').on("click", (function(event) {
         let toolbox = document.getElementById('toolbox'),
             imgbtn = document.getElementById('addimagebtn'),
             capbtn = document.getElementById('addcaptionbtn')
@@ -422,7 +422,7 @@ $(document).ready(()=> {
      * @function button.toolboxaddcaptionbtn.click()
      * @description adds all caption elements to the svg and menu
      */
-    $('button.toolboxaddcaptionbtn').click(() => {
+    $('button.toolboxaddcaptionbtn').click( () => {
 
         // used for identifying the tool box for each caption in the image 
         let captionId = randomId("caption"),
@@ -1453,31 +1453,9 @@ $(document).ready(()=> {
         // draw the tool box based on the icon type
         drawToolbox( imagetoolbox, icontype, icongroup.id, newX, newY )
     }
-
 }) // end of jquery functions
 
 /* Helper functions */
-
-/**
- * 
- */
-function addCustomKeys()
-{
-    document.addEventListener("keydown", function( event ) {
-        if( document.getElementById("savebtn") )
-        {
-            switch( Number(event.keyCode) )
-            {
-                case 13:
-                    document.getElementById("savebtn").click();
-                    break;
-
-                default:
-                    return true;
-            }
-        }
-    });
-}
 
 /**
  * @function minimizeToolsWindow
@@ -2548,12 +2526,14 @@ function drawMouseDownListener( event )
 
         draggableSvg.getContainerObject().removeEventListener( "mousemove", updateUI )
         draggableSvg.getContainerObject().removeEventListener( "mouseup", endDraw )
+        draggableSvg.getContainerObject().removeEventListener( "mouseleave", endDraw )
 
         line.classList.add("placed")
     }
 
     // sets the end of the line to where the mouse is
     draggableSvg.getContainerObject().addEventListener( "mouseup", endDraw , false)
+    draggableSvg.getContainerObject().addEventListener( "mouseleave", endDraw , false)
 
     // set the update function
     function updateUI ( event )
@@ -2569,6 +2549,8 @@ function drawMouseDownListener( event )
 
     // put the line on the svg image
     draggableSvg.getContainerObject().appendChild(line)
+
+    return false
 }
 
 /**
