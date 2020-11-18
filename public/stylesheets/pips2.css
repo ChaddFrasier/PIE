@@ -104,8 +104,18 @@ i>b>a, i>b>a:visited {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+.UIIntro {
+    width: 60%;
+    height: 60%;
+}
+
+pre.UIHolder {
+    text-align: center;
+    margin: 0 auto;
+}
+
 .pilotstepsimage {
-    width: 75vw;
+    width: 60vw;
     height: auto;
     margin: 0 10vw 0 10vw;
     text-align: center;
@@ -126,16 +136,6 @@ i>b>a, i>b>a:visited {
     display: flex;
     background-color: rgba(0,0,0,.1);
     padding: 0;
-}
-
-.uiImageLeft {
-    left: 0;
-    width: 50vw;
-}
-
-.uiImageRight {
-    right: 0;
-    width: 50vw;
 }
 
 .answerBox {
@@ -165,6 +165,11 @@ i>b>a, i>b>a:visited {
 .basicpageheader {
     margin: 0 auto;
     text-align: left;
+}
+
+.innerpageheader {
+    margin: 0 auto;
+    text-align: center;
 }
 
 .selectedBox {
@@ -255,8 +260,10 @@ img#usgsNavIcon:hover {
 }
 
 .headerimage {
-    max-width: var(--max-image-width);
+    max-width: var(--max-header-image-width);
+    width: auto;
     max-height: var(--header-height);
+    height: auto;
 }
 
 a.descanchor, a.descanchor:visited   {

@@ -1179,32 +1179,35 @@ $( function() {
      */
     $('#northarrowopt').on("mousedown", (event) =>
     {
-        event.preventDefault()
-
-        let btn = event.target
-
-        if( btn.classList.contains("disabled") )
+        if( leftClick(event.button) )
         {
-            return false;
-        }
-        else if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
-        {
-            if(selectedObject){
-                selectedObject = null
-            }
-            else {
+            event.preventDefault()
 
-                // make new shadow icon
-                shadowIcon.icon = shadowIcon.drawShadowIcon( event )
-                document.addEventListener("mousemove", shadowIcon.shadowAnimate);
-                document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
+            let btn = event.target
 
-                btn.classList.add("selected")
-                document.addEventListener("mouseup", setElement, true)
+            if( btn.classList.contains("disabled") )
+            {
+                return false;
             }
-        }
-        else{
-            alert("There Must be an image in the figure to attach a North Arrow")
+            else if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
+            {
+                if(selectedObject){
+                    selectedObject = null
+                }
+                else {
+
+                    // make new shadow icon
+                    shadowIcon.icon = shadowIcon.drawShadowIcon( event )
+                    document.addEventListener("mousemove", shadowIcon.shadowAnimate);
+                    document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
+
+                    btn.classList.add("selected")
+                    document.addEventListener("mouseup", setElement, true)
+                }
+            }
+            else{
+                alert("There Must be an image in the figure to attach a North Arrow")
+            }
         }
     })
 
@@ -1214,28 +1217,32 @@ $( function() {
      */
     $('#scalebarbtnopt').on("mousedown", (event) =>
     {
-        let btn = ( event.target.nodeName == "BUTTON" )? event.target: event.target.parentElement;
-        if( btn.classList.contains("disabled") )
+        if( leftClick(event.button) )
         {
-            return false;
-        }
-        else if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
-        {
-            if(selectedObject){
-                selectedObject = null
-            }
-            else {
-                // make new shadow icon
-                shadowIcon.icon = shadowIcon.drawShadowIcon( event )
-                document.addEventListener("mousemove", shadowIcon.shadowAnimate);
-                document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
 
-                btn.classList.add("selected")
-                document.addEventListener("mouseup", setElement, true)
+            let btn = ( event.target.nodeName == "BUTTON" )? event.target: event.target.parentElement;
+            if( btn.classList.contains("disabled") )
+            {
+                return false;
             }
-        }
-        else{
-            alert("There Must be an image in the figure to attach a Scalebar")
+            else if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
+            {
+                if(selectedObject){
+                    selectedObject = null
+                }
+                else {
+                    // make new shadow icon
+                    shadowIcon.icon = shadowIcon.drawShadowIcon( event )
+                    document.addEventListener("mousemove", shadowIcon.shadowAnimate);
+                    document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
+
+                    btn.classList.add("selected")
+                    document.addEventListener("mouseup", setElement, true)
+                }
+            }
+            else{
+                alert("There Must be an image in the figure to attach a Scalebar")
+            }
         }
     })
     
@@ -1245,36 +1252,39 @@ $( function() {
      */
     $('#sunarrowopt').on("mousedown", (event) =>
     {
-        event.preventDefault()
-
-        let btn = event.target
-
-        if( btn.classList.contains("disabled") )
+        if( leftClick(event.button) )
         {
-            return false;
-        }
-        // check if there is an image
-        else if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
-        {
-            // set selected and se selected UI
-            if( selectedObject )
+            event.preventDefault()
+
+            let btn = event.target
+
+            if( btn.classList.contains("disabled") )
             {
-                selectedObject = null
+                return false;
+            }
+            // check if there is an image
+            else if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
+            {
+                // set selected and se selected UI
+                if( selectedObject )
+                {
+                    selectedObject = null
+                }
+                else
+                {
+                    // make new shadow icon
+                    shadowIcon.icon = shadowIcon.drawShadowIcon( event )
+                    document.addEventListener("mousemove", shadowIcon.shadowAnimate);
+                    document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
+
+                    btn.classList.add("selected")
+                    document.addEventListener("mouseup", setElement, true)
+                }
             }
             else
             {
-                // make new shadow icon
-                shadowIcon.icon = shadowIcon.drawShadowIcon( event )
-                document.addEventListener("mousemove", shadowIcon.shadowAnimate);
-                document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
-
-                btn.classList.add("selected")
-                document.addEventListener("mouseup", setElement, true)
+                alert("There Must be an image in the figure to attach a Sun Arrow")
             }
-        }
-        else
-        {
-            alert("There Must be an image in the figure to attach a Sun Arrow")
         }
     })
     
@@ -1284,37 +1294,40 @@ $( function() {
      */
     $('#observerarrowopt').on("mousedown", (event) =>
     {
-        event.preventDefault()
-
-        let btn = event.target
-
-        if( btn.classList.contains("disabled") )
+        if( leftClick(event.button) )
         {
-            return false;
-        }
-        // if there is no image fail and alert
-        else if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
-        {
-            // if the selected object is not null set it to null
-            if( selectedObject )
+            event.preventDefault()
+
+            let btn = event.target
+
+            if( btn.classList.contains("disabled") )
             {
-                selectedObject = null
+                return false;
+            }
+            // if there is no image fail and alert
+            else if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
+            {
+                // if the selected object is not null set it to null
+                if( selectedObject )
+                {
+                    selectedObject = null
+                }
+                else
+                {
+                    // make new shadow icon
+                    shadowIcon.icon = shadowIcon.drawShadowIcon( event )
+                    document.addEventListener("mousemove", shadowIcon.shadowAnimate);
+                    document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
+                    
+                    // set the selected UI for the observer
+                    btn.classList.add("selected")
+                    document.addEventListener("mouseup", setElement, true)
+                }
             }
             else
             {
-                // make new shadow icon
-                shadowIcon.icon = shadowIcon.drawShadowIcon( event )
-                document.addEventListener("mousemove", shadowIcon.shadowAnimate);
-                document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
-                
-                // set the selected UI for the observer
-                btn.classList.add("selected")
-                document.addEventListener("mouseup", setElement, true)
+                alert("There Must be an image in the figure to attach an Observer Arrow")
             }
-        }
-        else
-        {
-            alert("There Must be an image in the figure to attach an Observer Arrow")
         }
     })
 
