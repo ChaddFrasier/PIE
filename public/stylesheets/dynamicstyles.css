@@ -2,7 +2,7 @@
 @media only screen and (min-width: 600px)
 {
     :root {
-        --large-font: 14px;
+        --large-font: 16px;
         --medium-font: 14px;
         --sm-medium-font: 15px;
         --small-font: 13px;
@@ -61,7 +61,7 @@
 /* Pretty Large Screen */
 @media only screen and (min-width:1500px) {
     :root {
-        --large-font: 22px;
+        --large-font: 18px;
         --medium-font: 14px;
         --sm-medium-font: 12px;
         --small-font: 15px;

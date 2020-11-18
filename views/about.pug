@@ -18,25 +18,33 @@ block content
                     text="In Order to use this web service you need to obtain map projected images or plain still images. " 
                     text="You could obtain map projected images either by using USGS's POW web service or you can choose to process the "
                     text="IMG files from the PDS database yourself by hand but some inconsistencies with GDAL may occur. "
+                br
+
                 h1.basicpageheader="PIE Interface"
-                pre 
-                    h3.innerpageheader="Main Buttons"
-                    pre.UIHolder
-                        img.UIIntro(alt="UI1", src="/images/UI1.png")
+                .basicpagecontent
+                    pre
+                        pre.UIHolder
+                            img.UIIntro(alt="UI1", src="/images/UI1.png")
+                
+                h1.basicpageheader="Add Icons"
                 pre
-                    h3.innerpageheader="Adding Icons"
+                    h3.innerpageheader="Drag and drop icons onto images."
                     pre.UIHolder
-                        img.UIIntro(alt="UI2", src="/images/sample1.gif")
+                        img.UIGif(alt="UI2", src="/images/sample1.gif")
+                
+                h1.basicpageheader="Add Lines & Boxes"
+                pre
+                    h3.innerpageheader="Press and hold to draw lines and boxes. Release the mouse to place the annotation."
+                    pre.UIHolder
+                        img.UIGif(alt="UI3", src="/images/sample2.gif")
 
-                //- then annotation tools
-
-                //- finish by mentioning that the export file should not have an ext
-
+                //- this should be updated to match the ui above
                 h2.basicpageheader="Using PILOT To Find Images"
                 pre
                     i
-                        b="Navigate to "
+                        b="Navigate to the "
                             a.desanchor(href='https://pilot.wr.usgs.gov/', target='_blank')="PILOT"
+                        b=" homepage."
                     pre
                         pre
                             i

@@ -13,46 +13,33 @@ block content
             img.githubimage(src="/images/github.svg", alt="gitLogo")
     span.maincontent
         .mainaboutbox
-            h2.basicpageheader="Contact Us"
+            h1.basicpageheader="Contact Us"
             #contactcontent1.basicpagecontent
                 .basicpagecontent
                     text="We have decided to facilitate all of our user contact through our "
                     a.descanchor(href='https://github.com/ChaddFrasier/PIE' ,target='_blank')="GitHub"
                     text=" page. File an issue to ask any and all questions about PIE including asking for new features."
                 br
+                h3.basicpageheader="How to File an Issue:"
                 pre
-                    i
-                        b.basicpageheader="How to File an Issue:"
-                    pre
-                        pre
-                            u 
-                                b="1. Click New Issue"
-                            br
-                        pre(style="text-align:center")
-                            img.pilotstepsimage(src='/images/newissue1.PNG')
-                    br
-                    pre
-                        pre
-                            u 
-                                b="2. Set Label(s)"
-                            br
-                        pre(style="text-align:center")
-                            img.pilotstepsimage(src='images/newissue2.PNG')
+                    h3
+                        i="1. Click New Issue"
+                    pre(style="text-align:center")
+                        img.pilotstepsimage(src='/images/newissue1.PNG')
+                    h3
+                        i="2. Set Label(s)"  
+                    pre(style="text-align:center")
+                        img.pilotstepsimage(src='images/newissue2.PNG')
                     
-                    br
-                    pre
-                        pre
-                            u 
-                                b="3. Fill Out Description Fields"
-                            br
-                        pre(style="text-align:center")
-                            img.pilotstepsimage(src='images/newissue3.PNG')
+                    h3
+                        i="3. Fill Out Description Fields"
+                    pre(style="text-align:center")
+                        img.pilotstepsimage(src='images/newissue3.PNG')
                     
-                    br
+                pre
                     pre
-                        pre
-                            b 
-                                a.descanchor(href='https://github.com/ChaddFrasier/PIE/issues/new', target='_blank')="File an Issue?"
+                        h1
+                            a.descanchor(href='https://github.com/ChaddFrasier/PIE/issues/new', target='_blank')="File an Issue?"
                     br
                     br
 block footer

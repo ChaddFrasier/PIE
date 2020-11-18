@@ -105,8 +105,13 @@ i>b>a, i>b>a:visited {
 }
 
 .UIIntro {
+    width: 70%;
+    height: 55%;
+}
+
+.UIGif {
     width: 60%;
-    height: 60%;
+    height: 55%;
 }
 
 pre.UIHolder {
@@ -152,7 +157,7 @@ pre.UIHolder {
     background: rgba(0, 0, 0, 0.1);
     text-align: left;
     padding: 10px 5px;
-    font-size: var(--medium-font);
+    font-size: var(--large-font);
 }
 
 .githubimage, .faqimage{
