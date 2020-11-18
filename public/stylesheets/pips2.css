@@ -167,6 +167,11 @@ pre.UIHolder {
     text-align: left;
 }
 
+.innerpageheader {
+    margin: 0 auto;
+    text-align: center;
+}
+
 .selectedBox {
     border: 7px solid var(--main-bg-color);
     pointer-events: none;
