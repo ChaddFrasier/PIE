@@ -22,26 +22,6 @@ function setSVGBackground( id, color )
 }
 
 /**
- * @function detectLeftMouse
- * @param { event } evt 
- * @see https://github.com/ChaddFrasier/PIPS/blob/master/js/index.js detectLeftButton
- * @description this function takes in an event and checks to see if it was a left click event
-*/
-function detectLeftMouse(evt) {
-    // if evt is null then get the currently active window event
-    evt = evt || window.event;
-
-    // if browser has which then use which code check
-    if ("which" in evt) {
-        return evt.which == 1;
-    }
-    
-    // otherwise check for the button code
-    var button = evt.buttons || evt.button;   
-    return button == 1;
-}
-
-/**
  * @function detectRightMouse
  * @param { event } evt
  * @see https://github.com/ChaddFrasier/PIPS/blob/master/js/index.js detectRightButton

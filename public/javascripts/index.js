@@ -1189,7 +1189,7 @@ $( function() {
             {
                 return false;
             }
-            else if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
+            else if( getObjectCount(0,"image") != 0 )
             {
                 if(selectedObject){
                     selectedObject = null
@@ -1225,7 +1225,7 @@ $( function() {
             {
                 return false;
             }
-            else if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
+            else if( getObjectCount(0,"image") != 0 )
             {
                 if(selectedObject){
                     selectedObject = null
@@ -1263,7 +1263,7 @@ $( function() {
                 return false;
             }
             // check if there is an image
-            else if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
+            else if( getObjectCount(0,"image") != 0 )
             {
                 // set selected and se selected UI
                 if( selectedObject )
@@ -1305,7 +1305,7 @@ $( function() {
                 return false;
             }
             // if there is no image fail and alert
-            else if( getObjectCount(0,"image") != 0 && detectLeftMouse(event) )
+            else if( getObjectCount(0,"image") != 0 )
             {
                 // if the selected object is not null set it to null
                 if( selectedObject )

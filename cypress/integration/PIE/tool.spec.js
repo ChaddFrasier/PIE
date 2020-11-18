@@ -16,6 +16,167 @@ context('Tools Tests', () => {
   
   // https://on.cypress.io/interacting-with-elements
 
+  /** Icon Tests */
+  describe("Icon Tests ->", () => {
+    // run before each icon test set
+    beforeEach(() => {
+      // upload the test cub image
+      cy.get("input[type='file']").attachFile('M102200199CE.vis.even.band0004.geo.cub').then(() =>
+      {
+        // validate when upload finishes
+        cy.get('image.holder').invoke("attr", "href").should("match", /^(data\:image\/jpeg;base64,).*/i)
+        // drag north icon into the image
+        cy.get(".windowminimizebtn").eq(1).click()
+      })
+      cy.get("#northarrowopt").trigger("mousedown", {button: 0}).then((btn) => {
+        cy.document().trigger("mouseup", { target: cy.get("image[GEO='true']")})
+      });
+    });
+
+    it("Should scale the icon when input updates.", () => {
+      // capture the old scale value
+      var oldscale = cy.get('rect.marker').last().invoke("attr","scale")
+
+      // enter the new value and test that the scale is different
+      cy.get("input[name='iconscaleinput']").clear().type("10{enter}")
+      cy.get('rect.marker').last().invoke("attr", "scale").should("not.eq", oldscale)
+
+      // check that the scale equals the input
+      cy.get('rect.marker').last().parent().invoke("attr", "scale").should("eq", '10')
+    });
+
+    it("Should change the main color of the icon when input updates.", () => {
+      // capture the old icon group
+      var oldGroup = cy.get("g.holder").children().first()
+
+      // update the main color input
+      cy.get("input[name='iconmaincolorinput']").invoke("val", "#ff0000").trigger("change")
+
+      // check that the group changes
+      cy.get("g.holder").children().first().should("not.eq", oldGroup)
+    });
+
+    // same as main color
+    it("Should change the secondary color of the icon when input updates.", () => {
+      var oldGroup = cy.get("g.holder").children().first()
+      cy.get("input[name='iconsecondarycolorinput']").invoke("val", "#00fff0").trigger("change")
+      cy.get("g.holder").children().first().should("not.eq", oldGroup)
+    });
+
+    it("Should have all the icons on the uploaded image.", () => {
+
+      // add all the icons and test that all can be added
+      cy.get("#sunarrowopt").trigger("mousedown", {button: 0}).then((btn) => {
+        cy.document().trigger("mousmove", {pageX: 2000, pageY: 2000})
+        cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), force:true})
+      });
+      cy.get("#observerarrowopt").trigger("mousedown", {button: 0}).then((btn) => {
+        cy.document().trigger("mousmove", {pageX: 2000, pageY: 1500})
+        cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), force:true})
+      });
+      cy.get("#scalebarbtnopt").trigger("mousedown", {button: 0}).then((btn) => {
+        cy.document().trigger("mousmove", {pageX: 2000, pageY: 2500})
+        cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), force:true})
+      });
+
+      // test all icons exist
+      cy.get("image.holder").should("exist")
+      cy.get("image.holder").next().invoke("attr", "id").should("match", /^northIcon-.*/i)
+      cy.get("image.holder").next().next().invoke("attr", "id").should("match", /^sunIcon-.*/i)
+      cy.get("image.holder").next().next().next().invoke("attr", "id").should("match", /^observerIcon-.*/i)
+      cy.get("image.holder").next().next().next().next().invoke("attr", "id").should("match", /^scalebarIcon-.*/i)
+    });
+
+    it("Should be able to change the x and y input for the icons.", () => {
+      // get old coordinates
+      var oldx = cy.get('rect.marker').last().invoke("attr","x")
+      var oldy = cy.get('rect.marker').last().invoke("attr","y")
+
+      // change the input values
+      cy.get("input[name='iconxcoordinput']").clear().type("200{enter}")
+      cy.get("input[name='iconycoordinput']").clear().type("400{enter}")
+
+      // x and y should be equal to the input and not equal to the old values
+      cy.get('rect.marker').last().invoke("attr", "x").should("not.eq", oldx)
+      cy.get('rect.marker').last().invoke("attr", "y").should("not.eq", oldy)
+      cy.get('rect.marker').last().parent().invoke("attr", "x").should("eq", '200')
+      cy.get('rect.marker').last().parent().invoke("attr", "y").should("eq", '400')
+    });
+
+    it("Should be able to drag each of the icons.", () => { 
+
+      // same as above but testing the location changes using drag event
+      var oldx = cy.get('rect.marker').last().invoke("attr","x")
+      var oldy = cy.get('rect.marker').last().invoke("attr","y")
+
+      cy.get("image.holder").last().then( () => {
+        cy.get("svg#figurecontainer")
+        .trigger("mousedown", {target: cy.get('rect.marker').last()})
+        .trigger("mousemove",{clientX: 1000, clientY: 400})
+        .trigger("mouseup").then( ()=> {
+          cy.get('rect.marker').last().invoke("attr", "x").should("not.eq", oldx)
+          cy.get('rect.marker').last().invoke("attr", "y").should("not.eq", oldy)
+          cy.get('.windowremovebtn').eq(1).click()
+        });
+      });
+
+      // same as above but with sun icon
+      cy.get("#sunarrowopt").trigger("mousedown", {button: 0}).then((btn) => {
+        cy.document().trigger("mousmove", {pageX: 2000, pageY: 2000})
+        cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), force:true})
+      });
+      oldx = cy.get('rect.marker').last().invoke("attr","x")
+      oldy = cy.get('rect.marker').last().invoke("attr","y")
+      cy.get("image.holder").last().then( () => {
+        cy.get("svg#figurecontainer")
+        .trigger("mousedown", {target: cy.get('rect.marker').last()})
+        .trigger("mousemove",{clientX: 1000, clientY: 400})
+        .trigger("mouseup").then( ()=> {
+          cy.get('rect.marker').last().invoke("attr", "x").should("not.eq", oldx)
+          cy.get('rect.marker').last().invoke("attr", "y").should("not.eq", oldy)
+
+          cy.get('.windowremovebtn').eq(1).click()
+        });
+      });
+
+      // observer icon dragging
+      cy.get("#observerarrowopt").trigger("mousedown", {button: 0}).then((btn) => {
+        cy.document().trigger("mousmove", {pageX: 2000, pageY: 1500})
+        cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), force:true})
+      });
+      oldx = cy.get('rect.marker').last().invoke("attr","x")
+      oldy = cy.get('rect.marker').last().invoke("attr","y")
+      cy.get("image.holder").last().then( () => {
+        cy.get("svg#figurecontainer")
+        .trigger("mousedown", {target: cy.get('rect.marker').last()})
+        .trigger("mousemove",{clientX: 1000, clientY: 400})
+        .trigger("mouseup").then( ()=> {
+          cy.get('rect.marker').last().invoke("attr", "x").should("not.eq", oldx)
+          cy.get('rect.marker').last().invoke("attr", "y").should("not.eq", oldy)
+          cy.get('.windowremovebtn').eq(1).click()
+        });
+      });
+
+      // scalebar icon dragging
+      cy.get("#scalebarbtnopt").trigger("mousedown", {button: 0}).then((btn) => {
+        cy.document().trigger("mousmove", {pageX: 2000, pageY: 2500})
+        cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), force:true})
+      });
+      oldx = cy.get('rect.marker').last().invoke("attr","x")
+      oldy = cy.get('rect.marker').last().invoke("attr","y")
+      cy.get("image.holder").last().then( () => {
+        cy.get("svg#figurecontainer")
+        .trigger("mousedown", {target: cy.get('rect.marker').last(), force: true})
+        .trigger("mousemove",{clientX: 1000, clientY: 400})
+        .trigger("mouseup").then( ()=> {
+          cy.get('rect.marker').last().invoke("attr", "x").should("not.eq", oldx)
+          cy.get('rect.marker').last().invoke("attr", "y").should("not.eq", oldy)
+          cy.get('.windowremovebtn').eq(1).click()
+        });
+      });
+    });
+  });
+
   /** Outline Tests */
   describe("Outline Box Tests -> ", () => {
     beforeEach(() => {
@@ -131,7 +292,7 @@ context('Tools Tests', () => {
 
       cy.get("#penciloptbtn").click()
       cy.get("#figurecontainer")
-        .trigger("mousedown", {which:1, clientX: 700, clientY: 200})
+        .trigger("mousedown", {button:0, clientX: 700, clientY: 200})
         .trigger("mousemove", {clienX: 900, clientY: 1000})
         .trigger("mouseup")
       // second line
@@ -139,7 +300,7 @@ context('Tools Tests', () => {
       cy.get('select[name="linetailinput"]').first().select("Square Head")
       cy.get("input[name='linecolorinput']").first().invoke("val", "#00ff00").trigger("change")
       cy.get("line.placed").last().should("have.attr", "stroke", "#00ff00")
-      cy.get("marker").eq(4).children().first().should("have.attr", "fill", "#00ff00")
+      cy.get("marker").eq(5).children().first().should("have.attr", "fill", "#00ff00")
       cy.get("marker").last().children().first().should("have.attr", "fill", "#00ff00")
     });
     // drag lines with the mouse
@@ -210,9 +371,10 @@ context('Tools Tests', () => {
         cy.get("textarea[name='captiontextinput']")
         .type(json["LoremIpsum"])
         cy.get("text[data-cy='caption']>tspan>tspan").should("not.have.html", json["LoremIpsum"])
+      }).then(() => {
+        cy.get("textarea[name='captiontextinput']").clear().type("This is a short test")
+        cy.get("text[data-cy='caption']>tspan>tspan").should("have.html", "This is a short test")
       });
-      cy.get("textarea[name='captiontextinput']").clear().type("This is a short test")
-      cy.get("text[data-cy='caption']>tspan>tspan").should("have.html", "This is a short test")
     });
     // be able to change the width nd height input
     it( "Should change caption width when caption input changes." ,() => {
@@ -260,169 +422,6 @@ context('Tools Tests', () => {
         .invoke('val', '#ffffff')
         .trigger('change');
       cy.get("svg>text").parent().should("have.attr", "fill", "#ffffff")
-    });
-  });
-
-  /** Icon Tests */
-  describe("Icon Tests ->", () => {
-    // run before each icon test set
-    beforeEach(() => {
-      // upload the test cub image
-      cy.get("input[type='file']").attachFile('M102200199CE.vis.even.band0004.geo.cub').then(() =>
-      {
-        // validate when upload finishes
-        cy.get('image.holder').invoke("attr", "href").should("match", /^(data\:image\/jpeg;base64,).*/i)
-      });
-
-      // drag north icon into the image
-      cy.get(".windowminimizebtn").eq(1).click()
-      cy.get("#northarrowopt").trigger("mousedown", {which: 1}).then((btn) => {
-        cy.document().trigger("mousmove", {pageX: 2000, pageY: 1000})
-        cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']")})
-      });
-    });
-
-    it("Should scale the icon when input updates.", () => {
-      // capture the old scale value
-      var oldscale = cy.get('rect.marker').last().invoke("attr","scale")
-
-      // enter the new value and test that the scale is different
-      cy.get("input[name='iconscaleinput']").clear().type("10{enter}")
-      cy.get('rect.marker').last().invoke("attr", "scale").should("not.eq", oldscale)
-
-      // check that the scale equals the input
-      cy.get('rect.marker').last().parent().invoke("attr", "scale").should("eq", '10')
-    });
-
-    it("Should change the main color of the icon when input updates.", () => {
-      // capture the old icon group
-      var oldGroup = cy.get("g.holder").children().first()
-
-      // update the main color input
-      cy.get("input[name='iconmaincolorinput']").invoke("val", "#ff0000").trigger("change")
-
-      // check that the group changes
-      cy.get("g.holder").children().first().should("not.eq", oldGroup)
-    });
-
-    // same as main color
-    it("Should change the secondary color of the icon when input updates.", () => {
-      var oldGroup = cy.get("g.holder").children().first()
-      cy.get("input[name='iconsecondarycolorinput']").invoke("val", "#00fff0").trigger("change")
-      cy.get("g.holder").children().first().should("not.eq", oldGroup)
-    });
-
-    it("Should have all the icons on the uploaded image.", () => {
-
-      // add all the icons and test that all can be added
-      cy.get("#sunarrowopt").trigger("mousedown", {which: 1}).then((btn) => {
-        cy.document().trigger("mousmove", {pageX: 2000, pageY: 2000})
-        cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), force:true})
-      });
-      cy.get("#observerarrowopt").trigger("mousedown", {which: 1}).then((btn) => {
-        cy.document().trigger("mousmove", {pageX: 2000, pageY: 1500})
-        cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), force:true})
-      });
-      cy.get("#scalebarbtnopt").trigger("mousedown", {which: 1}).then((btn) => {
-        cy.document().trigger("mousmove", {pageX: 2000, pageY: 2500})
-        cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), force:true})
-      });
-
-      // test all icons exist
-      cy.get("image.holder").should("exist")
-      cy.get("image.holder").next().invoke("attr", "id").should("match", /^northIcon-.*/i)
-      cy.get("image.holder").next().next().invoke("attr", "id").should("match", /^sunIcon-.*/i)
-      cy.get("image.holder").next().next().next().invoke("attr", "id").should("match", /^observerIcon-.*/i)
-      cy.get("image.holder").next().next().next().next().invoke("attr", "id").should("match", /^scalebarIcon-.*/i)
-    });
-
-    it("Should be able to change the x and y input for the icons.", () => {
-      // get old coordinates
-      var oldx = cy.get('rect.marker').last().invoke("attr","x")
-      var oldy = cy.get('rect.marker').last().invoke("attr","y")
-
-      // change the input values
-      cy.get("input[name='iconxcoordinput']").clear().type("200{enter}")
-      cy.get("input[name='iconycoordinput']").clear().type("400{enter}")
-
-      // x and y should be equal to the input and not equal to the old values
-      cy.get('rect.marker').last().invoke("attr", "x").should("not.eq", oldx)
-      cy.get('rect.marker').last().invoke("attr", "y").should("not.eq", oldy)
-      cy.get('rect.marker').last().parent().invoke("attr", "x").should("eq", '200')
-      cy.get('rect.marker').last().parent().invoke("attr", "y").should("eq", '400')
-    });
-
-    it("Should be able to drag each of the icons.", () => { 
-
-      // same as above but testing the location changes using drag event
-      var oldx = cy.get('rect.marker').last().invoke("attr","x")
-      var oldy = cy.get('rect.marker').last().invoke("attr","y")
-
-      cy.get("image.holder").last().then( () => {
-        cy.get("svg#figurecontainer")
-        .trigger("mousedown", {target: cy.get('rect.marker').last()})
-        .trigger("mousemove",{clientX: 1000, clientY: 400})
-        .trigger("mouseup").then( ()=> {
-          cy.get('rect.marker').last().invoke("attr", "x").should("not.eq", oldx)
-          cy.get('rect.marker').last().invoke("attr", "y").should("not.eq", oldy)
-          cy.get('.windowremovebtn').eq(1).click()
-        });
-      });
-
-      // same as above but with sun icon
-      cy.get("#sunarrowopt").trigger("mousedown", {which: 1}).then((btn) => {
-        cy.document().trigger("mousmove", {pageX: 2000, pageY: 2000})
-        cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), force:true})
-      });
-      oldx = cy.get('rect.marker').last().invoke("attr","x")
-      oldy = cy.get('rect.marker').last().invoke("attr","y")
-      cy.get("image.holder").last().then( () => {
-        cy.get("svg#figurecontainer")
-        .trigger("mousedown", {target: cy.get('rect.marker').last()})
-        .trigger("mousemove",{clientX: 1000, clientY: 400})
-        .trigger("mouseup").then( ()=> {
-          cy.get('rect.marker').last().invoke("attr", "x").should("not.eq", oldx)
-          cy.get('rect.marker').last().invoke("attr", "y").should("not.eq", oldy)
-
-          cy.get('.windowremovebtn').eq(1).click()
-        });
-      });
-
-      // observer icon dragging
-      cy.get("#observerarrowopt").trigger("mousedown", {which: 1}).then((btn) => {
-        cy.document().trigger("mousmove", {pageX: 2000, pageY: 1500})
-        cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), force:true})
-      });
-      oldx = cy.get('rect.marker').last().invoke("attr","x")
-      oldy = cy.get('rect.marker').last().invoke("attr","y")
-      cy.get("image.holder").last().then( () => {
-        cy.get("svg#figurecontainer")
-        .trigger("mousedown", {target: cy.get('rect.marker').last()})
-        .trigger("mousemove",{clientX: 1000, clientY: 400})
-        .trigger("mouseup").then( ()=> {
-          cy.get('rect.marker').last().invoke("attr", "x").should("not.eq", oldx)
-          cy.get('rect.marker').last().invoke("attr", "y").should("not.eq", oldy)
-          cy.get('.windowremovebtn').eq(1).click()
-        });
-      });
-
-      // scalebar icon dragging
-      cy.get("#scalebarbtnopt").trigger("mousedown", {which: 1}).then((btn) => {
-        cy.document().trigger("mousmove", {pageX: 2000, pageY: 2500})
-        cy.document().trigger("mouseup", {target: cy.get("image[GEO='true']"), force:true})
-      });
-      oldx = cy.get('rect.marker').last().invoke("attr","x")
-      oldy = cy.get('rect.marker').last().invoke("attr","y")
-      cy.get("image.holder").last().then( () => {
-        cy.get("svg#figurecontainer")
-        .trigger("mousedown", {target: cy.get('rect.marker').last()})
-        .trigger("mousemove",{clientX: 1000, clientY: 400})
-        .trigger("mouseup").then( ()=> {
-          cy.get('rect.marker').last().invoke("attr", "x").should("not.eq", oldx)
-          cy.get('rect.marker').last().invoke("attr", "y").should("not.eq", oldy)
-          cy.get('.windowremovebtn').eq(1).click()
-        });
-      });
     });
   });
 
