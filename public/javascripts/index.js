@@ -15,13 +15,13 @@
  */
 $( function() {
 
-    // add the custom keys back 
+    // add the custom keys 
     document.addEventListener("keydown", customKeys);
 
     // contain the index homepage
     document.body.parentElement.setAttribute("class", "contained")
 
-    // disable contextmenu listener for the page
+    // disable contextmenu listener for the figure
     document.getElementById('figurecontainer').setAttribute("oncontextmenu", "return false;")
 
     // local jquery variables
@@ -42,8 +42,9 @@ $( function() {
     setSVGBackground("bgelement", bgPicker.value)
 
     /**
-     * 
-     * @param {Keydown Event} event 
+     * @function customKeys
+     * @param {Keydown Event} event the ketdown event
+     * @description add the custom key listeners for when the user is using any function on the page
      */
     function customKeys( event )
     {
@@ -53,23 +54,30 @@ $( function() {
         // escape listener
         if( key === 'Escape' || key === 'Esc' || key === 27 )
         {
+            // disable any default esc function
             event.preventDefault()
-            // TODO: comment this
+
+            // get the child list and the last child in the figure
             let children = draggableSvg.getContainerObject().children;
             let rmChild = children[children.length - 1]
 
+            // the pencil function is going
             if( PencilFlag )
             {
+                // check to see if the last child is a line that has not been placed yet
                 if( String(rmChild.nodeName).toUpperCase() === "LINE" && !rmChild.classList.contains("placed") )
                 {
+                    // remove the half drawn line
                     draggableSvg.getContainerObject().removeChild(rmChild)
                 }
                 else
                 {
+                    // else just turn off the drawing function
                     $("button.drawing").trigger("click")
                 }
             }
 
+            // same with outline
             if( OutlineFlag )
             {
                 if( String(rmChild.nodeName).toUpperCase() === "RECT" && !rmChild.classList.contains("placed") && rmChild.getAttribute("id") !== "bgelement" )
@@ -84,14 +92,15 @@ $( function() {
         }
         else if( key === "Enter" || key === 'enter' || key === 13 )
         {
+            // if the enter key was hit with the savebtn on screen then try to save the figure
             if( document.getElementById("savebtn") )
             {
                 document.getElementById("savebtn").click()
             }
         }
 
+        // TODO: this is temporary
         console.log(`Key & Code: \n\n\tKey: '${event.key}' \n\tCode: ${event.keyCode}`)
-
     }
 
     /**
@@ -129,8 +138,6 @@ $( function() {
                 // remove draw listeners
                 draggableSvg.getContainerObject().removeEventListener("mousedown", drawMouseDownListener)
 
-                // TODO: remove the escape key listner right here
-
                 activeEventManager.setEventFlag(undefined)
                 activeEventManager.reactivateBtn( 'outlinebtnopt' )
             }
@@ -154,8 +161,6 @@ $( function() {
                 draggableSvg.pauseDraggables()
                 // add event listener for click on svg
                 draggableSvg.getContainerObject().addEventListener("mousedown", drawMouseDownListener )
-
-                // TODO: add an escape key listner right here
 
                 activeEventManager.setEventFlag(true)
                 activeEventManager.deactivateBtn( 'outlinebtnopt' )
@@ -191,8 +196,6 @@ $( function() {
                 // remove draw listeners
                 draggableSvg.getContainerObject().removeEventListener("mousedown", drawBoxMouseDownListener )
 
-                // TODO: remove the same listener here but for the outline box
-                
                 activeEventManager.setEventFlag(undefined)
                 activeEventManager.reactivateBtn( 'penciloptbtn' )
             }
@@ -218,8 +221,6 @@ $( function() {
                 // add event listener for click on svg
                 draggableSvg.getContainerObject().addEventListener("mousedown", drawBoxMouseDownListener )
 
-                // TODO: add the same listener here but for the outline box
-
                 activeEventManager.setEventFlag(true)
                 activeEventManager.deactivateBtn( 'penciloptbtn' )
             }
@@ -243,9 +244,10 @@ $( function() {
 
         // TODO: format the output box better
 
-        // if the exportbox exists cancel btn click
+        // if the exportbox exists cancel whole function
         if( document.querySelectorAll("div[class='exportmainbox']").length !== 0)
         {
+            // dont allow bubbling
             return false;
         }
 
@@ -974,14 +976,11 @@ $( function() {
                                     btn.classList.remove("disabled");
                                 }catch(err){ return }
                             });
-
                         }    
                         // convert to base64 string
                         reader.readAsDataURL(xhr.response)
                     }
-
                 }
-
                 // open the request and send the data
                 xhr.open('POST', "/upload", true)
                 xhr.send(fd)
@@ -1568,8 +1567,11 @@ $( function() {
 
 /* Helper functions */
 
+/**
+ * @function startActiveEM
+ * @description This function creates an event manager object that acts as a universal flagger to start or disable running events
+ */
 var startActiveEM = function() {
-
     var RunningEvent = undefined;
 
     return {
@@ -1587,7 +1589,6 @@ var startActiveEM = function() {
         },
 
         setEventFlag: function( val ) {
-            // TODO: should use the key to verify the proper event is currently running and the user wants to stop it.
             RunningEvent = val;
         },
 
