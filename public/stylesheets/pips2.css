@@ -143,6 +143,35 @@ pre.UIHolder {
     padding: 0;
 }
 
+.inlayedlink {
+    color: var(--secondary-color);
+}
+
+
+.inlayedlink:hover {
+    color: var(--primary-color);
+}
+
+.importantnotecontent{
+    background-color: rgba(0,0,0,.1);
+    padding: 1em;
+    font-size: var(--large-font);
+}
+
+.importantnotecontent>.importantnotecontent {
+    padding: .25em;
+}
+
+h4.importantnote-main {
+    padding: 0;
+    margin-top: 0;
+}
+
+h5.importantnote-desc {
+    padding: 0;
+    margin-bottom: 0;
+}
+
 .answerBox {
     width: auto;
     min-width: 10em;
