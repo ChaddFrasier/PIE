@@ -133,6 +133,29 @@ module.exports = {
                 });
             },
 
+            isis_isis2std: function( inputfile=undefined, outputfile=undefined)
+            {
+                return new Promise( (resolveFunc, rejectFunc) => {
+                    // create a gdal_translate instance with args in the array
+                    var child = spawn( "isis2std", [
+                            "FORMAT=","JPEG",
+                            "FROM=", inputfile, 
+                            "TO=", outputfile] )
+        
+                    child.on('error', (error) => {
+                        console.log(`error: ${error.message}`);
+                        rejectFunc(error.message);
+                    });
+        
+                    // when the response is ready to close
+                    child.on("close", code => {
+                        console.log(`child process exited with code ${code}`);
+                        // if the gdal command exited with 0
+                        resolveFunc(code);
+                    });
+                });
+            },
+
             isis_campt: function( inputfile=undefined, outputfile=undefined)
             {
                 return new Promise( (resolveFunc, rejectFunc) => {
