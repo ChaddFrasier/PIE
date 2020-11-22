@@ -3,8 +3,8 @@
 {
     :root {
         --large-font: 16px;
-        --medium-font: 14px;
-        --sm-medium-font: 15px;
+        --medium-font: 15px;
+        --sm-medium-font: 14px;
         --small-font: 13px;
         --xsmall-font: 12px;
 
@@ -17,8 +17,8 @@
         --max-image-width: 55%;
         --max-header-image-width: 100px;
 
-        --max-title-width: 300px;
-        --max-title-height: 100px;
+        --max-title-width: 250px;
+        --max-title-height: 85px;
 
         --main-export-box-height: auto;
         --main-export-box-width: 14em;
@@ -48,10 +48,10 @@
 
         --svg-icon-width: 30px;
 
-        --header-height: 7%;
+        --header-height: 6%;
         --main-content-height: 80vh;
         --toolcontainer-height: 80vh;
-        --footer-height: 7%;
+        --footer-height: 6%;
 
         /* New Section Here */
         --inner-main-content-max-width: 81vw;
@@ -61,13 +61,13 @@
 /* Pretty Large Screen */
 @media only screen and (min-width:1500px) {
     :root {
-        --large-font: 18px;
-        --medium-font: 14px;
-        --sm-medium-font: 12px;
-        --small-font: 15px;
-        --xsmall-font: 10px;
+        --large-font: 17px;
+        --medium-font: 15px;
+        --sm-medium-font: 14px;
+        --small-font: 13px;
+        --xsmall-font: 12px;
 
-        --usgs-image-height: 50px;
+        --usgs-image-height: 80px;
         --usgs-image-width: 200px;
 
         --color-input-width: 7em;
@@ -77,7 +77,7 @@
         --select-input-height: auto;
 
         --max-image-width: 55%;
-        --max-header-image-width: 150px;
+        --max-header-image-width: 125px;
 
         --max-title-width: 300px;
         --max-title-height: 100px;
@@ -109,7 +109,7 @@
         --svg-icon-width: 27px;
         --svg-icon-height: 2.5em;
 
-        --header-height: 9%;
+        --header-height: 7%;
         --main-content-height: 80vh;
         --toolcontainer-height: 80vh;
         --footer-height: 6%;

@@ -367,6 +367,7 @@ button.disabled {
 
 .pips2header {
     width: 100%;
+    max-height: var(--header-height);
     height: auto;
     display: flex;
 }
