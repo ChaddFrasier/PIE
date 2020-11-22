@@ -39,16 +39,15 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
         // call the gdal scaling function that Trent gave me. and convert the output to jpg
         var promise = pieapi.gdal_rescale(
             path.join("public", "uploads", req.file.filename),
-            "30%",
+            "50%",
             path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "jpg"))
             );
 
-        /** TODO: Temporary sectoion start  */
-        var promise2 = pieapi.gdal_virtual(
+        /** TODO: Temporary sectoion start  for testing */
+        var promise2 = pieapi.isis_campt(
             path.join("public", "uploads", req.file.filename),
-            path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "vrt"))
+            path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
             );
-
 
         /** Temporary end */
        
@@ -71,9 +70,27 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
             });
 
             // runn a single promise
-        promise2.then((vrtfile) => {
+        promise2.then((code) => {
             console.log("Promise 2 finished with >")
-            console.log(vrtfile)
+            console.log(code)
+
+            if( code == 0 )
+            {
+                promise2 = [
+                    pieapi.isis_catlab(
+                        path.join("public", "uploads", req.file.filename),
+                        path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
+                    ), 
+                    pieapi.isis_catoriglab(
+                        path.join("public", "uploads", req.file.filename),
+                        path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
+                    )
+                ];
+
+                Promise.all(promise2).then((code) => {
+                    console.log("Inner ISIS Commands finished with codes > " + String(code).replace(",", " and "))
+                });
+            }
             }).catch( (err) => {
                 console.log(err)
             });
