@@ -970,6 +970,13 @@ $( function() {
                             // get the button group
                             var iconbtngroup = document.getElementsByClassName("concisebtngroup")[0];
 
+
+                            // send a request to the server requesting the data for the image uploaded
+                            fetch(`/api/isis/${getCookie("filepath")}`).then( response => {
+                                console.log(response.json())
+                            })
+
+
                             iconbtngroup.childNodes.forEach( btn => {
                                 try 
                                 {
