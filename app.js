@@ -37,7 +37,7 @@ app.use('/', indexRouter);
 app.use('/about', aboutRouter);
 app.use('/contact', contactRouter);
 app.use('/faq', faqRouter);
-app.use(['/api/isis','/api/gdal'], apiRouter);
+app.use(['/api/isis/*','/api/gdal'], apiRouter);
 app.use('/upload', uploadRouter);
 app.use('/images',imageRouter);
 app.use('/export',exportRouter);
