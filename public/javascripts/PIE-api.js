@@ -43,6 +43,19 @@ module.exports = {
         }
     
         return {
+
+            pie_readPVL: function ( pvlfilepath, keys ){
+                console.log(`The Keys to look and extract from ${pvlfilepath} are: [${keys} ]`)
+
+                // first check to see if the file exists
+
+                    // read the data of the file line by line
+
+                // fail and let user know why it failed
+
+                return { data: {key1:1, key2:2}, keys: ["key1", "key2"] }
+            },
+
             gdal_translate: function( argv )
             {
                 // create a gdal_translate instance with args in the array
