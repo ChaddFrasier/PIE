@@ -44,19 +44,22 @@ html.contained {
 .leftcontainer {
     margin: auto auto auto 1em;
     width: 33.3%;
-    height: var(--header-height);
+    max-height: var(--header-height);
+    min-height: var(--header-height);
 }
 
 .centercontainer {
     margin: auto auto;
     width: auto;
-    height: var(--header-height);
+    max-height: var(--header-height);
+    min-height: var(--header-height);
 }
 
 .rightcontainer {
     margin: auto 1em auto auto;
     width: 33.3%;
-    height: var(--header-height);
+    max-height: var(--header-height);
+    min-height: var(--header-height);
 }
 
 .nobody {
@@ -130,13 +133,6 @@ pre.UIHolder {
  width: 40% !important;
 }
 
-.gdalimage {
-    width: auto;
-    height: 100%;
-    max-height: var(--max-title-height);
-    margin: 5px 10px 0 auto;
-}
-
 .basicfaqcontent {
     display: flex;
     background-color: rgba(0,0,0,.1);
@@ -189,10 +185,11 @@ h5.importantnote-desc {
     font-size: var(--large-font);
 }
 
-.githubimage, .faqimage{
+.githubimage, .faqimage, .gdalimage{
     text-align: right;
     width: auto;
-    height: var(--max-title-height);
+    min-width: var(--max-title-height);
+    max-height: var(--max-title-height);
     margin: 10px 10px;
 }
 
@@ -269,11 +266,10 @@ pre > i > b {
     text-align: center !important;
 }
 
-
 .mainaboutbox {
     margin: 0 2vw;
     text-align: left;
-    padding: 1em;
+    padding: 0 .5em;
     min-width: 30em;
     height: auto;
     text-align: center;
@@ -296,7 +292,7 @@ img#usgsNavIcon:hover {
 .headerimage {
     max-width: var(--max-header-image-width);
     width: auto;
-    max-height: var(--header-height);
+    min-height: var(--header-height);
     height: auto;
 }
 
@@ -361,15 +357,15 @@ button.disabled {
     height: auto;
     width: auto;
     max-width: var(--usgs-image-width);
-    min-height: var(--usgs-image-height);
-    margin: 0 0 0 auto;
+    margin: auto 0 0 auto;
 }
 
 .pips2header {
     width: 100%;
     max-height: var(--header-height);
-    height: auto;
+    min-height: var(--header-height);
     display: flex;
+    border: none;
 }
 
 .fileinputfield {
@@ -506,12 +502,9 @@ button.disabled {
 
 .maincontent {
     display: flex; 
-    height: auto;
-    min-height: var(--main-content-height);
-    width: auto; 
-    margin: 0 0 0 0;
+    height: var(--main-content-height);
+    width: auto;
     text-align: left;
-    overflow: hidden;
 }
 
 .imageform {
@@ -1022,7 +1015,6 @@ input[type="color"]{
     background: var(--primary-color);
     background: var(--secondary-color);
     color: var(--main-bg-color);
-    border: 2px solid black;
     height: var(--inner-main-content-max-height);
     width: auto;
     text-align: center;
@@ -1032,7 +1024,7 @@ input[type="color"]{
     -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
     -o-transition: all ease-in-out var(--transition-time); /* Opera */
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
-    overflow: hidden;
+    overflow: visible;
 }
 
 .pagetitle {

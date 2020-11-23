@@ -1,28 +1,31 @@
 "use strict";
 
 var express = require('express');
+var { PIEAPI } = require("../public/javascripts/PIE-api")
 var router = express.Router();
 
 /**
- * @returns about.html
+ * @returns TODO:
  */
-router.post('/', ( req, res, next ) =>
+router.get('/', ( req, res, next ) =>
 {
-    switch (req.baseUrl) {
-        case "/api/isis":
-            console.log("ISIS COMMAND NEEDS TO RUN");
-            break;
-            
-        case "/api/gdal":
-            console.log("GDAL COMMAND NEEDS TO RUN");
-            break;
-    
-        default:
-            console.debug("Uh Oh: There was no case that triggered in this switch statement.");
-            break;
-    }
+    var isisRegExp = new RegExp("^/api/isis/.*");
+    var gdalRegExp = new RegExp("^/api/gdal");
 
-    console.log("SUCCESS");
+    if( isisRegExp.test(req.baseUrl) )
+    {
+        console.log("ISIS DATA GRAB");
+        var CubeObjectData = PIEAPI().pie_readPVL(req.baseUrl.split("/")[req.baseUrl.split('/').length-1], ["PixelResolution", "SubSolarAzimuth"])
+
+        console.log(CubeObjectData.data)
+        console.log(CubeObjectData.keys)
+
+        res.send(CubeObjectData)
+    }
+    else if ( gdalRegExp.test(req.baseUrl) )
+    {
+        console.log("GDAL SPECIAL COMMAND");
+    }
 });
 
 module.exports = router;
