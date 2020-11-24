@@ -939,34 +939,38 @@ $( function() {
                 // create a form data and request object to call the server
                 var fd = new FormData(form)
                 var xhr = new XMLHttpRequest()
-                
-                xhr.responseType = "json"
 
                 // when the requests load handle the response
                 xhr.onloadend = () => {
                     
                     var reader = new FileReader()
 
-                    if( xhr.response.type == "text/html" )
+                    console.log(xhr.response)
+
+                    try
                     {
-                        // occurs after readAsText()
-                        reader.onload = function(e) {
-                            // remove the btn after displaying the error to the user
-                            var imgRemoveBtn = document.querySelector(`.windowoptionsbar[objectid='${imageId}']>.windowremovebtn`);
-                            alert(`Image Failed to Upload:\nError: ${e.target.result}`)
-                            imgRemoveBtn.click()
-                        }
-                        reader.readAsText(xhr.response)
+                        JSON.parse(xhr.response)
                     }
-                    else if (xhr.responseType == "json")
+                    catch(err)
+                    {
+                        
+                        // remove the btn after displaying the error to the user
+                        var imgRemoveBtn = document.querySelector(`.windowoptionsbar[objectid='${imageId}']>.windowremovebtn`);
+                        alert(`Image Failed to Upload:\nError: ${xhr.response}`)
+                        imgRemoveBtn.click()
+                    }
+                    
+                    if (xhr.status == 200)
                     {
                         console.log(xhr.response)
 
-                        fetch(xhr.response.imagefile, {
+                        var responseObject = JSON.parse(xhr.response)
+
+                        fetch(responseObject.imagefile, {
                             method: "GET",
                             header: {"Content-Type": "blob"}
                         })
-                        .then( response => response.blob())
+                        .then( imagedatares => imagedatares.blob())
                         .then((blob) => {
                             // occurs after readAsDataURL
                             reader.onload = function(e) {
@@ -989,12 +993,13 @@ $( function() {
                             reader.readAsDataURL(blob)
                         });
                     }
-                    else
+                    else if( xhr.status > 299 )
                     {
                         console.error("WHYY")
                         console.error(xhr.response)
                     }
                 }
+
                 // open the request and send the data
                 xhr.open('POST', "/upload", true)
                 xhr.send(fd)
