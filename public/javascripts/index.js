@@ -939,9 +939,9 @@ $( function() {
                 // create a form data and request object to call the server
                 var fd = new FormData(form)
                 var xhr = new XMLHttpRequest()
-
-                xhr.responseType = 'blob'
                 
+                xhr.responseType = "json"
+
                 // when the requests load handle the response
                 xhr.onloadend = () => {
                     
@@ -958,27 +958,41 @@ $( function() {
                         }
                         reader.readAsText(xhr.response)
                     }
+                    else if (xhr.responseType == "json")
+                    {
+                        console.log(xhr.response)
+
+                        fetch(xhr.response.imagefile, {
+                            method: "GET",
+                            header: {"Content-Type": "blob"}
+                        })
+                        .then( response => response.blob())
+                        .then((blob) => {
+                            // occurs after readAsDataURL
+                            reader.onload = function(e) {
+                                // use jquery to update the image source
+                                $('#'+imageId).attr('href', e.target.result)
+                                $('#'+imageId).attr('GEO', 'true')
+                                $('#'+imageId).attr('filePath', getCookie("filepath"))
+
+                                // get the button group
+                                var iconbtngroup = document.getElementsByClassName("concisebtngroup")[0];
+
+                                iconbtngroup.childNodes.forEach( btn => {
+                                    try 
+                                    {
+                                        btn.classList.remove("disabled");
+                                    }catch(err){ return }
+                                });
+                            }    
+                            // convert to base64 string
+                            reader.readAsDataURL(blob)
+                        });
+                    }
                     else
                     {
-                        // occurs after readAsDataURL
-                        reader.onload = function(e) {
-                            // use jquery to update the image source
-                            $('#'+imageId).attr('href', e.target.result)
-                            $('#'+imageId).attr('GEO', 'true')
-                            $('#'+imageId).attr('filePath', getCookie("filepath"))
-
-                            // get the button group
-                            var iconbtngroup = document.getElementsByClassName("concisebtngroup")[0];
-
-                            iconbtngroup.childNodes.forEach( btn => {
-                                try 
-                                {
-                                    btn.classList.remove("disabled");
-                                }catch(err){ return }
-                            });
-                        }    
-                        // convert to base64 string
-                        reader.readAsDataURL(xhr.response)
+                        console.error("WHYY")
+                        console.error(xhr.response)
                     }
                 }
                 // open the request and send the data

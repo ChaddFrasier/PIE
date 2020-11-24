@@ -56,7 +56,7 @@ module.exports = {
                             if( err ){console.error(err)}
                             else
                             {
-                                console.log(buffer.toString())
+                                //console.log(buffer.toString())
                             }
                         });
                     }
@@ -71,6 +71,14 @@ module.exports = {
                 catch(err) {
                     console.log(err)
                 }
+            },
+
+            URLerize: function( filepath , baseUrl )
+            {
+                var newurl = "",
+                    regexp = (/^.*(public\/uploads)/i);
+                newurl = filepath.replace(regexp, baseUrl)
+                return newurl
             },
 
             gdal_translate: function( argv )

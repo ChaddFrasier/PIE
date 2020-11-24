@@ -70,7 +70,7 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
 
                     var pvldataObject = pieapi.pie_readPVL(path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl")), ["NorthAzimuth"])
 
-                    res.send({ imagefile: data[0], pvlData: pvldataObject })
+                    res.send({ imagefile: pieapi.URLerize(data[0], "upload"), pvlData: pvldataObject })
                 });
             }
         }).catch( (err) => {
@@ -80,6 +80,18 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
     else
     {
         res.redirect('/');
+    }
+});
+
+router.get('/*', function(req, res)
+{
+    if(  fs.existsSync(path.resolve( path.join( "public", "uploads", req.url))) )
+    {
+        res.sendFile(path.resolve( path.join( "public", "uploads", req.url)))
+    }
+    else
+    {
+        console.error("FAIL")
     }
 });
 
