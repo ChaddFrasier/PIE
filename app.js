@@ -12,7 +12,6 @@ const EXPORT_PATH = path.join(__dirname, "public", "exports")
 var indexRouter = require('./routes/index');
 var aboutRouter = require('./routes/about');
 var contactRouter = require('./routes/contact');
-var apiRouter = require('./routes/api');
 var faqRouter = require('./routes/faq');
 var uploadRouter = require('./routes/upload')
 var exportRouter = require('./routes/export')
@@ -37,7 +36,6 @@ app.use('/', indexRouter);
 app.use('/about', aboutRouter);
 app.use('/contact', contactRouter);
 app.use('/faq', faqRouter);
-app.use(['/api/isis/*','/api/gdal'], apiRouter);
 app.use('/upload', uploadRouter);
 app.use('/images',imageRouter);
 app.use('/export',exportRouter);

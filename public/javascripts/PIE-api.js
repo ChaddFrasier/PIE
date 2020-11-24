@@ -25,6 +25,7 @@ module.exports = {
     PIEAPI: function()
     {
 
+        // TODO: comment this file
         function getOutputFormat( filename )
         {
             let chunks = filename.split(".");
@@ -46,6 +47,11 @@ module.exports = {
     
         return {
 
+            /**
+             * 
+             * @param {*} pvlfilename 
+             * @param {*} keys 
+             */
             pie_readPVL: function ( pvlfilename, keys ){
                 try
                 {
@@ -56,7 +62,7 @@ module.exports = {
                             if( err ){console.error(err)}
                             else
                             {
-                                console.log(buffer.toString())
+                                //console.log(buffer.toString())
                             }
                         });
                     }
@@ -66,13 +72,30 @@ module.exports = {
                     }
                     
                     // read the data of the file line by line
-                    return { data: {key1:1, key2:2}, keys: ["key1", "key2"] }
+                    return { data: {key1:1, key2:2}, keys: keys }
                 }
                 catch(err) {
                     console.log(err)
                 }
             },
 
+            /**
+             * 
+             * @param {*} filepath 
+             * @param {*} baseUrl 
+             */
+            URLerize: function( filepath , baseUrl )
+            {
+                var newurl = "",
+                    regexp = (/^.*(public\/uploads)/i);
+                newurl = filepath.replace(regexp, baseUrl)
+                return newurl
+            },
+
+            /**
+             * 
+             * @param {*} argv 
+             */
             gdal_translate: function( argv )
             {
                 // create a gdal_translate instance with args in the array
@@ -99,12 +122,18 @@ module.exports = {
                 });
             },
 
+            /**
+             * 
+             * @param {*} inputfile 
+             * @param {*} scale 
+             * @param {*} outputfile 
+             */
             gdal_rescale: function( inputfile=undefined, scale="50%", outputfile=undefined)
             {
                 return new Promise( (resolveFunc, rejectFunc) => {
 
                     var outputtype = getOutputFormat( outputfile ),
-                        errorBuf = undefined;
+                        errorBuf = "";
 
                     // create a gdal_translate instance with args in the array
                     var child = spawn( "gdal_translate", [
@@ -139,6 +168,11 @@ module.exports = {
                 });
             },
 
+            /**
+             * 
+             * @param {*} inputfile 
+             * @param {*} outputfile 
+             */
             gdal_virtual: function( inputfile=undefined, outputfile=undefined)
             {
                 return new Promise( (resolveFunc, rejectFunc) => {
@@ -163,6 +197,11 @@ module.exports = {
                 });
             },
 
+            /**
+             * 
+             * @param {*} inputfile 
+             * @param {*} outputfile 
+             */
             isis_isis2std: function( inputfile=undefined, outputfile=undefined)
             {
                 return new Promise( (resolveFunc, rejectFunc) => {
@@ -186,6 +225,11 @@ module.exports = {
                 });
             },
 
+            /**
+             * 
+             * @param {*} inputfile 
+             * @param {*} outputfile 
+             */
             isis_campt: function( inputfile=undefined, outputfile=undefined)
             {
                 return new Promise( (resolveFunc, rejectFunc) => {
@@ -209,6 +253,11 @@ module.exports = {
                 });
             },
 
+            /**
+             * 
+             * @param {*} inputfile 
+             * @param {*} outputfile 
+             */
             isis_catlab: function( inputfile=undefined, outputfile=undefined)
             {
                 return new Promise( (resolveFunc, rejectFunc) => {
@@ -232,6 +281,11 @@ module.exports = {
                 });
             },
             
+            /**
+             * 
+             * @param {*} inputfile 
+             * @param {*} outputfile 
+             */
             isis_catoriglab: function( inputfile=undefined, outputfile=undefined)
             {
                 return new Promise( (resolveFunc, rejectFunc) => {

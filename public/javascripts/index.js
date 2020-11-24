@@ -940,47 +940,66 @@ $( function() {
                 var fd = new FormData(form)
                 var xhr = new XMLHttpRequest()
 
-                xhr.responseType = 'blob'
-                
                 // when the requests load handle the response
                 xhr.onloadend = () => {
                     
                     var reader = new FileReader()
 
-                    if( xhr.response.type == "text/html" )
+                    console.log(xhr.response)
+
+                    try
                     {
-                        // occurs after readAsText()
-                        reader.onload = function(e) {
-                            // remove the btn after displaying the error to the user
-                            var imgRemoveBtn = document.querySelector(`.windowoptionsbar[objectid='${imageId}']>.windowremovebtn`);
-                            alert(`Image Failed to Upload:\nError: ${e.target.result}`)
-                            imgRemoveBtn.click()
-                        }
-                        reader.readAsText(xhr.response)
+                        JSON.parse(xhr.response)
                     }
-                    else
+                    catch(err)
                     {
-                        // occurs after readAsDataURL
-                        reader.onload = function(e) {
-                            // use jquery to update the image source
-                            $('#'+imageId).attr('href', e.target.result)
-                            $('#'+imageId).attr('GEO', 'true')
-                            $('#'+imageId).attr('filePath', getCookie("filepath"))
+                        
+                        // remove the btn after displaying the error to the user
+                        var imgRemoveBtn = document.querySelector(`.windowoptionsbar[objectid='${imageId}']>.windowremovebtn`);
+                        alert(`Image Failed to Upload:\nError: ${xhr.response}`)
+                        imgRemoveBtn.click()
+                    }
+                    
+                    if (xhr.status == 200)
+                    {
+                        console.log(xhr.response)
 
-                            // get the button group
-                            var iconbtngroup = document.getElementsByClassName("concisebtngroup")[0];
+                        var responseObject = JSON.parse(xhr.response)
 
-                            iconbtngroup.childNodes.forEach( btn => {
-                                try 
-                                {
-                                    btn.classList.remove("disabled");
-                                }catch(err){ return }
-                            });
-                        }    
-                        // convert to base64 string
-                        reader.readAsDataURL(xhr.response)
+                        fetch(responseObject.imagefile, {
+                            method: "GET",
+                            header: {"Content-Type": "blob"}
+                        })
+                        .then( imagedatares => imagedatares.blob())
+                        .then((blob) => {
+                            // occurs after readAsDataURL
+                            reader.onload = function(e) {
+                                // use jquery to update the image source
+                                $('#'+imageId).attr('href', e.target.result)
+                                $('#'+imageId).attr('GEO', 'true')
+                                $('#'+imageId).attr('filePath', getCookie("filepath"))
+
+                                // get the button group
+                                var iconbtngroup = document.getElementsByClassName("concisebtngroup")[0];
+
+                                iconbtngroup.childNodes.forEach( btn => {
+                                    try 
+                                    {
+                                        btn.classList.remove("disabled");
+                                    }catch(err){ return }
+                                });
+                            }    
+                            // convert to base64 string
+                            reader.readAsDataURL(blob)
+                        });
+                    }
+                    else if( xhr.status > 299 )
+                    {
+                        console.error("WHYY")
+                        console.error(xhr.response)
                     }
                 }
+
                 // open the request and send the data
                 xhr.open('POST', "/upload", true)
                 xhr.send(fd)

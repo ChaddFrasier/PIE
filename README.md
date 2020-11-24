@@ -58,7 +58,8 @@ conda install -c usgs-astrogeology isis=3.10.2
 Installing on Ubuntu is very simple. Just update your package set and then install the libraries with apt. *nodejs* contains all the executable and server side functionality while *npm* helps with dependencies.
 ```
 sudo apt update
-sudo apt apt install nodejs npm
+sudo apt install nodejs
+sudo apt install npm
 ```
 
 5. Source Code & Dependencies

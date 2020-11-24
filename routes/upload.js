@@ -37,24 +37,24 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
         var pieapi = PIEAPI.PIEAPI();
 
         // call the gdal scaling function that Trent gave me. and convert the output to jpg
-        var promise = [pieapi.gdal_rescale(
+        var promise = pieapi.gdal_rescale(
             path.join("public", "uploads", req.file.filename),
             "50%",
             path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "jpg"))
-            ),
-            pieapi.isis_campt(
-            path.join("public", "uploads", req.file.filename),
-            path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
-            )];
+            );
        
         // runn a single promise
-        Promise.all(promise).then(( data ) => {
+        promise.then(( data ) => {
             console.log("Promises finished with >")
-            console.log(data)
+            console.log(`${data} is the file path`)
 
-            if( data[1] == 0 )
+            if(  fs.existsSync( path.resolve(data) ) )
             {
                 var promise2 = [
+                    pieapi.isis_campt(
+                        path.join("public", "uploads", req.file.filename),
+                        path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
+                        ),
                     pieapi.isis_catlab(
                         path.join("public", "uploads", req.file.filename),
                         path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
@@ -66,20 +66,38 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
                 ];
 
                 Promise.all(promise2).then((code) => {
-                    console.log("Inner ISIS Commands finished with codes > " + String(code).replace(",", " and "))
+                    if( code.includes(0) )
+                    {
+                        var pvldataObject = pieapi.pie_readPVL(path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl")), ["NorthAzimuth"])
 
-                    var pvldataObject = pieapi.pie_readPVL(path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl")), ["NorthAzimuth"])
-
-                    res.send({ imagefile: data[0], pvlData: pvldataObject })
+                        res.status(200).send({ imagefile: pieapi.URLerize(data, "upload"), pvlData: pvldataObject })
+                    }
                 });
             }
+            else
+            {
+                console.error("WTF")
+            }
         }).catch( (err) => {
-            console.log(err)
+            // reset code 205
+            res.status(205).send(err)
         });
     }
     else
     {
         res.redirect('/');
+    }
+});
+
+router.get('/*', function(req, res)
+{
+    if(  fs.existsSync(path.resolve( path.join( "public", "uploads", req.url))) )
+    {
+        res.sendFile(path.resolve( path.join( "public", "uploads", req.url)))
+    }
+    else
+    {
+        console.error("FAIL")
     }
 });
 
