@@ -72,7 +72,7 @@ module.exports = {
                     }
                     
                     // read the data of the file line by line
-                    return { data: {key1:1, key2:2}, keys: ["key1", "key2"] }
+                    return { data: {key1:1, key2:2}, keys: keys }
                 }
                 catch(err) {
                     console.log(err)
@@ -133,7 +133,7 @@ module.exports = {
                 return new Promise( (resolveFunc, rejectFunc) => {
 
                     var outputtype = getOutputFormat( outputfile ),
-                        errorBuf = undefined;
+                        errorBuf = "";
 
                     // create a gdal_translate instance with args in the array
                     var child = spawn( "gdal_translate", [
