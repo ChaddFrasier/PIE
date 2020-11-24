@@ -7,6 +7,8 @@
 
 // spawn to interact with the command line
 var { spawn } = require('child_process');
+const fs = require('fs');
+const path = require('path');
 
 /**
  * module.exports allows me to write any number of fucntions that can be used at anypoint after it is included with some code file or in a <script> tag
@@ -44,16 +46,31 @@ module.exports = {
     
         return {
 
-            pie_readPVL: function ( pvlfilepath, keys ){
-                console.log(`The Keys to look and extract from ${pvlfilepath} are: [${keys} ]`)
-
-                // first check to see if the file exists
-
+            pie_readPVL: function ( pvlfilename, keys ){
+                try
+                {
+                    if( fs.existsSync(pvlfilename) )
+                    {
+                        // first check to see if the file exists
+                        fs.readFile(pvlfilename, function(err, buffer){
+                            if( err ){console.error(err)}
+                            else
+                            {
+                                console.log(buffer.toString())
+                            }
+                        });
+                    }
+                    else
+                    {
+                        // fail and let user know why it failed
+                    }
+                    
                     // read the data of the file line by line
-
-                // fail and let user know why it failed
-
-                return { data: {key1:1, key2:2}, keys: ["key1", "key2"] }
+                    return { data: {key1:1, key2:2}, keys: ["key1", "key2"] }
+                }
+                catch(err) {
+                    console.log(err)
+                }
             },
 
             gdal_translate: function( argv )

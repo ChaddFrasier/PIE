@@ -51,25 +51,7 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
 
         /** Temporary end */
        
-        // the promise function runs and finishes
-        promise
-            // then() -> just send the resulting file back to the client for displaying
-            .then( (newfilename) => {
-                if( fs.existsSync(path.resolve("./"+newfilename)) )
-                {
-                    res.cookie("filepath", path.basename(newfilename));
-                    res.sendFile( path.resolve("./"+newfilename) );
-                }
-                else
-                {
-                    res.send("FAILED")
-                }
-                
-            }).catch( (err) => {
-                res.send(err.toString("UTF-8"))
-            });
-
-            // runn a single promise
+        // runn a single promise
         promise2.then((code) => {
             console.log("Promise 2 finished with >")
             console.log(code)
@@ -89,11 +71,32 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
 
                 Promise.all(promise2).then((code) => {
                     console.log("Inner ISIS Commands finished with codes > " + String(code).replace(",", " and "))
+
+                    pieapi.pie_readPVL(path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl")), ["NorthAzimuth"])
                 });
             }
             }).catch( (err) => {
                 console.log(err)
             });
+
+
+            // the promise function runs and finishes
+        promise
+        // then() -> just send the resulting file back to the client for displaying
+        .then( (newfilename) => {
+            if( fs.existsSync(path.resolve("./"+newfilename)) )
+            {
+                res.cookie("filepath", path.basename(newfilename));
+                res.sendFile( path.resolve("./"+newfilename) );
+            }
+            else
+            {
+                res.send("FAILED")
+            }
+            
+        }).catch( (err) => {
+            res.send(err.toString("UTF-8"))
+        });
     }
     else
     {
