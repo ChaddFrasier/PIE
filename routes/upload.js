@@ -37,28 +37,24 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
         var pieapi = PIEAPI.PIEAPI();
 
         // call the gdal scaling function that Trent gave me. and convert the output to jpg
-        var promise = pieapi.gdal_rescale(
+        var promise = [pieapi.gdal_rescale(
             path.join("public", "uploads", req.file.filename),
             "50%",
             path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "jpg"))
-            );
-
-        /** TODO: Temporary sectoion start  for testing */
-        var promise2 = pieapi.isis_campt(
+            ),
+            pieapi.isis_campt(
             path.join("public", "uploads", req.file.filename),
             path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
-            );
-
-        /** Temporary end */
+            )];
        
         // runn a single promise
-        promise2.then((code) => {
-            console.log("Promise 2 finished with >")
-            console.log(code)
+        Promise.all(promise).then(( data ) => {
+            console.log("Promises finished with >")
+            console.log(data)
 
-            if( code == 0 )
+            if( data[1] == 0 )
             {
-                promise2 = [
+                var promise2 = [
                     pieapi.isis_catlab(
                         path.join("public", "uploads", req.file.filename),
                         path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
@@ -72,30 +68,13 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
                 Promise.all(promise2).then((code) => {
                     console.log("Inner ISIS Commands finished with codes > " + String(code).replace(",", " and "))
 
-                    pieapi.pie_readPVL(path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl")), ["NorthAzimuth"])
+                    var pvldataObject = pieapi.pie_readPVL(path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl")), ["NorthAzimuth"])
+
+                    res.send({ imagefile: data[0], pvlData: pvldataObject })
                 });
             }
-            }).catch( (err) => {
-                console.log(err)
-            });
-
-
-            // the promise function runs and finishes
-        promise
-        // then() -> just send the resulting file back to the client for displaying
-        .then( (newfilename) => {
-            if( fs.existsSync(path.resolve("./"+newfilename)) )
-            {
-                res.cookie("filepath", path.basename(newfilename));
-                res.sendFile( path.resolve("./"+newfilename) );
-            }
-            else
-            {
-                res.send("FAILED")
-            }
-            
         }).catch( (err) => {
-            res.send(err.toString("UTF-8"))
+            console.log(err)
         });
     }
     else
