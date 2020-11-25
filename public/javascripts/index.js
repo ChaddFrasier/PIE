@@ -942,10 +942,7 @@ $( function() {
 
                 // when the requests load handle the response
                 xhr.onloadend = () => {
-                    
                     var reader = new FileReader()
-
-                    console.log(xhr.response)
 
                     try
                     {
@@ -953,11 +950,11 @@ $( function() {
                     }
                     catch(err)
                     {
-                        
                         // remove the btn after displaying the error to the user
                         var imgRemoveBtn = document.querySelector(`.windowoptionsbar[objectid='${imageId}']>.windowremovebtn`);
                         alert(`Image Failed to Upload:\nError: ${xhr.response}`)
                         imgRemoveBtn.click()
+                        return false
                     }
                     
                     if (xhr.status == 200)
@@ -3191,9 +3188,9 @@ function createMarker( markerString, lineid, headcode, endCode )
 
 
                 // set line marker end
-                line.setAttributeNS(NS.svg,"marker-end", `url(#${newmarker.id})`)
+                line.setAttribute("marker-end", `url(#${newmarker.id})`)
                 // add style
-                line.style.markerEnd = `url(#${newmarker.id})`
+                line.style.markerEnd = "url(#" + newmarker.id + ")"
             }
         }
     }
@@ -3233,16 +3230,17 @@ function createMarker( markerString, lineid, headcode, endCode )
                 // set new attributes
                 newmarker.setAttribute( "id", lineid + "-markerEnd" )
                 newmarker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )     
-                newmarker.setAttributeNS(NS.svg, "orient", "auto-start-reverse")
+                newmarker.setAttribute( "orient", "auto-start-reverse")
                 newmarker.setAttribute( "data-cy", "markertail")
 
                 // append the new marker
                 document.getElementById("figdefs").appendChild(newmarker)
 
                 // set line marker end
-                line.setAttributeNS(NS.svg, "marker-start", `url(#${newmarker.id})`)
+                line.setAttribute( "marker-start", `url(#${newmarker.id})`)
                 // style
-                line.style.markerStart = `url(#${newmarker.id})`
+                line.style.markerStart = "url(#" + newmarker.id + ")"
+
             }
         }
     }
