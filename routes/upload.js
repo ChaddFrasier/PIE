@@ -31,15 +31,13 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
 
     if( isisregexp.test(req.file.filename) )
     {
-        // if a tiff or cube file is detected
-        console.debug("GEO FILE DETECTED");
-
+        // if a tiff or cube file is detected; start the api object
         var pieapi = PIEAPI.PIEAPI();
 
         // call the gdal scaling function that Trent gave me. and convert the output to jpg
         var promise = pieapi.gdal_rescale(
             path.join("public", "uploads", req.file.filename),
-            "50%",
+            "60%",
             path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "jpg"))
             );
        
@@ -69,11 +67,8 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
                     if( code.includes(0) )
                     {
                         (pieapi.pie_readPVL(path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl")),
-                            ['SubSpacecraftAzimuth', 'SubSolarAzimuth', 'NorthAzimuth', 'NotAKey']))
+                            ['SubSpacecraftGroundAzimuth', 'SubSolarAzimuth', 'NorthAzimuth', 'PixelResolution']))
                             .then( object => {
-                                console.log("INNER: ")
-                                console.log(object)
-
                                 res.status(200).send({ imagefile: pieapi.URLerize(filepath, "upload"), pvlData: object })
                         })
                         .catch(err =>

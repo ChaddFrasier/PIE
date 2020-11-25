@@ -942,10 +942,7 @@ $( function() {
 
                 // when the requests load handle the response
                 xhr.onloadend = () => {
-                    
                     var reader = new FileReader()
-
-                    console.log(xhr.response)
 
                     try
                     {
