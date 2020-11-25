@@ -67,9 +67,9 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
                     if( code.includes(0) )
                     {
                         (pieapi.pie_readPVL(path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl")),
-                            ['SubSpacecraftGroundAzimuth', 'SubSolarAzimuth', 'NorthAzimuth', 'PixelResolution']))
-                            .then( object => {
-                                res.status(200).send({ imagefile: pieapi.URLerize(filepath, "upload"), pvlData: object })
+                            ['SubSpacecraftGroundAzimuth', 'SubSolarAzimuth', 'NorthAzimuth', 'PixelResolution'])
+                        ).then( object => {
+                            res.status(200).send({ imagefile: pieapi.URLerize(filepath, "upload"), pvlData: object })
                         })
                         .catch(err =>
                         {
