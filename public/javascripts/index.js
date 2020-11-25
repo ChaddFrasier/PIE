@@ -953,11 +953,11 @@ $( function() {
                     }
                     catch(err)
                     {
-                        
                         // remove the btn after displaying the error to the user
                         var imgRemoveBtn = document.querySelector(`.windowoptionsbar[objectid='${imageId}']>.windowremovebtn`);
                         alert(`Image Failed to Upload:\nError: ${xhr.response}`)
                         imgRemoveBtn.click()
+                        return false
                     }
                     
                     if (xhr.status == 200)
