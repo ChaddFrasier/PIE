@@ -398,11 +398,12 @@ button.disabled {
 }
 
 #exportbtn {
-    font-size: var(--small-font);
     border-radius: 3px 3px;
-    padding: 2px;
+    padding: 2px 2px;
     background: var(--bar-gradient);
     cursor: pointer;
+    width: auto;
+    height: auto;
 }
 
 #exportbtn > svg {
@@ -870,14 +871,16 @@ svg.imagecontainer {
 }
 
 .svgholder {
-    margin: 0 10px 0 10px;
-    padding: 10px;
     width: auto;
     height: auto;
     max-height: var(--inner-main-content-max-height);
     background: black;
 }
 
+svg.scalerBox {
+    height: auto;
+    border: 3px solid black;
+}
 .progressBox {
     width: 25%;
     margin:  0 0 0 auto;
@@ -1025,6 +1028,7 @@ input[type="color"]{
     -o-transition: all ease-in-out var(--transition-time); /* Opera */
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
     overflow: visible;
+    padding: 5px;
 }
 
 .pagetitle {

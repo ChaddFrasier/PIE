@@ -24,8 +24,8 @@
         --main-export-box-width: 14em;
         --main-export-title-font: 22px;
 
-        --export-btn-width: 33px;
-        --export-btn-height: 30px;
+        --export-btn-width: 30px;
+        --export-btn-height: 25px;
 
         --toolbox-min-height: 0;
         --toolbox-max-height: 130px;
@@ -86,8 +86,8 @@
         --main-export-box-width: 22em;
         --main-export-title-font: larger;
 
-        --export-btn-width: 35px;
-        --export-btn-height: 35px;
+        --export-btn-width: 34px;
+        --export-btn-height: 32px;
 
         --toolbox-min-height: 0;
         --toolbox-max-height: 200px;
