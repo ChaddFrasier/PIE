@@ -44,11 +44,11 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
             );
        
         // runn a single promise
-        promise.then(( data ) => {
+        promise.then( ( filepath ) => {
             console.log("Promises finished with >")
-            console.log(`${data} is the file path`)
+            console.log(`${filepath} is the file path`)
 
-            if(  fs.existsSync( path.resolve(data) ) )
+            if( fs.existsSync( path.resolve(filepath)) )
             {
                 var promise2 = [
                     pieapi.isis_campt(
@@ -65,12 +65,21 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
                     )
                 ];
 
-                Promise.all(promise2).then((code) => {
+                Promise.all(promise2).then( (code) => {
                     if( code.includes(0) )
                     {
-                        var pvldataObject = pieapi.pie_readPVL(path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl")), ["NorthAzimuth"])
+                        (pieapi.pie_readPVL(path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl")),
+                            ['SubSpacecraftAzimuth', 'SubSolarAzimuth', 'NorthAzimuth', 'NotAKey']))
+                            .then( object => {
+                                console.log("INNER: ")
+                                console.log(object)
 
-                        res.status(200).send({ imagefile: pieapi.URLerize(data, "upload"), pvlData: pvldataObject })
+                                res.status(200).send({ imagefile: pieapi.URLerize(filepath, "upload"), pvlData: object })
+                        })
+                        .catch(err =>
+                        {
+                            console.log("what happened")
+                        })
                     }
                 });
             }
@@ -82,10 +91,6 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
             // reset code 205
             res.status(205).send(err)
         });
-    }
-    else
-    {
-        res.redirect('/');
     }
 });
 
