@@ -8,7 +8,6 @@
 // spawn to interact with the command line
 var { spawn } = require('child_process');
 const fs = require('fs');
-const path = require('path');
 
 /**
  * module.exports allows me to write any number of fucntions that can be used at anypoint after it is included with some code file or in a <script> tag
@@ -44,6 +43,26 @@ module.exports = {
             });
             return ext
         }
+
+        /**
+         * 
+         * @param {*} object 
+         * @param {*} keys 
+         */
+        function cleanPvlObject( object, keys )
+        {
+            console.log(object)
+            for(var i = 0; i < keys.length; i++ )
+            {
+                if( object[keys[i]] === undefined )
+                {
+                    // start at the index of the unknown key and remove 1 element from the array
+                    keys.splice(i, 1)
+                }
+            }
+
+            return {data: object, keys: keys}
+        }
     
         return {
 
@@ -53,16 +72,34 @@ module.exports = {
              * @param {*} keys 
              */
             pie_readPVL: function ( pvlfilename, keys ){
-                try
+                return new Promise( (resolve, reject) =>
                 {
+                    var returnObject = {}
                     if( fs.existsSync(pvlfilename) )
                     {
                         // first check to see if the file exists
                         fs.readFile(pvlfilename, function(err, buffer){
-                            if( err ){console.error(err)}
+                            if( err ){reject(err)}
                             else
                             {
-                                //console.log(buffer.toString())
+                                var sep = '\n'
+
+                                var lineArr = buffer.toString().split(sep)
+                                for(var i = 0; i < lineArr.length; i++)
+                                {
+                                    var clearKey = true
+                                    for( var j = 0; j < keys.length; j++ )
+                                    {
+                                        if( lineArr[i].includes(keys[j]) )
+                                        {
+                                            returnObject[keys[j]] = parseFloat(lineArr[i].split("=")[1])
+                                            //console.log(returnObject)
+                                            clearKey = false;
+                                        }
+                                    }
+                                }
+
+                                resolve( cleanPvlObject( returnObject, keys) )
                             }
                         });
                     }
@@ -72,11 +109,8 @@ module.exports = {
                     }
                     
                     // read the data of the file line by line
-                    return { data: {key1:1, key2:2}, keys: keys }
-                }
-                catch(err) {
-                    console.log(err)
-                }
+                    //resolve({ data: returnObject, keys: keys })
+                });
             },
 
             /**
