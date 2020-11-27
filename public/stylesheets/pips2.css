@@ -11,6 +11,28 @@
     --transition-time: 0.125s;
 }
 
+@-webkit-keyframes loading {
+    from{
+        -webkit-transform: rotate(0deg);
+        
+    }
+
+    to{
+        -webkit-transform: rotate(-360deg);
+    }
+}
+
+@keyframes loading {
+    from{
+        transform: rotate(0deg);
+        
+    }
+
+    to{
+        transform: rotate(-360deg);
+    }
+}
+
 html {
     background: var(--main-bg-color);
     overflow-x: hidden;
@@ -820,6 +842,16 @@ button:hover {
     text-align: right;
     width: var(--inner-main-content-max-width);
     overflow: hidden;
+}
+
+.buttongroup-left {
+    margin: 0 auto 0 0;
+    max-height: 2em;
+}
+
+img.loading {
+    animation: loading 2s linear 1s infinite alternate;
+    -webkit-animation: loading 2s linear 1s infinite;
 }
 
 .buttongroup {

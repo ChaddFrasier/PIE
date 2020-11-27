@@ -173,6 +173,8 @@ block content
         #editbox.editbox
             //- Other Options Button Group
             .exportoptionsbar(style="display:flex;")
+                .buttongroup-left
+                    img#loadicon.loading(src="images/loading.svg", alt="loading" height="100%" style="visibility:hidden;")
                 .buttongroup
                     button#strtoverbtn.disabled(onclick="startOverFunction()")='Restart'
             //- svg figure location

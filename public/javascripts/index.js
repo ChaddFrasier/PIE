@@ -374,7 +374,7 @@ $( function() {
         {
             event.preventDefault();
 
-            var regexp = new RegExp( /([A-Z]|[0-9])*(?:\.(png|jpg|svg|tiff|tif)|\s)/i ),
+            var regexp = new RegExp( /([A-Z]|[0-9])*(?:\.(png|jpg|svg|tiff|tif)|\s)$/i ),
                 breakFlag = false;
 
             // change the color of the borde for bad filename
@@ -896,8 +896,6 @@ $( function() {
         fileinput.setAttribute("id","input"+imageId)
         fileinput.classList.add('fileinputfield')
 
-        // TODO: create a loading icon for when the user uploads an image
-
         // main form section for file input
         let form = document.createElement("form")
         form.setAttribute("runat", "server")
@@ -910,11 +908,14 @@ $( function() {
         // listener for when the user changes the image of the input field
         fileinput.addEventListener("change", function(event){
             // use regexp to test the acceptable file types and handle either way
-            let imgregexp = new RegExp("^.*\.(png|PNG|jpg|JPG|SVG|svg)")
-            let isisregexp = new RegExp("^.*\.(CUB|cub|tif|TIF)")
+            let imgregexp = new RegExp("^.*\.(png|PNG|jpg|JPG|SVG|svg)$")
+            let isisregexp = new RegExp("^.*\.(CUB|cub|tif|TIF)$")
 
             if(imgregexp.test(this.value))
             {
+                // add the loading icon
+                document.getElementById("loadicon").style.visibility = "visible"
+
                 // read a simple image file and display
                 if(this.files && this.files[0])
                 {
@@ -924,6 +925,9 @@ $( function() {
                     reader.onload = function(e) {
                         // use jquery to update the image source
                         $('#'+imageId).attr('href', e.target.result)
+
+                        // remove the load icon from the UI
+                        document.getElementById("loadicon").style.visibility = "hidden"
                     }
 
                     // convert to base64 string
@@ -932,6 +936,8 @@ $( function() {
             }
             else if( isisregexp.test(this.value) )
             {
+                //add the loading icon
+                document.getElementById("loadicon").style.visibility = "visible"
                 
                 // prevent page default submit
                 event.preventDefault()
@@ -952,6 +958,7 @@ $( function() {
                     {
                         // remove the btn after displaying the error to the user
                         var imgRemoveBtn = document.querySelector(`.windowoptionsbar[objectid='${imageId}']>.windowremovebtn`);
+                        document.getElementById("loadicon").style.visibility = "hidden"
                         alert(`Image Failed to Upload:\nError: ${xhr.response}`)
                         imgRemoveBtn.click()
                         return false
@@ -969,12 +976,18 @@ $( function() {
                         })
                         .then( imagedatares => imagedatares.blob())
                         .then((blob) => {
+
+                            // remove the load icon from the UI
+                            document.getElementById("loadicon").style.visibility = "hidden"
+
                             // occurs after readAsDataURL
                             reader.onload = function(e) {
                                 // use jquery to update the image source
                                 $('#'+imageId).attr('href', e.target.result)
                                 $('#'+imageId).attr('GEO', 'true')
                                 $('#'+imageId).attr('filePath', getCookie("filepath"))
+
+                                // TODO: test to see which data values where recieved and activate the buttons that need to be activated for each data value.
 
                                 // get the button group
                                 var iconbtngroup = document.getElementsByClassName("concisebtngroup")[0];
@@ -1457,6 +1470,7 @@ $( function() {
                     // set the height and width using the scale
                     icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale"))
                     icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale"))
+                    //icongroup.setAttribute( "transform", "rotate(180)")
                 }
                 else
                 {
@@ -1593,7 +1607,7 @@ var startActiveEM = function() {
     return {
         activateEvent: function()
         {
-            // TODO: if there is no event running then return true otherwise false
+            // if there is no event running then return true otherwise false
             if( RunningEvent )
             {
                 return false;
@@ -3230,7 +3244,10 @@ function createMarker( markerString, lineid, headcode, endCode )
                 // set new attributes
                 newmarker.setAttribute( "id", lineid + "-markerEnd" )
                 newmarker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )     
-                newmarker.setAttribute( "orient", "auto-start-reverse")
+                
+                // Removed until this issue is resolved https://github.com/lovell/sharp/issues/2459 & https://github.com/ChaddFrasier/PIE/issues/180
+                // newmarker.setAttribute( "orient", "auto-start-reverse")
+                
                 newmarker.setAttribute( "data-cy", "markertail")
 
                 // append the new marker

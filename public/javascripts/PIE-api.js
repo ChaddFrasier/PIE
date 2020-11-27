@@ -23,8 +23,11 @@ module.exports = {
      */
     PIEAPI: function()
     {
-
-        // TODO: comment this file
+        /**
+         * @function getOutputFormat
+         * @param {string} filename the name of the file that we are testing
+         * @description parse the filename and determine if the 
+         */
         function getOutputFormat( filename )
         {
             let chunks = filename.split(".");
@@ -45,9 +48,10 @@ module.exports = {
         }
 
         /**
-         * 
-         * @param {*} object 
-         * @param {*} keys 
+         * @function cleanPvlObject
+         * @param {JSON} object the JSON object that to update
+         * @param {Array} keys the keys to the JSON
+         * @description parse over the keys and remove any that are not found inside of the object
          */
         function cleanPvlObject( object, keys )
         {
@@ -66,10 +70,13 @@ module.exports = {
     
         return {
 
+            /** These Function are returned with the PIEAPI object from the init call */
+
             /**
-             * 
-             * @param {*} pvlfilename 
-             * @param {*} keys 
+             * @function pie_readPVL
+             * @param {string} pvlfilename filename for the pvl file
+             * @param {Array} keys the keys to look for in the file
+             * @description parse out the keys into a JSON object. return an empty object if no keys are found and reject if fails to find file.
              */
             pie_readPVL: function ( pvlfilename, keys ){
                 return new Promise( (resolve, reject) =>
@@ -82,8 +89,8 @@ module.exports = {
                             if( err ){reject(err)}
                             else
                             {
+                                // read the whole file lineby line
                                 var sep = '\n'
-
                                 var lineArr = buffer.toString().split(sep)
                                 for(var i = 0; i < lineArr.length; i++)
                                 {
@@ -114,9 +121,9 @@ module.exports = {
             },
 
             /**
-             * 
-             * @param {*} filepath 
-             * @param {*} baseUrl 
+             * @functoq URLerize
+             * @param {string} filepath the path to the file the user needs to dwnload 
+             * @param {string} baseUrl the baseurl to turn the file into a download url
              */
             URLerize: function( filepath , baseUrl )
             {
@@ -127,8 +134,9 @@ module.exports = {
             },
 
             /**
-             * 
-             * @param {*} argv 
+             * @function gdal_translate
+             * @param {Array} argv array of arguments for the gdal_translate function on command line see: https://gdal.org/programs/gdal_translate.html
+             * @description run gdal_translate using spawn in node
              */
             gdal_translate: function( argv )
             {
@@ -157,10 +165,11 @@ module.exports = {
             },
 
             /**
-             * 
-             * @param {*} inputfile 
-             * @param {*} scale 
-             * @param {*} outputfile 
+             * @function gdal_rescale
+             * @param {*} inputfile string to the input raster
+             * @param {*} scale the new scale in percent or decimal
+             * @param {*} outputfile the name of the desired output file. 
+             * @description use gdal translate to resize a Raster file, can also convert between file types using https://gdal.org/programs/gdal_translate.html
              */
             gdal_rescale: function( inputfile=undefined, scale="50%", outputfile=undefined)
             {
@@ -203,9 +212,10 @@ module.exports = {
             },
 
             /**
-             * 
-             * @param {*} inputfile 
-             * @param {*} outputfile 
+             * @function gdal_virtual 
+             * @param {string} inputfile the name of the input file
+             * @param {string} outputfile the name of the output vrt file
+             * @description create a virtual raster file for the given input file
              */
             gdal_virtual: function( inputfile=undefined, outputfile=undefined)
             {
@@ -232,9 +242,10 @@ module.exports = {
             },
 
             /**
-             * 
-             * @param {*} inputfile 
-             * @param {*} outputfile 
+             * @function isis_isis2std
+             * @param {*} inputfile input ISIS cube file
+             * @param {*} outputfile output some std formt supported by the function
+             * @description uses isis2std to convert an isis file using this https://isis.astrogeology.usgs.gov/Application/presentation/Tabbed/isis2std/isis2std.html
              */
             isis_isis2std: function( inputfile=undefined, outputfile=undefined)
             {
@@ -260,9 +271,10 @@ module.exports = {
             },
 
             /**
-             * 
-             * @param {*} inputfile 
-             * @param {*} outputfile 
+             * @function isis_campt
+             * @param {string} inputfile input cub file
+             * @param {string} outputfile output pvl file to append the output
+             * @description run campt from ISIS and append output to pvl file
              */
             isis_campt: function( inputfile=undefined, outputfile=undefined)
             {
@@ -288,9 +300,10 @@ module.exports = {
             },
 
             /**
-             * 
-             * @param {*} inputfile 
-             * @param {*} outputfile 
+             * @function isis_catlab
+             * @param {string} inputfile input cub file
+             * @param {string} outputfile pvl file to append the result
+             * @description run catlab and append results to pvl
              */
             isis_catlab: function( inputfile=undefined, outputfile=undefined)
             {
@@ -316,9 +329,10 @@ module.exports = {
             },
             
             /**
-             * 
-             * @param {*} inputfile 
-             * @param {*} outputfile 
+             * @function isis_catoriglab
+             * @param {string} inputfile cub file for reading
+             * @param {string} outputfile pvl file for appending
+             * @description run catoriglab and append results to the output file
              */
             isis_catoriglab: function( inputfile=undefined, outputfile=undefined)
             {
