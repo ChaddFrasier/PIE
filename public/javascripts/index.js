@@ -896,8 +896,6 @@ $( function() {
         fileinput.setAttribute("id","input"+imageId)
         fileinput.classList.add('fileinputfield')
 
-        // TODO: create a loading icon for when the user uploads an image
-
         // main form section for file input
         let form = document.createElement("form")
         form.setAttribute("runat", "server")
@@ -915,6 +913,9 @@ $( function() {
 
             if(imgregexp.test(this.value))
             {
+                // add the loading icon
+                document.getElementById("loadicon").style.visibility = "visible"
+
                 // read a simple image file and display
                 if(this.files && this.files[0])
                 {
@@ -924,6 +925,9 @@ $( function() {
                     reader.onload = function(e) {
                         // use jquery to update the image source
                         $('#'+imageId).attr('href', e.target.result)
+
+                        // remove the load icon from the UI
+                        document.getElementById("loadicon").style.visibility = "hidden"
                     }
 
                     // convert to base64 string
@@ -932,6 +936,8 @@ $( function() {
             }
             else if( isisregexp.test(this.value) )
             {
+                //add the loading icon
+                document.getElementById("loadicon").style.visibility = "visible"
                 
                 // prevent page default submit
                 event.preventDefault()
@@ -952,6 +958,7 @@ $( function() {
                     {
                         // remove the btn after displaying the error to the user
                         var imgRemoveBtn = document.querySelector(`.windowoptionsbar[objectid='${imageId}']>.windowremovebtn`);
+                        document.getElementById("loadicon").style.visibility = "hidden"
                         alert(`Image Failed to Upload:\nError: ${xhr.response}`)
                         imgRemoveBtn.click()
                         return false
@@ -969,6 +976,10 @@ $( function() {
                         })
                         .then( imagedatares => imagedatares.blob())
                         .then((blob) => {
+
+                            // remove the load icon from the UI
+                            document.getElementById("loadicon").style.visibility = "hidden"
+
                             // occurs after readAsDataURL
                             reader.onload = function(e) {
                                 // use jquery to update the image source
