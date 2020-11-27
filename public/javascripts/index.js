@@ -987,6 +987,8 @@ $( function() {
                                 $('#'+imageId).attr('GEO', 'true')
                                 $('#'+imageId).attr('filePath', getCookie("filepath"))
 
+                                // TODO: test to see which data values where recieved and activate the buttons that need to be activated for each data value.
+
                                 // get the button group
                                 var iconbtngroup = document.getElementsByClassName("concisebtngroup")[0];
 
@@ -1468,6 +1470,7 @@ $( function() {
                     // set the height and width using the scale
                     icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale"))
                     icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale"))
+                    //icongroup.setAttribute( "transform", "rotate(180)")
                 }
                 else
                 {
@@ -1604,7 +1607,7 @@ var startActiveEM = function() {
     return {
         activateEvent: function()
         {
-            // TODO: if there is no event running then return true otherwise false
+            // if there is no event running then return true otherwise false
             if( RunningEvent )
             {
                 return false;
@@ -3241,7 +3244,10 @@ function createMarker( markerString, lineid, headcode, endCode )
                 // set new attributes
                 newmarker.setAttribute( "id", lineid + "-markerEnd" )
                 newmarker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )     
-                newmarker.setAttribute( "orient", "auto-start-reverse")
+                
+                // Removed until this issue is resolved https://github.com/lovell/sharp/issues/2459 & https://github.com/ChaddFrasier/PIE/issues/180
+                // newmarker.setAttribute( "orient", "auto-start-reverse")
+                
                 newmarker.setAttribute( "data-cy", "markertail")
 
                 // append the new marker
