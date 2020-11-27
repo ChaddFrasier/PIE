@@ -82,8 +82,8 @@ module.exports = {
                             if( err ){reject(err)}
                             else
                             {
+                                // read the whole file lineby line
                                 var sep = '\n'
-
                                 var lineArr = buffer.toString().split(sep)
                                 for(var i = 0; i < lineArr.length; i++)
                                 {

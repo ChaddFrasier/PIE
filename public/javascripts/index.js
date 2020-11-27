@@ -374,7 +374,7 @@ $( function() {
         {
             event.preventDefault();
 
-            var regexp = new RegExp( /([A-Z]|[0-9])*(?:\.(png|jpg|svg|tiff|tif)|\s)/i ),
+            var regexp = new RegExp( /([A-Z]|[0-9])*(?:\.(png|jpg|svg|tiff|tif)|\s)$/i ),
                 breakFlag = false;
 
             // change the color of the borde for bad filename
@@ -910,8 +910,8 @@ $( function() {
         // listener for when the user changes the image of the input field
         fileinput.addEventListener("change", function(event){
             // use regexp to test the acceptable file types and handle either way
-            let imgregexp = new RegExp("^.*\.(png|PNG|jpg|JPG|SVG|svg)")
-            let isisregexp = new RegExp("^.*\.(CUB|cub|tif|TIF)")
+            let imgregexp = new RegExp("^.*\.(png|PNG|jpg|JPG|SVG|svg)$")
+            let isisregexp = new RegExp("^.*\.(CUB|cub|tif|TIF)$")
 
             if(imgregexp.test(this.value))
             {

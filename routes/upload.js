@@ -27,7 +27,7 @@ var storage = multer.diskStorage(
 var upload = multer( { storage: storage } );
 
 router.post('/', upload.single('imageinput') , (req, res, next) => {
-    var isisregexp = new RegExp("^.*\.(CUB|cub|tif|TIF)");
+    var isisregexp = new RegExp("^.*\.(CUB|cub|tif|TIF)$");
 
     if( isisregexp.test(req.file.filename) )
     {
