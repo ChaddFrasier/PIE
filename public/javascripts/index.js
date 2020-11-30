@@ -551,7 +551,7 @@ $( function() {
         deletebtn.classList.add("windowremovebtn")
         deletebtn.innerHTML = "&times"
         
-        draggableList.removeDraggable( deletebtn )
+        deletebtn.addEventListener("click", function(event){removeToolsWindow(event) })
 
         /** Dyncamic layer buttoon requires more work*/
         // set the class css and the svg button graphic
@@ -821,7 +821,6 @@ $( function() {
      */
     $('button.toolboxaddimagebtn').on("click", () =>
     {
-
         // used for identifying the tool box for each caption in the image 
         let imageId = randomId("image"),
             newoptionsbar = document.createElement("div"),
@@ -867,7 +866,7 @@ $( function() {
         deletebtn.classList.add("windowremovebtn")
         deletebtn.innerHTML = "&times"
         
-        draggableList.removeDraggable(deletebtn)
+        deletebtn.addEventListener("click", function(event){removeToolsWindow(event) })
 
         /** Dyncamic layer buttoon */
         layerbtn.classList.add("windoworderingbtn")
@@ -925,6 +924,11 @@ $( function() {
                     reader.onload = function(e) {
                         // use jquery to update the image source
                         $('#'+imageId).attr('href', e.target.result)
+                        $('#'+imageId).attr('GEO', null)
+                        $('#'+imageId).attr('filePath', null)
+
+                        ButtonManager.addImage( imageId, [])
+
 
                         // remove the load icon from the UI
                         document.getElementById("loadicon").style.visibility = "hidden"
@@ -963,12 +967,12 @@ $( function() {
                         imgRemoveBtn.click()
                         return false
                     }
-                    
+                    var responseObject = {}
                     if (xhr.status == 200)
                     {
                         console.log(xhr.response)
 
-                        var responseObject = JSON.parse(xhr.response)
+                        responseObject = JSON.parse(xhr.response)
 
                         fetch(responseObject.imagefile, {
                             method: "GET",
@@ -986,18 +990,39 @@ $( function() {
                                 $('#'+imageId).attr('href', e.target.result)
                                 $('#'+imageId).attr('GEO', 'true')
                                 $('#'+imageId).attr('filePath', getCookie("filepath"))
+                                
+                                // TODO: read in the data values into attriubute values for the image
+                                responseObject.pvlData.keys.forEach( key => {
+                                    $('#'+imageId).parent().attr(key, responseObject.pvlData.data[key])
+                                });
 
                                 // TODO: test to see which data values where recieved and activate the buttons that need to be activated for each data value.
-
+                                // THIS IS BASICALLY DONE JUST NEED TO CHANGE THE responseObject TO GET THE ATTRIBUTE INSTEAD
                                 // get the button group
-                                var iconbtngroup = document.getElementsByClassName("concisebtngroup")[0];
 
-                                iconbtngroup.childNodes.forEach( btn => {
-                                    try 
-                                    {
-                                        btn.classList.remove("disabled");
-                                    }catch(err){ return }
-                                });
+                                var btnArray = []
+                                // test if the north arrow data is valid and activte the button
+                                if ( responseObject.pvlData.data['NorthAzimuth'] )
+                                {
+                                    btnArray.push('north')
+                                }
+                                // test if the sun arrow data is valid and activte the button
+                                if ( responseObject.pvlData.data['SubSolarAzimuth'] )
+                                {
+                                    btnArray.push('sun')
+                                }
+                                // test if the observer arrow data is valid and activte the button
+                                if ( responseObject.pvlData.data['SubSpacecraftGroundAzimuth'] )
+                                {
+                                    btnArray.push('observer')
+                                }
+                                // test if the scalebar data is valid and activte the button
+                                if ( responseObject.pvlData.data['PixelResolution'] )
+                                {
+                                    btnArray.push('scale');
+                                }
+
+                                ButtonManager.addImage(imageId, btnArray )
                             }    
                             // convert to base64 string
                             reader.readAsDataURL(blob)
@@ -1598,6 +1623,68 @@ $( function() {
 /* Helper functions */
 
 /**
+ * @function startButtonManager
+ */
+var startButtonManager = function() {
+
+    var MemoryObject = {};
+
+    return {
+        refresh: function()
+        {
+
+            // deactivate all the buttons
+            document.getElementById("northarrowopt").classList.add("disabled")
+            document.getElementById("sunarrowopt").classList.add("disabled")
+            document.getElementById("observerarrowopt").classList.add("disabled")
+            document.getElementById("scalebarbtnopt").classList.add("disabled")
+
+            // activate only the ones that are needed
+            Object.keys(MemoryObject).forEach( imageId => {
+
+                if( MemoryObject[imageId].indexOf("north") > -1 )
+                {
+                    // activate the north button
+                    document.getElementById("northarrowopt").classList.remove("disabled")
+                }
+                if( MemoryObject[imageId].indexOf("sun") > -1 )
+                {
+                    // activate the north button
+                    document.getElementById("sunarrowopt").classList.remove("disabled")
+                }
+                if( MemoryObject[imageId].indexOf("observer") > -1 )
+                {
+                    // activate the north button
+                    document.getElementById("observerarrowopt").classList.remove("disabled")
+                }
+                if( MemoryObject[imageId].indexOf("scale") > -1 )
+                {
+                    // activate the north button
+                    document.getElementById("scalebarbtnopt").classList.remove("disabled")
+                }
+            });
+        },
+
+        addImage: function( imagename, btnArray )
+        {
+            MemoryObject[imagename] = btnArray
+            this.refresh()
+        },
+
+        removeImage: function( imagename )
+        {
+            if( MemoryObject[imagename] ) 
+            {
+                delete MemoryObject[imagename]
+            }
+            this.refresh()
+        }
+    }
+}
+
+const ButtonManager = startButtonManager();
+
+/**
  * @function startActiveEM
  * @description This function creates an event manager object that acts as a universal flagger to start or disable running events
  */
@@ -1642,6 +1729,37 @@ var startActiveEM = function() {
     };
 }
 
+
+/**
+ * @function removeToolsWindow
+ * @param {_Event} event - the event to remove a window when button click happens
+ * @description This function is used to delete the tools window and options bar from the tool box area
+*/
+function removeToolsWindow( event )
+{
+    if(event.target.parentElement.attributes.objectid.value)
+    {
+        // remove the current options bar, its next child and the caption matching the same id
+        var parentBox = event.target.parentElement.parentElement,
+            svgObject = document.getElementById(event.target.parentElement.attributes.objectid.value),
+            svgcontainer = draggableSvg.getContainerObject()
+
+        ButtonManager.removeImage(event.target.parentElement.attributes.objectid.value)
+
+        // remove the options and other things for image
+        draggableList.removeObject(parentBox)
+
+        // remove the image holder now
+        if( svgcontainer === svgObject.parentElement )
+        {
+            svgcontainer.removeChild(svgObject);
+        }
+        else
+        {
+            svgcontainer.removeChild(svgObject.parentElement);
+        }
+    }
+}
 
 /**
  * @function minimizeToolsWindow
@@ -3277,6 +3395,10 @@ function optionsAction( target )
     }
 }
 
+/**
+ * 
+ * @param {*} buttonid 
+ */
 function leftClick ( buttonid )
 {
     if( buttonid === 0)
