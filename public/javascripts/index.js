@@ -1401,8 +1401,30 @@ $( function() {
 
         if(typeofObject(event.target.id) == "image" && event.target.getAttribute("GEO") == "true")
         {
-            // set element
-            selectedObject = event.target
+            if( btn.id.indexOf("north") > -1 && event.target.parentElement.getAttribute("NorthAzimuth"))
+            {
+                // set element
+                selectedObject = event.target
+            }
+            else if( btn.id.indexOf("sun") > -1 && event.target.parentElement.getAttribute("SubSolarAzimuth") )
+            {
+                // set element
+                selectedObject = event.target
+            }
+            else if( btn.id.indexOf("observer") > -1 && event.target.parentElement.getAttribute("SubSpacecraftGroundAzimuth") )
+            {
+                // set element
+                selectedObject = event.target
+            }
+            else if( btn.id.indexOf("scale") > -1 && event.target.parentElement.getAttribute("PixelResolution") )
+            {
+                // set element
+                selectedObject = event.target
+            }
+            else
+            {
+                alert("Data Error:\nThe image you are adding the icon to does not have the required metadata for this icon.")
+            }
         }
         else if(btn != event.target)
         {
