@@ -97,47 +97,6 @@ function DraggableList( inobject=undefined )
         }
     }
 
-
-    /**
-     * @function removeToolsWindow
-     * @param {_Event} event - the event to remove a window when button click happens
-     * @description This function is used to delete the tools window and options bar from the tool box area
-    */
-    function removeToolsWindow( event )
-    {
-        if(event.target.parentElement.attributes.objectid.value)
-        {
-            // remove the current options bar, its next child and the caption matching the same id
-            var parentBox = event.target.parentElement.parentElement,
-                svgObject = document.getElementById(event.target.parentElement.attributes.objectid.value),
-                svgcontainer = draggableSvg.getContainerObject()
-
-            // remove the options and other things for image
-            draggableList.removeObject(parentBox)
-
-            // remove the image holder now
-            if( svgcontainer === svgObject.parentElement )
-            {
-                svgcontainer.removeChild(svgObject);
-            }
-            else
-            {
-                svgcontainer.removeChild(svgObject.parentElement);
-            }
-
-            let objType = typeofObject(svgObject.id);
-
-            // update the count and disable buttons if it is neededß
-            if( (getObjectCount(-1 , objType) == 0 && objType == "image") || (document.querySelectorAll("image[GEO='true']").length === 0 ))
-            {
-                document.getElementsByClassName("concisebtngroup")[0].childNodes.forEach( btn => {
-                    btn.classList.add("disabled");
-                });
-            }
-        }
-    }
-
-
     /**
      * @function shiftDown
      * @param {number} newY - the new oldY value that will be set after the UI is updated
@@ -281,17 +240,6 @@ function DraggableList( inobject=undefined )
              */
             removeObject: ( object ) => {
                 DraggableListContainer.removeChild(object)
-            },
-
-            /**
-             * @function removeDraggable
-             * @param {object} startBtn - the button that will begin the undoing of the dragging.
-             * @description this function removes all dragging functionality from the button you pass it. and then removes the window
-             */
-            removeDraggable: (startBtn) => {
-                startBtn.addEventListener( "click", function(event) {
-                    removeToolsWindow(event)
-                })
             },
 
             /**
