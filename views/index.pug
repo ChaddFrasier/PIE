@@ -28,18 +28,18 @@ block content
                 #filetools.filetoolsbox.closed
                     label.text(for="figureoutputsize")="Figure Size"
                     br
-                    select#figsizeselect
+                    select#figsizeselect(title="Change the size of the main figure.")
                         optgroup
                             each figsize in ["1500x1500", "2500x2000", "3500x3500"]
                                 option(value=fidsize) #{figsize}
                     br
                     label.text(for="backgroundcolor")="Background Color"
                     br
-                    input#backgroundcolor(type="color", name="backgroundcolor", value="#1D84B5")
+                    input#backgroundcolor(type="color", name="backgroundcolor", value="#1D84B5" title="Change the color of the main figure background.")
                     br
                     label.text(for="backgroundcolor")="Export Figure as "
                     br
-                    button#exportbtn(type="button", name="exportFigureButton")
+                    button#exportbtn(type="button", name="exportFigureButton" title="Download figure as ...")
                         svg(viewBox="0 0 100 100")
                             g(stroke="#000000")
                                 path(d="m3.1231 15.551s1.3476 4.0152 10.775 4.1427c9.4272 0.12744 10.694-4.4231 10.694-4.4231l72.511 0.28039v67.253h-93.98z" fill="none" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="3.4396")
@@ -55,7 +55,7 @@ block content
                 #edittoolsbox.edittoolsbox.closed
                     label.text(for="icongroup")="Geospacial Icons"
                     #icongroup.concisebtngroup
-                        button#northarrowopt.disabled(type="button" title="North Arrow")
+                        button#northarrowopt.disabled(type="button" title="North Arrow" )
                             svg.btnvectorgraphic(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 27 27" xml:space="preserve")
                                 svg#northgroup(viewBox="0 0 27 27")
                                     g.holder
@@ -165,10 +165,10 @@ block content
           
             //- this is the sidebar of the tool area
             .windowsidebar
-                button.toolboxminimizebtn(title="Toggle Tools")='⇤'
-                button#addimagebtn.toolboxaddimagebtn(title="Add Image")
+                button.toolboxminimizebtn(title="Hide Toolbox")='⇤'
+                button#addimagebtn.toolboxaddimagebtn(title="Add Image Object")
                     img.svgimg(src="/images/addPlanetImage.svg")
-                button#addcaptionbtn.toolboxaddcaptionbtn(title="Add Caption")
+                button#addcaptionbtn.toolboxaddcaptionbtn(title="Add Caption Object")
                     img.svgimg(src="/images/addCaptionImage.svg")
         #editbox.editbox
             //- Other Options Button Group
@@ -176,7 +176,7 @@ block content
                 .buttongroup-left
                     img#loadicon.loading(src="images/loading.svg", alt="loading" height="100%" style="visibility:hidden;")
                 .buttongroup
-                    button#strtoverbtn.disabled(onclick="startOverFunction()")='Restart'
+                    button#strtoverbtn.disabled(onclick="startOverFunction()")='↻'
             //- svg figure location
           
             svg.svgholder(viewBox="-500 0 2500 1500", xmlns="http://www.w3.org/2000/svg", xmlns:xlink="http://www.w3.org/2000/svg")

@@ -36,7 +36,7 @@
 html {
     background: var(--main-bg-color);
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: hidden;
     color: var(--contrast-color);
     padding: 0 0px;
     margin: 0;
@@ -526,7 +526,7 @@ button.disabled {
 .maincontent {
     display: flex; 
     height: var(--main-content-height);
-    width: auto;
+    width: 100%;
     text-align: left;
 }
 
