@@ -317,7 +317,7 @@ $( function() {
         fileinputtypetifflabel.innerHTML = "GeoTIFF"
         
         //TODO:  disabled this checkbox
-        fileinputtype2.classList.add("disabled")        
+        fileinputtype2.classList.add("disabled")
 
         var fileinputtype3 = fileinputtype.cloneNode(true);
 
@@ -929,7 +929,6 @@ $( function() {
 
                         ButtonManager.addImage( imageId, [])
 
-
                         // remove the load icon from the UI
                         document.getElementById("loadicon").style.visibility = "hidden"
                     }
@@ -991,15 +990,12 @@ $( function() {
                                 $('#'+imageId).attr('GEO', 'true')
                                 $('#'+imageId).attr('filePath', getCookie("filepath"))
                                 
-                                // TODO: read in the data values into attriubute values for the image
+                                // read in the data values into attribute values for the image
                                 responseObject.pvlData.keys.forEach( key => {
                                     $('#'+imageId).parent().attr(key, responseObject.pvlData.data[key])
                                 });
 
-                                // TODO: test to see which data values where recieved and activate the buttons that need to be activated for each data value.
-                                // THIS IS BASICALLY DONE JUST NEED TO CHANGE THE responseObject TO GET THE ATTRIBUTE INSTEAD
-                                // get the button group
-
+                                // test to see which data values where recieved and activate the buttons that need to be activated for each data value.
                                 var btnArray = []
                                 // test if the north arrow data is valid and activte the button
                                 if ( responseObject.pvlData.data['NorthAzimuth'] )
@@ -1214,6 +1210,9 @@ $( function() {
         // update the svgContainer size
         let tmp = event.target.value.split("x")
         draggableSvg.getContainerObject().setAttribute("viewBox", "0 0 " + tmp[0] + ' ' + tmp[1])
+        draggableSvg.getContainerObject().parentElement.setAttribute("viewBox", "-500 0 " + (Number(tmp[0])+1000) + ' ' + tmp[1])
+        draggableSvg.getContainerObject().setAttribute("width", tmp[0])
+        draggableSvg.getContainerObject().setAttribute("height", tmp[1])
     })
 
     /**

@@ -2,11 +2,72 @@
 @media only screen and (min-width: 600px)
 {
     :root {
-        --large-font: 16px;
-        --medium-font: 15px;
-        --sm-medium-font: 14px;
-        --small-font: 13px;
-        --xsmall-font: 12px;
+        --large-font: 12px;
+        --medium-font: 11px;
+        --sm-medium-font: 10px;
+        --small-font: 9px;
+        --xsmall-font: 8px;
+
+        --usgs-image-height: 30px;
+        --usgs-image-width: 125px;
+
+        --color-input-width: 5em;
+        --color-input-height: 2em;
+
+        --max-image-width: 55%;
+        --max-header-image-width: 75px;
+
+        --max-title-width: 125px;
+        --max-title-height: 85px;
+
+        --main-export-box-height: 14em;
+        --main-export-box-width: 15em;
+        --main-export-title-font: 18px;
+
+        --toolbox-width: 20%;
+
+        --export-btn-width: 30px;
+        --export-btn-height: 30px;
+
+        --toolbox-min-height: 0;
+        --toolbox-max-height: 130px;
+        --toolbox-min-width: 100%;
+        --toolbox-max-width: 100px;
+        --edittoolbox-max-height: 175px;
+
+        --toolbox-minibtn-min-width: 30px;
+        --toolbox-minibtn-max-width: 30px;
+        --toolbox-minibtn-min-height: 25px;
+        --toolbox-minibtn-max-height: 30px;
+
+        --inner-main-content-max-height: 79vh;
+
+        --min-svg-btn: 25px;
+        --max-svg-btn: 25px;
+
+        --svg-icon-width: 27px;
+        --svg-icon-height: 2.5em;
+
+        --svg-icon-width: 30px;
+
+        --header-height: 7%;
+        --main-content-height: 80vh;
+        --toolcontainer-height: 80vh;
+        --footer-height: 7%;
+
+        /* New Section Here */
+        --inner-main-content-max-width: 75vw;
+    }
+}
+
+@media only screen and (min-width: 800px)
+{
+    :root {
+        --large-font: 13px;
+        --medium-font: 12px;
+        --sm-medium-font: 11px;
+        --small-font: 10px;
+        --xsmall-font: 9px;
 
         --usgs-image-height: 50px;
         --usgs-image-width: 200px;
@@ -20,9 +81,11 @@
         --max-title-width: 250px;
         --max-title-height: 85px;
 
-        --main-export-box-height: auto;
-        --main-export-box-width: 14em;
-        --main-export-title-font: 22px;
+        --main-export-box-height: 14em;
+        --main-export-box-width: 15em;
+        --main-export-title-font: 18px;
+
+        --toolbox-width: 15%;
 
         --export-btn-width: 30px;
         --export-btn-height: 25px;
@@ -82,9 +145,10 @@
         --max-title-width: 300px;
         --max-title-height: 100px;
 
-        --main-export-box-height: auto;
         --main-export-box-width: 22em;
-        --main-export-title-font: larger;
+        --main-export-title-font: 20px;
+
+        --toolbox-width: 12%;
 
         --export-btn-width: 34px;
         --export-btn-height: 32px;
@@ -137,6 +201,8 @@
         --main-export-box-height: auto;
         --main-export-box-width: 30em;
         --main-export-title-font: larger;
+
+        --toolbox-width: 10%;
 
         --export-btn-width: 48px;
         --export-btn-height: 45px;
