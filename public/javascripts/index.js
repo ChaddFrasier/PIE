@@ -41,6 +41,31 @@ $( function() {
     // set background right away when page loads
     setSVGBackground("bgelement", bgPicker.value)
 
+    function shiftKeyup( event )
+    {
+        event.preventDefault()
+        if( event.key === "Shift" || event.key ==='shift' || event.key === 16 )
+        {
+            console.log("REMOVE THE SHIFT LISTENERS")
+
+            // TODO: reverse
+
+            // unpause the drag stuff from the DraggableArea Object
+            draggableSvg.unpauseDraggables();
+            changeButtonActivation("enable", 2)
+
+            // remove a listener to prevent any content highlighting
+            
+            // remove the color the endpoints of the lines and the endpoints of the rectangles
+
+            document.removeEventListener("keyup", shiftKeyup)
+
+            draggableSvg.getContainerObject().removeChild(document.getElementsByClassName("draggableDot")[0])
+        }
+        return true
+    }
+
+
     /**
      * @function customKeys
      * @param {Keydown Event} event the ketdown event
@@ -98,9 +123,55 @@ $( function() {
                 document.getElementById("savebtn").click()
             }
         }
+        else if( (key === "Shift" 
+                || key === 'shift' 
+                || key === 16) 
+                && (!PencilFlag && !OutlineFlag)
+                && (document.querySelectorAll("line.placed").length > 0 || document.querySelectorAll("rect.placed").length > 0 )
+            )
+        {
+
+            // SHIFT MODE ACTIVATE
+            console.log("ACTIVATE THE SHIFT MODE")
+
+            // TODO:
+
+            // pause the drag stuff from the DraggableArea Object
+            draggableSvg.pauseDraggables();
+
+            // disable the buttons in the toolbox
+            changeButtonActivation("disable", 2)
+
+            // remove a listener to prevent any content highlighting
+
+            // color the endpoints of the lines and the endpoints of the rectangles.
+
+                // either add another layer to the html page that holds the endpoints
+
+
+            // add a dot where one of the line points are
+            var dot = document.createElementNS(NS.svg, "circle")
+
+            dot.setAttribute("class", "draggableDot")
+
+            dot.setAttribute("r", "20")
+
+            // get the x and y of all the points of the rectangles and lines
+            dot.setAttribute("cx", 200)
+            dot.setAttribute("cy", 250)
+
+            dot.setAttribute("fill", "red")
+
+            draggableSvg.getContainerObject().append(dot)
+
+
+            // add the key listener specifically to cancel the shift function
+            document.addEventListener("keyup", shiftKeyup);
+        }
 
         // TODO: this is temporary
         console.log(`Key & Code: \n\n\tKey: '${event.key}' \n\tCode: ${event.keyCode}`)
+        return true;
     }
 
     /**
@@ -2726,6 +2797,28 @@ function changeButtonActivation( ActivationCode, code )
                     document.getElementById( "scalebarbtnopt" ).classList.add( "disabled" )
                     document.getElementById( "sunarrowopt" ).classList.add( "disabled" )
                     document.getElementById( "penciloptbtn" ).classList.add( "disabled" )
+                }
+                break
+            
+            case 2:
+                // enable or disable buttons depending on code
+                if( ActivationCode == "enable" )
+                {
+                    document.getElementById( "northarrowopt" ).classList.remove( "disabled" )
+                    document.getElementById( "observerarrowopt" ).classList.remove( "disabled" )
+                    document.getElementById( "scalebarbtnopt" ).classList.remove( "disabled" )
+                    document.getElementById( "sunarrowopt" ).classList.remove( "disabled" )
+                    document.getElementById( "penciloptbtn" ).classList.remove( "disabled" )
+                    document.getElementById( "outlinebtnopt" ).classList.remove( "disabled" )
+                }
+                else if( ActivationCode == "disable" )
+                {
+                    document.getElementById( "northarrowopt" ).classList.add( "disabled" )
+                    document.getElementById( "observerarrowopt" ).classList.add( "disabled" )
+                    document.getElementById( "scalebarbtnopt" ).classList.add( "disabled" )
+                    document.getElementById( "sunarrowopt" ).classList.add( "disabled" )
+                    document.getElementById( "penciloptbtn" ).classList.add( "disabled" )
+                    document.getElementById( "outlinebtnopt" ).classList.add( "disabled" )
                 }
                 break
         }
