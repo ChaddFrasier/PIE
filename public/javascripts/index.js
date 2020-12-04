@@ -69,7 +69,6 @@ $( function() {
     }
 
     var draggingDot = null,
-        otherDotArray = [],
         rectstartx = 0,
         rectstarty = 0;
 
@@ -230,7 +229,6 @@ $( function() {
     function dotEndFunction( event )
     {
         draggingDot = null
-        otherDotArray = []
         rectstartx = 0
         rectstarty = 0
         rectwidth = 0
@@ -244,7 +242,6 @@ $( function() {
     function dotMouseDownFunction( event )
     {
         draggingDot = event.target
-        otherDotArray = getOtherDots(event.target.getAttribute("spyId"))
 
         let svg = document.getElementById(draggingDot.getAttribute("spyId").split("-")[0])
 
@@ -281,45 +278,6 @@ $( function() {
         dot.addEventListener("mousedown", dotMouseDownFunction)
 
         draggableSvg.getContainerObject().append(dot)
-    }
-
-    /**
-     * 
-     * @param {*} dragDotId 
-     */
-    function getOtherDots( dragDotId )
-    {
-        var returnArr = [];
-        switch( dragDotId.split('-')[1] )
-        {
-            case "ptl":
-                // return a list with the ptr, the pbr, the pbl
-                ['-ptr', '-pbr', '-pbl'].forEach( ending => {
-                    returnArr.push(document.querySelector(`circle.draggableDot[spyId='${dragDotId.replace('-ptl', ending)}']`))
-                });
-                break;
-
-            case "ptr":
-                ['-ptl', '-pbr', '-pbl'].forEach( ending => {
-                    returnArr.push(document.querySelector(`circle.draggableDot[spyId='${dragDotId.replace('-ptr', ending)}']`))
-                });
-                break;
-            
-            case "pbr":
-                ['-ptl', '-ptr', '-pbl'].forEach( ending => {
-                    returnArr.push(document.querySelector(`circle.draggableDot[spyId='${dragDotId.replace('-pbr', ending)}']`))
-                });
-                break;
-
-            case "pbl":
-                ['-ptl', '-ptr', '-pbr'].forEach( ending => {
-                    returnArr.push(document.querySelector(`circle.draggableDot[spyId='${dragDotId.replace('-pbl', ending)}']`))
-                });
-                break;
-        }
-
-        return returnArr
-
     }
 
     /**
