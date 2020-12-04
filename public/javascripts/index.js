@@ -9,7 +9,6 @@
  * @fileoverview main event loop for the index page of PIE
  */
 
-
 /**
  * @function document.ready()
  * @description Function that runs when the page is done loading
@@ -42,21 +41,21 @@ $( function() {
     // set background right away when page loads
     setSVGBackground("bgelement", bgPicker.value)
 
+    /**
+     * @function shiftKeyup
+     * @param {Event} event 
+     * @description remove the dots and listener events from the dots if the shift key if lifted
+     */
     function shiftKeyup( event )
     {
         event.preventDefault()
         if( event.key === "Shift" || event.key ==='shift' || event.key === 16 )
         {
-            console.log("REMOVE THE SHIFT LISTENERS")
-
-            // TODO: reverse
-
             // unpause the drag stuff from the DraggableArea Object
             draggableSvg.unpauseDraggables();
             changeButtonActivation("enable", 2)
 
             // remove the color the endpoints of the lines and the endpoints of the rectangles
-
             document.removeEventListener("keyup", shiftKeyup)
 
             // remove all dots
@@ -72,16 +71,25 @@ $( function() {
         rectstartx = 0,
         rectstarty = 0;
 
+    /**
+     * @function dotMouseMoveFunction
+     * @param {Event} event 
+     * @description manipuate the rect and line elements and adjust the dots respectivley
+     */
     function dotMouseMoveFunction( event )
     {
+        // make sure draggingDot is valid
         if( draggingDot !== null )
         {
+            // check if the dot is for a line
             if( String(draggingDot.getAttribute("spyId")).indexOf('line') > -1 )
             {
+                // get the svg point that the line uses
                 var svgP = draggableSvg.svgAPI(event.pageX, event.pageY)
                 var svgObject = document.getElementById( draggingDot.getAttribute("spyId").split("-")[0] )
                 var code = (draggingDot.getAttribute("spyId").split("-")[1] == 'start') ? 1 : 2
 
+                // set the point for the new line end
                 draggingDot.setAttribute("cx", svgP.x)
                 draggingDot.setAttribute("cy", svgP.y)
                 svgObject.setAttribute(`x${code}`, svgP.x)
@@ -89,6 +97,7 @@ $( function() {
             }
             else if( String(draggingDot.getAttribute("spyId")).indexOf('rect') > -1 )
             {
+                // get the scaled point on the svg and the rectangle dimensions
                 var svgP = draggableSvg.svgAPI(event.pageX, event.pageY)
                 var svgObject = document.getElementById( draggingDot.getAttribute("spyId").split("-")[0] )
                 var code = draggingDot.getAttribute("spyId").split("-")[1]
@@ -97,45 +106,34 @@ $( function() {
                 var newwidth = 0
                 var newheight = 0
 
+                // use a different if statement for each corner of the rectangle
                 if( code === "ptl" )
                 {
-                    console.log("TOP LEFT POINT ADJUSTING NOW")
-
                     newwidth = width - (svgP.x - rectstartx),
                     newheight = height - (svgP.y - rectstarty)
 
                     if( newheight > 0 )
                     {
-                        // update the dot location
+                        // update the dot locations
                         draggingDot.setAttribute("cy", svgP.y)
-
                         svgObject.setAttribute("y", svgP.y)
                         svgObject.setAttribute( "height", newheight )
-
-                        // move the opposite dot
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptr']`).setAttribute("cy", svgP.y )
-
                         rectstarty = svgP.y
                     }
 
                     if( newwidth > 0 )
                     {
                         draggingDot.setAttribute("cx", svgP.x)
-
                         svgObject.setAttribute("x", svgP.x)
                         svgObject.setAttribute( "width", newwidth )
-
-                        // move the side dots
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`).setAttribute("cy", svgP.y + newheight)
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbl']`).setAttribute("cx", svgP.x )
-
                         rectstartx = svgP.x
                     }
                 }
                 else if( code === "ptr" )
                 {
-                    console.log("TOP RIGHT POINT ADJUSTING NOW")
-
                     newwidth = width + (svgP.x - rectstartx),
                     newheight = height - (svgP.y - rectstarty)
 
@@ -143,12 +141,9 @@ $( function() {
                     {
                         // update the dot location
                         draggingDot.setAttribute("cy", svgP.y)
-
                         svgObject.setAttribute("y", svgP.y)
                         svgObject.setAttribute( "height", newheight )
-
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptl']`).setAttribute("cy", svgP.y )
-
                         rectstarty = svgP.y
                     }
 
@@ -156,17 +151,12 @@ $( function() {
                     {
                         draggingDot.setAttribute("cx", svgP.x)
                         svgObject.setAttribute( "width", newwidth )
-
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`).setAttribute("cx", svgP.x )
-
-
                         rectstartx = svgP.x
                     }
                 }
                 else if( code === "pbr" )
                 {
-                    console.log("BOTTOM RIGHT POINT ADJUSTING NOW")
-
                     newwidth = width + (svgP.x - rectstartx),
                     newheight = height + (svgP.y - rectstarty)
 
@@ -175,9 +165,7 @@ $( function() {
                         // update the dot location
                         draggingDot.setAttribute("cy", svgP.y)
                         svgObject.setAttribute( "height", newheight )
-                        
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbl']`).setAttribute("cy", svgP.y )
-
                         rectstarty = svgP.y
                     }
 
@@ -185,16 +173,12 @@ $( function() {
                     {
                         draggingDot.setAttribute("cx", svgP.x)
                         svgObject.setAttribute( "width", newwidth )
-
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptr']`).setAttribute("cx", svgP.x )
-
                         rectstartx = svgP.x
                     }
                 }
                 else if( code === "pbl" )
                 {
-                    console.log("BOTTOM LEFT POINT ADJUSTING NOW")
-
                     newwidth = width - (svgP.x - rectstartx),
                     newheight = height + (svgP.y - rectstarty)
 
@@ -203,9 +187,7 @@ $( function() {
                         // update the dot location
                         draggingDot.setAttribute("cy", svgP.y)
                         svgObject.setAttribute( "height", newheight )
-
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`).setAttribute("cy", svgP.y )
-
                         rectstarty = svgP.y
                     }
 
@@ -214,19 +196,19 @@ $( function() {
                         draggingDot.setAttribute("cx", svgP.x)
                         svgObject.setAttribute("x", svgP.x)
                         svgObject.setAttribute( "width", newwidth )
-
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptl']`).setAttribute("cx", svgP.x )
-
                         rectstartx = svgP.x
                     }
                 }
             }
         }
-
-        // figure out what the mouse position is
     }
 
-    function dotEndFunction( event )
+    /**
+     * @function dotEndFunction
+     * @description clear the globals and reove the functions
+     */
+    function dotEndFunction( )
     {
         draggingDot = null
         rectstartx = 0
@@ -239,27 +221,35 @@ $( function() {
         draggableSvg.getContainerObject().removeEventListener("mouseleave", dotEndFunction)
     }
 
+    /**
+     * @function dotMouseDownFunction
+     * @param {Event} event 
+     * @description capture the starting data for the mousemove function and activate the other listeners
+     */
     function dotMouseDownFunction( event )
     {
+        // get the dot the user clicks and the svg it belongs to
         draggingDot = event.target
-
         let svg = document.getElementById(draggingDot.getAttribute("spyId").split("-")[0])
 
+        // read in the starting data as floats
         rectstartx = parseFloat(draggingDot.getAttribute("cx"))
         rectstarty = parseFloat(draggingDot.getAttribute("cy"))
         rectwidth = parseFloat(svg.getAttribute('width'))
         rectheight = parseFloat(svg.getAttribute('height'))
 
+        // activate the dragging and stopping function
         draggableSvg.getContainerObject().addEventListener("mousemove", dotMouseMoveFunction)
         draggableSvg.getContainerObject().addEventListener("mouseup", dotEndFunction)
         draggableSvg.getContainerObject().addEventListener("mouseleave", dotEndFunction)
     }
 
     /**
-     * 
-     * @param {*} spyId 
-     * @param {*} x 
-     * @param {*} y 
+     * @function createDot
+     * @param {string} spyId the id of the 'spy' SVG Element
+     * @param {float} x the cx of the dot
+     * @param {float} y the cy of the dot
+     * @description create and add a single dot to the svg element
      */
     function createDot( spyId, x, y)
     {
@@ -344,22 +334,14 @@ $( function() {
                 && (document.querySelectorAll("line.placed").length > 0 || document.querySelectorAll("rect.placed").length > 0 )
             )
         {
-
-            // SHIFT MODE ACTIVATE
-            console.log("ACTIVATE THE SHIFT MODE")
-
-            // TODO:
-
             // pause the drag stuff from the DraggableArea Object
             draggableSvg.pauseDraggables();
-
             // disable the buttons in the toolbox
             changeButtonActivation("disable", 2)
 
             // color the endpoints of the lines and the endpoints of the rectangles.
             var shiftObjectLists = document.querySelectorAll("line.placed")
             shiftObjectLists = Array(shiftObjectLists).concat(document.querySelectorAll("rect.placed"))
-
             shiftObjectLists.forEach( svgList => {
                 // check if it is a list of lines or a list of rect
                 svgList.forEach( obj => {
@@ -369,8 +351,8 @@ $( function() {
                     {
                         case 'line':
                             // create a new dot element that has an attribute for spy element attribute name
-                                // Example:   <circle spy="line345-start" ... /> 
-                                //            <circle spy="line345-end" ... /> 
+                                // Example:   <circle ... spyId="line345-start" ... /> 
+                                //            <circle ... spyId="line345-end" ... /> 
 
                             createDot(dotObjectName + 'start', obj.getAttribute("x1"), obj.getAttribute("y1"))
                             createDot(dotObjectName + 'end', obj.getAttribute("x2"), obj.getAttribute("y2"))
@@ -378,10 +360,10 @@ $( function() {
 
                         case 'rect':
                             // create a new dot element that has an attribute for spy element attribute name
-                                // Example:   <circle spy="rect123-ptl" ... /> top left 
-                                //            <circle spy="rect123-ptr" ... /> top right
-                                //            <circle spy="rect123-pbr" ... /> bottom right
-                                //            <circle spy="rect123-pbl" ... /> bottom left
+                                // Example:   <circle ... spyId="rect123-ptl" ... /> top left 
+                                //            <circle ... spyId="rect123-ptr" ... /> top right
+                                //            <circle ... spyId="rect123-pbr" ... /> bottom right
+                                //            <circle ... spyId="rect123-pbl" ... /> bottom left
                             let x = parseFloat( obj.getAttribute("x") ),
                                 y = parseFloat( obj.getAttribute("y") ),
                                 width = parseFloat( obj.getAttribute("width") ),
@@ -399,9 +381,6 @@ $( function() {
                     }
                 });
             });
-                // either add another layer to the html page that holds the endpoints
-
-
 
             // add the key listener specifically to cancel the shift function
             document.addEventListener("keyup", shiftKeyup);
