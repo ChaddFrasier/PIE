@@ -42,6 +42,235 @@ $( function() {
     setSVGBackground("bgelement", bgPicker.value)
 
     /**
+     * @function shiftKeyup
+     * @param {Event} event 
+     * @description remove the dots and listener events from the dots if the shift key if lifted
+     */
+    function shiftKeyup( event )
+    {
+        event.preventDefault()
+        if( event.key === "Shift" || event.key ==='shift' || event.key === 16 )
+        {
+            // unpause the drag stuff from the DraggableArea Object
+            draggableSvg.unpauseDraggables();
+            changeButtonActivation("enable", 2)
+
+            // remove the color the endpoints of the lines and the endpoints of the rectangles
+            document.removeEventListener("keyup", shiftKeyup)
+
+            // remove all dots
+            document.querySelectorAll("circle.draggableDot").forEach( dot => {
+                dot.removeEventListener("mousedown", dotMouseDownFunction)
+                draggableSvg.getContainerObject().removeChild( dot )
+            });
+        }
+        return true
+    }
+
+    var draggingDot = null,
+        rectstartx = 0,
+        rectstarty = 0;
+
+    /**
+     * @function dotMouseMoveFunction
+     * @param {Event} event 
+     * @description manipuate the rect and line elements and adjust the dots respectivley
+     */
+    function dotMouseMoveFunction( event )
+    {
+        // make sure draggingDot is valid
+        if( draggingDot !== null )
+        {
+            // check if the dot is for a line
+            if( String(draggingDot.getAttribute("spyId")).indexOf('line') > -1 )
+            {
+                // get the svg point that the line uses
+                var svgP = draggableSvg.svgAPI(event.pageX, event.pageY)
+                var svgObject = document.getElementById( draggingDot.getAttribute("spyId").split("-")[0] )
+                var code = (draggingDot.getAttribute("spyId").split("-")[1] == 'start') ? 1 : 2
+
+                // set the point for the new line end
+                draggingDot.setAttribute("cx", svgP.x)
+                draggingDot.setAttribute("cy", svgP.y)
+                svgObject.setAttribute(`x${code}`, svgP.x)
+                svgObject.setAttribute(`y${code}`, svgP.y)
+            }
+            else if( String(draggingDot.getAttribute("spyId")).indexOf('rect') > -1 )
+            {
+                // get the scaled point on the svg and the rectangle dimensions
+                var svgP = draggableSvg.svgAPI(event.pageX, event.pageY)
+                var svgObject = document.getElementById( draggingDot.getAttribute("spyId").split("-")[0] )
+                var code = draggingDot.getAttribute("spyId").split("-")[1]
+                var width = parseFloat(svgObject.getAttribute("width"))
+                var height = parseFloat(svgObject.getAttribute("height"))
+                var newwidth = 0
+                var newheight = 0
+
+                // use a different if statement for each corner of the rectangle
+                if( code === "ptl" )
+                {
+                    newwidth = width - (svgP.x - rectstartx),
+                    newheight = height - (svgP.y - rectstarty)
+
+                    if( newheight > 0 )
+                    {
+                        // update the dot locations
+                        draggingDot.setAttribute("cy", svgP.y)
+                        svgObject.setAttribute("y", svgP.y)
+                        svgObject.setAttribute( "height", newheight )
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptr']`).setAttribute("cy", svgP.y )
+                        rectstarty = svgP.y
+                    }
+
+                    if( newwidth > 0 )
+                    {
+                        draggingDot.setAttribute("cx", svgP.x)
+                        svgObject.setAttribute("x", svgP.x)
+                        svgObject.setAttribute( "width", newwidth )
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`).setAttribute("cy", svgP.y + newheight)
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbl']`).setAttribute("cx", svgP.x )
+                        rectstartx = svgP.x
+                    }
+                }
+                else if( code === "ptr" )
+                {
+                    newwidth = width + (svgP.x - rectstartx),
+                    newheight = height - (svgP.y - rectstarty)
+
+                    if( newheight > 0 )
+                    {
+                        // update the dot location
+                        draggingDot.setAttribute("cy", svgP.y)
+                        svgObject.setAttribute("y", svgP.y)
+                        svgObject.setAttribute( "height", newheight )
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptl']`).setAttribute("cy", svgP.y )
+                        rectstarty = svgP.y
+                    }
+
+                    if( newwidth > 0 )
+                    {
+                        draggingDot.setAttribute("cx", svgP.x)
+                        svgObject.setAttribute( "width", newwidth )
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`).setAttribute("cx", svgP.x )
+                        rectstartx = svgP.x
+                    }
+                }
+                else if( code === "pbr" )
+                {
+                    newwidth = width + (svgP.x - rectstartx),
+                    newheight = height + (svgP.y - rectstarty)
+
+                    if( newheight > 0 )
+                    {
+                        // update the dot location
+                        draggingDot.setAttribute("cy", svgP.y)
+                        svgObject.setAttribute( "height", newheight )
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbl']`).setAttribute("cy", svgP.y )
+                        rectstarty = svgP.y
+                    }
+
+                    if( newwidth > 0 )
+                    {
+                        draggingDot.setAttribute("cx", svgP.x)
+                        svgObject.setAttribute( "width", newwidth )
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptr']`).setAttribute("cx", svgP.x )
+                        rectstartx = svgP.x
+                    }
+                }
+                else if( code === "pbl" )
+                {
+                    newwidth = width - (svgP.x - rectstartx),
+                    newheight = height + (svgP.y - rectstarty)
+
+                    if( newheight > 0 )
+                    {
+                        // update the dot location
+                        draggingDot.setAttribute("cy", svgP.y)
+                        svgObject.setAttribute( "height", newheight )
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`).setAttribute("cy", svgP.y )
+                        rectstarty = svgP.y
+                    }
+
+                    if( newwidth > 0 )
+                    {
+                        draggingDot.setAttribute("cx", svgP.x)
+                        svgObject.setAttribute("x", svgP.x)
+                        svgObject.setAttribute( "width", newwidth )
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptl']`).setAttribute("cx", svgP.x )
+                        rectstartx = svgP.x
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @function dotEndFunction
+     * @description clear the globals and reove the functions
+     */
+    function dotEndFunction( )
+    {
+        draggingDot = null
+        rectstartx = 0
+        rectstarty = 0
+        rectwidth = 0
+        rectheight = 0
+
+        draggableSvg.getContainerObject().removeEventListener("mousemove", dotMouseMoveFunction)
+        draggableSvg.getContainerObject().removeEventListener("mouseup", dotEndFunction)
+        draggableSvg.getContainerObject().removeEventListener("mouseleave", dotEndFunction)
+    }
+
+    /**
+     * @function dotMouseDownFunction
+     * @param {Event} event 
+     * @description capture the starting data for the mousemove function and activate the other listeners
+     */
+    function dotMouseDownFunction( event )
+    {
+        // get the dot the user clicks and the svg it belongs to
+        draggingDot = event.target
+        let svg = document.getElementById(draggingDot.getAttribute("spyId").split("-")[0])
+
+        // read in the starting data as floats
+        rectstartx = parseFloat(draggingDot.getAttribute("cx"))
+        rectstarty = parseFloat(draggingDot.getAttribute("cy"))
+        rectwidth = parseFloat(svg.getAttribute('width'))
+        rectheight = parseFloat(svg.getAttribute('height'))
+
+        // activate the dragging and stopping function
+        draggableSvg.getContainerObject().addEventListener("mousemove", dotMouseMoveFunction)
+        draggableSvg.getContainerObject().addEventListener("mouseup", dotEndFunction)
+        draggableSvg.getContainerObject().addEventListener("mouseleave", dotEndFunction)
+    }
+
+    /**
+     * @function createDot
+     * @param {string} spyId the id of the 'spy' SVG Element
+     * @param {float} x the cx of the dot
+     * @param {float} y the cy of the dot
+     * @description create and add a single dot to the svg element
+     */
+    function createDot( spyId, x, y)
+    {
+        // add a dot where one of the line points are
+        var dot = document.createElementNS(NS.svg, "circle")
+
+        dot.setAttribute("class", "draggableDot")
+        dot.setAttribute("r", "20")
+        // get the x and y of all the points of the rectangles and lines
+        dot.setAttribute("cx", x)
+        dot.setAttribute("cy", y)
+        dot.setAttribute("fill", "red")
+
+        dot.setAttribute("spyId", spyId)
+
+        dot.addEventListener("mousedown", dotMouseDownFunction)
+
+        draggableSvg.getContainerObject().append(dot)
+    }
+
+    /**
      * @function customKeys
      * @param {Keydown Event} event the ketdown event
      * @description add the custom key listeners for when the user is using any function on the page
@@ -98,9 +327,68 @@ $( function() {
                 document.getElementById("savebtn").click()
             }
         }
+        else if( (key === "Shift" 
+                || key === 'shift' 
+                || key === 16) 
+                && (!PencilFlag && !OutlineFlag)
+                && (document.querySelectorAll("line.placed").length > 0 || document.querySelectorAll("rect.placed").length > 0 )
+            )
+        {
+            // pause the drag stuff from the DraggableArea Object
+            draggableSvg.pauseDraggables();
+            // disable the buttons in the toolbox
+            changeButtonActivation("disable", 2)
+
+            // color the endpoints of the lines and the endpoints of the rectangles.
+            var shiftObjectLists = document.querySelectorAll("line.placed")
+            shiftObjectLists = Array(shiftObjectLists).concat(document.querySelectorAll("rect.placed"))
+            shiftObjectLists.forEach( svgList => {
+                // check if it is a list of lines or a list of rect
+                svgList.forEach( obj => {
+                    var dotObjectName = `${obj.id}-`;
+                    
+                    switch( String(obj.nodeName).toLowerCase() )
+                    {
+                        case 'line':
+                            // create a new dot element that has an attribute for spy element attribute name
+                                // Example:   <circle ... spyId="line345-start" ... /> 
+                                //            <circle ... spyId="line345-end" ... /> 
+
+                            createDot(dotObjectName + 'start', obj.getAttribute("x1"), obj.getAttribute("y1"))
+                            createDot(dotObjectName + 'end', obj.getAttribute("x2"), obj.getAttribute("y2"))
+                            break;
+
+                        case 'rect':
+                            // create a new dot element that has an attribute for spy element attribute name
+                                // Example:   <circle ... spyId="rect123-ptl" ... /> top left 
+                                //            <circle ... spyId="rect123-ptr" ... /> top right
+                                //            <circle ... spyId="rect123-pbr" ... /> bottom right
+                                //            <circle ... spyId="rect123-pbl" ... /> bottom left
+                            let x = parseFloat( obj.getAttribute("x") ),
+                                y = parseFloat( obj.getAttribute("y") ),
+                                width = parseFloat( obj.getAttribute("width") ),
+                                height = parseFloat( obj.getAttribute("height") );
+
+                            createDot(dotObjectName + 'ptl', x, y)
+                            createDot(dotObjectName + 'ptr', x + width, y)
+                            createDot(dotObjectName + 'pbr', x + width, y + height)
+                            createDot(dotObjectName + 'pbl', x, y + height)
+                            break;
+
+                        default:
+                            console.log("failure")
+                            break;
+                    }
+                });
+            });
+
+            // add the key listener specifically to cancel the shift function
+            document.addEventListener("keyup", shiftKeyup);
+        }
 
         // TODO: this is temporary
         console.log(`Key & Code: \n\n\tKey: '${event.key}' \n\tCode: ${event.keyCode}`)
+        return true;
     }
 
     /**
@@ -317,7 +605,7 @@ $( function() {
         fileinputtypetifflabel.innerHTML = "GeoTIFF"
         
         //TODO:  disabled this checkbox
-        fileinputtype2.classList.add("disabled")        
+        fileinputtype2.classList.add("disabled")
 
         var fileinputtype3 = fileinputtype.cloneNode(true);
 
@@ -929,7 +1217,6 @@ $( function() {
 
                         ButtonManager.addImage( imageId, [])
 
-
                         // remove the load icon from the UI
                         document.getElementById("loadicon").style.visibility = "hidden"
                     }
@@ -991,15 +1278,12 @@ $( function() {
                                 $('#'+imageId).attr('GEO', 'true')
                                 $('#'+imageId).attr('filePath', getCookie("filepath"))
                                 
-                                // TODO: read in the data values into attriubute values for the image
+                                // read in the data values into attribute values for the image
                                 responseObject.pvlData.keys.forEach( key => {
                                     $('#'+imageId).parent().attr(key, responseObject.pvlData.data[key])
                                 });
 
-                                // TODO: test to see which data values where recieved and activate the buttons that need to be activated for each data value.
-                                // THIS IS BASICALLY DONE JUST NEED TO CHANGE THE responseObject TO GET THE ATTRIBUTE INSTEAD
-                                // get the button group
-
+                                // test to see which data values where recieved and activate the buttons that need to be activated for each data value.
                                 var btnArray = []
                                 // test if the north arrow data is valid and activte the button
                                 if ( responseObject.pvlData.data['NorthAzimuth'] )
@@ -1214,6 +1498,9 @@ $( function() {
         // update the svgContainer size
         let tmp = event.target.value.split("x")
         draggableSvg.getContainerObject().setAttribute("viewBox", "0 0 " + tmp[0] + ' ' + tmp[1])
+        draggableSvg.getContainerObject().parentElement.setAttribute("viewBox", "-500 0 " + (Number(tmp[0])+1000) + ' ' + tmp[1])
+        draggableSvg.getContainerObject().setAttribute("width", tmp[0])
+        draggableSvg.getContainerObject().setAttribute("height", tmp[1])
     })
 
     /**
@@ -2729,6 +3016,28 @@ function changeButtonActivation( ActivationCode, code )
                     document.getElementById( "penciloptbtn" ).classList.add( "disabled" )
                 }
                 break
+            
+            case 2:
+                // enable or disable buttons depending on code
+                if( ActivationCode == "enable" )
+                {
+                    document.getElementById( "northarrowopt" ).classList.remove( "disabled" )
+                    document.getElementById( "observerarrowopt" ).classList.remove( "disabled" )
+                    document.getElementById( "scalebarbtnopt" ).classList.remove( "disabled" )
+                    document.getElementById( "sunarrowopt" ).classList.remove( "disabled" )
+                    document.getElementById( "penciloptbtn" ).classList.remove( "disabled" )
+                    document.getElementById( "outlinebtnopt" ).classList.remove( "disabled" )
+                }
+                else if( ActivationCode == "disable" )
+                {
+                    document.getElementById( "northarrowopt" ).classList.add( "disabled" )
+                    document.getElementById( "observerarrowopt" ).classList.add( "disabled" )
+                    document.getElementById( "scalebarbtnopt" ).classList.add( "disabled" )
+                    document.getElementById( "sunarrowopt" ).classList.add( "disabled" )
+                    document.getElementById( "penciloptbtn" ).classList.add( "disabled" )
+                    document.getElementById( "outlinebtnopt" ).classList.add( "disabled" )
+                }
+                break
         }
     }
 }
@@ -3915,7 +4224,6 @@ function updateInputField( objectid, ...args )
         {
             console.log("Something went wrong")
         }
-        
     }
     else if( objectid.indexOf("image") > -1 )
     {
