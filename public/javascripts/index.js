@@ -90,17 +90,20 @@ $( function() {
             }
             else if( String(draggingDot.getAttribute("spyId")).indexOf('rect') > -1 )
             {
-                // TODO: adjust all the dots on a specific rect
                 var svgP = draggableSvg.svgAPI(event.pageX, event.pageY)
                 var svgObject = document.getElementById( draggingDot.getAttribute("spyId").split("-")[0] )
                 var code = draggingDot.getAttribute("spyId").split("-")[1]
                 var width = parseFloat(svgObject.getAttribute("width"))
                 var height = parseFloat(svgObject.getAttribute("height"))
+                var newwidth = 0
+                var newheight = 0
 
                 if( code === "ptl" )
                 {
-                    let newwidth = width - (svgP.x - rectstartx),
-                        newheight = height - (svgP.y - rectstarty)
+                    console.log("TOP LEFT POINT ADJUSTING NOW")
+
+                    newwidth = width - (svgP.x - rectstartx),
+                    newheight = height - (svgP.y - rectstarty)
 
                     if( newheight > 0 )
                     {
@@ -108,7 +111,10 @@ $( function() {
                         draggingDot.setAttribute("cy", svgP.y)
 
                         svgObject.setAttribute("y", svgP.y)
-                        svgObject.setAttribute( "height", height - (svgP.y - rectstarty) )
+                        svgObject.setAttribute( "height", newheight )
+
+                        // move the opposite dot
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptr']`).setAttribute("cy", svgP.y )
 
                         rectstarty = svgP.y
                     }
@@ -118,15 +124,21 @@ $( function() {
                         draggingDot.setAttribute("cx", svgP.x)
 
                         svgObject.setAttribute("x", svgP.x)
-                        svgObject.setAttribute( "width", width - (svgP.x - rectstartx) )
+                        svgObject.setAttribute( "width", newwidth )
+
+                        // move the side dots
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`).setAttribute("cy", svgP.y + newheight)
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbl']`).setAttribute("cx", svgP.x )
 
                         rectstartx = svgP.x
                     }
                 }
                 else if( code === "ptr" )
                 {
-                    let newwidth = width + (svgP.x - rectstartx),
-                        newheight = height - (svgP.y - rectstarty)
+                    console.log("TOP RIGHT POINT ADJUSTING NOW")
+
+                    newwidth = width + (svgP.x - rectstartx),
+                    newheight = height - (svgP.y - rectstarty)
 
                     if( newheight > 0 )
                     {
@@ -136,6 +148,8 @@ $( function() {
                         svgObject.setAttribute("y", svgP.y)
                         svgObject.setAttribute( "height", newheight )
 
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptl']`).setAttribute("cy", svgP.y )
+
                         rectstarty = svgP.y
                     }
 
@@ -143,21 +157,27 @@ $( function() {
                     {
                         draggingDot.setAttribute("cx", svgP.x)
                         svgObject.setAttribute( "width", newwidth )
+
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`).setAttribute("cx", svgP.x )
+
 
                         rectstartx = svgP.x
                     }
                 }
                 else if( code === "pbr" )
                 {
-                    let newwidth = width + (svgP.x - rectstartx),
-                        newheight = height + (svgP.y - rectstarty)
+                    console.log("BOTTOM RIGHT POINT ADJUSTING NOW")
+
+                    newwidth = width + (svgP.x - rectstartx),
+                    newheight = height + (svgP.y - rectstarty)
 
                     if( newheight > 0 )
                     {
                         // update the dot location
                         draggingDot.setAttribute("cy", svgP.y)
-
                         svgObject.setAttribute( "height", newheight )
+                        
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbl']`).setAttribute("cy", svgP.y )
 
                         rectstarty = svgP.y
                     }
@@ -166,21 +186,26 @@ $( function() {
                     {
                         draggingDot.setAttribute("cx", svgP.x)
                         svgObject.setAttribute( "width", newwidth )
+
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptr']`).setAttribute("cx", svgP.x )
 
                         rectstartx = svgP.x
                     }
                 }
                 else if( code === "pbl" )
                 {
-                    let newwidth = width - (svgP.x - rectstartx),
-                        newheight = height + (svgP.y - rectstarty)
+                    console.log("BOTTOM LEFT POINT ADJUSTING NOW")
+
+                    newwidth = width - (svgP.x - rectstartx),
+                    newheight = height + (svgP.y - rectstarty)
 
                     if( newheight > 0 )
                     {
                         // update the dot location
                         draggingDot.setAttribute("cy", svgP.y)
-
                         svgObject.setAttribute( "height", newheight )
+
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`).setAttribute("cy", svgP.y )
 
                         rectstarty = svgP.y
                     }
@@ -188,17 +213,14 @@ $( function() {
                     if( newwidth > 0 )
                     {
                         draggingDot.setAttribute("cx", svgP.x)
-
                         svgObject.setAttribute("x", svgP.x)
                         svgObject.setAttribute( "width", newwidth )
+
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptl']`).setAttribute("cx", svgP.x )
 
                         rectstartx = svgP.x
                     }
                 }
-
-                // update the other dots
-                fixOtherDots( otherDotArray )
-
             }
         }
 
@@ -263,28 +285,11 @@ $( function() {
 
     /**
      * 
-     * @param {*} dotArray 
-     * @param {*} rectWidth 
-     * @param {*} rectHeight 
-     * @param {*} rectX 
-     * @param {*} rectY 
-     */
-    function fixOtherDots( dotArray, rectWidth, rectHeight, rectX, rectY )
-    {
-        dotArray.forEach( dot => {
-            
-            console.log(dot)
-        });
-    }
-
-    /**
-     * 
      * @param {*} dragDotId 
      */
     function getOtherDots( dragDotId )
     {
         var returnArr = [];
-
         switch( dragDotId.split('-')[1] )
         {
             case "ptl":
@@ -296,19 +301,19 @@ $( function() {
 
             case "ptr":
                 ['-ptl', '-pbr', '-pbl'].forEach( ending => {
-                    returnArr.push(document.querySelector(`circle.draggableDot[spyId='${dragDotId.replace('-ptl', ending)}']`))
+                    returnArr.push(document.querySelector(`circle.draggableDot[spyId='${dragDotId.replace('-ptr', ending)}']`))
                 });
                 break;
             
             case "pbr":
                 ['-ptl', '-ptr', '-pbl'].forEach( ending => {
-                    returnArr.push(document.querySelector(`circle.draggableDot[spyId='${dragDotId.replace('-ptl', ending)}']`))
+                    returnArr.push(document.querySelector(`circle.draggableDot[spyId='${dragDotId.replace('-pbr', ending)}']`))
                 });
                 break;
 
             case "pbl":
                 ['-ptl', '-ptr', '-pbr'].forEach( ending => {
-                    returnArr.push(document.querySelector(`circle.draggableDot[spyId='${dragDotId.replace('-ptl', ending)}']`))
+                    returnArr.push(document.querySelector(`circle.draggableDot[spyId='${dragDotId.replace('-pbl', ending)}']`))
                 });
                 break;
         }
