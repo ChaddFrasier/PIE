@@ -9,6 +9,7 @@
  * @fileoverview main event loop for the index page of PIE
  */
 
+
 /**
  * @function document.ready()
  * @description Function that runs when the page is done loading
@@ -54,17 +55,267 @@ $( function() {
             draggableSvg.unpauseDraggables();
             changeButtonActivation("enable", 2)
 
-            // remove a listener to prevent any content highlighting
-            
             // remove the color the endpoints of the lines and the endpoints of the rectangles
 
             document.removeEventListener("keyup", shiftKeyup)
 
-            draggableSvg.getContainerObject().removeChild(document.getElementsByClassName("draggableDot")[0])
+            // remove all dots
+            document.querySelectorAll("circle.draggableDot").forEach( dot => {
+                dot.removeEventListener("mousedown", dotMouseDownFunction)
+                draggableSvg.getContainerObject().removeChild( dot )
+            });
         }
         return true
     }
 
+    var draggingDot = null,
+        otherDotArray = [],
+        rectstartx = 0,
+        rectstarty = 0;
+
+    function dotMouseMoveFunction( event )
+    {
+        if( draggingDot !== null )
+        {
+            if( String(draggingDot.getAttribute("spyId")).indexOf('line') > -1 )
+            {
+                var svgP = draggableSvg.svgAPI(event.pageX, event.pageY)
+                var svgObject = document.getElementById( draggingDot.getAttribute("spyId").split("-")[0] )
+                var code = (draggingDot.getAttribute("spyId").split("-")[1] == 'start') ? 1 : 2
+
+                draggingDot.setAttribute("cx", svgP.x)
+                draggingDot.setAttribute("cy", svgP.y)
+                svgObject.setAttribute(`x${code}`, svgP.x)
+                svgObject.setAttribute(`y${code}`, svgP.y)
+            }
+            else if( String(draggingDot.getAttribute("spyId")).indexOf('rect') > -1 )
+            {
+                // TODO: adjust all the dots on a specific rect
+                var svgP = draggableSvg.svgAPI(event.pageX, event.pageY)
+                var svgObject = document.getElementById( draggingDot.getAttribute("spyId").split("-")[0] )
+                var code = draggingDot.getAttribute("spyId").split("-")[1]
+                var width = parseFloat(svgObject.getAttribute("width"))
+                var height = parseFloat(svgObject.getAttribute("height"))
+
+                if( code === "ptl" )
+                {
+                    let newwidth = width - (svgP.x - rectstartx),
+                        newheight = height - (svgP.y - rectstarty)
+
+                    if( newheight > 0 )
+                    {
+                        // update the dot location
+                        draggingDot.setAttribute("cy", svgP.y)
+
+                        svgObject.setAttribute("y", svgP.y)
+                        svgObject.setAttribute( "height", height - (svgP.y - rectstarty) )
+
+                        rectstarty = svgP.y
+                    }
+
+                    if( newwidth > 0 )
+                    {
+                        draggingDot.setAttribute("cx", svgP.x)
+
+                        svgObject.setAttribute("x", svgP.x)
+                        svgObject.setAttribute( "width", width - (svgP.x - rectstartx) )
+
+                        rectstartx = svgP.x
+                    }
+                }
+                else if( code === "ptr" )
+                {
+                    let newwidth = width + (svgP.x - rectstartx),
+                        newheight = height - (svgP.y - rectstarty)
+
+                    if( newheight > 0 )
+                    {
+                        // update the dot location
+                        draggingDot.setAttribute("cy", svgP.y)
+
+                        svgObject.setAttribute("y", svgP.y)
+                        svgObject.setAttribute( "height", newheight )
+
+                        rectstarty = svgP.y
+                    }
+
+                    if( newwidth > 0 )
+                    {
+                        draggingDot.setAttribute("cx", svgP.x)
+                        svgObject.setAttribute( "width", newwidth )
+
+                        rectstartx = svgP.x
+                    }
+                }
+                else if( code === "pbr" )
+                {
+                    let newwidth = width + (svgP.x - rectstartx),
+                        newheight = height + (svgP.y - rectstarty)
+
+                    if( newheight > 0 )
+                    {
+                        // update the dot location
+                        draggingDot.setAttribute("cy", svgP.y)
+
+                        svgObject.setAttribute( "height", newheight )
+
+                        rectstarty = svgP.y
+                    }
+
+                    if( newwidth > 0 )
+                    {
+                        draggingDot.setAttribute("cx", svgP.x)
+                        svgObject.setAttribute( "width", newwidth )
+
+                        rectstartx = svgP.x
+                    }
+                }
+                else if( code === "pbl" )
+                {
+                    let newwidth = width - (svgP.x - rectstartx),
+                        newheight = height + (svgP.y - rectstarty)
+
+                    if( newheight > 0 )
+                    {
+                        // update the dot location
+                        draggingDot.setAttribute("cy", svgP.y)
+
+                        svgObject.setAttribute( "height", newheight )
+
+                        rectstarty = svgP.y
+                    }
+
+                    if( newwidth > 0 )
+                    {
+                        draggingDot.setAttribute("cx", svgP.x)
+
+                        svgObject.setAttribute("x", svgP.x)
+                        svgObject.setAttribute( "width", newwidth )
+
+                        rectstartx = svgP.x
+                    }
+                }
+
+                // update the other dots
+                fixOtherDots( otherDotArray )
+
+            }
+        }
+
+        // figure out what the mouse position is
+    }
+
+    function dotEndFunction( event )
+    {
+        draggingDot = null
+        otherDotArray = []
+        rectstartx = 0
+        rectstarty = 0
+        rectwidth = 0
+        rectheight = 0
+
+        draggableSvg.getContainerObject().removeEventListener("mousemove", dotMouseMoveFunction)
+        draggableSvg.getContainerObject().removeEventListener("mouseup", dotEndFunction)
+        draggableSvg.getContainerObject().removeEventListener("mouseleave", dotEndFunction)
+    }
+
+    function dotMouseDownFunction( event )
+    {
+        draggingDot = event.target
+        otherDotArray = getOtherDots(event.target.getAttribute("spyId"))
+
+        let svg = document.getElementById(draggingDot.getAttribute("spyId").split("-")[0])
+
+        rectstartx = parseFloat(draggingDot.getAttribute("cx"))
+        rectstarty = parseFloat(draggingDot.getAttribute("cy"))
+        rectwidth = parseFloat(svg.getAttribute('width'))
+        rectheight = parseFloat(svg.getAttribute('height'))
+
+        draggableSvg.getContainerObject().addEventListener("mousemove", dotMouseMoveFunction)
+        draggableSvg.getContainerObject().addEventListener("mouseup", dotEndFunction)
+        draggableSvg.getContainerObject().addEventListener("mouseleave", dotEndFunction)
+    }
+
+    /**
+     * 
+     * @param {*} spyId 
+     * @param {*} x 
+     * @param {*} y 
+     */
+    function createDot( spyId, x, y)
+    {
+        // add a dot where one of the line points are
+        var dot = document.createElementNS(NS.svg, "circle")
+
+        dot.setAttribute("class", "draggableDot")
+        dot.setAttribute("r", "20")
+        // get the x and y of all the points of the rectangles and lines
+        dot.setAttribute("cx", x)
+        dot.setAttribute("cy", y)
+        dot.setAttribute("fill", "red")
+
+        dot.setAttribute("spyId", spyId)
+
+        dot.addEventListener("mousedown", dotMouseDownFunction)
+
+        draggableSvg.getContainerObject().append(dot)
+    }
+
+    /**
+     * 
+     * @param {*} dotArray 
+     * @param {*} rectWidth 
+     * @param {*} rectHeight 
+     * @param {*} rectX 
+     * @param {*} rectY 
+     */
+    function fixOtherDots( dotArray, rectWidth, rectHeight, rectX, rectY )
+    {
+        dotArray.forEach( dot => {
+            
+            console.log(dot)
+        });
+    }
+
+    /**
+     * 
+     * @param {*} dragDotId 
+     */
+    function getOtherDots( dragDotId )
+    {
+        var returnArr = [];
+
+        switch( dragDotId.split('-')[1] )
+        {
+            case "ptl":
+                // return a list with the ptr, the pbr, the pbl
+                ['-ptr', '-pbr', '-pbl'].forEach( ending => {
+                    returnArr.push(document.querySelector(`circle.draggableDot[spyId='${dragDotId.replace('-ptl', ending)}']`))
+                });
+                break;
+
+            case "ptr":
+                ['-ptl', '-pbr', '-pbl'].forEach( ending => {
+                    returnArr.push(document.querySelector(`circle.draggableDot[spyId='${dragDotId.replace('-ptl', ending)}']`))
+                });
+                break;
+            
+            case "pbr":
+                ['-ptl', '-ptr', '-pbl'].forEach( ending => {
+                    returnArr.push(document.querySelector(`circle.draggableDot[spyId='${dragDotId.replace('-ptl', ending)}']`))
+                });
+                break;
+
+            case "pbl":
+                ['-ptl', '-ptr', '-pbr'].forEach( ending => {
+                    returnArr.push(document.querySelector(`circle.draggableDot[spyId='${dragDotId.replace('-ptl', ending)}']`))
+                });
+                break;
+        }
+
+        return returnArr
+
+    }
 
     /**
      * @function customKeys
@@ -142,27 +393,51 @@ $( function() {
             // disable the buttons in the toolbox
             changeButtonActivation("disable", 2)
 
-            // remove a listener to prevent any content highlighting
-
             // color the endpoints of the lines and the endpoints of the rectangles.
+            var shiftObjectLists = document.querySelectorAll("line.placed")
+            shiftObjectLists = Array(shiftObjectLists).concat(document.querySelectorAll("rect.placed"))
 
+            shiftObjectLists.forEach( svgList => {
+                // check if it is a list of lines or a list of rect
+                svgList.forEach( obj => {
+                    var dotObjectName = `${obj.id}-`;
+                    
+                    switch( String(obj.nodeName).toLowerCase() )
+                    {
+                        case 'line':
+                            // create a new dot element that has an attribute for spy element attribute name
+                                // Example:   <circle spy="line345-start" ... /> 
+                                //            <circle spy="line345-end" ... /> 
+
+                            createDot(dotObjectName + 'start', obj.getAttribute("x1"), obj.getAttribute("y1"))
+                            createDot(dotObjectName + 'end', obj.getAttribute("x2"), obj.getAttribute("y2"))
+                            break;
+
+                        case 'rect':
+                            // create a new dot element that has an attribute for spy element attribute name
+                                // Example:   <circle spy="rect123-ptl" ... /> top left 
+                                //            <circle spy="rect123-ptr" ... /> top right
+                                //            <circle spy="rect123-pbr" ... /> bottom right
+                                //            <circle spy="rect123-pbl" ... /> bottom left
+                            let x = parseFloat( obj.getAttribute("x") ),
+                                y = parseFloat( obj.getAttribute("y") ),
+                                width = parseFloat( obj.getAttribute("width") ),
+                                height = parseFloat( obj.getAttribute("height") );
+
+                            createDot(dotObjectName + 'ptl', x, y)
+                            createDot(dotObjectName + 'ptr', x + width, y)
+                            createDot(dotObjectName + 'pbr', x + width, y + height)
+                            createDot(dotObjectName + 'pbl', x, y + height)
+                            break;
+
+                        default:
+                            console.log("failure")
+                            break;
+                    }
+                });
+            });
                 // either add another layer to the html page that holds the endpoints
 
-
-            // add a dot where one of the line points are
-            var dot = document.createElementNS(NS.svg, "circle")
-
-            dot.setAttribute("class", "draggableDot")
-
-            dot.setAttribute("r", "20")
-
-            // get the x and y of all the points of the rectangles and lines
-            dot.setAttribute("cx", 200)
-            dot.setAttribute("cy", 250)
-
-            dot.setAttribute("fill", "red")
-
-            draggableSvg.getContainerObject().append(dot)
 
 
             // add the key listener specifically to cancel the shift function
