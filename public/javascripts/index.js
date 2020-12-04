@@ -4224,7 +4224,6 @@ function updateInputField( objectid, ...args )
         {
             console.log("Something went wrong")
         }
-        
     }
     else if( objectid.indexOf("image") > -1 )
     {
