@@ -331,7 +331,8 @@ $( function() {
                 || key === 'shift' 
                 || key === 16) 
                 && (!PencilFlag && !OutlineFlag)
-                && (document.querySelectorAll("line.placed").length > 0 || document.querySelectorAll("rect.placed").length > 0 )
+                && (document.querySelectorAll("line.placed").length > 0 
+                    || document.querySelectorAll("rect.placed").length > 0 )
             )
         {
             // pause the drag stuff from the DraggableArea Object
@@ -1763,10 +1764,7 @@ $( function() {
      * @param {Node} image 
      * @param {string} icontype 
      * @param {_Event} event
-     * @description this function draws the svg icons over the svg figure image where the mouse drop occured
-     * 
-     * @TODO: the svgIcons should check for the rotation values  of the image and set the rotation of the icons accordingly: ( 0deg = arrow of icon to right )
-     *          Must finish ISIS backend first.
+     * @description this function draws the svg icons over the svg figure image where the mouse drop occurs
      */
     function drawSvgIcon( image, icontype, event )
     {
@@ -1804,7 +1802,9 @@ $( function() {
                     // set the height and width using the scale
                     icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale"))
                     icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale"))
-                    //icongroup.setAttribute( "transform", "rotate(180)")
+                    
+                    // rotate the icon
+                    icongroup.firstChild.setAttribute("transform", "rotate(" + (parseFloat(document.getElementById(image.id+"-hg").getAttribute("NorthAzimuth")) + 90) + " 13.5 13.5" + ")" )
                 }
                 else
                 {
@@ -1840,6 +1840,8 @@ $( function() {
                     // set the width and height
                     icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale") )
                     icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale") )
+
+                    icongroup.firstChild.setAttribute("transform", "rotate(" + (parseFloat(document.getElementById(image.id+"-hg").getAttribute("SubSolarAzimuth")) + 90) + " 13.5 13.5" + ")" )
                 }
                 else
                 {
@@ -1871,6 +1873,8 @@ $( function() {
                     icongroup.setAttribute("scale", 5)
                     icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale") )
                     icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale") )
+                   
+                    icongroup.firstChild.setAttribute("transform", "rotate(" + (parseFloat(document.getElementById(image.id+"-hg").getAttribute("SubSpacecraftGroundAzimuth")) + 90) + " 13.5 13.5" + ")" )
                 }
                 else
                 {
@@ -1882,7 +1886,6 @@ $( function() {
                 break
 
             case "scalebar":
-                // TODO: not done at all needs ISIS and much more work.
                 // get svg transformed point
                 svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
     
@@ -1898,17 +1901,21 @@ $( function() {
 
                 // test valid input and set the transform for all browsers
                 if( !isNaN(newX) && !isNaN(newY))
-                {
-
-                    // TODO: calculate how big the scalebar needs to be
-
-
-                    // TODO: this needed to change because sharp cannot process it
+                {                 
                     // set translate
                     icongroup.setAttribute("x", newX)
                     icongroup.setAttribute("y", newY)
-                    icongroup.setAttribute("width", 4500*.25)
-                    icongroup.setAttribute("height", 700*.25)
+
+                    // calculate the scale nneded for the scalebar and multiply by the svg dimensions
+                    let scale = getScalebarScale( 
+                        ( document.getElementById(image.id + '-hg').getAttribute("PixelResolution") ) 
+                            ? document.getElementById(image.id + '-hg').getAttribute("PixelResolution")
+                            : document.getElementById(image.id + '-hg').getAttribute("ObliquePixelResolution"),
+                        document.getElementById(image.id).getAttribute("width"), document.getElementById(image.id).getAttribute("height"),
+                        document.getElementById(image.id + '-hg').getAttribute("Lines"), document.getElementById(image.id + '-hg').getAttribute("Samples"))
+
+                    icongroup.setAttribute("width", 4500 * scale)
+                    icongroup.setAttribute("height", 700 * scale)
                 }
                 else
                 {
@@ -2036,6 +2043,27 @@ var startActiveEM = function() {
             }
         }
     };
+}
+
+/**
+ * 
+ * @param {*} resolution 
+ * @param {*} imageW 
+ * @param {*} imageH 
+ * @param {*} lineCount 
+ * @param {*} sampleCount 
+ */
+function getScalebarScale( resolution, imageW, imageH, lineCount, sampleCount )
+{
+
+    // TODO: calculate how big the scalebar needs to be
+    console.log(`The Image is res ${resolution} m/px`)
+    console.log(`The Image is set to Width ${imageW}`)
+    console.log(`The Image is set to Height ${imageH}`)
+    console.log(`The Origional Sample count is ${sampleCount}`)
+    console.log(`The Origional Line count is  ${lineCount}`)
+
+    return .20
 }
 
 
