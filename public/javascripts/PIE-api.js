@@ -100,7 +100,7 @@ module.exports = {
                                         if( lineArr[i].includes(keys[j]) )
                                         {
                                             returnObject[keys[j]] = parseFloat(lineArr[i].split("=")[1])
-                                            //console.log(returnObject)
+                                            
                                             clearKey = false;
                                         }
                                     }
