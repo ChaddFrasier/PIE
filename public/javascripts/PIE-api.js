@@ -55,13 +55,16 @@ module.exports = {
          */
         function cleanPvlObject( object, keys )
         {
-            console.log(object)
             for(var i = 0; i < keys.length; i++ )
             {
-                if( object[keys[i]] === undefined )
+                if( object[keys[i]] === undefined && keys[i] !== undefined )
                 {
                     // start at the index of the unknown key and remove 1 element from the array
                     keys.splice(i, 1)
+                }
+                else
+                {
+                    console.log(object[keys[i]])
                 }
             }
 
@@ -85,34 +88,35 @@ module.exports = {
                     if( fs.existsSync(pvlfilename) )
                     {
                         // first check to see if the file exists
-                        fs.readFile(pvlfilename, function(err, buffer){
-                            if( err ){reject(err)}
-                            else
+                        var buffer = fs.readFileSync(pvlfilename, {encoding: 'utf-8'})
+                        
+                        if( buffer )
+                        {
+                            // read the whole file lineby line
+                            var sep = '\n'
+                            var lineArr = buffer.toString().split(sep)
+                            for(var i = 0; i < lineArr.length; i++)
                             {
-                                // read the whole file lineby line
-                                var sep = '\n'
-                                var lineArr = buffer.toString().split(sep)
-                                for(var i = 0; i < lineArr.length; i++)
+                                for( var j = 0; j < keys.length; j++ )
                                 {
-                                    var clearKey = true
-                                    for( var j = 0; j < keys.length; j++ )
+                                    if( lineArr[i].includes(keys[j]) )
                                     {
-                                        if( lineArr[i].includes(keys[j]) )
-                                        {
-                                            returnObject[keys[j]] = parseFloat(lineArr[i].split("=")[1])
-                                            
-                                            clearKey = false;
-                                        }
+                                        returnObject[keys[j]] = parseFloat(lineArr[i].split("=")[1])
                                     }
                                 }
-
-                                resolve( cleanPvlObject( returnObject, keys) )
                             }
-                        });
+
+                            let resolveData = cleanPvlObject( returnObject, keys)
+
+                            console.log(resolveData)
+
+                            resolve( resolveData )
+                        }
                     }
                     else
                     {
                         // fail and let user know why it failed
+                        reject(`Cannot find PVL file by the name of '${pvlfilename}'`)
                     }
                     
                     // read the data of the file line by line

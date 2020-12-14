@@ -37,7 +37,7 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
         // call the gdal scaling function that Trent gave me. and convert the output to jpg
         var promise = pieapi.gdal_rescale(
             path.join("public", "uploads", req.file.filename),
-            "60%",
+            "50%",
             path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "jpg"))
             );
        
@@ -48,34 +48,43 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
 
             if( fs.existsSync( path.resolve(filepath)) )
             {
-                var promise2 = [
-                    pieapi.isis_campt(
-                        path.join("public", "uploads", req.file.filename),
-                        path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
-                        ),
-                    pieapi.isis_catlab(
-                        path.join("public", "uploads", req.file.filename),
-                        path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
-                    ), 
-                    pieapi.isis_catoriglab(
-                        path.join("public", "uploads", req.file.filename),
-                        path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
-                    )
-                ];
 
-                Promise.all(promise2).then( (code) => {
-                    if( code.includes(0) )
-                    {
-                        (pieapi.pie_readPVL(path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl")),
-                            ['Lines', 'Samples', 'SubSpacecraftGroundAzimuth', 'SubSolarAzimuth', 'NorthAzimuth', 'PixelResolution', 'ObliquePixelResolution'])
-                        ).then( object => {
-                            res.status(200).send({ imagefile: pieapi.URLerize(filepath, "upload"), pvlData: object })
-                        })
-                        .catch(err =>
+
+                var promise1 = pieapi.isis_campt(
+                    path.join("public", "uploads", req.file.filename),
+                    path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
+                    );
+
+                promise1.catch(err => {
+                    console.log(err)
+                }).then((code) => {
+
+                    var promise2 = [
+                        pieapi.isis_catlab(
+                            path.join("public", "uploads", req.file.filename),
+                            path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
+                        ), 
+                        pieapi.isis_catoriglab(
+                            path.join("public", "uploads", req.file.filename),
+                            path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
+                        )
+                    ];
+
+                    Promise.all(promise2).then( (code) => {
+                        if( code.includes(0) )
                         {
-                            console.log("what happened")
-                        })
-                    }
+                            // TODO: add back -> ['Phase', 'Emission', 'Incidence']
+                            (pieapi.pie_readPVL(path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl")),
+                                ['Lines', 'Samples', 'SubSpacecraftGroundAzimuth', 'SubSolarAzimuth', 'NorthAzimuth', 'PixelResolution', 'ObliquePixelResolution'])
+                            ).then( object => {
+                                res.status(200).send({ imagefile: pieapi.URLerize(filepath, "upload"), pvlData: object })
+                            })
+                            .catch(err =>
+                            {
+                                console.log(`what happened =\n ${err}`)
+                            })
+                        }
+                    });
                 });
             }
             else
