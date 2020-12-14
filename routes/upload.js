@@ -55,7 +55,9 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
                     path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
                     );
 
-                promise1.then((code) => {
+                promise1.catch(err => {
+                    console.log(err)
+                }).then((code) => {
 
                     var promise2 = [
                         pieapi.isis_catlab(
@@ -67,15 +69,6 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
                             path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
                         )
                     ];
-
-                    if(code === 0)
-                    {
-                        console.log("SUCCESS")
-                    }
-                    else
-                    {
-                        console.log("FAILURE")
-                    }
 
                     Promise.all(promise2).then( (code) => {
                         if( code.includes(0) )
@@ -92,8 +85,6 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
                             })
                         }
                     });
-                }).then(err => {
-                    console.log(err)
                 });
             }
             else

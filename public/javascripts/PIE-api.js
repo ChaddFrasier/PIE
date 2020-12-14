@@ -55,13 +55,16 @@ module.exports = {
          */
         function cleanPvlObject( object, keys )
         {
-            console.log(object)
             for(var i = 0; i < keys.length; i++ )
             {
-                if( object[keys[i]] === undefined )
+                if( object[keys[i]] === undefined && keys[i] !== undefined )
                 {
                     // start at the index of the unknown key and remove 1 element from the array
                     keys.splice(i, 1)
+                }
+                else
+                {
+                    console.log(object[keys[i]])
                 }
             }
 
@@ -94,19 +97,13 @@ module.exports = {
                             var lineArr = buffer.toString().split(sep)
                             for(var i = 0; i < lineArr.length; i++)
                             {
-                                var clearKey = true
                                 for( var j = 0; j < keys.length; j++ )
                                 {
                                     if( lineArr[i].includes(keys[j]) )
                                     {
                                         returnObject[keys[j]] = parseFloat(lineArr[i].split("=")[1])
-                                        
-                                        clearKey = false;
-                                        break;
                                     }
                                 }
-
-                                console.log(lineArr[i])
                             }
 
                             let resolveData = cleanPvlObject( returnObject, keys)
