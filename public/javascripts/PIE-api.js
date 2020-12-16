@@ -326,6 +326,7 @@ module.exports = {
                     // when the response is ready to close
                     child.on("close", code => {
                         console.log(`child process exited with code ${code}`);
+                        console.log("Command Ran -> " + child.spawnargs)
                         // if the gdal command exited with 0
                         resolveFunc(code);
                     });
