@@ -1,6 +1,11 @@
 /**
  * @file PIE-api.js
  * @fileoverview this is a file that creates exportable functions to interact with the ISIS and GDAL command line interfaces. 
+ * 
+ * TODO: every single call should mimic the gdal_rescale method.
+ *          1. rejectFunc and resolveFunc should only be called in the "close" or "error" every other step is an intermediate step to build the return buffer
+ *          2. version 1.0.1 will allow for better error handling.
+ *          3. could be good to add some method of testing that the environment is configured properly before running it.  
  */
 
 "use strict";
@@ -224,23 +229,36 @@ module.exports = {
             gdal_virtual: function( inputfile=undefined, outputfile=undefined)
             {
                 return new Promise( (resolveFunc, rejectFunc) => {
-                    var outputtype = getOutputFormat( outputfile )
+                    var outputtype = getOutputFormat( outputfile ),
+                        errorBuf = "";
 
                     // create a gdal_translate instance with args in the array
                     var child = spawn( "gdal_translate", [
                             "-of", outputtype,
                             inputfile, outputfile] )
         
+                    child.stdout.on("data", data => { console.log(`stdout: ${data}`) });
+            
+                    // append the buffer data into the error data stream
+                    child.stderr.on("data", data => { errorBuf += data });
+
                     child.on('error', (error) => {
                         console.log(`error: ${error.message}`);
-                        rejectFunc(error.message)
+                        rejectFunc(error.message);
                     });
-    
+
                     // when the response is ready to close
                     child.on("close", code => {
-                        console.log(`child process exited with code ${code}`);
-                        // if the gdal command exited with 0
-                        resolveFunc(outputfile);
+                        if( code !== 0 )
+                        {
+                            // if the gdal command is not successful return the errorBuffer
+                            rejectFunc(errorBuf);
+                        }
+                        else
+                        {
+                            // if the gdal command exited with 0
+                            resolveFunc(outputfile);
+                        }
                     });
                 });
             },
@@ -254,22 +272,32 @@ module.exports = {
             isis_isis2std: function( inputfile=undefined, outputfile=undefined)
             {
                 return new Promise( (resolveFunc, rejectFunc) => {
+                    
+                    var errorBuf = "";
+
                     // create a gdal_translate instance with args in the array
                     var child = spawn( "isis2std", [
                             "FORMAT=","JPEG",
                             "FROM=", inputfile, 
                             "TO=", outputfile] )
         
+                    child.stdout.on("data", data => { console.log(`stdout: ${data}`) });
+            
+                    // append the buffer data into the error data stream
+                    child.stderr.on("data", data => { errorBuf += data });
+
                     child.on('error', (error) => {
                         console.log(`error: ${error.message}`);
                         rejectFunc(error.message);
                     });
-        
+
                     // when the response is ready to close
                     child.on("close", code => {
-                        console.log(`child process exited with code ${code}`);
-                        // if the gdal command exited with 0
-                        resolveFunc(code);
+                        if( code == 0 )
+                        {
+                            // if the gdal command exited with 0
+                            resolveFunc(code);
+                        }
                     });
                 });
             },
@@ -283,22 +311,29 @@ module.exports = {
             isis_campt: function( inputfile=undefined, outputfile=undefined)
             {
                 return new Promise( (resolveFunc, rejectFunc) => {
+                    var errorBuf = "";
+
                     // create a gdal_translate instance with args in the array
                     var child = spawn( "campt", [
                             "FORMAT=","PVL",
                             "FROM=", inputfile, 
                             "TO=", outputfile] )
         
+                    child.stdout.on("data", data => { console.log(`Campt Output -> ${data}`) });
+            
+                    // append the buffer data into the error data stream
+                    child.stderr.on("data", data => { errorBuf += data });
+
                     child.on('error', (error) => {
                         console.log(`error: ${error.message}`);
                         rejectFunc(error.message);
                     });
-        
+
                     // when the response is ready to close
                     child.on("close", code => {
-                        console.log(`child process exited with code ${code}`);
                         // if the gdal command exited with 0
                         resolveFunc(code);
+                        
                     });
                 });
             },
@@ -312,21 +347,26 @@ module.exports = {
             isis_catlab: function( inputfile=undefined, outputfile=undefined)
             {
                 return new Promise( (resolveFunc, rejectFunc) => {
+                    var errorBuf = "";
+
                     // create a gdal_translate instance with args in the array
                     var child = spawn( "catlab", [
                             "APPEND=", "true",
                             "FROM=", inputfile, 
                             "TO=", outputfile] )
         
+                    child.stdout.on("data", data => { console.log(`Catlab Output -> ${data}`) });
+            
+                    // append the buffer data into the error data stream
+                    child.stderr.on("data", data => { errorBuf += data });
+
                     child.on('error', (error) => {
-                        console.log(`error: ${error.message}`);
+                        console.log(`Catlab Error: ${error.message}`);
                         rejectFunc(error.message);
                     });
-        
+
                     // when the response is ready to close
                     child.on("close", code => {
-                        console.log(`child process exited with code ${code}`);
-                        console.log("Command Ran -> " + child.spawnargs)
                         // if the gdal command exited with 0
                         resolveFunc(code);
                     });
@@ -342,20 +382,26 @@ module.exports = {
             isis_catoriglab: function( inputfile=undefined, outputfile=undefined)
             {
                 return new Promise( (resolveFunc, rejectFunc) => {
+                    var errorBuf = "";
+
                     // create a gdal_translate instance with args in the array
                     var child = spawn( "catoriglab", [
                             "APPEND=", "true",
                             "FROM=", inputfile, 
                             "TO=", outputfile] )
-        
+
+                    child.stdout.on("data", data => { console.log(`Catoriglab Output -> ${data}`) });
+            
+                    // append the buffer data into the error data stream
+                    child.stderr.on("data", data => { errorBuf += data });
+
                     child.on('error', (error) => {
                         console.log(`error: ${error.message}`);
                         rejectFunc(error.message);
                     });
-        
+
                     // when the response is ready to close
                     child.on("close", code => {
-                        console.log(`child process exited with code ${code}`);
                         // if the gdal command exited with 0
                         resolveFunc(code);
                     });
