@@ -48,17 +48,14 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
 
             if( fs.existsSync( path.resolve(filepath)) )
             {
-
-
                 var promise1 = pieapi.isis_campt(
                     path.join("public", "uploads", req.file.filename),
                     path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
                     );
 
                 promise1.catch(err => {
-                    console.log(err)
+                    console.log(`ISIS Error: ${err}`)
                 }).then((code) => {
-
                     var promise2 = [
                         pieapi.isis_catlab(
                             path.join("public", "uploads", req.file.filename),
@@ -84,6 +81,8 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
                                 console.log(`what happened =\n ${err}`)
                             })
                         }
+                    }).catch( err => {
+                        console.log(`ISIS Error: ${err}`)
                     });
                 });
             }

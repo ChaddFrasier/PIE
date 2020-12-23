@@ -1,8 +1,9 @@
-line.placed:hover, rect.placed:hover , g:hover{
+line.placed:hover, rect.placed:hover , g:hover, g.containingelement:hover{
     cursor: grab;
 }
 
-g.containingelement, g.containingelement:hover {
+g.containingelement {
+    border: 10px solid red;
     cursor: auto;
 }
 

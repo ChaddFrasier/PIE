@@ -1268,7 +1268,6 @@ $( function() {
                         })
                         .then( imagedatares => imagedatares.blob())
                         .then((blob) => {
-
                             // remove the load icon from the UI
                             document.getElementById("loadicon").style.visibility = "hidden"
 
@@ -1290,21 +1289,80 @@ $( function() {
                                 if ( responseObject.pvlData.data['NorthAzimuth'] )
                                 {
                                     btnArray.push('north')
+                                    try{
+                                        document.getElementById(`northIcon-${imageId}`).firstElementChild.setAttribute("transform", "rotate(" + (parseFloat(document.getElementById(imageId+"-hg").getAttribute("NorthAzimuth")) + 90) + " 13.5 13.5" + ")")
+                                    }
+                                    catch(err)
+                                    {
+                                        /** Nothing */
+                                        console.log("There is no north icon: " + err)
+                                    }
+                                }
+                                else
+                                {
+                                    // remove the north icon b/c there is no north data
+                                    try{
+                                        document.getElementById(`northIcon-${imageId}`).remove()
+                                    }
+                                    catch(err)
+                                    {
+                                        /** No Thing */
+                                    }
                                 }
                                 // test if the sun arrow data is valid and activte the button
                                 if ( responseObject.pvlData.data['SubSolarAzimuth'] )
                                 {
                                     btnArray.push('sun')
+                                    try{
+                                        document.getElementById(`sunIcon-${imageId}`).firstElementChild.setAttribute("transform", "rotate(" + (parseFloat(document.getElementById(imageId+"-hg").getAttribute("SubSolarAzimuth")) + 90) + " 13.5 13.5" + ")")
+                                    }
+                                    catch(err)
+                                    {
+                                        try{
+                                            document.getElementById(`sunIcon-${imageId}`).remove()
+                                        }
+                                        catch(err)
+                                        {
+                                            /** No Thing */
+                                        }
+                                    }
                                 }
+                                else
+                                {
+                                    // remove the Sun icon b/c there is no sun data
+                                    document.getElementById(`sunIcon-${imageId}`).remove()
+                                }
+                                
                                 // test if the observer arrow data is valid and activte the button
                                 if ( responseObject.pvlData.data['SubSpacecraftGroundAzimuth'] )
                                 {
                                     btnArray.push('observer')
+
+                                    try{
+                                        document.getElementById(`observerIcon-${imageId}`).firstElementChild.setAttribute("transform", "rotate(" + (parseFloat(document.getElementById(imageId+"-hg").getAttribute("SubSpacecraftGroundAzimuth")) + 90) + " 13.5 13.5" + ")")
+                                    }
+                                    catch(err)
+                                    {
+                                        try{
+                                            document.getElementById(`observerIcon-${imageId}`).remove()
+                                        }
+                                        catch(err)
+                                        {
+                                            /** No Thing */
+                                        }
+                                    }
                                 }
+                                else
+                                {
+                                    // remove the Sun icon b/c there is no sun data
+                                    document.getElementById(`observerIcon-${imageId}`).remove()
+                                }
+
                                 // test if the scalebar data is valid and activte the button
                                 if ( responseObject.pvlData.data['PixelResolution'] )
                                 {
                                     btnArray.push('scale');
+                                    // TODO: fix the scale bar 
                                 }
 
                                 ButtonManager.addImage(imageId, btnArray )
@@ -1907,15 +1965,17 @@ $( function() {
                     icongroup.setAttribute("y", newY)
 
                     // calculate the scale nneded for the scalebar and multiply by the svg dimensions
-                    let scale = getScalebarScale( 
+                    var scaleObject = getScalebarData( 
                         ( document.getElementById(image.id + '-hg').getAttribute("PixelResolution") ) 
                             ? document.getElementById(image.id + '-hg').getAttribute("PixelResolution")
                             : document.getElementById(image.id + '-hg').getAttribute("ObliquePixelResolution"),
                         document.getElementById(image.id).getAttribute("width"), document.getElementById(image.id).getAttribute("height"),
                         document.getElementById(image.id + '-hg').getAttribute("Lines"), document.getElementById(image.id + '-hg').getAttribute("Samples"))
 
-                    icongroup.setAttribute("width", 4500 * scale)
-                    icongroup.setAttribute("height", 700 * scale)
+                    
+                    console.log(scaleObject)
+                    icongroup.setAttribute("width", 4500 * scaleObject.sc)
+                    icongroup.setAttribute("height", 700 * scaleObject.sc)
                 }
                 else
                 {
@@ -2052,18 +2112,31 @@ var startActiveEM = function() {
  * @param {*} imageH 
  * @param {*} lineCount 
  * @param {*} sampleCount 
- */
-function getScalebarScale( resolution, imageW, imageH, lineCount, sampleCount )
-{
-
     // TODO: calculate how big the scalebar needs to be
-    console.log(`The Image is res ${resolution} m/px`)
-    console.log(`The Image is set to Width ${imageW}`)
-    console.log(`The Image is set to Height ${imageH}`)
-    console.log(`The Origional Sample count is ${sampleCount}`)
-    console.log(`The Origional Line count is  ${lineCount}`)
+ */
+function getScalebarData( resolution, imageW, imageH, lineCount, sampleCount )
+{
+    let widthScale = imageW/sampleCount,
+        heightScale = imageH/lineCount;
 
-    return .20
+    var obj = {};
+
+    var startWidthMeters = resolution * sampleCount
+    var startHeightMeters = resolution * lineCount
+
+    console.log(`The image is showing ${widthScale} scale width`)
+    console.log(`The image is showing ${heightScale} scale height`)
+
+    if( heightScale <= widthScale )
+    {
+        obj['sc'] = (heightScale > 1)? Math.abs(heightScale - 1): heightScale
+    }
+    else
+    {
+        obj['sc'] = (widthScale > 1)? Math.abs(widthScale - 1): widthScale
+    }
+
+    return obj;
 }
 
 
@@ -4218,8 +4291,6 @@ function updateInputField( objectid, ...args )
  
         if( objectArr.length > 0)
         {
-            console.log(objectid)
-         
             // more than 1 toolbox present
             for(let i = 0; i < objectArr.length; i++ ){
                 if( objectArr[i].getAttribute("objectid").indexOf(objectid.split("-")[1]) > -1 )
