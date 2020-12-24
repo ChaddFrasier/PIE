@@ -1330,7 +1330,13 @@ $( function() {
                                 else
                                 {
                                     // remove the Sun icon b/c there is no sun data
-                                    document.getElementById(`sunIcon-${imageId}`).remove()
+                                    try{
+                                        document.getElementById(`sunIcon-${imageId}`).remove()
+                                    }
+                                    catch(err)
+                                    {
+                                        /** No Thing */
+                                    }
                                 }
                                 
                                 // test if the observer arrow data is valid and activte the button
@@ -1354,8 +1360,14 @@ $( function() {
                                 }
                                 else
                                 {
-                                    // remove the Sun icon b/c there is no sun data
-                                    document.getElementById(`observerIcon-${imageId}`).remove()
+                                    // remove the Observer icon b/c there is no observer data
+                                    try{
+                                        document.getElementById(`observerIcon-${imageId}`).remove()
+                                    }
+                                    catch(err)
+                                    {
+                                        /** No Thing */
+                                    }
                                 }
 
                                 // test if the scalebar data is valid and activte the button
