@@ -864,6 +864,8 @@ $( function() {
             widthlabel = document.createElement("label"),
             widthinput = document.createElement("input"),
             heightlabel = document.createElement("label"),
+            fontSizeInput = document.createElement("input"),
+            fontSizeLabel = document.createElement("label"),
             heightinput = document.createElement("input"),
             xcoordlabel = document.createElement("label"),
             xcoordinput = document.createElement("input"),
@@ -881,6 +883,30 @@ $( function() {
         captiontextcolorinput.setAttribute("type", "color")
         captiontextcolorlabel.innerHTML = "Font Color: "
         captiontextcolorinput.value ="#000"
+
+        fontSizeLabel.innerHTML = "Font Size (px): "
+        fontSizeInput.value = "30"
+        fontSizeInput.type = "number"
+        fontSizeInput.min = "30"
+        fontSizeInput.setAttribute("objectid", captionId)
+
+        fontSizeInput.addEventListener("change", function(event){
+            let inputInt = parseInt(this.value),
+                captionTextElement = document.getElementById(this.attributes.objectid.value+"text")
+
+            if( !isNaN(inputInt) )
+            {
+                captionTextElement.setAttribute("font-size", inputInt+"px")
+                // find the matching html caption element
+                let matchingCaption = document.getElementById( this.attributes.objectid.value )
+                
+                // updpate the text inside once found
+                if(matchingCaption )
+                {   
+                    matchingCaption.lastChild.innerHTML = text2PieText(textinput.value, parseFloat(matchingCaption.getAttribute("width")), parseInt(captionTextElement.getAttribute("font-size")))
+                }
+            }
+        })
 
         captionbackgroundcolorlabel.setAttribute("objectid", captionId)
         captionbackgroundcolorinput.setAttribute("objectid", captionId)
@@ -1025,6 +1051,10 @@ $( function() {
             captionbackgroundcolorlabel,
             document.createElement("br"),
             captionbackgroundcolorinput,
+            document.createElement("br"),
+            fontSizeLabel,
+            document.createElement("br"),
+            fontSizeInput,
             document.createElement("br"),
             widthlabel,
             document.createElement("br"),
