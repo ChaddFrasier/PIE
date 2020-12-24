@@ -9,20 +9,14 @@
  * @fileoverview main event loop for the index page of PIE
  */
 
+ var draggableSvg = null, draggableList = null;
 /**
  * @function document.ready()
  * @description Function that runs when the page is done loading
  */
 $( function() {
-
-    // add the custom keys 
-    document.addEventListener("keydown", customKeys);
-
-    // contain the index homepage
-    document.body.parentElement.setAttribute("class", "contained")
-
-    // disable contextmenu listener for the figure
-    document.getElementById('figurecontainer').setAttribute("oncontextmenu", "return false;")
+    // Pre config
+    preConfigPage()
 
     // local jquery variables
     var bgPicker = document.getElementById("backgroundcolor"),
@@ -30,16 +24,20 @@ $( function() {
         selectedObject = null,
         OutlineFlag = false,
         shadowIcon = initShadowIcon(),
-        activeEventManager = startActiveEM();
+        activeEventManager = startActiveEM(),
+        draggingDot = null,
+        rectstartx = 0,
+        rectstarty = 0;
 
     // get the global figure element
     let svgContainer = document.getElementById("figurecontainer")
-    // create the Draggable Object Container
-    draggableSvg = DraggableArea( svgContainer )
-    // create the DraggableList
-    draggableList = DraggableList( document.getElementById("DraggableContainer") )
+    // add the custom keys 
+    document.addEventListener("keydown", customKeys);
     // set background right away when page loads
     setSVGBackground("bgelement", bgPicker.value)
+
+    // start draggable actions
+    configDraggables( svgContainer, document.getElementById("DraggableContainer") )
 
     /**
      * @function shiftKeyup
@@ -67,10 +65,6 @@ $( function() {
         return true
     }
 
-    var draggingDot = null,
-        rectstartx = 0,
-        rectstarty = 0;
-
     /**
      * @function dotMouseMoveFunction
      * @param {Event} event 
@@ -85,9 +79,9 @@ $( function() {
             if( String(draggingDot.getAttribute("spyId")).indexOf('line') > -1 )
             {
                 // get the svg point that the line uses
-                var svgP = draggableSvg.svgAPI(event.pageX, event.pageY)
-                var svgObject = document.getElementById( draggingDot.getAttribute("spyId").split("-")[0] )
-                var code = (draggingDot.getAttribute("spyId").split("-")[1] == 'start') ? 1 : 2
+                var svgP = draggableSvg.svgAPI(event.pageX, event.pageY),
+                    svgObject = document.getElementById( draggingDot.getAttribute("spyId").split("-")[0] ),
+                    code = (draggingDot.getAttribute("spyId").split("-")[1] == 'start') ? 1 : 2;
 
                 // set the point for the new line end
                 draggingDot.setAttribute("cx", svgP.x)
@@ -98,13 +92,13 @@ $( function() {
             else if( String(draggingDot.getAttribute("spyId")).indexOf('rect') > -1 )
             {
                 // get the scaled point on the svg and the rectangle dimensions
-                var svgP = draggableSvg.svgAPI(event.pageX, event.pageY)
-                var svgObject = document.getElementById( draggingDot.getAttribute("spyId").split("-")[0] )
-                var code = draggingDot.getAttribute("spyId").split("-")[1]
-                var width = parseFloat(svgObject.getAttribute("width"))
-                var height = parseFloat(svgObject.getAttribute("height"))
-                var newwidth = 0
-                var newheight = 0
+                var svgP = draggableSvg.svgAPI(event.pageX, event.pageY),
+                    svgObject = document.getElementById( draggingDot.getAttribute("spyId").split("-")[0] ),
+                    code = draggingDot.getAttribute("spyId").split("-")[1],
+                    width = parseFloat(svgObject.getAttribute("width")),
+                    height = parseFloat(svgObject.getAttribute("height")), 
+                    newwidth = 0, 
+                    newheight = 0;
 
                 // use a different if statement for each corner of the rectangle
                 if( code === "ptl" )
@@ -864,6 +858,8 @@ $( function() {
             widthlabel = document.createElement("label"),
             widthinput = document.createElement("input"),
             heightlabel = document.createElement("label"),
+            fontSizeInput = document.createElement("input"),
+            fontSizeLabel = document.createElement("label"),
             heightinput = document.createElement("input"),
             xcoordlabel = document.createElement("label"),
             xcoordinput = document.createElement("input"),
@@ -881,6 +877,30 @@ $( function() {
         captiontextcolorinput.setAttribute("type", "color")
         captiontextcolorlabel.innerHTML = "Font Color: "
         captiontextcolorinput.value ="#000"
+
+        fontSizeLabel.innerHTML = "Font Size (px): "
+        fontSizeInput.value = "30"
+        fontSizeInput.type = "number"
+        fontSizeInput.min = "30"
+        fontSizeInput.setAttribute("objectid", captionId)
+
+        fontSizeInput.addEventListener("change", function(event){
+            let inputInt = parseInt(this.value),
+                captionTextElement = document.getElementById(this.attributes.objectid.value+"text")
+
+            if( !isNaN(inputInt) )
+            {
+                captionTextElement.setAttribute("font-size", inputInt+"px")
+                // find the matching html caption element
+                let matchingCaption = document.getElementById( this.attributes.objectid.value )
+
+                // updpate the text inside once found
+                if( matchingCaption )
+                {   
+                    matchingCaption.lastChild.innerHTML = text2PieText(textinput.value, parseFloat(matchingCaption.getAttribute("width")), parseInt(captionTextElement.getAttribute("font-size")))
+                }
+            }
+        })
 
         captionbackgroundcolorlabel.setAttribute("objectid", captionId)
         captionbackgroundcolorinput.setAttribute("objectid", captionId)
@@ -905,12 +925,10 @@ $( function() {
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value+"text" )
 
-
             // updpate the text inside once found
             if(matchingCaption)
             {
-                // TODO: dynamic font size; hard coded 30
-                matchingCaption.innerHTML = text2PieText(this.value, parseFloat(matchingCaption.parentElement.getAttribute("width")), 30);
+                matchingCaption.innerHTML = text2PieText(this.value, parseFloat(matchingCaption.parentElement.getAttribute("width")), parseInt(matchingCaption.getAttribute("font-size")));
             }
         })
 
@@ -941,7 +959,7 @@ $( function() {
                     matchingCaption.setAttribute("width", Number(this.value))
                 }
 
-                matchingCaption.lastChild.innerHTML = text2PieText(textinput.value, parseFloat(matchingCaption.getAttribute("width")), 30)
+                matchingCaption.lastChild.innerHTML = text2PieText(textinput.value, parseFloat(matchingCaption.getAttribute("width")), parseInt(document.getElementById(this.attributes.objectid.value+"text").getAttribute("font-size")))
             }
         })
 
@@ -1025,6 +1043,10 @@ $( function() {
             captionbackgroundcolorlabel,
             document.createElement("br"),
             captionbackgroundcolorinput,
+            document.createElement("br"),
+            fontSizeLabel,
+            document.createElement("br"),
+            fontSizeInput,
             document.createElement("br"),
             widthlabel,
             document.createElement("br"),
@@ -1217,6 +1239,42 @@ $( function() {
                         $('#'+imageId).attr('filePath', null)
 
                         ButtonManager.addImage( imageId, [])
+
+                        // remove the north icon b/c there is no north data
+                        try{
+                            document.getElementById(`northIcon-${imageId}`).remove()
+                        }
+                        catch(err)
+                        {
+                            /** No Thing */
+                        }
+
+                        // remove the Sun icon b/c there is no sun data
+                        try{
+                            document.getElementById(`sunIcon-${imageId}`).remove()
+                        }
+                        catch(err)
+                        {
+                            /** No Thing */
+                        }
+
+                        // remove the Observer icon b/c there is no observer data
+                        try{
+                            document.getElementById(`observerIcon-${imageId}`).remove()
+                        }
+                        catch(err)
+                        {
+                            /** No Thing */
+                        }
+
+                        // remove the scale icon b/c there is no scale data
+                        try{
+                            document.getElementById(`scalebarIcon-${imageId}`).remove()
+                        }
+                        catch(err)
+                        {
+                            /** No Thing */
+                        }
 
                         // remove the load icon from the UI
                         document.getElementById("loadicon").style.visibility = "hidden"
@@ -1847,168 +1905,219 @@ $( function() {
         {
             // drawing the north icon
             case "north":
-                // get svg transformed point
-                svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
-
-                // set group attributes for svg
-                icongroup = document.getElementById("northgroup").cloneNode(true)
-                icongroup.setAttribute("objectid", image.id)
-                icongroup.setAttribute("id", "northIcon-" + image.id)
-
-                // set the translate location of the icon to where the mouse was released
-                newX = getScaledPoint( svgP.x, 1, 27*5 )
-                newY = getScaledPoint( svgP.y, 1, 27*5 )
-
-                // test valid input and set the transform for all browsers
-                if( !isNaN(newX) && !isNaN(newY))
+                if ( !document.getElementById('northIcon-' + image.id) )
                 {
-                    // set the x and y location
-                    icongroup.setAttribute("x", newX)
-                    icongroup.setAttribute("y", newY)
-                    
-                    // create the scale attribute
-                    icongroup.setAttribute("scale", 5)
+                    // get svg transformed point
+                    svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
 
-                    // set the height and width using the scale
-                    icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale"))
-                    icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale"))
-                    
-                    // rotate the icon
-                    icongroup.firstChild.setAttribute("transform", "rotate(" + (parseFloat(document.getElementById(image.id+"-hg").getAttribute("NorthAzimuth")) + 90) + " 13.5 13.5" + ")" )
+                    // set group attributes for svg
+                    icongroup = document.getElementById("northgroup").cloneNode(true)
+                    icongroup.setAttribute("objectid", image.id)
+                    icongroup.setAttribute("id", "northIcon-" + image.id)
+
+                    // set the translate location of the icon to where the mouse was released
+                    newX = getScaledPoint( svgP.x, 1, 27*5 )
+                    newY = getScaledPoint( svgP.y, 1, 27*5 )
+
+                    // test valid input and set the transform for all browsers
+                    if( !isNaN(newX) && !isNaN(newY))
+                    {
+                        // set the x and y location
+                        icongroup.setAttribute("x", newX)
+                        icongroup.setAttribute("y", newY)
+                        
+                        // create the scale attribute
+                        icongroup.setAttribute("scale", 5)
+
+                        // set the height and width using the scale
+                        icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale"))
+                        icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale"))
+                        
+                        // rotate the icon
+                        icongroup.firstChild.setAttribute("transform", "rotate(" + (parseFloat(document.getElementById(image.id+"-hg").getAttribute("NorthAzimuth")) + 90) + " 13.5 13.5" + ")" )
+                    }
+                    else
+                    {
+                        console.error("Translate Values Failed")
+                    }
+                    // append the icon to the svg object
+                    document.getElementById(image.id+"-hg").appendChild(icongroup)
                 }
                 else
                 {
-                    console.error("Translate Values Failed")
+                    iconFailureAlert()
                 }
-                // append the icon to the svg object
-                document.getElementById(image.id+"-hg").appendChild(icongroup)
-                break
+                break;
         
             case "sun":
-                // get svg transformed point
-                svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
-
-                // set group attributes for svg
-                icongroup = document.getElementById("sungroup").cloneNode(true)
-                icongroup.setAttribute("objectid", image.id)
-                icongroup.setAttribute("id", "sunIcon-" + image.id)
-            
-                // set the translate location of the icon to where the mouse was released
-                newX = getScaledPoint( svgP.x, 1, 27*5 )
-                newY = getScaledPoint( svgP.y, 1, 27*5 )
-
-                // test valid input and set the transform for all browsers
-                if( !isNaN(newX) && !isNaN(newY))
+                if( !document.getElementById('sunIcon-'+image.id) )
                 {
-                    // set the x and y location
-                    icongroup.setAttribute("x", newX)
-                    icongroup.setAttribute("y", newY)
+                    // get svg transformed point
+                    svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
 
-                    // set the scale
-                    icongroup.setAttribute("scale", 5)
+                    // set group attributes for svg
+                    icongroup = document.getElementById("sungroup").cloneNode(true)
+                    icongroup.setAttribute("objectid", image.id)
+                    icongroup.setAttribute("id", "sunIcon-" + image.id)
+                
+                    // set the translate location of the icon to where the mouse was released
+                    newX = getScaledPoint( svgP.x, 1, 27*5 )
+                    newY = getScaledPoint( svgP.y, 1, 27*5 )
 
-                    // set the width and height
-                    icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale") )
-                    icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale") )
+                    // test valid input and set the transform for all browsers
+                    if( !isNaN(newX) && !isNaN(newY))
+                    {
+                        // set the x and y location
+                        icongroup.setAttribute("x", newX)
+                        icongroup.setAttribute("y", newY)
 
-                    icongroup.firstChild.setAttribute("transform", "rotate(" + (parseFloat(document.getElementById(image.id+"-hg").getAttribute("SubSolarAzimuth")) + 90) + " 13.5 13.5" + ")" )
+                        // set the scale
+                        icongroup.setAttribute("scale", 5)
+
+                        // set the width and height
+                        icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale") )
+                        icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale") )
+
+                        icongroup.firstChild.setAttribute("transform", "rotate(" + (parseFloat(document.getElementById(image.id+"-hg").getAttribute("SubSolarAzimuth")) + 90) + " 13.5 13.5" + ")" )
+                    }
+                    else
+                    {
+                        console.log("Translate Values Failed")
+                    }
+
+                    // append the icon
+                    document.getElementById(image.id+"-hg").appendChild(icongroup)
                 }
                 else
                 {
-                    console.log("Translate Values Failed")
+                    iconFailureAlert()
                 }
-
-                // append the icon
-                document.getElementById(image.id+"-hg").appendChild(icongroup)
                 break
         
             case "observer":
-                // get svg transformed point
-                svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
-
-                // set group attributes for svg
-                icongroup = document.getElementById("observergroup").cloneNode(true)
-                icongroup.setAttribute("objectid", image.id)
-                icongroup.setAttribute("id", "observerIcon-" + image.id)
-
-                // set the translate location of the icon to where the mouse was released
-                newX = getScaledPoint( svgP.x, 1, 27*5 )
-                newY = getScaledPoint( svgP.y, 1, 27*5 )
-
-                // test valid input and set the transform for all browsers
-                if( !isNaN(newX) && !isNaN(newY))
+                if( !document.getElementById('observerIcon-'+image.id) )
                 {
-                    icongroup.setAttribute("x", newX)
-                    icongroup.setAttribute("y", newY)
-                    icongroup.setAttribute("scale", 5)
-                    icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale") )
-                    icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale") )
-                   
-                    icongroup.firstChild.setAttribute("transform", "rotate(" + (parseFloat(document.getElementById(image.id+"-hg").getAttribute("SubSpacecraftGroundAzimuth")) + 90) + " 13.5 13.5" + ")" )
+                    // get svg transformed point
+                    svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
+
+                    // set group attributes for svg
+                    icongroup = document.getElementById("observergroup").cloneNode(true)
+                    icongroup.setAttribute("objectid", image.id)
+                    icongroup.setAttribute("id", "observerIcon-" + image.id)
+
+                    // set the translate location of the icon to where the mouse was released
+                    newX = getScaledPoint( svgP.x, 1, 27*5 )
+                    newY = getScaledPoint( svgP.y, 1, 27*5 )
+
+                    // test valid input and set the transform for all browsers
+                    if( !isNaN(newX) && !isNaN(newY))
+                    {
+                        icongroup.setAttribute("x", newX)
+                        icongroup.setAttribute("y", newY)
+                        icongroup.setAttribute("scale", 5)
+                        icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale") )
+                        icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale") )
+                    
+                        icongroup.firstChild.setAttribute("transform", "rotate(" + (parseFloat(document.getElementById(image.id+"-hg").getAttribute("SubSpacecraftGroundAzimuth")) + 90) + " 13.5 13.5" + ")" )
+                    }
+                    else
+                    {
+                        console.error("Translate Values Failed")
+                    }
+
+                    // append the icon
+                    document.getElementById(image.id+"-hg").appendChild(icongroup)
                 }
                 else
                 {
-                    console.error("Translate Values Failed")
+                    iconFailureAlert()
                 }
-            
-                // append the icon
-                document.getElementById(image.id+"-hg").appendChild(icongroup)
                 break
 
             case "scalebar":
-                // get svg transformed point
-                svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
-    
-                // set group attributes for svg
-                icongroup = document.getElementById("scalebargroup").cloneNode(true)
-                icongroup.setAttribute("objectid", image.id)
-                icongroup.setAttribute("id", "scalebarIcon-" + image.id)
-                
+                if( !document.getElementById("scalebarIcon-" + image.id) )
+                {
+                    // get svg transformed point
+                    svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
+                        
+                    // set group attributes for svg
+                    icongroup = document.getElementById("scalebargroup").cloneNode(true)
+                    icongroup.setAttribute("objectid", image.id)
+                    icongroup.setAttribute("id", "scalebarIcon-" + image.id)
 
-                // set the translate location of the icon to where the mouse was released
-                newX = getScaledPoint( svgP.x, 1, 1 )
-                newY = getScaledPoint( svgP.y, 1, 1 )
 
-                // test valid input and set the transform for all browsers
-                if( !isNaN(newX) && !isNaN(newY))
-                {                 
-                    // set translate
-                    icongroup.setAttribute("x", newX)
-                    icongroup.setAttribute("y", newY)
+                    // set the translate location of the icon to where the mouse was released
+                    newX = getScaledPoint( svgP.x, 1, 1 )
+                    newY = getScaledPoint( svgP.y, 1, 1 )
 
-                    // calculate the scale nneded for the scalebar and multiply by the svg dimensions
-                    var scaleObject = getScalebarData( 
-                        ( document.getElementById(image.id + '-hg').getAttribute("PixelResolution") ) 
-                            ? document.getElementById(image.id + '-hg').getAttribute("PixelResolution")
-                            : document.getElementById(image.id + '-hg').getAttribute("ObliquePixelResolution"),
-                        document.getElementById(image.id).getAttribute("width"), document.getElementById(image.id).getAttribute("height"),
-                        document.getElementById(image.id + '-hg').getAttribute("Lines"), document.getElementById(image.id + '-hg').getAttribute("Samples"))
+                    // test valid input and set the transform for all browsers
+                    if( !isNaN(newX) && !isNaN(newY))
+                    {                 
+                        // set translate
+                        icongroup.setAttribute("x", newX)
+                        icongroup.setAttribute("y", newY)
 
-                    
-                    console.log(scaleObject)
-                    icongroup.setAttribute("width", 4500 * scaleObject.sc)
-                    icongroup.setAttribute("height", 700 * scaleObject.sc)
+                        // calculate the scale nneded for the scalebar and multiply by the svg dimensions
+                        var scaleObject = getScalebarData( 
+                            ( document.getElementById(image.id + '-hg').getAttribute("PixelResolution") ) 
+                                ? document.getElementById(image.id + '-hg').getAttribute("PixelResolution")
+                                : document.getElementById(image.id + '-hg').getAttribute("ObliquePixelResolution"),
+                            document.getElementById(image.id).getAttribute("width"), document.getElementById(image.id).getAttribute("height"),
+                            document.getElementById(image.id + '-hg').getAttribute("Lines"), document.getElementById(image.id + '-hg').getAttribute("Samples"))
+
+                        
+                        console.log(scaleObject)
+                        icongroup.setAttribute("width", 4500 * scaleObject.sc)
+                        icongroup.setAttribute("height", 700 * scaleObject.sc)
+                    }
+                    else
+                    {
+                        console.error("Translate Values Failed")
+                    }
+
+                    // append the icon
+                    document.getElementById(image.id+"-hg").appendChild(icongroup)
                 }
                 else
                 {
-                    console.error("Translate Values Failed")
+                    iconFailureAlert()
                 }
-            
-                // append the icon
-                document.getElementById(image.id+"-hg").appendChild(icongroup)
-                
                 break
         }
 
-        // find proper tool box
-        let imagetoolbox = findImageToolbox( selectedObject.id, document.getElementsByClassName("imagetoolsbox") )
+        if( icongroup != null )
+        {
+            // find proper tool box
+            let imagetoolbox = findImageToolbox( selectedObject.id, document.getElementsByClassName("imagetoolsbox") )
 
-        // draw the tool box based on the icon type
-        drawToolbox( imagetoolbox, icontype, icongroup.id, newX, newY )
+            // draw the tool box based on the icon type
+            drawToolbox( imagetoolbox, icontype, icongroup.id, newX, newY )
+        }
     }
 }) // end of jquery functions
 
 /* Helper functions */
+
+function configDraggables( svg, dragCont )
+{
+    // create the Draggable Object Container
+    draggableSvg = DraggableArea( svg )
+    // create the DraggableList
+    draggableList = DraggableList( dragCont )
+}
+
+function preConfigPage()
+ {
+    // contain the index homepage
+    document.body.parentElement.setAttribute("class", "contained")
+    // disable contextmenu listener for the figure
+    document.getElementById('figurecontainer').setAttribute("oncontextmenu", "return false;")
+ }
+
+function iconFailureAlert()
+{
+    window.alert("User Error: Cannot add multiple icons to the same image.\n\n Let the developers know if this feature should change.")
+}
 
 /**
  * @function startButtonManager
@@ -2854,7 +2963,7 @@ function updateIconPosition ( event, attrId )
  */
 function findImageToolbox( id, array )
 {
-    for( index in array )
+    for( let index = 0; index < array.length; index++ )
     {
         if( array[ index ].attributes.objectid.value == id )
         {
@@ -4584,7 +4693,7 @@ function cleanSVG( clone )
     /**
      * TODO: 
      * 
-     * With this function i want to do through the whole clone and remove 
+     * With this function i want to go through the whole clone and remove 
      * the id and class of every element and nested child inside of the svg so that the server has an easier time handling it
      */
 
