@@ -9,20 +9,14 @@
  * @fileoverview main event loop for the index page of PIE
  */
 
+ var draggableSvg = null, draggableList = null;
 /**
  * @function document.ready()
  * @description Function that runs when the page is done loading
  */
 $( function() {
-
-    // add the custom keys 
-    document.addEventListener("keydown", customKeys);
-
-    // contain the index homepage
-    document.body.parentElement.setAttribute("class", "contained")
-
-    // disable contextmenu listener for the figure
-    document.getElementById('figurecontainer').setAttribute("oncontextmenu", "return false;")
+    // Pre config
+    preConfigPage()
 
     // local jquery variables
     var bgPicker = document.getElementById("backgroundcolor"),
@@ -30,16 +24,20 @@ $( function() {
         selectedObject = null,
         OutlineFlag = false,
         shadowIcon = initShadowIcon(),
-        activeEventManager = startActiveEM();
+        activeEventManager = startActiveEM(),
+        draggingDot = null,
+        rectstartx = 0,
+        rectstarty = 0;
 
     // get the global figure element
     let svgContainer = document.getElementById("figurecontainer")
-    // create the Draggable Object Container
-    draggableSvg = DraggableArea( svgContainer )
-    // create the DraggableList
-    draggableList = DraggableList( document.getElementById("DraggableContainer") )
+    // add the custom keys 
+    document.addEventListener("keydown", customKeys);
     // set background right away when page loads
     setSVGBackground("bgelement", bgPicker.value)
+
+    // start draggable actions
+    configDraggables( svgContainer, document.getElementById("DraggableContainer") )
 
     /**
      * @function shiftKeyup
@@ -67,10 +65,6 @@ $( function() {
         return true
     }
 
-    var draggingDot = null,
-        rectstartx = 0,
-        rectstarty = 0;
-
     /**
      * @function dotMouseMoveFunction
      * @param {Event} event 
@@ -85,9 +79,9 @@ $( function() {
             if( String(draggingDot.getAttribute("spyId")).indexOf('line') > -1 )
             {
                 // get the svg point that the line uses
-                var svgP = draggableSvg.svgAPI(event.pageX, event.pageY)
-                var svgObject = document.getElementById( draggingDot.getAttribute("spyId").split("-")[0] )
-                var code = (draggingDot.getAttribute("spyId").split("-")[1] == 'start') ? 1 : 2
+                var svgP = draggableSvg.svgAPI(event.pageX, event.pageY),
+                    svgObject = document.getElementById( draggingDot.getAttribute("spyId").split("-")[0] ),
+                    code = (draggingDot.getAttribute("spyId").split("-")[1] == 'start') ? 1 : 2;
 
                 // set the point for the new line end
                 draggingDot.setAttribute("cx", svgP.x)
@@ -98,13 +92,13 @@ $( function() {
             else if( String(draggingDot.getAttribute("spyId")).indexOf('rect') > -1 )
             {
                 // get the scaled point on the svg and the rectangle dimensions
-                var svgP = draggableSvg.svgAPI(event.pageX, event.pageY)
-                var svgObject = document.getElementById( draggingDot.getAttribute("spyId").split("-")[0] )
-                var code = draggingDot.getAttribute("spyId").split("-")[1]
-                var width = parseFloat(svgObject.getAttribute("width"))
-                var height = parseFloat(svgObject.getAttribute("height"))
-                var newwidth = 0
-                var newheight = 0
+                var svgP = draggableSvg.svgAPI(event.pageX, event.pageY),
+                    svgObject = document.getElementById( draggingDot.getAttribute("spyId").split("-")[0] ),
+                    code = draggingDot.getAttribute("spyId").split("-")[1],
+                    width = parseFloat(svgObject.getAttribute("width")),
+                    height = parseFloat(svgObject.getAttribute("height")), 
+                    newwidth = 0, 
+                    newheight = 0;
 
                 // use a different if statement for each corner of the rectangle
                 if( code === "ptl" )
@@ -899,9 +893,9 @@ $( function() {
                 captionTextElement.setAttribute("font-size", inputInt+"px")
                 // find the matching html caption element
                 let matchingCaption = document.getElementById( this.attributes.objectid.value )
-                
+
                 // updpate the text inside once found
-                if(matchingCaption )
+                if( matchingCaption )
                 {   
                     matchingCaption.lastChild.innerHTML = text2PieText(textinput.value, parseFloat(matchingCaption.getAttribute("width")), parseInt(captionTextElement.getAttribute("font-size")))
                 }
@@ -931,11 +925,9 @@ $( function() {
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value+"text" )
 
-
             // updpate the text inside once found
             if(matchingCaption)
             {
-                // TODO: dynamic font size; hard coded 30
                 matchingCaption.innerHTML = text2PieText(this.value, parseFloat(matchingCaption.parentElement.getAttribute("width")), parseInt(matchingCaption.getAttribute("font-size")));
             }
         })
@@ -1247,6 +1239,42 @@ $( function() {
                         $('#'+imageId).attr('filePath', null)
 
                         ButtonManager.addImage( imageId, [])
+
+                        // remove the north icon b/c there is no north data
+                        try{
+                            document.getElementById(`northIcon-${imageId}`).remove()
+                        }
+                        catch(err)
+                        {
+                            /** No Thing */
+                        }
+
+                        // remove the Sun icon b/c there is no sun data
+                        try{
+                            document.getElementById(`sunIcon-${imageId}`).remove()
+                        }
+                        catch(err)
+                        {
+                            /** No Thing */
+                        }
+
+                        // remove the Observer icon b/c there is no observer data
+                        try{
+                            document.getElementById(`observerIcon-${imageId}`).remove()
+                        }
+                        catch(err)
+                        {
+                            /** No Thing */
+                        }
+
+                        // remove the scale icon b/c there is no scale data
+                        try{
+                            document.getElementById(`scalebarIcon-${imageId}`).remove()
+                        }
+                        catch(err)
+                        {
+                            /** No Thing */
+                        }
 
                         // remove the load icon from the UI
                         document.getElementById("loadicon").style.visibility = "hidden"
@@ -2069,6 +2097,22 @@ $( function() {
 }) // end of jquery functions
 
 /* Helper functions */
+
+function configDraggables( svg, dragCont )
+{
+    // create the Draggable Object Container
+    draggableSvg = DraggableArea( svg )
+    // create the DraggableList
+    draggableList = DraggableList( dragCont )
+}
+
+function preConfigPage()
+ {
+    // contain the index homepage
+    document.body.parentElement.setAttribute("class", "contained")
+    // disable contextmenu listener for the figure
+    document.getElementById('figurecontainer').setAttribute("oncontextmenu", "return false;")
+ }
 
 function iconFailureAlert()
 {
@@ -2919,7 +2963,7 @@ function updateIconPosition ( event, attrId )
  */
 function findImageToolbox( id, array )
 {
-    for( index in array )
+    for( let index = 0; index < array.length; index++ )
     {
         if( array[ index ].attributes.objectid.value == id )
         {
@@ -4649,7 +4693,7 @@ function cleanSVG( clone )
     /**
      * TODO: 
      * 
-     * With this function i want to do through the whole clone and remove 
+     * With this function i want to go through the whole clone and remove 
      * the id and class of every element and nested child inside of the svg so that the server has an easier time handling it
      */
 
