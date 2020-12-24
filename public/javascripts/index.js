@@ -910,7 +910,7 @@ $( function() {
             if(matchingCaption)
             {
                 // TODO: dynamic font size; hard coded 30
-                matchingCaption.innerHTML = text2PieText(this.value, parseFloat(matchingCaption.parentElement.getAttribute("width")), 30);
+                matchingCaption.innerHTML = text2PieText(this.value, parseFloat(matchingCaption.parentElement.getAttribute("width")), parseInt(matchingCaption.getAttribute("font-size")));
             }
         })
 
@@ -941,7 +941,7 @@ $( function() {
                     matchingCaption.setAttribute("width", Number(this.value))
                 }
 
-                matchingCaption.lastChild.innerHTML = text2PieText(textinput.value, parseFloat(matchingCaption.getAttribute("width")), 30)
+                matchingCaption.lastChild.innerHTML = text2PieText(textinput.value, parseFloat(matchingCaption.getAttribute("width")), parseInt(document.getElementById(this.attributes.objectid.value+"text").getAttribute("font-size")))
             }
         })
 
