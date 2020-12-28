@@ -56,31 +56,36 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
                 promise1.catch(err => {
                     console.log(`ISIS Error: ${err}`)
                 }).then((code) => {
-                    var promise2 = [
-                        pieapi.isis_catlab(
-                            path.join("public", "uploads", req.file.filename),
-                            path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
-                        ), 
-                        pieapi.isis_catoriglab(
+                    var promise2 = pieapi.isis_catlab(
                             path.join("public", "uploads", req.file.filename),
                             path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
                         )
-                    ];
 
-                    Promise.all(promise2).then( (code) => {
-                        if( code.includes(0) )
+                    promise2.then( (code) => {
+
+                        var promise3 = pieapi.isis_catoriglab(
+                            path.join("public", "uploads", req.file.filename),
+                            path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
+                        )
+
+                        promise3.then( code => {
+                            console.log(code)
+                        }).catch(err => {
+                            console.log(err)
+                        });
+
+                        
+                            // TODO: add back -> []
+                        (pieapi.pie_readPVL(path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl")),
+                            ['Lines', 'Samples', 'Phase', 'Emission', 'Incidence', 'SubSpacecraftGroundAzimuth', 'SubSolarAzimuth', 'NorthAzimuth', 'PixelResolution', 'ObliquePixelResolution'])
+                        ).then( object => {
+                            res.status(200).send({ imagefile: pieapi.URLerize(filepath, "upload"), pvlData: object })
+                        })
+                        .catch(err =>
                         {
-                            // TODO: add back -> ['Phase', 'Emission', 'Incidence']
-                            (pieapi.pie_readPVL(path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl")),
-                                ['Lines', 'Samples', 'SubSpacecraftGroundAzimuth', 'SubSolarAzimuth', 'NorthAzimuth', 'PixelResolution', 'ObliquePixelResolution'])
-                            ).then( object => {
-                                res.status(200).send({ imagefile: pieapi.URLerize(filepath, "upload"), pvlData: object })
-                            })
-                            .catch(err =>
-                            {
-                                console.log(`what happened =\n ${err}`)
-                            })
-                        }
+                            console.log(`what happened =\n ${err}`)
+                        })
+                        
                     }).catch( err => {
                         console.log(`ISIS Error: ${err}`)
                     });

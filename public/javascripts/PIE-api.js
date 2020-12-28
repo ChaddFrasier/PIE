@@ -2,10 +2,8 @@
  * @file PIE-api.js
  * @fileoverview this is a file that creates exportable functions to interact with the ISIS and GDAL command line interfaces. 
  * 
- * TODO: every single call should mimic the gdal_rescale method.
- *          1. rejectFunc and resolveFunc should only be called in the "close" or "error" every other step is an intermediate step to build the return buffer
- *          2. version 1.0.1 will allow for better error handling.
- *          3. could be good to add some method of testing that the environment is configured properly before running it.  
+ * TODO: 
+ *       3. could be good to add some method of testing that the environment is configured properly before running it.  
  */
 
 "use strict";
@@ -100,6 +98,7 @@ module.exports = {
                             // read the whole file lineby line
                             var sep = '\n'
                             var lineArr = buffer.toString().split(sep)
+                            
                             for(var i = 0; i < lineArr.length; i++)
                             {
                                 for( var j = 0; j < keys.length; j++ )
