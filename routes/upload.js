@@ -26,74 +26,73 @@ var storage = multer.diskStorage(
 // set the upload object for multer
 var upload = multer( { storage: storage } );
 
+/**
+ * This route will handle the file upload by the user and make the ISIS connections
+ */
 router.post('/', upload.single('imageinput') , (req, res, next) => {
     var isisregexp = new RegExp("^.*\.(CUB|cub|tif|TIF)$");
 
+    // check if the file uploaded was an isis3 file
     if( isisregexp.test(req.file.filename) )
     {
-        // if a tiff or cube file is detected; start the api object
+        // start the api object
         var pieapi = PIEAPI.PIEAPI();
 
-        // call the gdal scaling function that Trent gave me. and convert the output to jpg
+        // call the gdal scaling function that Trent uses and convert the output to jpg at 50% size
         var promise = pieapi.gdal_rescale(
             path.join("public", "uploads", req.file.filename),
             "50%",
             path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "jpg"))
             );
        
-        // runn a single promise
+        // wait for conversion to finish
         promise.then( ( filepath ) => {
-            console.log("Promises finished with >")
-            console.log(`${filepath} is the file path`)
+            console.log("Image Converted >")
+            console.log(filepath)
 
+            // if the file is found
             if( fs.existsSync( path.resolve(filepath)) )
             {
+                // call isis camera point info function
                 var promise1 = pieapi.isis_campt(
                     path.join("public", "uploads", req.file.filename),
                     path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
                     );
 
+                // handle failure and success in that order
                 promise1.catch(err => {
                     console.log(`ISIS Error: ${err}`)
                 }).then((code) => {
-                    var promise2 = pieapi.isis_catlab(
+                    // create a promises array for the next two functions
+                    var promises = [
+                        pieapi.isis_catlab(
+                            path.join("public", "uploads", req.file.filename),
+                            path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
+                        ),
+                        pieapi.isis_catoriglab(
                             path.join("public", "uploads", req.file.filename),
                             path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
                         )
+                    ];
 
-                    promise2.then( (code) => {
-
-                        var promise3 = pieapi.isis_catoriglab(
-                            path.join("public", "uploads", req.file.filename),
-                            path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
-                        )
-
-                        promise3.then( code => {
-                            console.log(code)
-                        }).catch(err => {
-                            console.log(err)
-                        });
-
-                        
-                            // TODO: add back -> []
+                    // when both promises finish read the data out of the pvl file
+                    Promise.all(promises).then( codes => {
+                        // read the resulting pvl file
                         (pieapi.pie_readPVL(path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl")),
-                            ['Lines', 'Samples', 'Phase', 'Emission', 'Incidence', 'SubSpacecraftGroundAzimuth', 'SubSolarAzimuth', 'NorthAzimuth', 'PixelResolution', 'ObliquePixelResolution'])
+                        ['Lines', 'Samples', 'Phase', 'Emission', 'Incidence', 'SubSpacecraftGroundAzimuth', 'SubSolarAzimuth', 'NorthAzimuth', 'PixelResolution', 'ObliquePixelResolution'])
                         ).then( object => {
-                            res.status(200).send({ imagefile: pieapi.URLerize(filepath, "upload"), pvlData: object })
+                        res.status(200).send({ imagefile: pieapi.URLerize(filepath, "upload"), pvlData: object })
                         })
-                        .catch(err =>
-                        {
-                            console.log(`what happened =\n ${err}`)
-                        })
-                        
                     }).catch( err => {
-                        console.log(`ISIS Error: ${err}`)
+                        console.log(err)
                     });
+                }).catch( err => {
+                    console.log(err)
                 });
             }
             else
             {
-                console.error("WTF")
+                console.error("GDAL Error: Conversion finished but the file was not found.")
             }
         }).catch( (err) => {
             // reset code 205
