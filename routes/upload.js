@@ -27,18 +27,18 @@ var storage = multer.diskStorage(
 var upload = multer( { storage: storage } );
 
 /**
- * This route will hadle the file upload by the user and make the ISIS connections
+ * This route will handle the file upload by the user and make the ISIS connections
  */
 router.post('/', upload.single('imageinput') , (req, res, next) => {
     var isisregexp = new RegExp("^.*\.(CUB|cub|tif|TIF)$");
 
-    // if the file uploaded was an isis3 file
+    // check if the file uploaded was an isis3 file
     if( isisregexp.test(req.file.filename) )
     {
         // start the api object
         var pieapi = PIEAPI.PIEAPI();
 
-        // call the gdal scaling function that Trent gave me. and convert the output to jpg at 50% origionl size
+        // call the gdal scaling function that Trent uses and convert the output to jpg at 50% size
         var promise = pieapi.gdal_rescale(
             path.join("public", "uploads", req.file.filename),
             "50%",
@@ -92,7 +92,7 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
             }
             else
             {
-                console.error("WTF")
+                console.error("GDAL Error: Conversion finished but the file was not found.")
             }
         }).catch( (err) => {
             // reset code 205
