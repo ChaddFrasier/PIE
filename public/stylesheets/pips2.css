@@ -70,22 +70,25 @@ html.contained {
 }
 
 .leftcontainer {
-    margin: auto auto auto 1em;
     width: 33.3%;
+    text-align: left;
+    padding: 1em;
     max-height: var(--header-height);
     min-height: var(--header-height);
 }
 
 .centercontainer {
     margin: auto auto;
+    padding: .5em;
     width: auto;
     max-height: var(--header-height);
     min-height: var(--header-height);
 }
 
 .rightcontainer {
-    margin: auto 1em auto auto;
     width: 33.3%;
+    text-align: right;
+    padding: 1em;
     max-height: var(--header-height);
     min-height: var(--header-height);
 }
@@ -214,11 +217,9 @@ h5.importantnote-desc {
 }
 
 .githubimage, .faqimage, .gdalimage{
-    text-align: right;
     width: auto;
-    min-width: var(--max-title-height);
-    max-height: var(--max-title-height);
-    margin: 10px 10px;
+    height: 8em;
+    margin: 1em 1em;
 }
 
 .basicpageheader {
@@ -320,7 +321,6 @@ img#usgsNavIcon:hover {
 .headerimage {
     max-width: var(--max-header-image-width);
     width: auto;
-    min-height: var(--header-height);
     height: auto;
 }
 
@@ -382,10 +382,9 @@ button.disabled {
 }
 
 .usgsLogo {
-    height: auto;
-    width: auto;
-    max-width: var(--usgs-image-width);
-    margin: auto 0 0 auto;
+    margin: auto auto auto auto;
+    height: var(--usgs-image-height);
+    width: var(--usgs-image-width);
 }
 
 .pips2header {
@@ -444,7 +443,7 @@ button.disabled {
     text-align: center;
     color: black;
     border-bottom: 2px solid black;
-    height: 10$;
+    height: 10%;
     padding: 0px;
 }
 
