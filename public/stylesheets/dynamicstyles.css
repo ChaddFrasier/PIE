@@ -149,8 +149,8 @@
 
         --toolbox-width: 12%;
 
-        --export-btn-width: 34px;
-        --export-btn-height: 32px;
+        --export-btn-width: 4em;
+        --export-btn-height: 4.9em;
 
         --toolbox-min-height: 0;
         --toolbox-max-height: 200px;
@@ -180,12 +180,25 @@
 }
 
 /* Native 4k+ Resolution  TODO: add back what could improve use of 4k screens*/
-@media only screen and (min-width:3000px) {
+@media only screen and (min-width:2400px) {
     :root {
         --large-font: 28px;
         --medium-font: 22px;
         --sm-medium-font: 20px;
         --small-font: 18px;
         --xsmall-font: 15px;
+
+        /* Top left Icon*/
+        --usgs-image-height: 7em;
+        --usgs-image-width: 17em;
+
+        /* Center Icon*/
+        --max-title-height: 9em;
+        --max-title-width: 18em;
+
+        --header-height: 10%;
+        --main-content-height: 85vh;
+        --toolcontainer-height: 84vh;
+        --footer-height: 8%;
     }
 }

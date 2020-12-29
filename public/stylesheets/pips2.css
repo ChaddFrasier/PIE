@@ -382,7 +382,6 @@ button.disabled {
 }
 
 .usgsLogo {
-    margin: auto auto auto auto;
     height: var(--usgs-image-height);
     width: var(--usgs-image-width);
 }
@@ -430,8 +429,8 @@ button.disabled {
     padding: 2px 2px;
     background: var(--bar-gradient);
     cursor: pointer;
-    width: auto;
-    height: auto;
+    width: 5em;
+    height: 5em;
 }
 
 #exportbtn > svg {
@@ -557,10 +556,7 @@ button.disabled {
     border-radius: 2px 2px;
     font-size: var(--medium-font);
     padding: 0;
-    width: auto;
-    min-width: var(--min-svg-btn);
-    max-width: var(--max-svg-btn);
-    min-height: var(--min-svg-btn);
+    width: var(--min-svg-btn);
     vertical-align: top;
     margin: 0 0 0 0;
     border: 1px solid transparent;
