@@ -2,9 +2,7 @@
  * @file PIE-api.js
  * @fileoverview this is a file that creates exportable functions to interact with the ISIS and GDAL command line interfaces. 
  * 
- * TODO: 
- *       3. could be good to add some method of testing that the environment is configured properly before running it.  
- */
+*/
 
 "use strict";
 
@@ -70,7 +68,6 @@ module.exports = {
                     console.log(object[keys[i]])
                 }
             }
-
             return {data: object, keys: keys}
         }
     
@@ -112,8 +109,6 @@ module.exports = {
 
                             let resolveData = cleanPvlObject( returnObject, keys)
 
-                            console.log(resolveData)
-
                             resolve( resolveData )
                         }
                     }
@@ -122,9 +117,6 @@ module.exports = {
                         // fail and let user know why it failed
                         reject(`Cannot find PVL file by the name of '${pvlfilename}'`)
                     }
-                    
-                    // read the data of the file line by line
-                    //resolve({ data: returnObject, keys: keys })
                 });
             },
 
@@ -156,7 +148,7 @@ module.exports = {
                 child.stderr.on("data", data => { console.log(`stderr: ${data}`) });
     
                 child.on('error', (error) => {
-                    console.log(`error: ${error.message}`);
+                    console.log(`Gdal Translate Error: ${error.message}`);
                     return error.message;
                 });
     
@@ -199,7 +191,7 @@ module.exports = {
                     child.stderr.on("data", data => { errorBuf += data });
 
                     child.on('error', (error) => {
-                        console.log(`error: ${error.message}`);
+                        console.log(`Resize Error: ${error.message}`);
                         rejectFunc(error.message);
                     });
 
@@ -285,7 +277,7 @@ module.exports = {
                     // append the buffer data into the error data stream
                     child.stderr.on("data", data => { errorBuf += data });
 
-                    child.on('error', (error) => {
+                    child.on('isis2std Error', (error) => {
                         console.log(`error: ${error.message}`);
                         rejectFunc(error.message);
                     });
@@ -324,7 +316,7 @@ module.exports = {
                     child.stderr.on("data", data => { errorBuf += data });
 
                     child.on('error', (error) => {
-                        console.log(`error: ${error.message}`);
+                        console.log(`Campt Error: ${error.message}`);
                         rejectFunc(error.message);
                     });
 
