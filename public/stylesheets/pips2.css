@@ -72,7 +72,7 @@ html.contained {
 .leftcontainer {
     width: 33.3%;
     text-align: left;
-    padding: 1em;
+    padding: 1.5em 0 0 1.5em;
     max-height: var(--header-height);
     min-height: var(--header-height);
 }
@@ -402,7 +402,8 @@ button.disabled {
 .mainfooter {
     display: flex;
     width: 100%;
-    height: var(--footer-height);
+    height: auto;
+    max-height: var(--footer-height);
     background: var(--bar-gradient);
     color: var(--accent-color);
     bottom: 0;
@@ -530,7 +531,8 @@ button.disabled {
 
 .maincontent {
     display: flex; 
-    height: var(--main-content-height);
+    height: auto;
+    max-height: var(--main-content-height);
     width: 100%;
     text-align: left;
 }
@@ -757,7 +759,7 @@ button.selected {
 .toolboxminimizebtn {
     background: var(--bar-gradient);
     border-radius: 2px 2px;
-    font-size: var(--medium-font);
+    font-size: var(--large-font);
     vertical-align: top;
     padding: 0;
     width: auto;
@@ -801,7 +803,7 @@ button#scalebarbtnopt  {
 .toolboxaddimagebtn {
     background: var(--bar-gradient);
     border-radius: 2px 2px;
-    font-size: var(--medium-font);
+    font-size: var(--large-font);
     vertical-align: top;
     width: auto;
     height: auto;
@@ -816,7 +818,7 @@ button#scalebarbtnopt  {
 .toolboxaddcaptionbtn {
     background: var(--bar-gradient);
     border-radius: 2px 2px;
-    font-size: var(--medium-font);
+    font-size: var(--large-font);
     vertical-align: top;
     width: auto;
     height: auto;
@@ -900,17 +902,14 @@ img.loading {
 
 svg.imagecontainer {
     width: auto;
-    height: auto;
-    max-width: 80%;
-    max-height: 100%;
+    height: var(--inner-main-content-max-height);
     padding: 0;
     margin: 0 auto 0 auto;
 }
 
 .svgholder {
-    width: auto;
-    height: auto;
-    max-height: var(--inner-main-content-max-height);
+    width: 100%;
+    height: var(--inner-main-content-max-height);
     background: black;
 }
 
@@ -957,7 +956,7 @@ svg.scalerBox {
 }
 
 .windowoptionsbar>button {
-    font-size: var(--xsmall-font);
+    font-size: var(--small-font);
 }
 
 .toolscontainer{
@@ -999,13 +998,13 @@ svg.scalerBox {
 
 .leftfooter {
     vertical-align: middle;
-    margin: auto auto auto 0;
+    margin: 1em auto .75em 0;
     width: 33.3%;
     color: inherit;
 }
 
 .centerfooter {
-    margin: auto;
+    margin: 2em auto 2em auto;
     text-align: center;
     color: inherit;
     border: 1px solid black;
@@ -1015,7 +1014,7 @@ svg.scalerBox {
 .rightfooter {  
     color: inherit;
     text-align: center;
-    margin: auto 0 auto auto;
+    margin: 1em 0 .75em auto;
     width: 30%;
     pointer-events: none;
     font-size: var(--medium-font);
@@ -1051,11 +1050,11 @@ input[type="color"]{
 }
 
 .editbox {
-    margin: 0 auto 1.5em auto;
+    margin: 0 auto auto auto;
     background: var(--primary-color);
     background: var(--secondary-color);
     color: var(--main-bg-color);
-    height: var(--inner-main-content-max-height);
+    height: var(--main-content-height);
     width: auto;
     text-align: center;
     border: 2px solid black;
@@ -1065,7 +1064,7 @@ input[type="color"]{
     -o-transition: all ease-in-out var(--transition-time); /* Opera */
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
     overflow: visible;
-    padding: 5px;
+    padding: 5px 2px 3px 2px;
 }
 
 .pagetitle {
