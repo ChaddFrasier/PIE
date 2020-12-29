@@ -7,9 +7,9 @@
  * @requires "PIE-api.js"
  * 
  * @fileoverview main event loop for the index page of PIE
- */
+*/
 
- var draggableSvg = null, draggableList = null;
+var draggableSvg = null, draggableList = null;
 /**
  * @function document.ready()
  * @description Function that runs when the page is done loading
@@ -1433,6 +1433,20 @@ $( function() {
                                 {
                                     btnArray.push('scale');
                                     // TODO: fix the scale bar 
+
+
+                                    // calculate the scale nneded for the scalebar and multiply by the svg dimensions
+                                    var scaleObject = getScalebarData( 
+                                        ( document.getElementById(imageId + '-hg').getAttribute("PixelResolution") ) 
+                                            ? document.getElementById(imageId + '-hg').getAttribute("PixelResolution")
+                                            : document.getElementById(imageId + '-hg').getAttribute("ObliquePixelResolution"),
+                                        document.getElementById(imageId).getAttribute("width"), document.getElementById(imageId).getAttribute("height"),
+                                        document.getElementById(imageId + '-hg').getAttribute("Lines"), document.getElementById(imageId + '-hg').getAttribute("Samples"))
+
+                                    
+                                    console.log(scaleObject)
+                                    icongroup.setAttribute("width", (scaleObject.sc * 4500)/2 )
+                                    icongroup.setAttribute("height", (scaleObject.sc * 700)/2 )
                                 }
 
                                 ButtonManager.addImage(imageId, btnArray )
@@ -1591,6 +1605,8 @@ $( function() {
         let holderbox = document.createElement("div")
         holderbox.setAttribute("class", "draggableToolbox")
         holderbox.setAttribute("objectid", imageId+"-hg")
+        holderbox.setAttribute("width", "100%")
+        holderbox.setAttribute("height", "100%")
         holderbox.append(newoptionsbar, toolsarea)
 
         draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
@@ -2045,7 +2061,6 @@ $( function() {
                     icongroup.setAttribute("objectid", image.id)
                     icongroup.setAttribute("id", "scalebarIcon-" + image.id)
 
-
                     // set the translate location of the icon to where the mouse was released
                     newX = getScaledPoint( svgP.x, 1, 1 )
                     newY = getScaledPoint( svgP.y, 1, 1 )
@@ -2067,8 +2082,8 @@ $( function() {
 
                         
                         console.log(scaleObject)
-                        icongroup.setAttribute("width", 4500 * scaleObject.sc)
-                        icongroup.setAttribute("height", 700 * scaleObject.sc)
+                        icongroup.setAttribute("width", (scaleObject.sc * 4500) )
+                        icongroup.setAttribute("height", (scaleObject.sc * 700) )
                     }
                     else
                     {
@@ -2077,6 +2092,15 @@ $( function() {
 
                     // append the icon
                     document.getElementById(image.id+"-hg").appendChild(icongroup)
+
+                    var scaleNumberStart = document.querySelectorAll("tspan#scalestart")
+                    var scaleNumberEnd = document.querySelectorAll("tspan#scaleend")
+
+                    scaleNumberEnd[1].id = "scaleend-"+image.id
+                    scaleNumberStart[1].id = "scalestart-"+image.id
+
+                    document.getElementById("scalestart-"+image.id).innerHTML = scaleObject.display
+                    document.getElementById("scaleend-"+image.id).innerHTML = scaleObject.display + " " +  scaleObject.units
                 }
                 else
                 {
@@ -2107,13 +2131,16 @@ function configDraggables( svg, dragCont )
 }
 
 function preConfigPage()
- {
+{
     // contain the index homepage
     document.body.parentElement.setAttribute("class", "contained")
     // disable contextmenu listener for the figure
     document.getElementById('figurecontainer').setAttribute("oncontextmenu", "return false;")
- }
+}
 
+ /**
+  * 
+  */
 function iconFailureAlert()
 {
     window.alert("User Error: Cannot add multiple icons to the same image.\n\n Let the developers know if this feature should change.")
@@ -2178,7 +2205,6 @@ var startButtonManager = function() {
         }
     }
 }
-
 const ButtonManager = startButtonManager();
 
 /**
@@ -2237,6 +2263,12 @@ var startActiveEM = function() {
  */
 function getScalebarData( resolution, imageW, imageH, lineCount, sampleCount )
 {
+    // if the decimal is 75% or more closer to a whole 10 set the base to 5
+        // check if 35% or greater, set base 2
+        // if the value is very close to a whole base on the low side 
+        //      set base to 5 and decrement the 10 base
+        // (this is to keep text from leaving image)
+        // default to 1
     let widthScale = imageW/sampleCount,
         heightScale = imageH/lineCount;
 
@@ -2257,6 +2289,51 @@ function getScalebarData( resolution, imageW, imageH, lineCount, sampleCount )
         obj['sc'] = (widthScale > 1)? Math.abs(widthScale - 1): widthScale
     }
 
+    // Lazbar Algortithm
+    let x = Math.log10(startWidthMeters/2);
+    let a = Math.floor(x);
+    let b = x - a;
+
+    // if the decimal is 75% or more closer to a whole 10 set the base to 5
+    // check if 35% or greater, set base 2
+    // if the value is very close to a whole base on the low side 
+    //      set base to 5 and decrement the 10 base
+    // (this is to keep text from leaving image)
+    // default to 1
+    if(b >= 0.75){
+        b = 5;
+    }
+    else if(b >= 0.35){
+        b = 2;
+    }
+    else if(b<.05){
+        a -= 1;
+        b = 5;
+    }
+    else{
+        b=1;
+    }
+
+    var scalebarMeters = b*Math.pow(10,a);
+
+    var scalebarLength,
+        scalebarUnits="";
+    // if the length is less than 1KM return length in meters
+    if(startWidthMeters/1000 < 1){
+        scalebarLength = scalebarMeters;
+        var scalebarPx = parseInt(scalebarLength / (parseFloat(resolution)));
+        scalebarUnits = "m";
+    }
+    else{
+        scalebarLength = scalebarMeters/1000;
+        var scalebarPx = parseInt(scalebarLength / (parseFloat(resolution)/1000));
+        scalebarUnits = "km";
+    }
+
+    obj['width'] = scalebarPx
+    obj['units'] = scalebarUnits
+    obj['display'] = scalebarLength
+    
     return obj;
 }
 
