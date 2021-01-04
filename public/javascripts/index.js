@@ -1434,7 +1434,6 @@ $( function() {
                                     btnArray.push('scale');
                                     // TODO: fix the scale bar 
 
-
                                     // calculate the scale nneded for the scalebar and multiply by the svg dimensions
                                     var scaleObject = getScalebarData( 
                                         ( document.getElementById(imageId + '-hg').getAttribute("PixelResolution") ) 
@@ -1445,8 +1444,12 @@ $( function() {
 
                                     
                                     console.log(scaleObject)
-                                    icongroup.setAttribute("width", (scaleObject.sc * 4500)/2 )
-                                    icongroup.setAttribute("height", (scaleObject.sc * 700)/2 )
+                                    var scaleIcon = document.getElementById("scalebarIcon-" + imageId)
+                                    if( scaleIcon )
+                                    {
+                                        scaleIcon.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
+                                        scaleIcon.setAttribute("height", (scaleObject.sc * 700) )
+                                    }
                                 }
 
                                 ButtonManager.addImage(imageId, btnArray )
@@ -2082,7 +2085,8 @@ $( function() {
 
                         
                         console.log(scaleObject)
-                        icongroup.setAttribute("width", (scaleObject.sc * 4500) )
+
+                        icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
                         icongroup.setAttribute("height", (scaleObject.sc * 700) )
                     }
                     else
@@ -2263,35 +2267,27 @@ var startActiveEM = function() {
  */
 function getScalebarData( resolution, imageW, imageH, lineCount, sampleCount )
 {
-    // if the decimal is 75% or more closer to a whole 10 set the base to 5
-        // check if 35% or greater, set base 2
-        // if the value is very close to a whole base on the low side 
-        //      set base to 5 and decrement the 10 base
-        // (this is to keep text from leaving image)
-        // default to 1
     let widthScale = imageW/sampleCount,
         heightScale = imageH/lineCount;
 
     var obj = {};
 
-    var startWidthMeters = resolution * sampleCount
-    var startHeightMeters = resolution * lineCount
+    var imageWidthMeters = resolution * sampleCount
+    var imageHeightMeters = resolution * lineCount
 
     console.log(`The image is showing ${widthScale} scale width`)
     console.log(`The image is showing ${heightScale} scale height`)
 
-    if( heightScale <= widthScale )
-    {
-        obj['sc'] = (heightScale > 1)? Math.abs(heightScale - 1): heightScale
-    }
-    else
-    {
-        obj['sc'] = (widthScale > 1)? Math.abs(widthScale - 1): widthScale
-    }
+    obj['sc'] = (widthScale <= heightScale) ? widthScale:heightScale;
 
-    // Lazbar Algortithm
-    let x = Math.log10(startWidthMeters/2);
+    /* Laz-bar Algortithm */
+
+    // cut the legth of the image in meters in half and then get the base10 of it
+    let x = Math.log10(imageWidthMeters/2);
+    // save the floor of that value as another variable
     let a = Math.floor(x);
+
+    // get the remaining room between incriments of 10
     let b = x - a;
 
     // if the decimal is 75% or more closer to a whole 10 set the base to 5
@@ -2319,7 +2315,7 @@ function getScalebarData( resolution, imageW, imageH, lineCount, sampleCount )
     var scalebarLength,
         scalebarUnits="";
     // if the length is less than 1KM return length in meters
-    if(startWidthMeters/1000 < 1){
+    if(imageWidthMeters/1000 < 1){
         scalebarLength = scalebarMeters;
         var scalebarPx = parseInt(scalebarLength / (parseFloat(resolution)));
         scalebarUnits = "m";
