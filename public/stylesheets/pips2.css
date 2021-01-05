@@ -216,10 +216,11 @@ h5.importantnote-desc {
     font-size: var(--large-font);
 }
 
-.githubimage, .faqimage, .gdalimage{
-    width: auto;
-    height: var(--max-title-height);
-    margin: 1em 1em;
+.githubimage, .faqimage, .gdalimage, .headerimage{
+    width: var(--max-header-image-width);
+    height: auto;
+    max-height: var(--max-title-height);
+    margin: 0 .5em;
 }
 
 .basicpageheader {
@@ -296,7 +297,7 @@ pre > i > b {
 }
 
 .mainaboutbox {
-    margin: 0 2vw;
+    margin: 1px 2vw;
     text-align: left;
     padding: 0 .5em;
     min-width: 30em;
@@ -316,12 +317,6 @@ img#usgsNavIcon:hover {
 .iconbtn {
     background: var(--bar-gradient);
     padding: 4px 0;
-}
-
-.headerimage {
-    max-width: var(--max-header-image-width);
-    width: auto;
-    height: auto;
 }
 
 a.descanchor, a.descanchor:visited   {
@@ -391,6 +386,7 @@ button.disabled {
     max-height: var(--header-height);
     min-height: var(--header-height);
     display: flex;
+    padding: none;
     border: none;
 }
 
@@ -429,8 +425,8 @@ button.disabled {
     padding: 2px 2px;
     background: var(--bar-gradient);
     cursor: pointer;
-    width: 5em;
-    height: 5em;
+    width: auto;
+    height: auto;
 }
 
 #exportbtn > svg {

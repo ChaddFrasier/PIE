@@ -8,17 +8,18 @@
         --small-font: 9px;
         --xsmall-font: 8px;
 
-        --usgs-image-height: 30px;
-        --usgs-image-width: 125px;
+        --usgs-image-height: 3em;
+        --usgs-image-width: 8em;
 
         --color-input-width: 5em;
         --color-input-height: 2em;
 
         --max-image-width: 55%;
-        --max-header-image-width: 75px;
+        --max-header-image-width: 4em;
 
-        --max-title-width: 125px;
-        --max-title-height: 85px;
+        /* Center Icon*/
+        --max-title-height: 4em;
+        --max-title-width: 9em;
 
         --main-export-box-height: 14em;
         --main-export-box-width: 15em;
@@ -69,17 +70,17 @@
         --small-font: 12px;
         --xsmall-font: 10px;
 
-        --usgs-image-height: 5em;
-        --usgs-image-width: 12em;
+        --usgs-image-height: 4em;
+        --usgs-image-width: 8em;
 
         --color-input-width: 5em;
         --color-input-height: 2em;
 
         --max-image-width: 55%;
-        --max-header-image-width: 100px;
+        --max-header-image-width: 5em;
 
         /* Center Icon*/
-        --max-title-height: 6.5em;
+        --max-title-height: 5em;
         --max-title-width: 11em;
 
         --main-export-box-height: 14em;
@@ -88,8 +89,8 @@
 
         --toolbox-width: 15%;
 
-        --export-btn-width: 30px;
-        --export-btn-height: 25px;
+        --export-btn-width: 2.5em;
+        --export-btn-height: 2.5em;
 
         --toolbox-min-height: 0;
         --toolbox-max-height: 130px;
