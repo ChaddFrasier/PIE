@@ -7,9 +7,9 @@
  * @requires "PIE-api.js"
  * 
  * @fileoverview main event loop for the index page of PIE
- */
+*/
 
- var draggableSvg = null, draggableList = null;
+var draggableSvg = null, draggableList = null;
 /**
  * @function document.ready()
  * @description Function that runs when the page is done loading
@@ -1433,6 +1433,23 @@ $( function() {
                                 {
                                     btnArray.push('scale');
                                     // TODO: fix the scale bar 
+
+                                    // calculate the scale nneded for the scalebar and multiply by the svg dimensions
+                                    var scaleObject = getScalebarData( 
+                                        ( document.getElementById(imageId + '-hg').getAttribute("PixelResolution") ) 
+                                            ? document.getElementById(imageId + '-hg').getAttribute("PixelResolution")
+                                            : document.getElementById(imageId + '-hg').getAttribute("ObliquePixelResolution"),
+                                        document.getElementById(imageId).getAttribute("width"), document.getElementById(imageId).getAttribute("height"),
+                                        document.getElementById(imageId + '-hg').getAttribute("Lines"), document.getElementById(imageId + '-hg').getAttribute("Samples"))
+
+                                    
+                                    console.log(scaleObject)
+                                    var scaleIcon = document.getElementById("scalebarIcon-" + imageId)
+                                    if( scaleIcon )
+                                    {
+                                        scaleIcon.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
+                                        scaleIcon.setAttribute("height", (scaleObject.sc * 700) )
+                                    }
                                 }
 
                                 ButtonManager.addImage(imageId, btnArray )
@@ -1591,6 +1608,8 @@ $( function() {
         let holderbox = document.createElement("div")
         holderbox.setAttribute("class", "draggableToolbox")
         holderbox.setAttribute("objectid", imageId+"-hg")
+        holderbox.setAttribute("width", "100%")
+        holderbox.setAttribute("height", "100%")
         holderbox.append(newoptionsbar, toolsarea)
 
         draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
@@ -2045,7 +2064,6 @@ $( function() {
                     icongroup.setAttribute("objectid", image.id)
                     icongroup.setAttribute("id", "scalebarIcon-" + image.id)
 
-
                     // set the translate location of the icon to where the mouse was released
                     newX = getScaledPoint( svgP.x, 1, 1 )
                     newY = getScaledPoint( svgP.y, 1, 1 )
@@ -2067,8 +2085,9 @@ $( function() {
 
                         
                         console.log(scaleObject)
-                        icongroup.setAttribute("width", 4500 * scaleObject.sc)
-                        icongroup.setAttribute("height", 700 * scaleObject.sc)
+
+                        icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
+                        icongroup.setAttribute("height", (scaleObject.sc * 700) )
                     }
                     else
                     {
@@ -2077,6 +2096,15 @@ $( function() {
 
                     // append the icon
                     document.getElementById(image.id+"-hg").appendChild(icongroup)
+
+                    var scaleNumberStart = document.querySelectorAll("tspan#scalestart")
+                    var scaleNumberEnd = document.querySelectorAll("tspan#scaleend")
+
+                    scaleNumberEnd[1].id = "scaleend-"+image.id
+                    scaleNumberStart[1].id = "scalestart-"+image.id
+
+                    document.getElementById("scalestart-"+image.id).innerHTML = scaleObject.display
+                    document.getElementById("scaleend-"+image.id).innerHTML = scaleObject.display + " " +  scaleObject.units
                 }
                 else
                 {
@@ -2107,13 +2135,16 @@ function configDraggables( svg, dragCont )
 }
 
 function preConfigPage()
- {
+{
     // contain the index homepage
     document.body.parentElement.setAttribute("class", "contained")
     // disable contextmenu listener for the figure
     document.getElementById('figurecontainer').setAttribute("oncontextmenu", "return false;")
- }
+}
 
+ /**
+  * 
+  */
 function iconFailureAlert()
 {
     window.alert("User Error: Cannot add multiple icons to the same image.\n\n Let the developers know if this feature should change.")
@@ -2178,7 +2209,6 @@ var startButtonManager = function() {
         }
     }
 }
-
 const ButtonManager = startButtonManager();
 
 /**
@@ -2242,21 +2272,64 @@ function getScalebarData( resolution, imageW, imageH, lineCount, sampleCount )
 
     var obj = {};
 
-    var startWidthMeters = resolution * sampleCount
-    var startHeightMeters = resolution * lineCount
+    var imageWidthMeters = resolution * sampleCount
+    var imageHeightMeters = resolution * lineCount
 
     console.log(`The image is showing ${widthScale} scale width`)
     console.log(`The image is showing ${heightScale} scale height`)
 
-    if( heightScale <= widthScale )
-    {
-        obj['sc'] = (heightScale > 1)? Math.abs(heightScale - 1): heightScale
+    obj['sc'] = (widthScale <= heightScale) ? widthScale:heightScale;
+
+    /* Laz-bar Algortithm */
+
+    // cut the legth of the image in meters in half and then get the base10 of it
+    let x = Math.log10(imageWidthMeters/2);
+    // save the floor of that value as another variable
+    let a = Math.floor(x);
+
+    // get the remaining room between incriments of 10
+    let b = x - a;
+
+    // if the decimal is 75% or more closer to a whole 10 set the base to 5
+    // check if 35% or greater, set base 2
+    // if the value is very close to a whole base on the low side 
+    //      set base to 5 and decrement the 10 base
+    // (this is to keep text from leaving image)
+    // default to 1
+    if(b >= 0.75){
+        b = 5;
     }
-    else
-    {
-        obj['sc'] = (widthScale > 1)? Math.abs(widthScale - 1): widthScale
+    else if(b >= 0.35){
+        b = 2;
+    }
+    else if(b<.05){
+        a -= 1;
+        b = 5;
+    }
+    else{
+        b=1;
     }
 
+    var scalebarMeters = b*Math.pow(10,a);
+
+    var scalebarLength,
+        scalebarUnits="";
+    // if the length is less than 1KM return length in meters
+    if(imageWidthMeters/1000 < 1){
+        scalebarLength = scalebarMeters;
+        var scalebarPx = parseInt(scalebarLength / (parseFloat(resolution)));
+        scalebarUnits = "m";
+    }
+    else{
+        scalebarLength = scalebarMeters/1000;
+        var scalebarPx = parseInt(scalebarLength / (parseFloat(resolution)/1000));
+        scalebarUnits = "km";
+    }
+
+    obj['width'] = scalebarPx
+    obj['units'] = scalebarUnits
+    obj['display'] = scalebarLength
+    
     return obj;
 }
 
@@ -4354,120 +4427,6 @@ function updateImageLocation( imageId, x, y )
         let image = document.getElementById(imageId)
         image.setAttribute("x",x)
         image.setAttribute("y",y)
-    }
-}
-
-/**
- * @function updateInputField
- * @param {string} objectid the object id to change
- * @param  {...any} args list of the values to update in order of input fields for each object
- */
-function updateInputField( objectid, ...args )
-{
-    // dragging a line
-    if( objectid.indexOf("line") > -1)
-    {
-        var objectArr = document.getElementsByClassName("draggableToolbox")
-
-        // more than 1 toolbox present
-        for(let i = 0; i < objectArr.length; i++ ){
-            if( objectArr[i].getAttribute("objectid") == objectid )
-            { 
-                // set the ui input boxes
-                var x1input = objectArr[i].children[1].querySelector("input[name='linex1input']")
-                x1input.value = Number(args[0]).toFixed(0)
-
-                var y1input = objectArr[i].children[1].querySelector("input[name='liney1input']")
-                y1input.value = Number(args[1]).toFixed(0)
-
-                var x2input = objectArr[i].children[1].querySelector("input[name='linex2input']")
-                x2input.value = Number(args[2]).toFixed(0)
-
-                var y2input = objectArr[i].children[1].querySelector("input[name='liney2input']")
-                y2input.value = Number(args[3]).toFixed(0)
-            }
-        }
-    }
-    else if( objectid.indexOf("rect") > -1)
-    {
-        var objectArr = document.getElementsByClassName("draggableToolbox")
-
-        // more than 1 toolbox present
-        for(let i = 0; i < objectArr.length; i++ ){
-            if( objectArr[i].getAttribute("objectid") == objectid )
-            {
-                // set the ui input boxes
-                var xinput = objectArr[i].children[1].querySelector("input[name='rectxinput']")
-                xinput.value = Number(args[0]).toFixed(0)
-
-                var yinput = objectArr[i].children[1].querySelector("input[name='rectyinput']")
-                yinput.value = Number(args[1]).toFixed(0)
-            }
-        }
-    }
-    else if( objectid.indexOf("Icon") > -1 )
-    {
-    
-        var objectArr = document.getElementsByClassName("draggableToolbox") 
- 
-        if( objectArr.length > 0)
-        {
-            // more than 1 toolbox present
-            for(let i = 0; i < objectArr.length; i++ ){
-                if( objectArr[i].getAttribute("objectid").indexOf(objectid.split("-")[1]) > -1 )
-                {
-                    // set the ui input boxes
-                    var xinput = objectArr[i].children[1].querySelectorAll("input[name='iconxcoordinput']")
-                    var yinput = objectArr[i].children[1].querySelectorAll("input[name='iconycoordinput']")
-
-
-                    if(xinput.length > 0 && yinput.length > 0)
-                    {
-                        xinput.forEach(inputfield => {
-                            if(inputfield.getAttribute("objectid") === objectid)
-                            {
-                                inputfield.value = Number(args[0]).toFixed(0)
-                            }
-                        });
-
-                        yinput.forEach(inputfield => {
-                            if(inputfield.getAttribute("objectid") === objectid)
-                            {
-                                inputfield.value = Number(args[1]).toFixed(0)
-                            }
-                        });
-                    }
-                }
-            }
-        }
-        else
-        {
-            console.log("Something went wrong")
-        }
-    }
-    else if( objectid.indexOf("image") > -1 )
-    {
-        var objectArr = document.getElementsByClassName("draggableToolbox")
-        
-        if(objectArr.length > 0)
-        {
-            // more than 1 toolbox present
-            for(let i = 0; i < objectArr.length; i++ ){
-                if( objectArr[i].getAttribute("objectid").split('-')[0] === objectid )
-                {
-                    // set the ui input boxes
-                    var xinput = objectArr[i].children[1].querySelector("input[name='xcoordinput']")
-                    xinput.value = Number(args[0]).toFixed(0)
-
-                    var yinput = objectArr[i].children[1].querySelector("input[name='ycoordinput']")
-                    yinput.value = Number(args[1]).toFixed(0)
-                }
-            }
-        }
-        else
-        {
-            console.log("Something went wrong")
-        }
     }
 }
 

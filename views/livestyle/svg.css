@@ -3,12 +3,11 @@ line.placed:hover, rect.placed:hover , g:hover, g.containingelement:hover{
 }
 
 g.containingelement {
-    border: 10px solid red;
     cursor: auto;
 }
 
 line.placed.dragging, rect.placed.dragging, svg.dragging, g.dragging{
-    cursor: grabbing;
+    cursor: grabbing !important;
 }
 
 line.placed.drawing, rect.placed.drawing, svg.drawing, g.drawing{

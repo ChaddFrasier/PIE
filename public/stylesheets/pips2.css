@@ -70,22 +70,25 @@ html.contained {
 }
 
 .leftcontainer {
-    margin: auto auto auto 1em;
     width: 33.3%;
+    text-align: left;
+    padding: 1.5em 0 0 1.5em;
     max-height: var(--header-height);
     min-height: var(--header-height);
 }
 
 .centercontainer {
     margin: auto auto;
+    padding: .5em;
     width: auto;
     max-height: var(--header-height);
     min-height: var(--header-height);
 }
 
 .rightcontainer {
-    margin: auto 1em auto auto;
     width: 33.3%;
+    text-align: right;
+    padding: 1em;
     max-height: var(--header-height);
     min-height: var(--header-height);
 }
@@ -213,12 +216,11 @@ h5.importantnote-desc {
     font-size: var(--large-font);
 }
 
-.githubimage, .faqimage, .gdalimage{
-    text-align: right;
-    width: auto;
-    min-width: var(--max-title-height);
+.githubimage, .faqimage, .gdalimage, .headerimage{
+    width: var(--max-header-image-width);
+    height: auto;
     max-height: var(--max-title-height);
-    margin: 10px 10px;
+    margin: 0 .5em;
 }
 
 .basicpageheader {
@@ -295,7 +297,7 @@ pre > i > b {
 }
 
 .mainaboutbox {
-    margin: 0 2vw;
+    margin: 1px 2vw;
     text-align: left;
     padding: 0 .5em;
     min-width: 30em;
@@ -315,13 +317,6 @@ img#usgsNavIcon:hover {
 .iconbtn {
     background: var(--bar-gradient);
     padding: 4px 0;
-}
-
-.headerimage {
-    max-width: var(--max-header-image-width);
-    width: auto;
-    min-height: var(--header-height);
-    height: auto;
 }
 
 a.descanchor, a.descanchor:visited   {
@@ -382,10 +377,8 @@ button.disabled {
 }
 
 .usgsLogo {
-    height: auto;
-    width: auto;
-    max-width: var(--usgs-image-width);
-    margin: auto 0 0 auto;
+    height: var(--usgs-image-height);
+    width: var(--usgs-image-width);
 }
 
 .pips2header {
@@ -393,6 +386,7 @@ button.disabled {
     max-height: var(--header-height);
     min-height: var(--header-height);
     display: flex;
+    padding: none;
     border: none;
 }
 
@@ -403,7 +397,8 @@ button.disabled {
 .mainfooter {
     display: flex;
     width: 100%;
-    height: var(--footer-height);
+    height: auto;
+    max-height: var(--footer-height);
     background: var(--bar-gradient);
     color: var(--accent-color);
     bottom: 0;
@@ -444,7 +439,7 @@ button.disabled {
     text-align: center;
     color: black;
     border-bottom: 2px solid black;
-    height: 10$;
+    height: 10%;
     padding: 0px;
 }
 
@@ -531,7 +526,8 @@ button.disabled {
 
 .maincontent {
     display: flex; 
-    height: var(--main-content-height);
+    height: auto;
+    max-height: var(--main-content-height);
     width: 100%;
     text-align: left;
 }
@@ -556,10 +552,7 @@ button.disabled {
     border-radius: 2px 2px;
     font-size: var(--medium-font);
     padding: 0;
-    width: auto;
-    min-width: var(--min-svg-btn);
-    max-width: var(--max-svg-btn);
-    min-height: var(--min-svg-btn);
+    width: var(--min-svg-btn);
     vertical-align: top;
     margin: 0 0 0 0;
     border: 1px solid transparent;
@@ -758,7 +751,7 @@ button.selected {
 .toolboxminimizebtn {
     background: var(--bar-gradient);
     border-radius: 2px 2px;
-    font-size: var(--medium-font);
+    font-size: var(--large-font);
     vertical-align: top;
     padding: 0;
     width: auto;
@@ -802,7 +795,7 @@ button#scalebarbtnopt  {
 .toolboxaddimagebtn {
     background: var(--bar-gradient);
     border-radius: 2px 2px;
-    font-size: var(--medium-font);
+    font-size: var(--large-font);
     vertical-align: top;
     width: auto;
     height: auto;
@@ -817,7 +810,7 @@ button#scalebarbtnopt  {
 .toolboxaddcaptionbtn {
     background: var(--bar-gradient);
     border-radius: 2px 2px;
-    font-size: var(--medium-font);
+    font-size: var(--large-font);
     vertical-align: top;
     width: auto;
     height: auto;
@@ -901,17 +894,14 @@ img.loading {
 
 svg.imagecontainer {
     width: auto;
-    height: auto;
-    max-width: 80%;
-    max-height: 100%;
+    height: var(--inner-main-content-max-height);
     padding: 0;
     margin: 0 auto 0 auto;
 }
 
 .svgholder {
-    width: auto;
-    height: auto;
-    max-height: var(--inner-main-content-max-height);
+    width: 100%;
+    height: var(--inner-main-content-max-height);
     background: black;
 }
 
@@ -958,7 +948,7 @@ svg.scalerBox {
 }
 
 .windowoptionsbar>button {
-    font-size: var(--xsmall-font);
+    font-size: var(--small-font);
 }
 
 .toolscontainer{
@@ -1000,13 +990,13 @@ svg.scalerBox {
 
 .leftfooter {
     vertical-align: middle;
-    margin: auto auto auto 0;
+    margin: 1em auto .75em 0;
     width: 33.3%;
     color: inherit;
 }
 
 .centerfooter {
-    margin: auto;
+    margin: 2em auto 2em auto;
     text-align: center;
     color: inherit;
     border: 1px solid black;
@@ -1016,7 +1006,7 @@ svg.scalerBox {
 .rightfooter {  
     color: inherit;
     text-align: center;
-    margin: auto 0 auto auto;
+    margin: 1em 0 .75em auto;
     width: 30%;
     pointer-events: none;
     font-size: var(--medium-font);
@@ -1052,11 +1042,11 @@ input[type="color"]{
 }
 
 .editbox {
-    margin: 0 auto 1.5em auto;
+    margin: 0 auto auto auto;
     background: var(--primary-color);
     background: var(--secondary-color);
     color: var(--main-bg-color);
-    height: var(--inner-main-content-max-height);
+    height: var(--main-content-height);
     width: auto;
     text-align: center;
     border: 2px solid black;
@@ -1066,7 +1056,7 @@ input[type="color"]{
     -o-transition: all ease-in-out var(--transition-time); /* Opera */
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
     overflow: visible;
-    padding: 5px;
+    padding: 5px 2px 3px 2px;
 }
 
 .pagetitle {

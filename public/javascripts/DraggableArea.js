@@ -84,7 +84,6 @@ function DraggableArea( objectbox=undefined )
      * @function getIconParentContainer
      * @param {Object} target 
      * @description this function loops until failure or until a expected / draggable parent is found (Usually Fails in 4 to 5 loops)
-     * TODO: this could be structured better by liitig the while loop to a predictable and expected layer depth. because every loop represents a nested child element
      */
     function getIconParentContainer( target )
     {
@@ -166,7 +165,6 @@ function DraggableArea( objectbox=undefined )
                 currentX = getScaledPoint(svgP.x, 1, parseFloat(draggingIcon.getAttribute("width")) );
                 currentY = getScaledPoint(svgP.y, 1, parseFloat(draggingIcon.getAttribute("height")) );
 
-                let scale = draggingIcon.getAttribute("scale");
 
                 // update the input fields using the id of the draggingObject
                 updateInputField( draggingIcon.getAttribute("id"), currentX, currentY );
@@ -273,6 +271,8 @@ function DraggableArea( objectbox=undefined )
                 let svgP = createSVGP( event.clientX, event.clientY );
                 oldX = svgP.x;
                 oldY = svgP.y;
+
+                console.log(event)
         
                 DragBoxContainer.addEventListener("mousemove", dragObject );
                 DragBoxContainer.addEventListener("mouseleave", endDrag );
@@ -283,7 +283,6 @@ function DraggableArea( objectbox=undefined )
             }
         }
         // ---------------- End Private functions 2 --------------------------
-
 
         // add the main listener to the object targeted by DraggableArea() init function
         DragBoxContainer.addEventListener("mousedown", dragHandler );

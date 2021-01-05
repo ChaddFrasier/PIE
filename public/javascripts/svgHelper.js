@@ -147,6 +147,150 @@ function getScaledPoint( p, scale, objectDim )
     return ( p  - p_half ) /  scale  
 }
 
+
+/**
+ * @function updateInputField
+ * @param {string} objectid the object id to change
+ * @param  {...any} args list of the values to update in order of input fields for each object
+ */
+function updateInputField( objectid, ...args )
+{
+    // dragging a line
+    if( objectid.indexOf("line") > -1)
+    {
+        var objectArr = document.getElementsByClassName("draggableToolbox")
+
+        // more than 1 toolbox present
+        for(let i = 0; i < objectArr.length; i++ ){
+            if( objectArr[i].getAttribute("objectid") == objectid )
+            { 
+                // set the ui input boxes
+                var x1input = objectArr[i].children[1].querySelector("input[name='linex1input']")
+                x1input.value = Number(args[0]).toFixed(0)
+
+                var y1input = objectArr[i].children[1].querySelector("input[name='liney1input']")
+                y1input.value = Number(args[1]).toFixed(0)
+
+                var x2input = objectArr[i].children[1].querySelector("input[name='linex2input']")
+                x2input.value = Number(args[2]).toFixed(0)
+
+                var y2input = objectArr[i].children[1].querySelector("input[name='liney2input']")
+                y2input.value = Number(args[3]).toFixed(0)
+            }
+        }
+    }
+    else if( objectid.indexOf("rect") > -1)
+    {
+        var objectArr = document.getElementsByClassName("draggableToolbox")
+
+        // more than 1 toolbox present
+        for(let i = 0; i < objectArr.length; i++ ){
+            if( objectArr[i].getAttribute("objectid") == objectid )
+            {
+                // set the ui input boxes
+                var xinput = objectArr[i].children[1].querySelector("input[name='rectxinput']")
+                xinput.value = Number(args[0]).toFixed(0)
+
+                var yinput = objectArr[i].children[1].querySelector("input[name='rectyinput']")
+                yinput.value = Number(args[1]).toFixed(0)
+            }
+        }
+    }
+    else if( objectid.indexOf("Icon") > -1 )
+    {
+    
+        var objectArr = document.getElementsByClassName("draggableToolbox") 
+ 
+        if( objectArr.length > 0)
+        {
+            // more than 1 toolbox present
+            for(let i = 0; i < objectArr.length; i++ ){
+                if( objectArr[i].getAttribute("objectid").indexOf(objectid.split("-")[1]) > -1 )
+                {
+                    // set the ui input boxes
+                    var xinput = objectArr[i].children[1].querySelectorAll("input[name='iconxcoordinput']")
+                    var yinput = objectArr[i].children[1].querySelectorAll("input[name='iconycoordinput']")
+
+
+                    if(xinput.length > 0 && yinput.length > 0)
+                    {
+                        xinput.forEach(inputfield => {
+                            if(inputfield.getAttribute("objectid") === objectid)
+                            {
+                                inputfield.value = Number(args[0]).toFixed(0)
+                            }
+                        });
+
+                        yinput.forEach(inputfield => {
+                            if(inputfield.getAttribute("objectid") === objectid)
+                            {
+                                inputfield.value = Number(args[1]).toFixed(0)
+                            }
+                        });
+                    }
+                }
+            }
+        }
+        else
+        {
+            console.log("Something went wrong")
+        }
+    }
+    else if( objectid.indexOf("image") > -1 )
+    {
+        var objectArr = document.getElementsByClassName("draggableToolbox")
+        
+        if(objectArr.length > 0)
+        {
+            // more than 1 toolbox present
+            for(let i = 0; i < objectArr.length; i++ ){
+                if( objectArr[i].getAttribute("objectid").split('-')[0] === objectid )
+                {
+                    // set the ui input boxes
+                    var xinput = objectArr[i].children[1].querySelector("input[name='xcoordinput']")
+                    xinput.value = Number(args[0]).toFixed(0)
+
+                    var yinput = objectArr[i].children[1].querySelector("input[name='ycoordinput']")
+                    yinput.value = Number(args[1]).toFixed(0)
+                }
+            }
+        }
+        else
+        {
+            console.log("Something went wrong")
+        }
+    }
+    else if(objectid.indexOf("caption") > -1)
+    {
+        var objectArr = document.getElementsByClassName("draggableToolbox")
+        
+        if(objectArr.length > 0)
+        {
+            // more than 1 toolbox present
+            for(let i = 0; i < objectArr.length; i++ ){
+                if( objectArr[i].getAttribute("objectid").split('-')[0] === objectid )
+                {
+                    // set the ui input boxes
+                    var xinput = objectArr[i].children[1].querySelector("input[name='xcoordinput']")
+                    xinput.value = Number(args[0]).toFixed(0)
+
+                    var yinput = objectArr[i].children[1].querySelector("input[name='ycoordinput']")
+                    yinput.value = Number(args[1]).toFixed(0)
+                }
+            }
+        }
+        else
+        {
+            console.log("Something went wrong")
+        }
+    }
+    else
+    {
+        console.error("Could not find object to correct")
+    }
+}
+
+
 /**
  * @function moveSvgUp
  * @param {Node} element - the element to shift layers
