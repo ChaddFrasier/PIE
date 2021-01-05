@@ -1486,6 +1486,9 @@ $( function() {
         widthinput.setAttribute("name","widthinput")
 
         widthinput.addEventListener("change", function(){
+
+            // TODO: test and update the scalebar to match the new size of the image
+
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value )
             // updpate the text inside once found
@@ -1512,6 +1515,8 @@ $( function() {
         heightinput.setAttribute("name","heightinput")
 
         heightinput.addEventListener("change", function(){
+            // TODO: test and update the scalebar to match the new size of the image
+
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value )
             // updpate the text inside once found
