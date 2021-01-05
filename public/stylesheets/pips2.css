@@ -218,7 +218,7 @@ h5.importantnote-desc {
 
 .githubimage, .faqimage, .gdalimage{
     width: auto;
-    height: 8em;
+    height: var(--max-title-height);
     margin: 1em 1em;
 }
 
