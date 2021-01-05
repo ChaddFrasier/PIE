@@ -681,6 +681,10 @@ button.selected {
     color: white;
 }
 
+.captiontoolsbox > input[type='number'], .imagetoolsbox > input[type='number'] {
+    width: 75%;
+}
+
 .textareainputfield {
     max-width: 100%;
     font-size: var(--xsmall-font);
