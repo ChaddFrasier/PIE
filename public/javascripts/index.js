@@ -600,7 +600,7 @@ $( function() {
         fileinputtypetifflabel.innerHTML = "GeoTIFF"
         
         //TODO: remove this function for the next docker build of v1.1.0
-        fileinputtype2.classList.add("disabled")
+        //fileinputtype2.classList.add("disabled")
 
         var fileinputtype3 = fileinputtype.cloneNode(true);
 
@@ -640,7 +640,7 @@ $( function() {
 
         columnsvg.append(fileinputtypesvglabel, dividericonbox , fileinputtype)
         columnpng.append(fileinputtypepnglabel, dividericonbox.cloneNode(true), fileinputtype1)
-        columntiff.append(fileinputtypetifflabel, dividericonbox.cloneNode(true), fileinputtype2)
+        //columntiff.append(fileinputtypetifflabel, dividericonbox.cloneNode(true), fileinputtype2)
         columnjpg.append(fileinputtypejpeglabel,  dividericonbox.cloneNode(true), fileinputtype3)
 
         forminputcheckboxholder.append(columnsvg , columntiff, columnpng, columnjpg)
@@ -708,7 +708,7 @@ $( function() {
                 fd.append("exportfile", svgBlob, fileinputname.value+"_tmp.svg" )
                 fd.append("svg", fileinputtype.checked )
                 fd.append("png", fileinputtype1.checked )
-                fd.append("tiff",fileinputtype2.checked )
+                //fd.append("tiff",fileinputtype2.checked )
                 fd.append("jpeg",fileinputtype3.checked )
                 fd.append("dims",figsizeselect.value )
 
