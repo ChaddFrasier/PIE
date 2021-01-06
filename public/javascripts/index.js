@@ -599,7 +599,7 @@ $( function() {
         let fileinputtypetifflabel = fileinputtypesvglabel.cloneNode(true)
         fileinputtypetifflabel.innerHTML = "GeoTIFF"
         
-        //TODO:  disabled this checkbox
+        //TODO: remove this function for the next docker build of v1.1.0
         fileinputtype2.classList.add("disabled")
 
         var fileinputtype3 = fileinputtype.cloneNode(true);
@@ -718,9 +718,6 @@ $( function() {
                     // response has all the links for downloading images
                     Object.keys(xhr.response).forEach( filetype => {
                         const filename = xhr.response[filetype];
-
-                        // download the filepath
-                        console.log(`Download the ${filetype} file at ${filename}`)
 
                         // create new formdata to tell the server what to download
                         var postData = new FormData();
@@ -1502,6 +1499,20 @@ $( function() {
                 else
                 {
                     matchingCaption.setAttribute("width", Number(this.value))
+
+                    // calculate the scale nneded for the scalebar and multiply by the svg dimensions
+                    var scaleObject = getScalebarData( 
+                        ( document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("PixelResolution") ) 
+                            ? document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("PixelResolution")
+                            : document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("ObliquePixelResolution"),
+                        document.getElementById(this.attributes.objectid.value).getAttribute("width"), document.getElementById(this.attributes.objectid.value).getAttribute("height"),
+                        document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("Lines"), document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("Samples"))
+
+                    
+                    console.log(scaleObject)
+
+                    icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
+                    icongroup.setAttribute("height", (scaleObject.sc * 700) )
                 }
             }
         })
@@ -1530,6 +1541,20 @@ $( function() {
                 else
                 {
                     matchingCaption.setAttribute("height", Number(this.value))
+
+                    // calculate the scale nneded for the scalebar and multiply by the svg dimensions
+                    var scaleObject = getScalebarData( 
+                        ( document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("PixelResolution") ) 
+                            ? document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("PixelResolution")
+                            : document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("ObliquePixelResolution"),
+                        document.getElementById(this.attributes.objectid.value).getAttribute("width"), document.getElementById(this.attributes.objectid.value).getAttribute("height"),
+                        document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("Lines"), document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("Samples"))
+
+                    
+                    console.log(scaleObject)
+
+                    icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
+                    icongroup.setAttribute("height", (scaleObject.sc * 700) )
                 }
             }
         })
@@ -2277,18 +2302,22 @@ function getScalebarData( resolution, imageW, imageH, lineCount, sampleCount )
 
     var obj = {};
 
-    var imageWidthMeters = resolution * sampleCount
-    var imageHeightMeters = resolution * lineCount
+    var imageWidthMeters = resolution * sampleCount;
 
     console.log(`The image is showing ${widthScale} scale width`)
     console.log(`The image is showing ${heightScale} scale height`)
 
-    obj['sc'] = (widthScale <= heightScale) ? widthScale:heightScale;
+    obj['sc'] = (widthScale <= heightScale) ? widthScale : heightScale;
+
+    var realImageWidthMeters = (heightScale < widthScale)? ((heightScale * imageW)*resolution)/2 : imageWidthMeters/2;
+
+    console.log(`Real Image Width: ${realImageWidthMeters}`)
+    console.log(`Represented Image Width: ${imageWidthMeters}`)
 
     /* Laz-bar Algortithm */
 
     // cut the legth of the image in meters in half and then get the base10 of it
-    let x = Math.log10(imageWidthMeters/2);
+    let x = Math.log10(realImageWidthMeters);
     // save the floor of that value as another variable
     let a = Math.floor(x);
 
@@ -2316,7 +2345,6 @@ function getScalebarData( resolution, imageW, imageH, lineCount, sampleCount )
     }
 
     var scalebarMeters = b*Math.pow(10,a);
-
     var scalebarLength,
         scalebarUnits="";
     // if the length is less than 1KM return length in meters
@@ -4655,13 +4683,11 @@ function cleanSVG( clone )
 {
 
     /**
-     * TODO: 
+     * TODO:  
      * 
      * With this function i want to go through the whole clone and remove 
      * the id and class of every element and nested child inside of the svg so that the server has an easier time handling it
      */
-
-    console.log( clone )
 
     removeAttributes(clone, "id", "class")
 
