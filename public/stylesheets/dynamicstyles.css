@@ -147,7 +147,7 @@
     }
 }
 
-/* Native 4k+ Resolution  TODO: add back what could improve use of 4k screens*/
+/* Native 4k+ Resolution */
 @media only screen and (min-width:2400px) {
     :root {
         --large-font: 28px;
