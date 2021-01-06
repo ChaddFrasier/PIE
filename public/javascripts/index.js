@@ -1431,21 +1431,26 @@ $( function() {
                                     btnArray.push('scale');
                                     // TODO: fix the scale bar 
 
-                                    // calculate the scale nneded for the scalebar and multiply by the svg dimensions
-                                    var scaleObject = getScalebarData( 
-                                        ( document.getElementById(imageId + '-hg').getAttribute("PixelResolution") ) 
-                                            ? document.getElementById(imageId + '-hg').getAttribute("PixelResolution")
-                                            : document.getElementById(imageId + '-hg').getAttribute("ObliquePixelResolution"),
-                                        document.getElementById(imageId).getAttribute("width"), document.getElementById(imageId).getAttribute("height"),
-                                        document.getElementById(imageId + '-hg').getAttribute("Lines"), document.getElementById(imageId + '-hg').getAttribute("Samples"))
+                                    try {
+                                        // calculate the scale nneded for the scalebar and multiply by the svg dimensions
+                                        var scaleObject = getScalebarData( 
+                                            ( document.getElementById(imageId + '-hg').getAttribute("PixelResolution") ) 
+                                                ? document.getElementById(imageId + '-hg').getAttribute("PixelResolution")
+                                                : document.getElementById(imageId + '-hg').getAttribute("ObliquePixelResolution"),
+                                            document.getElementById(imageId).getAttribute("width"), document.getElementById(imageId).getAttribute("height"),
+                                            document.getElementById(imageId + '-hg').getAttribute("Lines"), document.getElementById(imageId + '-hg').getAttribute("Samples"))
 
-                                    
-                                    console.log(scaleObject)
-                                    var scaleIcon = document.getElementById("scalebarIcon-" + imageId)
-                                    if( scaleIcon )
+                                        console.log(scaleObject)
+                
+                                        icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
+                                        icongroup.setAttribute("height", (scaleObject.sc * 700) )
+                
+                                        document.getElementById("scalestart-"+imageId).innerHTML = scaleObject.display
+                                        document.getElementById("scaleend-"+imageId).innerHTML = scaleObject.display + " " +  scaleObject.units
+                                    }
+                                    catch( err )
                                     {
-                                        scaleIcon.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
-                                        scaleIcon.setAttribute("height", (scaleObject.sc * 700) )
+                                        console.log(err)
                                     }
                                 }
 
@@ -1500,19 +1505,28 @@ $( function() {
                 {
                     matchingCaption.setAttribute("width", Number(this.value))
 
-                    // calculate the scale nneded for the scalebar and multiply by the svg dimensions
-                    var scaleObject = getScalebarData( 
-                        ( document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("PixelResolution") ) 
-                            ? document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("PixelResolution")
-                            : document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("ObliquePixelResolution"),
-                        document.getElementById(this.attributes.objectid.value).getAttribute("width"), document.getElementById(this.attributes.objectid.value).getAttribute("height"),
-                        document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("Lines"), document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("Samples"))
+                    try {
+                        // calculate the scale nneded for the scalebar and multiply by the svg dimensions
+                        var scaleObject = getScalebarData( 
+                            ( document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("PixelResolution") ) 
+                                ? document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("PixelResolution")
+                                : document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("ObliquePixelResolution"),
+                            document.getElementById(this.attributes.objectid.value).getAttribute("width"), document.getElementById(this.attributes.objectid.value).getAttribute("height"),
+                            document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("Lines"), document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("Samples"))
 
-                    
-                    console.log(scaleObject)
+                        
+                        console.log(scaleObject)
 
-                    icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
-                    icongroup.setAttribute("height", (scaleObject.sc * 700) )
+                        icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
+                        icongroup.setAttribute("height", (scaleObject.sc * 700) )
+
+                        document.getElementById("scalestart-"+this.attributes.objectid.value).innerHTML = scaleObject.display
+                        document.getElementById("scaleend-"+this.attributes.objectid.value).innerHTML = scaleObject.display + " " +  scaleObject.units
+                    }
+                    catch( err )
+                    {
+                        console.log(err)
+                    }
                 }
             }
         })
@@ -1542,19 +1556,27 @@ $( function() {
                 {
                     matchingCaption.setAttribute("height", Number(this.value))
 
-                    // calculate the scale nneded for the scalebar and multiply by the svg dimensions
-                    var scaleObject = getScalebarData( 
-                        ( document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("PixelResolution") ) 
-                            ? document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("PixelResolution")
-                            : document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("ObliquePixelResolution"),
-                        document.getElementById(this.attributes.objectid.value).getAttribute("width"), document.getElementById(this.attributes.objectid.value).getAttribute("height"),
-                        document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("Lines"), document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("Samples"))
+                    try {
+                        // calculate the scale nneded for the scalebar and multiply by the svg dimensions
+                        var scaleObject = getScalebarData( 
+                            ( document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("PixelResolution") ) 
+                                ? document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("PixelResolution")
+                                : document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("ObliquePixelResolution"),
+                            document.getElementById(this.attributes.objectid.value).getAttribute("width"), document.getElementById(this.attributes.objectid.value).getAttribute("height"),
+                            document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("Lines"), document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("Samples"))
 
-                    
-                    console.log(scaleObject)
+                        console.log(scaleObject)
 
-                    icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
-                    icongroup.setAttribute("height", (scaleObject.sc * 700) )
+                        icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
+                        icongroup.setAttribute("height", (scaleObject.sc * 700) )
+
+                        document.getElementById("scalestart-"+this.attributes.objectid.value).innerHTML = scaleObject.display
+                        document.getElementById("scaleend-"+this.attributes.objectid.value).innerHTML = scaleObject.display + " " +  scaleObject.units
+                    }
+                    catch( err )
+                    {
+                        console.log(err)
+                    }
                 }
             }
         })
@@ -2365,7 +2387,6 @@ function getScalebarData( resolution, imageW, imageH, lineCount, sampleCount )
     
     return obj;
 }
-
 
 /**
  * @function removeToolsWindow
