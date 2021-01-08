@@ -21,6 +21,8 @@
         --max-title-height: 4em;
         --max-title-width: 9em;
 
+        --gif-width: 100%;
+
         --main-export-box-height: 14em;
         --main-export-box-width: 15em;
         --main-export-title-font: 18px;
@@ -61,7 +63,7 @@
     }
 }
 
-@media only screen and (min-width: 800px)
+@media only screen and (min-width: 900px)
 {
     :root {
         --large-font: 18px;
@@ -82,6 +84,8 @@
         /* Center Icon*/
         --max-title-height: 5em;
         --max-title-width: 11em;
+
+        --gif-width: 60%;
 
         --main-export-box-height: 14em;
         --main-export-box-width: 15em;

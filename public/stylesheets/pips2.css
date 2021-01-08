@@ -139,13 +139,13 @@ i>b>a, i>b>a:visited {
 }
 
 .UIIntro {
-    width: 70%;
-    height: 55%;
+    width: 100%;
+    height: auto;
 }
 
 .UIGif {
-    width: 60%;
-    height: 55%;
+    width: var(--gif-width);
+    height: auto;
 }
 
 pre.UIHolder {
