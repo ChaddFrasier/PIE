@@ -1332,6 +1332,15 @@ $( function() {
                                 $('#'+imageId).attr('href', e.target.result)
                                 $('#'+imageId).attr('GEO', 'true')
                                 $('#'+imageId).attr('filePath', getCookie("filepath"))
+
+                                // set the height and width of the actual image.
+                                console.log(responseObject.pvlData)
+                                $('#'+imageId).attr('width', responseObject.pvlData.data['Samples'])
+                                $('#'+imageId).attr('height', responseObject.pvlData.data['Lines'])
+
+                                // TODO: update image input fields
+                                document.querySelector(`input[objectid='${imageId}'][name='widthinput']`).value = $('#'+imageId).attr("width")
+                                document.querySelector(`input[objectid='${imageId}'][name='heightinput']`).value = $('#'+imageId).attr("height")
                                 
                                 // read in the data values into attribute values for the image
                                 responseObject.pvlData.keys.forEach( key => {
@@ -1429,8 +1438,6 @@ $( function() {
                                 if ( responseObject.pvlData.data['PixelResolution'] )
                                 {
                                     btnArray.push('scale');
-                                    // TODO: fix the scale bar 
-
                                     try {
                                         // calculate the scale nneded for the scalebar and multiply by the svg dimensions
                                         var scaleObject = getScalebarData( 
@@ -1440,10 +1447,10 @@ $( function() {
                                             document.getElementById(imageId).getAttribute("width"), document.getElementById(imageId).getAttribute("height"),
                                             document.getElementById(imageId + '-hg').getAttribute("Lines"), document.getElementById(imageId + '-hg').getAttribute("Samples"))
 
-                                        console.log(scaleObject)
+                                        let scalebar = document.getElementById(`scalebarIcon-${imageId}`)
                 
-                                        icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
-                                        icongroup.setAttribute("height", (scaleObject.sc * 700) )
+                                        scalebar.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
+                                        scalebar.setAttribute("height", (scaleObject.sc * 700) )
                 
                                         document.getElementById("scalestart-"+imageId).innerHTML = scaleObject.display
                                         document.getElementById("scaleend-"+imageId).innerHTML = scaleObject.display + " " +  scaleObject.units
@@ -1482,104 +1489,15 @@ $( function() {
         // width input field
         widthlabel.innerHTML = "Image Width: "
         widthlabel.setAttribute("for", "widthinput")
-        widthinput.setAttribute("type", "number")
-        widthinput.setAttribute("min", '750')
         widthinput.value = 1500
         widthinput.setAttribute("name","widthinput")
-
-        widthinput.addEventListener("change", function(){
-
-            // TODO: test and update the scalebar to match the new size of the image
-
-            // find the matching html caption element
-            let matchingCaption = document.getElementById( this.attributes.objectid.value )
-            // updpate the text inside once found
-            if(matchingCaption && !isNaN(Number(this.value)))
-            {
-                if( Number(this.value) < Number(this.getAttribute("min")) )
-                {
-                    matchingCaption.setAttribute("width", Number(this.getAttribute("min")))
-                    this.value = Number(this.getAttribute("min"))
-                }
-                else
-                {
-                    matchingCaption.setAttribute("width", Number(this.value))
-
-                    try {
-                        // calculate the scale nneded for the scalebar and multiply by the svg dimensions
-                        var scaleObject = getScalebarData( 
-                            ( document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("PixelResolution") ) 
-                                ? document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("PixelResolution")
-                                : document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("ObliquePixelResolution"),
-                            document.getElementById(this.attributes.objectid.value).getAttribute("width"), document.getElementById(this.attributes.objectid.value).getAttribute("height"),
-                            document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("Lines"), document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("Samples"))
-
-                        
-                        console.log(scaleObject)
-
-                        icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
-                        icongroup.setAttribute("height", (scaleObject.sc * 700) )
-
-                        document.getElementById("scalestart-"+this.attributes.objectid.value).innerHTML = scaleObject.display
-                        document.getElementById("scaleend-"+this.attributes.objectid.value).innerHTML = scaleObject.display + " " +  scaleObject.units
-                    }
-                    catch( err )
-                    {
-                        console.log(err)
-                    }
-                }
-            }
-        })
 
         // height input field
         heightlabel.innerHTML = "Image Height: "
         heightlabel.setAttribute("for", "heightinput")
-        heightinput.setAttribute("type", "number")
         heightinput.setAttribute("min", '450')
         heightinput.value = 1000
         heightinput.setAttribute("name","heightinput")
-
-        heightinput.addEventListener("change", function(){
-            // TODO: test and update the scalebar to match the new size of the image
-
-            // find the matching html caption element
-            let matchingCaption = document.getElementById( this.attributes.objectid.value )
-            // updpate the text inside once found
-            if(matchingCaption && !isNaN(Number(this.value)))
-            {
-                if( Number(this.value) < Number(this.getAttribute("min")) )
-                {
-                    matchingCaption.setAttribute("height", Number(this.getAttribute("min")))
-                    this.value = Number(this.getAttribute("min"))
-                }
-                else
-                {
-                    matchingCaption.setAttribute("height", Number(this.value))
-
-                    try {
-                        // calculate the scale nneded for the scalebar and multiply by the svg dimensions
-                        var scaleObject = getScalebarData( 
-                            ( document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("PixelResolution") ) 
-                                ? document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("PixelResolution")
-                                : document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("ObliquePixelResolution"),
-                            document.getElementById(this.attributes.objectid.value).getAttribute("width"), document.getElementById(this.attributes.objectid.value).getAttribute("height"),
-                            document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("Lines"), document.getElementById(this.attributes.objectid.value + '-hg').getAttribute("Samples"))
-
-                        console.log(scaleObject)
-
-                        icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
-                        icongroup.setAttribute("height", (scaleObject.sc * 700) )
-
-                        document.getElementById("scalestart-"+this.attributes.objectid.value).innerHTML = scaleObject.display
-                        document.getElementById("scaleend-"+this.attributes.objectid.value).innerHTML = scaleObject.display + " " +  scaleObject.units
-                    }
-                    catch( err )
-                    {
-                        console.log(err)
-                    }
-                }
-            }
-        })
         
         // x coordinate input string
         xcoordlabel.innerHTML = "Image X: "
@@ -2134,7 +2052,6 @@ $( function() {
                                 : document.getElementById(image.id + '-hg').getAttribute("ObliquePixelResolution"),
                             document.getElementById(image.id).getAttribute("width"), document.getElementById(image.id).getAttribute("height"),
                             document.getElementById(image.id + '-hg').getAttribute("Lines"), document.getElementById(image.id + '-hg').getAttribute("Samples"))
-
                         
                         console.log(scaleObject)
 
@@ -3162,11 +3079,9 @@ function removeIconWindow( event )
  * @param {string} markerString - raw string in the form of url("#<id>")
  * @description this function removes the given marker string fromn the defs section inn the svg
  */
-function removeMarker( markerString )
+function removeMarker( markerId )
 {
-    document.getElementById("figdefs").removeChild( 
-        document.getElementById( markerString.split('url("#')[1].replace('")',"") )
-        )
+    document.getElementById( markerId ).remove()
 }
 
 /**
@@ -3187,15 +3102,21 @@ function removeLineWindow( event )
         holderbox.parentElement.removeChild( holderbox )
         draggableSvg.getContainerObject().removeChild( linesvg )
 
-        // remove marker if there is one
-        if( linesvg.getAttribute("marker-end") != "" )
-        {
-            removeMarker(linesvg.getAttribute("marker-end") )
-        }
+        try{
+            // remove marker if there is one
+            if( linesvg.getAttribute("marker-end") )
+            {
+                removeMarker(linesvg.getAttribute("marker-end").split("url(#")[1].replace(")","") )
+            }
 
-        if( linesvg.getAttribute("marker-start")  != "" )
+            if( linesvg.getAttribute("marker-start") )
+            {
+                removeMarker(linesvg.getAttribute("marker-start").split("url(#")[1].replace(")","") )
+            }
+        }
+        catch(err)
         {
-            removeMarker(linesvg.getAttribute("marker-start") )
+            console.log("MARKER ERROR: " + err)
         }
     }
 }
