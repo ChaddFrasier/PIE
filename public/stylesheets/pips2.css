@@ -154,7 +154,7 @@ pre.UIHolder {
 }
 
 .pilotstepsimage {
-    width: 60vw;
+    width: 80%;
     height: auto;
     margin: 0 10vw 0 10vw;
     text-align: center;
@@ -568,7 +568,7 @@ button.disabled {
     max-height: var(--toolbox-max-height);
     background: var(--accent-color);
     text-align: center;
-    height: 25%;
+    height: 30%;
     overflow-y: auto;
     overflow-x: hidden;
     color: white;
@@ -578,7 +578,7 @@ button.disabled {
     -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
     -o-transition: all ease-in-out var(--transition-time); /* Opera */
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
-    margin: 0;
+    margin: 0 5px 0 0;
 }
 
 .dividerline {
@@ -642,7 +642,7 @@ label.text {
     max-width: 100%;
     min-height: var(--toolbox-min-height);
     max-height: var(--edittoolbox-max-height);
-    height: 40%;
+    height: 50%;
     background: var(--accent-color);
     overflow-y: auto;
     overflow-x: hidden;
@@ -653,7 +653,7 @@ label.text {
     -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
     -o-transition: all ease-in-out var(--transition-time); /* Opera */
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
-    margin: 0;
+    margin: 0 5px 0 0;
 }
 
 button.selected {
@@ -686,8 +686,11 @@ button.selected {
 }
 
 .imagetoolsbox > input[name='widthinput'], .imagetoolsbox > input[name='heightinput'] {
-    background: rgb(163, 163, 163);
+    background: rgb(73, 73, 73);
+    width: 44%;
+    color: white;
     pointer-events: none;
+    border-radius: 5px;
 }
 
 .textareainputfield {
@@ -697,15 +700,27 @@ button.selected {
 }
 
 .icontoolbox {
-    width: 100%;
+    width: 88%;
+    margin: 0 auto;
     background: var(--contrast-color);
     height: auto;
+    border-radius: 5px;
+    padding: 3px;
+}
+
+.imagetoolsbox > .windowoptionsbar {
+    width: 88%;
+    margin: 0 auto;
+    border-radius: 5px;
+    padding: 3px;
 }
 
 .imagetoolsbox>.dividerline {
     width: 75%;
     margin: 0 auto 0 auto;
 }
+
+
 
 .captiontoolsbox>.dividerline {
     width: 75%;
@@ -754,7 +769,7 @@ button.selected {
     -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
     -o-transition: all ease-in-out var(--transition-time); /* Opera */
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
-    margin: 0;
+    margin: 0 5px 0 0;
 }
 
 .toolboxminimizebtn {

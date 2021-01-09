@@ -63,7 +63,7 @@
     }
 }
 
-@media only screen and (min-width: 900px)
+@media only screen and (min-width: 930px)
 {
     :root {
         --large-font: 18px;
@@ -100,7 +100,7 @@
         --toolbox-max-height: 130px;
         --toolbox-min-width: 100%;
         --toolbox-max-width: 100px;
-        --edittoolbox-max-height: 175px;
+        --edittoolbox-max-height: 200px;
 
         --toolbox-minibtn-min-width: 30px;
         --toolbox-minibtn-max-width: 30px;
