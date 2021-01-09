@@ -594,7 +594,7 @@ $( function() {
         let fileinputtypetifflabel = fileinputtypesvglabel.cloneNode(true)
         fileinputtypetifflabel.innerHTML = "GeoTIFF"
         
-        //TODO: remove this function for the next docker build of v1.1.0
+        //remove this function for the next docker build of v1.1.0
         //fileinputtype2.classList.add("disabled")
 
         var fileinputtype3 = fileinputtype.cloneNode(true);
@@ -1332,7 +1332,7 @@ $( function() {
                                 $('#'+imageId).attr('width', responseObject.pvlData.data['Samples'])
                                 $('#'+imageId).attr('height', responseObject.pvlData.data['Lines'])
 
-                                // TODO: update image input fields
+                                // update image input fields
                                 document.querySelector(`input[objectid='${imageId}'][name='widthinput']`).value = $('#'+imageId).attr("width")
                                 document.querySelector(`input[objectid='${imageId}'][name='heightinput']`).value = $('#'+imageId).attr("height")
                                 
@@ -2221,7 +2221,6 @@ var startActiveEM = function() {
  * @param {*} imageH 
  * @param {*} lineCount 
  * @param {*} sampleCount 
-    // TODO: calculate how big the scalebar needs to be
  */
 function getScalebarData( resolution, imageW, imageH, lineCount, sampleCount )
 {
@@ -4415,11 +4414,6 @@ function navigateTo( url )
     location.href = url
 }
 
-function LastFigure()
-{
-    // TODO: undo the figure if possible
-}
-
 /**
  * @function text2PieText
  * @param {string} text raw text that needs to be formated
@@ -4598,18 +4592,13 @@ function saveBlob(blob, fileName)
  * @function cleanSVG
  * @param {DOM Object} clone the clone of the svg element we want to prepair for export
  * @description this function cleans out un-needed parts of the svg as well as formating existing elements in a way that is efficent for other svg softwares.
+ * With this function i want to go through the whole clone and remove 
+ * the id and class of every element and nested child inside of the svg so that the server has an easier time handling it
+ * 
  * @todo this may need d3 or something similar to format the whole thing properly.
  */
 function cleanSVG( clone )
 {
-
-    /**
-     * TODO:  
-     * 
-     * With this function i want to go through the whole clone and remove 
-     * the id and class of every element and nested child inside of the svg so that the server has an easier time handling it
-     */
-
     removeAttributes(clone, "id", "class")
 
     // recursivly remove all ids, classes, styles
