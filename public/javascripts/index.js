@@ -1487,15 +1487,14 @@ $( function() {
         });
 
         // width input field
-        widthlabel.innerHTML = "Image Width: "
+        widthlabel.innerHTML = "Image Width (Samples): "
         widthlabel.setAttribute("for", "widthinput")
         widthinput.value = 1500
         widthinput.setAttribute("name","widthinput")
 
         // height input field
-        heightlabel.innerHTML = "Image Height: "
+        heightlabel.innerHTML = "Image Height (Lines): "
         heightlabel.setAttribute("for", "heightinput")
-        heightinput.setAttribute("min", '450')
         heightinput.value = 1000
         heightinput.setAttribute("name","heightinput")
         
