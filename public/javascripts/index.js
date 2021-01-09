@@ -1313,8 +1313,8 @@ $( function() {
                     var responseObject = {}
                     if (xhr.status == 200)
                     {
-                        console.log(xhr.response)
-
+                        // Helps when testing server returns
+                        //console.log(xhr.response)
                         responseObject = JSON.parse(xhr.response)
 
                         fetch(responseObject.imagefile, {
@@ -1334,7 +1334,6 @@ $( function() {
                                 $('#'+imageId).attr('filePath', getCookie("filepath"))
 
                                 // set the height and width of the actual image.
-                                console.log(responseObject.pvlData)
                                 $('#'+imageId).attr('width', responseObject.pvlData.data['Samples'])
                                 $('#'+imageId).attr('height', responseObject.pvlData.data['Lines'])
 
@@ -1359,7 +1358,6 @@ $( function() {
                                     catch(err)
                                     {
                                         /** Nothing */
-                                        console.log("There is no north icon: " + err)
                                     }
                                 }
                                 else
@@ -1457,7 +1455,7 @@ $( function() {
                                     }
                                     catch( err )
                                     {
-                                        console.log(err)
+                                        /** Nothing */
                                     }
                                 }
 
@@ -1864,7 +1862,6 @@ $( function() {
             else
             {
                 console.log("Unknown Object ID = " + btn.id)
-                console.log(btn)
             }
             
             // draw the icon
@@ -2052,8 +2049,6 @@ $( function() {
                             document.getElementById(image.id).getAttribute("width"), document.getElementById(image.id).getAttribute("height"),
                             document.getElementById(image.id + '-hg').getAttribute("Lines"), document.getElementById(image.id + '-hg').getAttribute("Samples"))
                         
-                        console.log(scaleObject)
-
                         icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
                         icongroup.setAttribute("height", (scaleObject.sc * 700) )
                     }
@@ -2242,18 +2237,11 @@ function getScalebarData( resolution, imageW, imageH, lineCount, sampleCount )
 
     var imageWidthMeters = resolution * sampleCount;
 
-    console.log(`The image is showing ${widthScale} scale width`)
-    console.log(`The image is showing ${heightScale} scale height`)
-
     obj['sc'] = (widthScale <= heightScale) ? widthScale : heightScale;
 
     var realImageWidthMeters = (heightScale < widthScale)? ((heightScale * imageW)*resolution)/2 : imageWidthMeters/2;
 
-    console.log(`Real Image Width: ${realImageWidthMeters}`)
-    console.log(`Represented Image Width: ${imageWidthMeters}`)
-
     /* Laz-bar Algortithm */
-
     // cut the legth of the image in meters in half and then get the base10 of it
     let x = Math.log10(realImageWidthMeters);
     // save the floor of that value as another variable
@@ -2869,8 +2857,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
 
         case "scalebar":
-            //TODO: Do the same thing to fix the scalebar and I did the north icon
-           
             let scalemaincolorinput = document.createElement("input")
             let scaleaccentcolorinput = document.createElement("input")
             let scaleaccentcolorlabel = document.createElement("label")
@@ -3802,7 +3788,6 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
             {
 
                 case "arrow":
-                    console.log(line.getAttributeNS(NS.svg, "marker-start"))
                     createMarker(line.getAttributeNS(NS.svg, "marker-start"), line.id, "arrow", 1 )
                     break
                 case "square":
@@ -4019,7 +4004,7 @@ function leftClick ( buttonid )
 function drawBoxMouseDownListener( event )
 {
     // prevent defaults to stop dragging
-    console.log(event.button)
+    //console.log(event.button)
 
     if( leftClick(event.button) )
     {
