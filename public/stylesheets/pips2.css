@@ -685,6 +685,11 @@ button.selected {
     width: 75%;
 }
 
+.imagetoolsbox > input[name='widthinput'], .imagetoolsbox > input[name='heightinput'] {
+    background: rgb(163, 163, 163);
+    pointer-events: none;
+}
+
 .textareainputfield {
     max-width: 100%;
     font-size: var(--xsmall-font);
