@@ -138,6 +138,14 @@ i>b>a, i>b>a:visited {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+.draggableDot {
+    fill: rgb(253, 55, 55);
+}
+
+.draggableDot:hover {
+    cursor: move;
+}
+
 .UIIntro {
     width: 100%;
     height: auto;

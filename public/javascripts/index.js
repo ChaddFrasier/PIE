@@ -249,18 +249,13 @@ $( function() {
     {
         // add a dot where one of the line points are
         var dot = document.createElementNS(NS.svg, "circle")
-
         dot.setAttribute("class", "draggableDot")
-        dot.setAttribute("r", "20")
+        dot.setAttribute("r", "13")
         // get the x and y of all the points of the rectangles and lines
         dot.setAttribute("cx", x)
         dot.setAttribute("cy", y)
-        dot.setAttribute("fill", "red")
-
         dot.setAttribute("spyId", spyId)
-
         dot.addEventListener("mousedown", dotMouseDownFunction)
-
         draggableSvg.getContainerObject().append(dot)
     }
 
