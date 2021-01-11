@@ -35,7 +35,7 @@
         --toolbox-min-height: 0;
         --toolbox-max-height: 130px;
         --toolbox-min-width: 100%;
-        --toolbox-max-width: 100px;
+        --toolbox-max-width: 100%;
         --edittoolbox-max-height: 175px;
 
         --toolbox-minibtn-min-width: 30px;
@@ -66,7 +66,7 @@
 @media only screen and (min-width: 930px)
 {
     :root {
-        --large-font: 18px;
+        --large-font: 16px;
         --medium-font: 15px;
         --sm-medium-font: 13px;
         --small-font: 12px;
@@ -98,8 +98,8 @@
 
         --toolbox-min-height: 0;
         --toolbox-max-height: 130px;
-        --toolbox-min-width: 100%;
-        --toolbox-max-width: 100px;
+        --toolbox-min-width: 90%;
+        --toolbox-max-width: 100%;
         --edittoolbox-max-height: 200px;
 
         --toolbox-minibtn-min-width: 30px;

@@ -97,7 +97,7 @@ html.contained {
     background-color: transparent;
     border: none;
     padding: 0;
-    margin: 0 auto;
+    margin: 0;
     height: auto;
     width: 100%;
     overflow-x: hidden;
@@ -399,7 +399,7 @@ button.disabled {
 }
 
 .fileinputfield {
-    width: 100%;
+    width: 80%;
 }
 
 .mainfooter {
@@ -541,10 +541,10 @@ button.disabled {
 }
 
 .imageform {
-    width: 100%;
+    width: 90%;
     height: auto;
     padding: 0;
-    margin: 0;
+    margin:  0;
 }
 
 .windoworderingbtn:hover {
@@ -569,7 +569,7 @@ button.disabled {
 
 .filetoolsbox {
     border: 1.5px solid var(--primary-color);
-    width: auto;
+    width: 100%;
     min-width: var(--toolbox-min-width);
     max-width: var(--toolbox-max-width);
     min-height: var(--toolbox-min-height);
@@ -580,13 +580,13 @@ button.disabled {
     overflow-y: auto;
     overflow-x: hidden;
     color: white;
-    padding: 0 1px;
+    padding: 0;
     transition: all ease-in-out var(--transition-time);
     -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
     -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
     -o-transition: all ease-in-out var(--transition-time); /* Opera */
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
-    margin: 0 5px 0 0;
+    margin: 0 0 0 0;
 }
 
 .dividerline {
@@ -598,12 +598,13 @@ button.disabled {
     background: var(--secondary-color);
     border-radius: 2px 2px;
     box-shadow: 0px -5px var(--contrast-color);
-    margin: 4px 0 auto 0;
+    margin: 0 0 0 0;
+    padding: 0;
     text-align: center;
 }
 
 .filetoolsbox > input[type="file"] {
-    width: 100%;
+    width: 90%;
 }
 
 label.text {
@@ -646,7 +647,7 @@ label.text {
     border: 1.5px solid var(--primary-color);
     width: auto;
     text-align: center;
-    min-width: 100%;
+    min-width: 90%;
     max-width: 100%;
     min-height: var(--toolbox-min-height);
     max-height: var(--edittoolbox-max-height);
@@ -661,7 +662,7 @@ label.text {
     -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
     -o-transition: all ease-in-out var(--transition-time); /* Opera */
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
-    margin: 0 5px 0 0;
+    margin: 0 0 0 0;
 }
 
 button.selected {
@@ -679,7 +680,7 @@ button.selected {
     height: 350px;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 0 2px;
+    padding: 0;
     transition: all ease-in-out var(--transition-time);
     -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
     -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
@@ -709,7 +710,7 @@ button.selected {
 
 .icontoolbox {
     width: 88%;
-    margin: 0 auto;
+    margin: 0 auto 0 0;
     background: var(--contrast-color);
     height: auto;
     border-radius: 5px;
@@ -718,17 +719,15 @@ button.selected {
 
 .imagetoolsbox > .windowoptionsbar {
     width: 88%;
-    margin: 0 auto;
+    margin: 0 0 0 0;
     border-radius: 5px;
     padding: 3px;
 }
 
 .imagetoolsbox>.dividerline {
-    width: 75%;
-    margin: 0 auto 0 auto;
+    width: 70%;
+    margin: 10px 0 0 0;
 }
-
-
 
 .captiontoolsbox>.dividerline {
     width: 75%;
@@ -744,7 +743,7 @@ button.selected {
     max-height: 200px;
     background: var(--accent-color);
     height: 200px;
-    padding: 0 2px;
+    padding: 0;
     overflow-y: auto;
     overflow-x: hidden;
     transition: all ease-in-out var(--transition-time);
@@ -763,13 +762,12 @@ button.selected {
     border: 1px solid black;
     width: auto;
     color: white;
-    min-width: var(--toolbox-min-width);
-    max-width: var(--toolbox-max-width);
+    min-width: 100%;
+    max-width: 100%;
     min-height: 0px;
     max-height: 300px;
     background: var(--accent-color);
     height: 300px;
-    padding: 0 2px;
     overflow-y: auto;
     overflow-x: hidden;
     transition: all ease-in-out var(--transition-time);
@@ -777,7 +775,8 @@ button.selected {
     -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
     -o-transition: all ease-in-out var(--transition-time); /* Opera */
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
-    margin: 0 5px 0 0;
+    padding: 0;
+    margin: 0;
 }
 
 .toolboxminimizebtn {
@@ -969,6 +968,7 @@ svg.scalerBox {
     width: 100%;
     padding: 0px;
     border: 1px solid black;
+    margin: 0 0 0 0;
     overflow: hidden;
 }
 
@@ -984,13 +984,14 @@ svg.scalerBox {
 }
 
 .toolscontainer{
-    width: 95%;
+    width: 100%;
     height: var(--toolcontainer-height);
     border: 2px solid var(--contrast-color);
     border-top: 0px solid var(--contrast-color);
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 0 0 0 0;
+    padding: 2px;
+    margin: 0 0 0 0;
     transition: all ease-in-out var(--transition-time);
     -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
     -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
@@ -1004,7 +1005,7 @@ svg.scalerBox {
     width: auto;
     height: 100%;
     max-width: 2em;
-    margin: 0 auto 0 0;
+    margin: 0 0 0 0;
     padding: .5px;
     min-width: var(--min-svg-btn);
     text-align: center;
