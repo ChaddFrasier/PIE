@@ -249,18 +249,13 @@ $( function() {
     {
         // add a dot where one of the line points are
         var dot = document.createElementNS(NS.svg, "circle")
-
         dot.setAttribute("class", "draggableDot")
-        dot.setAttribute("r", "20")
+        dot.setAttribute("r", "13")
         // get the x and y of all the points of the rectangles and lines
         dot.setAttribute("cx", x)
         dot.setAttribute("cy", y)
-        dot.setAttribute("fill", "red")
-
         dot.setAttribute("spyId", spyId)
-
         dot.addEventListener("mousedown", dotMouseDownFunction)
-
         draggableSvg.getContainerObject().append(dot)
     }
 
@@ -599,7 +594,7 @@ $( function() {
         let fileinputtypetifflabel = fileinputtypesvglabel.cloneNode(true)
         fileinputtypetifflabel.innerHTML = "GeoTIFF"
         
-        //TODO: remove this function for the next docker build of v1.1.0
+        //remove this function for the next docker build of v1.1.0
         //fileinputtype2.classList.add("disabled")
 
         var fileinputtype3 = fileinputtype.cloneNode(true);
@@ -1313,8 +1308,8 @@ $( function() {
                     var responseObject = {}
                     if (xhr.status == 200)
                     {
-                        console.log(xhr.response)
-
+                        // Helps when testing server returns
+                        //console.log(xhr.response)
                         responseObject = JSON.parse(xhr.response)
 
                         fetch(responseObject.imagefile, {
@@ -1334,11 +1329,10 @@ $( function() {
                                 $('#'+imageId).attr('filePath', getCookie("filepath"))
 
                                 // set the height and width of the actual image.
-                                console.log(responseObject.pvlData)
                                 $('#'+imageId).attr('width', responseObject.pvlData.data['Samples'])
                                 $('#'+imageId).attr('height', responseObject.pvlData.data['Lines'])
 
-                                // TODO: update image input fields
+                                // update image input fields
                                 document.querySelector(`input[objectid='${imageId}'][name='widthinput']`).value = $('#'+imageId).attr("width")
                                 document.querySelector(`input[objectid='${imageId}'][name='heightinput']`).value = $('#'+imageId).attr("height")
                                 
@@ -1359,7 +1353,6 @@ $( function() {
                                     catch(err)
                                     {
                                         /** Nothing */
-                                        console.log("There is no north icon: " + err)
                                     }
                                 }
                                 else
@@ -1457,7 +1450,7 @@ $( function() {
                                     }
                                     catch( err )
                                     {
-                                        console.log(err)
+                                        /** Nothing */
                                     }
                                 }
 
@@ -1864,7 +1857,6 @@ $( function() {
             else
             {
                 console.log("Unknown Object ID = " + btn.id)
-                console.log(btn)
             }
             
             // draw the icon
@@ -2052,8 +2044,6 @@ $( function() {
                             document.getElementById(image.id).getAttribute("width"), document.getElementById(image.id).getAttribute("height"),
                             document.getElementById(image.id + '-hg').getAttribute("Lines"), document.getElementById(image.id + '-hg').getAttribute("Samples"))
                         
-                        console.log(scaleObject)
-
                         icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
                         icongroup.setAttribute("height", (scaleObject.sc * 700) )
                     }
@@ -2231,7 +2221,6 @@ var startActiveEM = function() {
  * @param {*} imageH 
  * @param {*} lineCount 
  * @param {*} sampleCount 
-    // TODO: calculate how big the scalebar needs to be
  */
 function getScalebarData( resolution, imageW, imageH, lineCount, sampleCount )
 {
@@ -2242,18 +2231,11 @@ function getScalebarData( resolution, imageW, imageH, lineCount, sampleCount )
 
     var imageWidthMeters = resolution * sampleCount;
 
-    console.log(`The image is showing ${widthScale} scale width`)
-    console.log(`The image is showing ${heightScale} scale height`)
-
     obj['sc'] = (widthScale <= heightScale) ? widthScale : heightScale;
 
     var realImageWidthMeters = (heightScale < widthScale)? ((heightScale * imageW)*resolution)/2 : imageWidthMeters/2;
 
-    console.log(`Real Image Width: ${realImageWidthMeters}`)
-    console.log(`Represented Image Width: ${imageWidthMeters}`)
-
     /* Laz-bar Algortithm */
-
     // cut the legth of the image in meters in half and then get the base10 of it
     let x = Math.log10(realImageWidthMeters);
     // save the floor of that value as another variable
@@ -2869,8 +2851,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
 
         case "scalebar":
-            //TODO: Do the same thing to fix the scalebar and I did the north icon
-           
             let scalemaincolorinput = document.createElement("input")
             let scaleaccentcolorinput = document.createElement("input")
             let scaleaccentcolorlabel = document.createElement("label")
@@ -3802,7 +3782,6 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
             {
 
                 case "arrow":
-                    console.log(line.getAttributeNS(NS.svg, "marker-start"))
                     createMarker(line.getAttributeNS(NS.svg, "marker-start"), line.id, "arrow", 1 )
                     break
                 case "square":
@@ -4019,7 +3998,7 @@ function leftClick ( buttonid )
 function drawBoxMouseDownListener( event )
 {
     // prevent defaults to stop dragging
-    console.log(event.button)
+    //console.log(event.button)
 
     if( leftClick(event.button) )
     {
@@ -4435,11 +4414,6 @@ function navigateTo( url )
     location.href = url
 }
 
-function LastFigure()
-{
-    // TODO: undo the figure if possible
-}
-
 /**
  * @function text2PieText
  * @param {string} text raw text that needs to be formated
@@ -4618,18 +4592,13 @@ function saveBlob(blob, fileName)
  * @function cleanSVG
  * @param {DOM Object} clone the clone of the svg element we want to prepair for export
  * @description this function cleans out un-needed parts of the svg as well as formating existing elements in a way that is efficent for other svg softwares.
+ * With this function i want to go through the whole clone and remove 
+ * the id and class of every element and nested child inside of the svg so that the server has an easier time handling it
+ * 
  * @todo this may need d3 or something similar to format the whole thing properly.
  */
 function cleanSVG( clone )
 {
-
-    /**
-     * TODO:  
-     * 
-     * With this function i want to go through the whole clone and remove 
-     * the id and class of every element and nested child inside of the svg so that the server has an easier time handling it
-     */
-
     removeAttributes(clone, "id", "class")
 
     // recursivly remove all ids, classes, styles
