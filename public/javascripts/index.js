@@ -4456,7 +4456,7 @@ function text2PieText( text, captionWidth, fontsize )
         constructorArray = [],
         paragraphText = "",
         pieText = "",
-        usedPixels = 0;
+        usedPixels = 70;
 
     // create the first paragraph of the caption
     var p1 = document.createElementNS(NS.svg, "tspan");
@@ -4514,7 +4514,7 @@ function text2PieText( text, captionWidth, fontsize )
         }
         
         // as soon as the paragraph finishes clear the used pixels
-        usedPixels = 0
+        usedPixels = 70
 
         // check for word overflow. 
         if( constructorArray.length !== 0 )
