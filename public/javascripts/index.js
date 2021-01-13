@@ -932,7 +932,7 @@ $( function() {
         widthinput.setAttribute("type", "number")
         widthinput.setAttribute("min", '500')
         widthinput.setAttribute("max", 'none')
-        widthinput.value = 1500
+        widthinput.value = 750
         widthinput.setAttribute("name","widthinput")
 
         widthinput.addEventListener("change", function() {
@@ -1142,6 +1142,8 @@ $( function() {
             xcoordinput = document.createElement("input"),
             ycoordlabel = document.createElement("label"),
             ycoordinput = document.createElement("input"),
+            scalelabel = document.createElement("label"),
+            scaleinput = document.createElement("input"),
             imagesvg = document.createElementNS(NS.svg, "image");
 
         // create the main holder group for the image
@@ -1526,6 +1528,25 @@ $( function() {
             }
         })
 
+        // y coordinate input strings
+        scalelabel.innerHTML = "Image Scale: "
+        scalelabel.setAttribute("for", "scaleinput")
+        scaleinput.setAttribute("type", "number")
+        scaleinput.setAttribute("min", '.5')
+        scaleinput.setAttribute("step", '.025')
+        scaleinput.value = 1
+        scaleinput.setAttribute("name","scaleinput")
+
+        scaleinput.addEventListener("change", function(){
+            // find the matching html caption element
+            let matchingCaption = document.getElementById( this.attributes.objectid.value + "-hg" )
+            // updpate the text inside once found
+            if(matchingCaption && !isNaN(Number(this.value)))
+            {
+                matchingCaption.setAttribute("transform", `scale(${Number(this.value)})`)
+            }
+        })
+
         // icon divider section
         let divider2 = document.createElement("h3")
         divider2.classList.add("dividerline")
@@ -1545,6 +1566,10 @@ $( function() {
             heightlabel, 
             document.createElement("br"), 
             heightinput, 
+            document.createElement("br"), 
+            scalelabel,
+            document.createElement("br"),
+            scaleinput,
             document.createElement("br"), 
             xcoordlabel, 
             document.createElement("br"),
@@ -1591,6 +1616,7 @@ $( function() {
 
         // This is the box that will hold the image and the icons for said image
         holdergroup.setAttribute("id", imageId+ "-hg")
+        holdergroup.setAttribute("transform", "scale(1)")
         holdergroup.classList.add("containingelement")
 
         draggableSvg.getContainerObject().appendChild(holdergroup)
@@ -2025,17 +2051,9 @@ $( function() {
                     icongroup.setAttribute("objectid", image.id)
                     icongroup.setAttribute("id", "scalebarIcon-" + image.id)
 
-                    // set the translate location of the icon to where the mouse was released
-                    newX = getScaledPoint( svgP.x, 1, 1 )
-                    newY = getScaledPoint( svgP.y, 1, 1 )
-
                     // test valid input and set the transform for all browsers
                     if( !isNaN(newX) && !isNaN(newY))
                     {                 
-                        // set translate
-                        icongroup.setAttribute("x", newX)
-                        icongroup.setAttribute("y", newY)
-
                         // calculate the scale nneded for the scalebar and multiply by the svg dimensions
                         var scaleObject = getScalebarData( 
                             ( document.getElementById(image.id + '-hg').getAttribute("PixelResolution") ) 
@@ -2046,6 +2064,14 @@ $( function() {
                         
                         icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
                         icongroup.setAttribute("height", (scaleObject.sc * 700) )
+
+                        // set the translate location of the icon to where the mouse was released
+                        newX = getScaledPoint( svgP.x, 1, parseFloat(icongroup.getAttribute("width")) )
+                        newY = getScaledPoint( svgP.y, 1, parseFloat(icongroup.getAttribute("height")) )
+
+                        // set translate
+                        icongroup.setAttribute("x", newX)
+                        icongroup.setAttribute("y", newY)
                     }
                     else
                     {

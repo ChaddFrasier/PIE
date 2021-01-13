@@ -6,6 +6,7 @@
 */
 
 "use strict";
+
 /**
  * @function constructor
  *       var dragObj = DraggableArea( HTML_Object )
@@ -161,10 +162,17 @@ function DraggableArea( objectbox=undefined )
             }
             else if( draggingIcon.nodeName == "svg" ) // 'svg' nodes house complex icons like the north arrow
             {
+                var sc = null
+                try{
+                    sc = parseFloat(document.getElementById(draggingIcon.getAttribute("objectid")+ "-hg").getAttribute("transform").replace("scale(",""))
+                }
+                catch(err)
+                {
+                    sc = 1
+                }
                 // get only mouse position, not adjusted for icon size and convert to parent element matrix
-                currentX = getScaledPoint(svgP.x, 1, parseFloat(draggingIcon.getAttribute("width")) );
-                currentY = getScaledPoint(svgP.y, 1, parseFloat(draggingIcon.getAttribute("height")) );
-
+                currentX = getScaledPoint(svgP.x, sc, parseFloat(draggingIcon.getAttribute("width")) );
+                currentY = getScaledPoint(svgP.y, sc, parseFloat(draggingIcon.getAttribute("height")) );
 
                 // update the input fields using the id of the draggingObject
                 updateInputField( draggingIcon.getAttribute("id"), currentX, currentY );
