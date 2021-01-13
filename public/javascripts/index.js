@@ -14,7 +14,8 @@ var draggableSvg = null, draggableList = null;
  * @function document.ready()
  * @description Function that runs when the page is done loading
  */
-$( function() {
+$( function()
+{
     // Pre config
     preConfigPage()
 
@@ -35,7 +36,6 @@ $( function() {
     document.addEventListener("keydown", customKeys);
     // set background right away when page loads
     setSVGBackground("bgelement", bgPicker.value)
-
     // start draggable actions
     configDraggables( svgContainer, document.getElementById("DraggableContainer") )
 
@@ -46,17 +46,19 @@ $( function() {
      */
     function shiftKeyup( event )
     {
+        // stop event chain
         event.preventDefault()
+
+        // if the key being let go is the shift key
         if( event.key === "Shift" || event.key ==='shift' || event.key === 16 )
         {
             // unpause the drag stuff from the DraggableArea Object
             draggableSvg.unpauseDraggables();
+            // reactivate the UI buttons
             changeButtonActivation("enable", 2)
-
             // remove the color the endpoints of the lines and the endpoints of the rectangles
             document.removeEventListener("keyup", shiftKeyup)
-
-            // remove all dots
+            // remove all draggable dots
             document.querySelectorAll("circle.draggableDot").forEach( dot => {
                 dot.removeEventListener("mousedown", dotMouseDownFunction)
                 draggableSvg.getContainerObject().removeChild( dot )
@@ -245,7 +247,7 @@ $( function() {
      * @param {float} y the cy of the dot
      * @description create and add a single dot to the svg element
      */
-    function createDot( spyId, x, y)
+    function createDot( spyId, x, y )
     {
         // add a dot where one of the line points are
         var dot = document.createElementNS(NS.svg, "circle")
@@ -263,6 +265,8 @@ $( function() {
      * @function customKeys
      * @param {Keydown Event} event the ketdown event
      * @description add the custom key listeners for when the user is using any function on the page
+     * 
+     * TODO: refactor
      */
     function customKeys( event )
     {
@@ -371,7 +375,6 @@ $( function() {
                     }
                 });
             });
-
             // add the key listener specifically to cancel the shift function
             document.addEventListener("keyup", shiftKeyup);
         }
@@ -385,7 +388,8 @@ $( function() {
      * @function .windowminimizebtn.click()
      * @description Show and hide contents of the tool windows works generically so we can add more later
      */
-    $('button.windowminimizebtn').on( "click", function(event) {
+    $('button.windowminimizebtn').on( "click", function(event)
+    {
         minimizeToolsWindow(event)
     });
     
@@ -393,8 +397,8 @@ $( function() {
      * @function #penciloptbtn.click()
      * @description this function activates the drawing listeners and handles multiple click instances.
      */
-    $('#penciloptbtn').on("click", function( event ) {
-        
+    $('#penciloptbtn').on("click", function( event )
+    {    
         event.preventDefault()
         if( PencilFlag )
         {
@@ -451,7 +455,8 @@ $( function() {
      * @function #outlinebtnopt.click()
      * @description activate and deactivate the drawing capability of the rectangles 
      */
-    $('#outlinebtnopt').on("click", function( event ) {
+    $('#outlinebtnopt').on("click", function( event )
+    {
         event.preventDefault()
         if( OutlineFlag )
         {
@@ -510,13 +515,16 @@ $( function() {
      * @function .windowoptionsbar.click()
      * @description Hide and show the toolbox if the option bar is clicked
      */
-    $(".windowoptionsbar").on("click", function(event) {
+    $(".windowoptionsbar").on("click", function(event)
+    {
         optionsAction(event.target)
     })
 
     /**
      * @function exportbtn.mousedown()
      * @description drae the box that is used for inputing export information
+     * 
+     * TODO: refactor
      */
     $('#exportbtn').on("mousedown", function(event) {
 
@@ -790,6 +798,8 @@ $( function() {
     /**
      * @function button.toolboxaddcaptionbtn.click()
      * @description adds all caption elements to the svg and menu
+     * TODO: refactor
+     * 
      */
     $('button.toolboxaddcaptionbtn').on("click", () =>
     {
@@ -827,19 +837,9 @@ $( function() {
         deletebtn.innerHTML = "&times"
         
         deletebtn.addEventListener("click", function(event){removeToolsWindow(event) })
-
-        /** Dyncamic layer buttoon requires more work*/
-        // set the class css and the svg button graphic
-        layerbtn.classList.add("windoworderingbtn")
-        layerbtn.innerHTML = "<svg viewBox='-10 -10 100 100' width='80%' height='80%' style='padding:1px' >"+
-                            "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
-                            "<rect x='30' y='10' width='50' height='10' fill='black' rx='5'/>"+
-                            "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
-                            "<rect x='30' y='41' width='50' height='10' fill='black' rx='5'/>" + 
-                            "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
-                            "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
         
-        draggableList.addDraggable( layerbtn )
+        // set the class css and the svg button graphic
+        createLayerBtn(layerbtn, draggableList)
 
         /** End Dragging */
 
@@ -916,6 +916,8 @@ $( function() {
 
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value+"text" )
+
+            console.log(this.value)
 
             // updpate the text inside once found
             if(matchingCaption)
@@ -1086,7 +1088,7 @@ $( function() {
         textholder.setAttribute("id", captionId)
         textholder.setAttribute("x", "0")
         textholder.setAttribute("y", "0")
-        textholder.setAttribute("width", "1500")
+        textholder.setAttribute("width", "750")
         textholder.setAttribute("height", "100")
         textholder.setAttribute("preserveAspectRatio", "xMidYMid meet")
 
@@ -1121,6 +1123,9 @@ $( function() {
     /**
      * @function button.toolboxaddimagebtn.click()
      * @description add the image to the svg and the toolbox stuff
+     * 
+     * TODO: refactor
+     * 
      */
     $('button.toolboxaddimagebtn').on("click", () =>
     {
@@ -1173,18 +1178,9 @@ $( function() {
         
         deletebtn.addEventListener("click", function(event){removeToolsWindow(event) })
 
-        /** Dyncamic layer buttoon */
-        layerbtn.classList.add("windoworderingbtn")
-        layerbtn.innerHTML = "<svg viewBox='-10 -10 100 100' width='80%' height='80%' style='padding:1px' >"+
-                            "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
-                            "<rect x='30' y='10' width='50' height='10' fill='black' rx='5'/>"+
-                            "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
-                            "<rect x='30' y='41' width='50' height='10' fill='black' rx='5'/>" + 
-                            "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
-                            "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
-                            
-        draggableList.addDraggable( layerbtn )
-
+        // set the class css and the svg button graphic
+        createLayerBtn(layerbtn, draggableList)
+        
         /** End Dynamic button*/
 
         // toolbox attributes
@@ -1644,7 +1640,8 @@ $( function() {
      * @description Changes the background color of the editing area.
      * will be visible when exported
      */
-    $('#backgroundcolor').on("change", () => {
+    $('#backgroundcolor').on("change", () =>
+    {
         setSVGBackground("bgelement", bgPicker.value)
     })
 
@@ -1807,7 +1804,6 @@ $( function() {
         }
     })
 
-    
     /**
      * @function setElement
      * @param {_Event} event 
@@ -1899,6 +1895,9 @@ $( function() {
      * @param {string} icontype 
      * @param {_Event} event
      * @description this function draws the svg icons over the svg figure image where the mouse drop occurs
+     * 
+     * TODO: refactor
+     * 
      */
     function drawSvgIcon( image, icontype, event )
     {
@@ -2127,7 +2126,8 @@ function preConfigPage()
 }
 
  /**
-  * 
+  * @function iconFailureAlert
+  * @description
   */
 function iconFailureAlert()
 {
@@ -2136,6 +2136,7 @@ function iconFailureAlert()
 
 /**
  * @function startButtonManager
+ * @description
  */
 var startButtonManager = function() {
 
@@ -2241,7 +2242,7 @@ var startActiveEM = function() {
 }
 
 /**
- * 
+ * @function getScalebarData
  * @param {*} resolution 
  * @param {*} imageW 
  * @param {*} imageH 
@@ -2551,12 +2552,10 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             iconmaincolorinput.value = "#ffffff"
             iconmaincolorinput.setAttribute("name", "iconmaincolorinput")
 
-
             iconaccentcolorinput.setAttribute("type", "color")
             iconaccentcolorinput.setAttribute("objectid", iconId)
             iconaccentcolorinput.value = "#000000"
             iconaccentcolorinput.setAttribute("name", "iconsecondarycolorinput")
-
 
             // set translate x and y element attributes
             northicontranslatex.setAttribute("type", "number")
@@ -3656,19 +3655,9 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 
     deletebtn.setAttribute("objectid", objectid)
 
-    /** Dyncamic layer buttoon requires more work*/
     // set the class css and the svg button graphic
-    layerbtn.classList.add("windoworderingbtn")
-    layerbtn.innerHTML = "<svg viewBox='-10 -10 100 100' width='80%' height='80%' style='padding:1px' >"+
-                        "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
-                        "<rect x='30' y='10' width='50' height='10' fill='black' rx='5'/>"+
-                        "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
-                        "<rect x='30' y='41' width='50' height='10' fill='black' rx='5'/>" + 
-                        "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
-                        "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
-    
-    // main handler for the dragging functionality
-    draggableList.addDraggable( layerbtn )
+    createLayerBtn(layerbtn, draggableList)
+
     /** End Dragging */
 
 
@@ -4332,19 +4321,8 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
 
     deletebtn.setAttribute("objectid", objectid)
 
-    /** Dyncamic layer buttoon requires more work*/
     // set the class css and the svg button graphic
-    layerbtn.classList.add("windoworderingbtn")
-    layerbtn.innerHTML = "<svg viewBox='-10 -10 100 100' width='80%' height='80%' style='padding:1px' >"+
-                        "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
-                        "<rect x='30' y='10' width='50' height='10' fill='black' rx='5'/>"+
-                        "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
-                        "<rect x='30' y='41' width='50' height='10' fill='black' rx='5'/>" + 
-                        "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
-                        "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
-    
-    // add all listeners to the btn and the parent element to start dragging in an orderly fashion confined by draggableList.getContainerObject()
-    draggableList.addDraggable( layerbtn )
+    createLayerBtn(layerbtn, draggableList)
 
     /** End Dragging */
 
@@ -4445,11 +4423,14 @@ function navigateTo( url )
  * @param {string} text raw text that needs to be formated
  * @param {number} captionWidth width of the caption object
  * @param {number} fontsize size of the font in the caption
- * 
  * @description this function takes the text of the caption and formats it for the caption object in the svg element.
  */
+ /**TODO: rewrite this function to first predict how many characters could be held inside the caption box and then calculate and create the text lines to auto format */
 function text2PieText( text, captionWidth, fontsize )
 {
+
+    console.log( `getMaxCharacterPerLine(captionWidth) -> ${getMaxCharacterPerLine(captionWidth, fontsize)}` )
+
     // create return data and helper data
     let paragraphArr = [],
         paragraphStart = 0,
@@ -4488,7 +4469,7 @@ function text2PieText( text, captionWidth, fontsize )
             var wordPixels = word.length * fontsize/2
 
             // check to see of this word goes over the limit of the line
-            if( (wordPixels + usedPixels) >= captionWidth - fontsize*2)
+            if( (wordPixels + usedPixels) > captionWidth - fontsize*2)
             {
                 // The limit was reached on the last word
                 // reset the used pixel count
@@ -4512,7 +4493,7 @@ function text2PieText( text, captionWidth, fontsize )
                 usedPixels += wordPixels
             }
         }
-        
+
         // as soon as the paragraph finishes clear the used pixels
         usedPixels = 70
 
@@ -4562,6 +4543,22 @@ function text2PieText( text, captionWidth, fontsize )
 
     // lastly return the HTML string that is the caption
     return pieText;
+}
+
+/**
+ * 
+ * @param {*} width 
+ * @param {*} fontsize 
+ */
+function getMaxCharacterPerLine( width, fontsize )
+{
+    var maxCharPerLine = 0
+
+    var captionPixelEstimate = width*fontsize
+
+    console.log(captionPixelEstimate)
+
+    return maxCharPerLine
 }
 
 /**
@@ -4668,4 +4665,23 @@ function validFileTypes( ...arr )
         }
     }
     return false;
+}
+
+/**
+ * 
+ * @param {*} layerbtn 
+ * @param {*} draggableList 
+ */
+function createLayerBtn(layerbtn, draggableList)
+{
+    layerbtn.classList.add("windoworderingbtn")
+    layerbtn.innerHTML = "<svg viewBox='-10 -10 100 100' width='80%' height='80%' style='padding:1px' >"+
+                        "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
+                        "<rect x='30' y='10' width='50' height='10' fill='black' rx='5'/>"+
+                        "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
+                        "<rect x='30' y='41' width='50' height='10' fill='black' rx='5'/>" + 
+                        "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
+                        "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
+    
+    draggableList.addDraggable( layerbtn )
 }
