@@ -14,7 +14,8 @@ var draggableSvg = null, draggableList = null;
  * @function document.ready()
  * @description Function that runs when the page is done loading
  */
-$( function() {
+$( function()
+{
     // Pre config
     preConfigPage()
 
@@ -246,7 +247,7 @@ $( function() {
      * @param {float} y the cy of the dot
      * @description create and add a single dot to the svg element
      */
-    function createDot( spyId, x, y)
+    function createDot( spyId, x, y )
     {
         // add a dot where one of the line points are
         var dot = document.createElementNS(NS.svg, "circle")
@@ -264,6 +265,8 @@ $( function() {
      * @function customKeys
      * @param {Keydown Event} event the ketdown event
      * @description add the custom key listeners for when the user is using any function on the page
+     * 
+     * TODO: refactor
      */
     function customKeys( event )
     {
@@ -385,7 +388,8 @@ $( function() {
      * @function .windowminimizebtn.click()
      * @description Show and hide contents of the tool windows works generically so we can add more later
      */
-    $('button.windowminimizebtn').on( "click", function(event) {
+    $('button.windowminimizebtn').on( "click", function(event)
+    {
         minimizeToolsWindow(event)
     });
     
@@ -393,8 +397,8 @@ $( function() {
      * @function #penciloptbtn.click()
      * @description this function activates the drawing listeners and handles multiple click instances.
      */
-    $('#penciloptbtn').on("click", function( event ) {
-        
+    $('#penciloptbtn').on("click", function( event )
+    {    
         event.preventDefault()
         if( PencilFlag )
         {
@@ -451,7 +455,8 @@ $( function() {
      * @function #outlinebtnopt.click()
      * @description activate and deactivate the drawing capability of the rectangles 
      */
-    $('#outlinebtnopt').on("click", function( event ) {
+    $('#outlinebtnopt').on("click", function( event )
+    {
         event.preventDefault()
         if( OutlineFlag )
         {
@@ -510,13 +515,16 @@ $( function() {
      * @function .windowoptionsbar.click()
      * @description Hide and show the toolbox if the option bar is clicked
      */
-    $(".windowoptionsbar").on("click", function(event) {
+    $(".windowoptionsbar").on("click", function(event)
+    {
         optionsAction(event.target)
     })
 
     /**
      * @function exportbtn.mousedown()
      * @description drae the box that is used for inputing export information
+     * 
+     * TODO: refactor
      */
     $('#exportbtn').on("mousedown", function(event) {
 
@@ -790,6 +798,8 @@ $( function() {
     /**
      * @function button.toolboxaddcaptionbtn.click()
      * @description adds all caption elements to the svg and menu
+     * TODO: refactor
+     * 
      */
     $('button.toolboxaddcaptionbtn').on("click", () =>
     {
@@ -906,6 +916,8 @@ $( function() {
 
             // find the matching html caption element
             let matchingCaption = document.getElementById( this.attributes.objectid.value+"text" )
+
+            console.log(this.value)
 
             // updpate the text inside once found
             if(matchingCaption)
@@ -1076,7 +1088,7 @@ $( function() {
         textholder.setAttribute("id", captionId)
         textholder.setAttribute("x", "0")
         textholder.setAttribute("y", "0")
-        textholder.setAttribute("width", "1500")
+        textholder.setAttribute("width", "750")
         textholder.setAttribute("height", "100")
         textholder.setAttribute("preserveAspectRatio", "xMidYMid meet")
 
@@ -1111,6 +1123,9 @@ $( function() {
     /**
      * @function button.toolboxaddimagebtn.click()
      * @description add the image to the svg and the toolbox stuff
+     * 
+     * TODO: refactor
+     * 
      */
     $('button.toolboxaddimagebtn').on("click", () =>
     {
@@ -1625,7 +1640,8 @@ $( function() {
      * @description Changes the background color of the editing area.
      * will be visible when exported
      */
-    $('#backgroundcolor').on("change", () => {
+    $('#backgroundcolor').on("change", () =>
+    {
         setSVGBackground("bgelement", bgPicker.value)
     })
 
@@ -1788,7 +1804,6 @@ $( function() {
         }
     })
 
-    
     /**
      * @function setElement
      * @param {_Event} event 
@@ -1880,6 +1895,9 @@ $( function() {
      * @param {string} icontype 
      * @param {_Event} event
      * @description this function draws the svg icons over the svg figure image where the mouse drop occurs
+     * 
+     * TODO: refactor
+     * 
      */
     function drawSvgIcon( image, icontype, event )
     {
@@ -4410,6 +4428,9 @@ function navigateTo( url )
  /**TODO: rewrite this function to first predict how many characters could be held inside the caption box and then calculate and create the text lines to auto format */
 function text2PieText( text, captionWidth, fontsize )
 {
+
+    console.log( `getMaxCharacterPerLine(captionWidth) -> ${getMaxCharacterPerLine(captionWidth, fontsize)}` )
+
     // create return data and helper data
     let paragraphArr = [],
         paragraphStart = 0,
@@ -4472,7 +4493,7 @@ function text2PieText( text, captionWidth, fontsize )
                 usedPixels += wordPixels
             }
         }
-        console.log(usedPixels)
+
         // as soon as the paragraph finishes clear the used pixels
         usedPixels = 70
 
@@ -4522,6 +4543,22 @@ function text2PieText( text, captionWidth, fontsize )
 
     // lastly return the HTML string that is the caption
     return pieText;
+}
+
+/**
+ * 
+ * @param {*} width 
+ * @param {*} fontsize 
+ */
+function getMaxCharacterPerLine( width, fontsize )
+{
+    var maxCharPerLine = 0
+
+    var captionPixelEstimate = width*fontsize
+
+    console.log(captionPixelEstimate)
+
+    return maxCharPerLine
 }
 
 /**
@@ -4630,6 +4667,11 @@ function validFileTypes( ...arr )
     return false;
 }
 
+/**
+ * 
+ * @param {*} layerbtn 
+ * @param {*} draggableList 
+ */
 function createLayerBtn(layerbtn, draggableList)
 {
     layerbtn.classList.add("windoworderingbtn")
