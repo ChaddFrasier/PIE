@@ -2127,7 +2127,8 @@ function preConfigPage()
 }
 
  /**
-  * 
+  * @function iconFailureAlert
+  * @description
   */
 function iconFailureAlert()
 {
@@ -2136,6 +2137,7 @@ function iconFailureAlert()
 
 /**
  * @function startButtonManager
+ * @description
  */
 var startButtonManager = function() {
 
@@ -2241,7 +2243,7 @@ var startActiveEM = function() {
 }
 
 /**
- * 
+ * @function getScalebarData
  * @param {*} resolution 
  * @param {*} imageW 
  * @param {*} imageH 
@@ -2551,12 +2553,10 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             iconmaincolorinput.value = "#ffffff"
             iconmaincolorinput.setAttribute("name", "iconmaincolorinput")
 
-
             iconaccentcolorinput.setAttribute("type", "color")
             iconaccentcolorinput.setAttribute("objectid", iconId)
             iconaccentcolorinput.value = "#000000"
             iconaccentcolorinput.setAttribute("name", "iconsecondarycolorinput")
-
 
             // set translate x and y element attributes
             northicontranslatex.setAttribute("type", "number")
@@ -4445,9 +4445,9 @@ function navigateTo( url )
  * @param {string} text raw text that needs to be formated
  * @param {number} captionWidth width of the caption object
  * @param {number} fontsize size of the font in the caption
- * 
  * @description this function takes the text of the caption and formats it for the caption object in the svg element.
  */
+ /**TODO: rewrite this function to first predict how many characters could be held inside the caption box and then calculate and create the text lines to auto format */
 function text2PieText( text, captionWidth, fontsize )
 {
     // create return data and helper data
@@ -4488,7 +4488,7 @@ function text2PieText( text, captionWidth, fontsize )
             var wordPixels = word.length * fontsize/2
 
             // check to see of this word goes over the limit of the line
-            if( (wordPixels + usedPixels) >= captionWidth - fontsize*2)
+            if( (wordPixels + usedPixels) > captionWidth - fontsize*2)
             {
                 // The limit was reached on the last word
                 // reset the used pixel count
@@ -4512,7 +4512,7 @@ function text2PieText( text, captionWidth, fontsize )
                 usedPixels += wordPixels
             }
         }
-        
+        console.log(usedPixels)
         // as soon as the paragraph finishes clear the used pixels
         usedPixels = 70
 
