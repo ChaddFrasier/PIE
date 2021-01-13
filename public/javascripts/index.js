@@ -2051,17 +2051,9 @@ $( function() {
                     icongroup.setAttribute("objectid", image.id)
                     icongroup.setAttribute("id", "scalebarIcon-" + image.id)
 
-                    // set the translate location of the icon to where the mouse was released
-                    newX = getScaledPoint( svgP.x, 1, 1 )
-                    newY = getScaledPoint( svgP.y, 1, 1 )
-
                     // test valid input and set the transform for all browsers
                     if( !isNaN(newX) && !isNaN(newY))
                     {                 
-                        // set translate
-                        icongroup.setAttribute("x", newX)
-                        icongroup.setAttribute("y", newY)
-
                         // calculate the scale nneded for the scalebar and multiply by the svg dimensions
                         var scaleObject = getScalebarData( 
                             ( document.getElementById(image.id + '-hg').getAttribute("PixelResolution") ) 
@@ -2072,6 +2064,16 @@ $( function() {
                         
                         icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
                         icongroup.setAttribute("height", (scaleObject.sc * 700) )
+
+                        let scale = parseFloat(document.getElementById(image.id+"-hg").getAttribute("transform").replace("scale(", ""))
+
+                        // set the translate location of the icon to where the mouse was released
+                        newX = getScaledPoint( svgP.x, 1, parseFloat(icongroup.getAttribute("width")) )
+                        newY = getScaledPoint( svgP.y, 1, parseFloat(icongroup.getAttribute("height")) )
+
+                        // set translate
+                        icongroup.setAttribute("x", newX)
+                        icongroup.setAttribute("y", newY)
                     }
                     else
                     {
