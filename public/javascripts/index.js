@@ -2065,8 +2065,6 @@ $( function() {
                         icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
                         icongroup.setAttribute("height", (scaleObject.sc * 700) )
 
-                        let scale = parseFloat(document.getElementById(image.id+"-hg").getAttribute("transform").replace("scale(", ""))
-
                         // set the translate location of the icon to where the mouse was released
                         newX = getScaledPoint( svgP.x, 1, parseFloat(icongroup.getAttribute("width")) )
                         newY = getScaledPoint( svgP.y, 1, parseFloat(icongroup.getAttribute("height")) )

@@ -162,7 +162,14 @@ function DraggableArea( objectbox=undefined )
             }
             else if( draggingIcon.nodeName == "svg" ) // 'svg' nodes house complex icons like the north arrow
             {
-                var sc = parseFloat(document.getElementById(draggingIcon.getAttribute("objectid")+ "-hg").getAttribute("transform").replace("scale(","").replace(")",""))
+                var sc = null
+                try{
+                    sc = parseFloat(document.getElementById(draggingIcon.getAttribute("objectid")+ "-hg").getAttribute("transform").replace("scale(",""))
+                }
+                catch(err)
+                {
+                    sc = 1
+                }
                 // get only mouse position, not adjusted for icon size and convert to parent element matrix
                 currentX = getScaledPoint(svgP.x, sc, parseFloat(draggingIcon.getAttribute("width")) );
                 currentY = getScaledPoint(svgP.y, sc, parseFloat(draggingIcon.getAttribute("height")) );
