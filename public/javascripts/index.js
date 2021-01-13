@@ -35,7 +35,6 @@ $( function() {
     document.addEventListener("keydown", customKeys);
     // set background right away when page loads
     setSVGBackground("bgelement", bgPicker.value)
-
     // start draggable actions
     configDraggables( svgContainer, document.getElementById("DraggableContainer") )
 
@@ -46,17 +45,19 @@ $( function() {
      */
     function shiftKeyup( event )
     {
+        // stop event chain
         event.preventDefault()
+
+        // if the key being let go is the shift key
         if( event.key === "Shift" || event.key ==='shift' || event.key === 16 )
         {
             // unpause the drag stuff from the DraggableArea Object
             draggableSvg.unpauseDraggables();
+            // reactivate the UI buttons
             changeButtonActivation("enable", 2)
-
             // remove the color the endpoints of the lines and the endpoints of the rectangles
             document.removeEventListener("keyup", shiftKeyup)
-
-            // remove all dots
+            // remove all draggable dots
             document.querySelectorAll("circle.draggableDot").forEach( dot => {
                 dot.removeEventListener("mousedown", dotMouseDownFunction)
                 draggableSvg.getContainerObject().removeChild( dot )
@@ -371,7 +372,6 @@ $( function() {
                     }
                 });
             });
-
             // add the key listener specifically to cancel the shift function
             document.addEventListener("keyup", shiftKeyup);
         }
@@ -827,19 +827,9 @@ $( function() {
         deletebtn.innerHTML = "&times"
         
         deletebtn.addEventListener("click", function(event){removeToolsWindow(event) })
-
-        /** Dyncamic layer buttoon requires more work*/
-        // set the class css and the svg button graphic
-        layerbtn.classList.add("windoworderingbtn")
-        layerbtn.innerHTML = "<svg viewBox='-10 -10 100 100' width='80%' height='80%' style='padding:1px' >"+
-                            "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
-                            "<rect x='30' y='10' width='50' height='10' fill='black' rx='5'/>"+
-                            "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
-                            "<rect x='30' y='41' width='50' height='10' fill='black' rx='5'/>" + 
-                            "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
-                            "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
         
-        draggableList.addDraggable( layerbtn )
+        // set the class css and the svg button graphic
+        createLayerBtn(layerbtn, draggableList)
 
         /** End Dragging */
 
@@ -1173,18 +1163,9 @@ $( function() {
         
         deletebtn.addEventListener("click", function(event){removeToolsWindow(event) })
 
-        /** Dyncamic layer buttoon */
-        layerbtn.classList.add("windoworderingbtn")
-        layerbtn.innerHTML = "<svg viewBox='-10 -10 100 100' width='80%' height='80%' style='padding:1px' >"+
-                            "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
-                            "<rect x='30' y='10' width='50' height='10' fill='black' rx='5'/>"+
-                            "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
-                            "<rect x='30' y='41' width='50' height='10' fill='black' rx='5'/>" + 
-                            "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
-                            "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
-                            
-        draggableList.addDraggable( layerbtn )
-
+        // set the class css and the svg button graphic
+        createLayerBtn(layerbtn, draggableList)
+        
         /** End Dynamic button*/
 
         // toolbox attributes
@@ -3656,19 +3637,9 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 
     deletebtn.setAttribute("objectid", objectid)
 
-    /** Dyncamic layer buttoon requires more work*/
     // set the class css and the svg button graphic
-    layerbtn.classList.add("windoworderingbtn")
-    layerbtn.innerHTML = "<svg viewBox='-10 -10 100 100' width='80%' height='80%' style='padding:1px' >"+
-                        "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
-                        "<rect x='30' y='10' width='50' height='10' fill='black' rx='5'/>"+
-                        "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
-                        "<rect x='30' y='41' width='50' height='10' fill='black' rx='5'/>" + 
-                        "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
-                        "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
-    
-    // main handler for the dragging functionality
-    draggableList.addDraggable( layerbtn )
+    createLayerBtn(layerbtn, draggableList)
+
     /** End Dragging */
 
 
@@ -4332,19 +4303,8 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
 
     deletebtn.setAttribute("objectid", objectid)
 
-    /** Dyncamic layer buttoon requires more work*/
     // set the class css and the svg button graphic
-    layerbtn.classList.add("windoworderingbtn")
-    layerbtn.innerHTML = "<svg viewBox='-10 -10 100 100' width='80%' height='80%' style='padding:1px' >"+
-                        "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
-                        "<rect x='30' y='10' width='50' height='10' fill='black' rx='5'/>"+
-                        "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
-                        "<rect x='30' y='41' width='50' height='10' fill='black' rx='5'/>" + 
-                        "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
-                        "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
-    
-    // add all listeners to the btn and the parent element to start dragging in an orderly fashion confined by draggableList.getContainerObject()
-    draggableList.addDraggable( layerbtn )
+    createLayerBtn(layerbtn, draggableList)
 
     /** End Dragging */
 
@@ -4668,4 +4628,18 @@ function validFileTypes( ...arr )
         }
     }
     return false;
+}
+
+function createLayerBtn(layerbtn, draggableList)
+{
+    layerbtn.classList.add("windoworderingbtn")
+    layerbtn.innerHTML = "<svg viewBox='-10 -10 100 100' width='80%' height='80%' style='padding:1px' >"+
+                        "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
+                        "<rect x='30' y='10' width='50' height='10' fill='black' rx='5'/>"+
+                        "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
+                        "<rect x='30' y='41' width='50' height='10' fill='black' rx='5'/>" + 
+                        "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
+                        "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
+    
+    draggableList.addDraggable( layerbtn )
 }
