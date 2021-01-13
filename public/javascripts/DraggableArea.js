@@ -104,8 +104,7 @@ function DraggableArea( objectbox=undefined )
 
     // ---------------- ^ End Private functions ^ --------------------------
 
-    // ----------------- Main code section ----------------------------
-
+    // ----------------- Main Task section ----------------------------
     // validate initialization of DraggableObject
     if( objectbox &&
         objectbox.getAttribute("id") &&
