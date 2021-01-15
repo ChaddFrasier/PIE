@@ -4570,22 +4570,23 @@ function text2PieText( text, captionWidth, fontsize )
                         }
                     }
                     
+                    // if this is the last line on the loop append the first line and the rest
                     if(lindex === numberOfLines - 1)
                     {
                         p1.innerHTML = firstLine + rest
                         pieText += p1.outerHTML
-                        console.log("last line")
                     }
                     else
                     {
+                        // this is a middle line so just do the first part of the line
                         p1.innerHTML = firstLine
                         pieText += p1.outerHTML
-                        console.log("Not last line")
                         paragraphStartY++;
                     }
                 }
             }
         }
+        // incriment the paragraph
         paragraphStartY++
     }
 
