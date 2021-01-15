@@ -265,8 +265,6 @@ $( function()
      * @function customKeys
      * @param {Keydown Event} event the ketdown event
      * @description add the custom key listeners for when the user is using any function on the page
-     * 
-     * TODO: refactor
      */
     function customKeys( event )
     {
@@ -798,8 +796,6 @@ $( function()
     /**
      * @function button.toolboxaddcaptionbtn.click()
      * @description adds all caption elements to the svg and menu
-     * TODO: refactor
-     * 
      */
     $('button.toolboxaddcaptionbtn').on("click", () =>
     {
@@ -1897,7 +1893,6 @@ $( function()
      * @description this function draws the svg icons over the svg figure image where the mouse drop occurs
      * 
      * TODO: refactor
-     * 
      */
     function drawSvgIcon( image, icontype, event )
     {
@@ -2109,6 +2104,14 @@ $( function()
 
 /* Helper functions */
 
+/**
+ * @function configDraggables
+ * @requires DraggableContainer
+ * @requires DraggableList
+ * @param {SVG Object} svg 
+ * @param {HTML Object} dragCont 
+ * @description this function just initiates the draggable things on the index page
+ */
 function configDraggables( svg, dragCont )
 {
     // create the Draggable Object Container
@@ -2117,6 +2120,11 @@ function configDraggables( svg, dragCont )
     draggableList = DraggableList( dragCont )
 }
 
+/**
+ * @function preConfigPage
+ * @description this function is to set a few required things for the body of the index that cannot be set
+ *              with a PUG template
+ */
 function preConfigPage()
 {
     // contain the index homepage
@@ -2127,7 +2135,7 @@ function preConfigPage()
 
  /**
   * @function iconFailureAlert
-  * @description
+  * @description alert the user that adding icons can only happen one time
   */
 function iconFailureAlert()
 {
@@ -2136,7 +2144,7 @@ function iconFailureAlert()
 
 /**
  * @function startButtonManager
- * @description
+ * @description a simple object that helps handle the button UIs
  */
 var startButtonManager = function() {
 
@@ -2243,34 +2251,31 @@ var startActiveEM = function() {
 
 /**
  * @function getScalebarData
- * @param {*} resolution 
- * @param {*} imageW 
- * @param {*} imageH 
- * @param {*} lineCount 
- * @param {*} sampleCount 
+ * @param {float} resolution ISIS data point either PixelResolution or ObliquePixelResolution
+ * @param {number} imageW Image width
+ * @param {number} imageH Image height
+ * @param {integer} lineCount ISIS data point Lines
+ * @param {integer} sampleCount ISIS data point Samples
+ * @description Function was created with the help of Laszlo Kestay's mathematics on ISIS scalebar data
  */
 function getScalebarData( resolution, imageW, imageH, lineCount, sampleCount )
 {
-    let widthScale = imageW/sampleCount,
-        heightScale = imageH/lineCount;
-
-    var obj = {};
-
-    var imageWidthMeters = resolution * sampleCount;
-
+    var widthScale = imageW/sampleCount,
+        heightScale = imageH/lineCount,
+        obj = {},
+        imageWidthMeters = resolution * sampleCount;
+    
     obj['sc'] = (widthScale <= heightScale) ? widthScale : heightScale;
 
     var realImageWidthMeters = (heightScale < widthScale)? ((heightScale * imageW)*resolution)/2 : imageWidthMeters/2;
 
-    /* Laz-bar Algortithm */
+    /* Laszlo's bar Algortithm */
     // cut the legth of the image in meters in half and then get the base10 of it
     let x = Math.log10(realImageWidthMeters);
     // save the floor of that value as another variable
     let a = Math.floor(x);
-
     // get the remaining room between incriments of 10
     let b = x - a;
-
     // if the decimal is 75% or more closer to a whole 10 set the base to 5
     // check if 35% or greater, set base 2
     // if the value is very close to a whole base on the low side 
@@ -2291,25 +2296,30 @@ function getScalebarData( resolution, imageW, imageH, lineCount, sampleCount )
         b=1;
     }
 
-    var scalebarMeters = b*Math.pow(10,a);
-    var scalebarLength,
+    // init the return data
+    var scalebarMeters = b*Math.pow(10,a),
+        scalebarLength = null,
+        scalebarPx = null,
         scalebarUnits="";
-    // if the length is less than 1KM return length in meters
+
+    // if the length is less than 1km return length in meters
     if(imageWidthMeters/1000 < 1){
         scalebarLength = scalebarMeters;
-        var scalebarPx = parseInt(scalebarLength / (parseFloat(resolution)));
+        scalebarPx = parseInt(scalebarLength / (parseFloat(resolution)));
         scalebarUnits = "m";
     }
     else{
         scalebarLength = scalebarMeters/1000;
-        var scalebarPx = parseInt(scalebarLength / (parseFloat(resolution)/1000));
+        scalebarPx = parseInt(scalebarLength / (parseFloat(resolution)/1000));
         scalebarUnits = "km";
     }
 
+    // set the return parts
     obj['width'] = scalebarPx
     obj['units'] = scalebarUnits
     obj['display'] = scalebarLength
     
+    // return the object
     return obj;
 }
 
@@ -2369,25 +2379,30 @@ function minimizeToolsWindow( event )
 /**
  * @function detectMouseWheelDirection
  * @param {_Event} e - the mouse wheel event
- * @description tells which way the scroll wheel is going
+ * @description tells which way the scroll wheel is going vertically
  */
 function detectMouseWheelDirection( e )
 {
     var delta = null,
-        direction = false
-    ;
-    if ( !e ) { // if the event is not provided, we get it from the window object
+        direction = false;
+
+    if ( !e ) 
+    { // if the event is not provided, we get it from the window object
         e = window.event;
     }
-    if ( e.wheelDelta ) { // will work in most cases
+    if ( e.wheelDelta )
+    { // will work in most cases
         delta = e.wheelDelta / 60;
-    } else if ( e.detail ) { // fallback for Firefox
+    } else if ( e.detail )
+    { // fallback for Firefox
         delta = -e.detail / 2;
     }
-    if ( delta !== null ) {
+    // set return value
+    if ( delta !== null ) 
+    {
         direction = delta > 0 ? 'up' : 'down';
     }
-
+    // return he vertical direction the mouse is moving
     return direction;
 }
 
@@ -2478,6 +2493,8 @@ function typeofObject(testString)
  * @param {number} transX 
  * @param {number} transY
  * @description draws tool boxes for each icon, this method allows for more than 1 of each icon
+ * 
+ * TODO: refactor this function
  */
 function drawToolbox( toolbox, icontype, iconId, transX, transY )
 {
@@ -3007,7 +3024,6 @@ function updateIconPosition ( event, attrId )
  * @param {string} id 
  * @param {NodeList} array 
  * @description find the element with the id in the array
- * 
  */
 function findImageToolbox( id, array )
 {
@@ -3032,7 +3048,6 @@ function updateIconScale( event )
     if( !isNaN( inputvalue ) )
     {   
         icon.setAttribute("scale", inputvalue)
-
         icon.setAttribute("width", parseFloat(icon.getAttribute("viewBox").split(" 0 ")[1])*inputvalue )
         icon.setAttribute("height", parseFloat(icon.getAttribute("viewBox").split(" 0 ")[1])*inputvalue )
     }
@@ -3069,7 +3084,6 @@ function removeIconWindow( event )
         let icontoolsbar = event.target.parentElement
         let toolsbox = icontoolsbar.nextElementSibling
         let iconsvg = document.getElementById( icontoolsbar.attributes.objectid.value )
-
         let imagetoolbox = document.getElementById( "imagetoolsbox-" + iconsvg.attributes.objectid.value )
 
         imagetoolbox.removeChild( icontoolsbar )
@@ -3099,7 +3113,6 @@ function removeLineWindow( event )
     {
         // remove the current options bar, its next child and the caption matching the same id
         let holderbox = event.target.parentElement.parentElement
-        
         let linesvg = document.getElementById( holderbox.attributes.objectid.value )
 
         // remove all elements
@@ -3475,6 +3488,8 @@ function drawMouseDownListener( event )
  * @param {number} y2 - the y value of the tail of the line
  * @param {number} strokeWidth - the stroke-width of the line
  * @description create the toolbox for the given line
+ * 
+ * TODO: refactor
  */
 function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 {
@@ -3957,7 +3972,7 @@ function createMarker( markerString, lineid, headcode, endCode )
                 newmarker.setAttribute( "id", lineid + "-markerEnd" )
                 newmarker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )     
                 
-                // Removed until this issue is resolved https://github.com/lovell/sharp/issues/2459 & https://github.com/ChaddFrasier/PIE/issues/180
+                // Removed until these issue is resolved https://github.com/lovell/sharp/issues/2459 & https://github.com/ChaddFrasier/PIE/issues/180
                 // newmarker.setAttribute( "orient", "auto-start-reverse")
                 
                 newmarker.setAttribute( "data-cy", "markertail")
@@ -4012,9 +4027,6 @@ function leftClick ( buttonid )
  */
 function drawBoxMouseDownListener( event )
 {
-    // prevent defaults to stop dragging
-    //console.log(event.button)
-
     if( leftClick(event.button) )
     {
         event.preventDefault()
@@ -4419,8 +4431,9 @@ function navigateTo( url )
 }
 
 /**
- * 
- * @param {*} str 
+ * @function countSpacesInString
+ * @param {string} str the string to search within
+ * @description count the number of spaces in a string
  */
 function countSpacesInString( str )
 {
@@ -4428,18 +4441,21 @@ function countSpacesInString( str )
 }
 
 /**
- * 
- * @param {*} unfixedIndex 
- * @param {*} text 
+ * @function recurseFixedIndex
+ * @param {number} unfixedIndex the current index that we are checking
+ * @param {string} text the text we are searching within
+ * @description recurse backward over the text until a space is found or the start is out-indexed
  */
 function recurseFixedIndex( unfixedIndex, text )
 {
+    // index error will occur; space was not found in the recursion
     if( unfixedIndex === -1 )
     {
         // return an error because there is no index to fix the split on
         return -999
     }
 
+    // return the index of the chracter is a space; otherwise recurse backward
     if( text.charAt(unfixedIndex) === ' ')
     {
         return unfixedIndex
@@ -4589,15 +4605,14 @@ function text2PieText( text, captionWidth, fontsize )
         // incriment the paragraph
         paragraphStartY++
     }
-
     // lastly return the HTML string that is the caption
     return pieText;
 }
 
 /**
  * @function getMaxCharacterPerLine
- * @param {*} width
- * @param {*} fontsize
+ * @param {number} width width of the caption box
+ * @param {number} fontsize font size of the text
  */
 function getMaxCharacterPerLine( width, fontsize )
 {
@@ -4713,9 +4728,10 @@ function validFileTypes( ...arr )
 }
 
 /**
- * 
- * @param {*} layerbtn 
- * @param {*} draggableList 
+ * @function createLayerBtn
+ * @requires DraggableList
+ * @param {Button} layerbtn the button object that we are creating
+ * @param {DraggableList} draggableList the list to place the button inside
  */
 function createLayerBtn(layerbtn, draggableList)
 {
