@@ -4434,6 +4434,12 @@ function countSpacesInString( str )
  */
 function recurseFixedIndex( unfixedIndex, text )
 {
+    if( unfixedIndex === -1 )
+    {
+        // return an error because there is no index to fix the split on
+        return -999
+    }
+
     if( text.charAt(unfixedIndex) === ' ')
     {
         return unfixedIndex
@@ -4451,13 +4457,13 @@ function recurseFixedIndex( unfixedIndex, text )
  * @param {number} fontsize size of the font in the caption
  * @description this function takes the text of the caption and formats it for the caption object in the svg element.
  */
- /**TODO: rewrite this function to first predict how many characters could be held inside the caption box and then calculate and create the text lines to auto format */
  /**TODO: then refactor and removed copy pasted code */
 function text2PieText( text, captionWidth, fontsize )
 {
     // create return data and helper data
     let paragraphArr = [],
         pieText = "",
+        paragraphStartY = 0,
         maxCharPerLine = getMaxCharacterPerLine( captionWidth, fontsize );
 
     // create the first paragraph of the caption
@@ -4468,41 +4474,59 @@ function text2PieText( text, captionWidth, fontsize )
     // iterate over each paragraph
     for (let pindex = 0; pindex < paragraphArr.length; pindex++)
     {
+        // isolate the paragraph text from the array
         const paragraph = paragraphArr[pindex];
+        /* 
+         make the character estimation;
+          tried-> `maxCharPerLine + numvberOfSpaces/2`{psuedo}
+        */
         let characterEstimate = maxCharPerLine
 
-        // if the caption can fit on a single line
+        // check if the paragraph can fit on the single line based on the esimation
         if(characterEstimate >= String(paragraph).length + 1)
         {
+            // if it can fit on 1 line then set the box position and text
             p1.innerHTML = paragraph
+            p1.setAttribute("y", paragraphStartY*fontsize + fontsize);
             p1.setAttribute("x", fontsize)
-            // set the x and y so that the text displays the whole word
-            p1.setAttribute("y", pindex*fontsize + fontsize);
             pieText += p1.outerHTML
         }
         else
-        {
+        {   // else the paragraph requires multiple lines
+            
             let firstLine = "",
                 rest = "";
 
-            // otherwise use multiple lines
+            // check if the character at the splitting location
             if( String(paragraph).charAt(characterEstimate) === ' ' )
             {
+                // split the paragraph on that character
                 firstLine = String(paragraph).substring(0, characterEstimate)
                 rest = String(paragraph).substring(characterEstimate)    
             }
             else
             {
+                // recurse over the paragraph and find a space character
                 let fixedEstimate = recurseFixedIndex( characterEstimate, paragraph)
 
-                firstLine = String(paragraph).substring(0, fixedEstimate)
-                rest = String(paragraph).substring(fixedEstimate)
+                // check for errors
+                if ( fixedEstimate !== -999 )
+                {
+                    // split on the space character
+                    firstLine = String(paragraph).substring(0, fixedEstimate)
+                    rest = String(paragraph).substring(fixedEstimate)
+                }
+                else
+                {
+                    // cannot render very well. 
+                    console.error("Cannot find a space character (' ') in the paragraph. ")
+                }
             }
             
+            // append the first line
             p1.innerHTML = firstLine
             p1.setAttribute("x", fontsize)
-            // set the x and y so that the text displays the whole word
-            p1.setAttribute("y", pindex*fontsize + fontsize)
+            p1.setAttribute("y", paragraphStartY*fontsize + fontsize)
             pieText += p1.outerHTML
 
             let numberOfLines = ((rest.length / maxCharPerLine) >= 1) ? Math.ceil((rest.length / maxCharPerLine)): 1;
@@ -4516,30 +4540,9 @@ function text2PieText( text, captionWidth, fontsize )
                 p1.innerHTML = rest
                 pieText += p1.outerHTML
             }
-            else if( numberOfLines === 2 )
-            {
-                // otherwise use multiple lines
-                if( String(rest).charAt(characterEstimate) === ' ' )
-                {
-                    firstLine = String(rest).substring(0,characterEstimate)
-                    rest = String(rest).substring(characterEstimate)    
-                }
-                else
-                {
-                    let fixedEstimate = recurseFixedIndex( characterEstimate, rest)
-
-                    firstLine = String(rest).substring(0, fixedEstimate)
-                    rest = String(rest).substring(fixedEstimate)
-                }
-                p1.innerHTML = firstLine
-                pieText += p1.outerHTML
-
-                p1.innerHTML = rest
-                pieText += p1.outerHTML
-            }
             else
             {
-                // TODO: does not work here
+                // iterate over all the lines
                 for (let lindex = 0; lindex < numberOfLines; lindex++)
                 {
                     // otherwise use multiple lines
@@ -4550,16 +4553,40 @@ function text2PieText( text, captionWidth, fontsize )
                     }
                     else
                     {
-                        let fixedEstimate = recurseFixedIndex( characterEstimate*lindex + characterEstimate, rest)
+                        // recurse over the paragraph and find a space character
+                        let fixedEstimate = recurseFixedIndex( characterEstimate, rest)
 
-                        firstLine = String(rest).substring(0, fixedEstimate)
-                        rest = String(rest).substring(fixedEstimate)
+                        // check for errors
+                        if ( fixedEstimate !== -999 )
+                        {
+                            // split on the space character
+                            firstLine = String(rest).substring(0, fixedEstimate)
+                            rest = String(rest).substring(fixedEstimate)
+                        }
+                        else
+                        {
+                            // cannot render very well. 
+                            console.error("Cannot find a space character (' ') in the paragraph. ")
+                        }
                     }
-                    p1.innerHTML = firstLine
-                    pieText += p1.outerHTML
+                    
+                    if(lindex === numberOfLines - 1)
+                    {
+                        p1.innerHTML = firstLine + rest
+                        pieText += p1.outerHTML
+                        console.log("last line")
+                    }
+                    else
+                    {
+                        p1.innerHTML = firstLine
+                        pieText += p1.outerHTML
+                        console.log("Not last line")
+                        paragraphStartY++;
+                    }
                 }
             }
         }
+        paragraphStartY++
     }
 
     // lastly return the HTML string that is the caption
