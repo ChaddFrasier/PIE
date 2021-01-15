@@ -4419,146 +4419,191 @@ function navigateTo( url )
 }
 
 /**
+ * 
+ * @param {*} str 
+ */
+function countSpacesInString( str )
+{
+    return (String(str).split(' ').length - 1)
+}
+
+/**
+ * 
+ * @param {*} unfixedIndex 
+ * @param {*} text 
+ */
+function recurseFixedIndex( unfixedIndex, text )
+{
+    if( unfixedIndex === -1 )
+    {
+        // return an error because there is no index to fix the split on
+        return -999
+    }
+
+    if( text.charAt(unfixedIndex) === ' ')
+    {
+        return unfixedIndex
+    }
+    else
+    {
+        return recurseFixedIndex( --unfixedIndex, text)
+    }
+}
+
+/**
  * @function text2PieText
  * @param {string} text raw text that needs to be formated
  * @param {number} captionWidth width of the caption object
  * @param {number} fontsize size of the font in the caption
  * @description this function takes the text of the caption and formats it for the caption object in the svg element.
  */
- /**TODO: rewrite this function to first predict how many characters could be held inside the caption box and then calculate and create the text lines to auto format */
+ /**TODO: then refactor and removed copy pasted code */
 function text2PieText( text, captionWidth, fontsize )
 {
-
-    console.log( `getMaxCharacterPerLine(captionWidth) -> ${getMaxCharacterPerLine(captionWidth, fontsize)}` )
-
     // create return data and helper data
     let paragraphArr = [],
-        paragraphStart = 0,
-        constructorArray = [],
-        paragraphText = "",
         pieText = "",
-        usedPixels = 70;
+        paragraphStartY = 0,
+        maxCharPerLine = getMaxCharacterPerLine( captionWidth, fontsize );
 
     // create the first paragraph of the caption
     var p1 = document.createElementNS(NS.svg, "tspan");
-
-    // set the x and y so that the text displays the whole word
-    p1.setAttribute("x", fontsize);
-
     // get an array of all the seperate paragraphs
     paragraphArr = text.split("\n");
 
     // iterate over each paragraph
-    paragraphArr.forEach(ptextwhole => 
+    for (let pindex = 0; pindex < paragraphArr.length; pindex++)
     {
-        // create a line element to use for adding lines quicker
-        var lineObject = document.createElementNS(NS.svg, "tspan")
+        // isolate the paragraph text from the array
+        const paragraph = paragraphArr[pindex];
+        /* 
+         make the character estimation;
+          tried-> `maxCharPerLine + numvberOfSpaces/2`{psuedo}
+        */
+        let characterEstimate = maxCharPerLine
 
-        // set the init location of the inner line
-        lineObject.setAttribute("x", fontsize)
-        lineObject.setAttribute("dy", 0)
-
-        // split paragragh into seperate words
-        let wordArr = ptextwhole.split(" ");
-            
-        // iterate over each word
-        for (let i = 0; i < wordArr.length; i++)
+        // check if the paragraph can fit on the single line based on the esimation
+        if(characterEstimate >= String(paragraph).length + 1)
         {
-            const word = wordArr[i];
-            // estimate the word length in pixels
-            var wordPixels = word.length * fontsize/2
+            // if it can fit on 1 line then set the box position and text
+            p1.innerHTML = paragraph
+            p1.setAttribute("y", paragraphStartY*fontsize + fontsize);
+            p1.setAttribute("x", fontsize)
+            pieText += p1.outerHTML
+        }
+        else
+        {   // else the paragraph requires multiple lines
+            
+            let firstLine = "",
+                rest = "";
 
-            // check to see of this word goes over the limit of the line
-            if( (wordPixels + usedPixels) > captionWidth - fontsize*2)
+            // check if the character at the splitting location
+            if( String(paragraph).charAt(characterEstimate) === ' ' )
             {
-                // The limit was reached on the last word
-                // reset the used pixel count
-                usedPixels = 70
-
-                // append the current line to the lineObject and start a new line
-                lineObject.innerHTML = constructorArray.join(' ');
-
-                // append the new line to the paragraphText holder object
-                paragraphText += lineObject.outerHTML;
-                // set the new dy for the next line
-                lineObject.setAttribute("dy", fontsize)
-                // cpture the 1 word that did not fit on this line and set it to the next line
-                constructorArray = [word];
+                // split the paragraph on that character
+                firstLine = String(paragraph).substring(0, characterEstimate)
+                rest = String(paragraph).substring(characterEstimate)    
             }
             else
             {
-                // add the word to the line
-                constructorArray.push(word)
-                // update the curret line pixel count
-                usedPixels += wordPixels
+                // recurse over the paragraph and find a space character
+                let fixedEstimate = recurseFixedIndex( characterEstimate, paragraph)
+
+                // check for errors
+                if ( fixedEstimate !== -999 )
+                {
+                    // split on the space character
+                    firstLine = String(paragraph).substring(0, fixedEstimate)
+                    rest = String(paragraph).substring(fixedEstimate)
+                }
+                else
+                {
+                    // cannot render very well. 
+                    console.error("Cannot find a space character (' ') in the paragraph. ")
+                }
             }
-        }
-
-        // as soon as the paragraph finishes clear the used pixels
-        usedPixels = 70
-
-        // check for word overflow. 
-        if( constructorArray.length !== 0 )
-        {
-            // append the overflow line to the lineObject to start a new line
-            lineObject.innerHTML = constructorArray.join(' ');
             
-            // if the length of the paragraphText is 0 then this is the only line
-            if( paragraphText.length === 0 )
+            // append the first line
+            p1.innerHTML = firstLine
+            p1.setAttribute("x", fontsize)
+            p1.setAttribute("y", paragraphStartY*fontsize + fontsize)
+            pieText += p1.outerHTML
+
+            let numberOfLines = ((rest.length / maxCharPerLine) >= 1) ? Math.ceil((rest.length / maxCharPerLine)): 1;
+
+            p1.setAttribute("dy", fontsize)
+            p1.removeAttribute("y")
+
+            if( numberOfLines === 1)
             {
-                // set 0 if this is the only line
-                lineObject.setAttribute("dy", 0)
+                // put the rest on a single line and end
+                p1.innerHTML = rest
+                pieText += p1.outerHTML
             }
             else
             {
-                // move fontsize down from the last sibling
-                lineObject.setAttribute("dy", fontsize)
+                // iterate over all the lines
+                for (let lindex = 0; lindex < numberOfLines; lindex++)
+                {
+                    // otherwise use multiple lines
+                    if( String(rest).charAt(characterEstimate*lindex + characterEstimate) === ' ' )
+                    {
+                        firstLine = String(rest).substring(0, characterEstimate*lindex + characterEstimate)
+                        rest = String(rest).substring(characterEstimate*lindex + characterEstimate)    
+                    }
+                    else
+                    {
+                        // recurse over the paragraph and find a space character
+                        let fixedEstimate = recurseFixedIndex( characterEstimate, rest)
+
+                        // check for errors
+                        if ( fixedEstimate !== -999 )
+                        {
+                            // split on the space character
+                            firstLine = String(rest).substring(0, fixedEstimate)
+                            rest = String(rest).substring(fixedEstimate)
+                        }
+                        else
+                        {
+                            // cannot render very well. 
+                            console.error("Cannot find a space character (' ') in the paragraph. ")
+                        }
+                    }
+                    
+                    // if this is the last line on the loop append the first line and the rest
+                    if(lindex === numberOfLines - 1)
+                    {
+                        p1.innerHTML = firstLine + rest
+                        pieText += p1.outerHTML
+                    }
+                    else
+                    {
+                        // this is a middle line so just do the first part of the line
+                        p1.innerHTML = firstLine
+                        pieText += p1.outerHTML
+                        paragraphStartY++;
+                    }
+                }
             }
-            // append the overflow line to the paragraph string
-            paragraphText += lineObject.outerHTML;
-
-            // clear data from next run
-            constructorArray = [];
         }
-
-        // set the innerHTML of the paragraph to the string we created
-        p1.innerHTML = paragraphText;
-
-        // we need to set the new y for the paragraph based on the height if the last paragraph
-        p1.setAttribute("y", fontsize + paragraphStart);
-
-        // clear strings and objects used for creating the innerHTML
-        paragraphText = ""
-        lineObject.innerHTML = ""
-
-        // append the paragraph HTML to the pieText string object
-        pieText += p1.outerHTML;
-
-        // calculate the new y for the next paragraph
-        paragraphStart = parseInt(p1.getAttribute("y")) + (fontsize * p1.childElementCount-1);
-
-        // reset the paragraph element
-        p1.innerHTML = paragraphText
-    });
+        // incriment the paragraph
+        paragraphStartY++
+    }
 
     // lastly return the HTML string that is the caption
     return pieText;
 }
 
 /**
- * 
- * @param {*} width 
- * @param {*} fontsize 
+ * @function getMaxCharacterPerLine
+ * @param {*} width
+ * @param {*} fontsize
  */
 function getMaxCharacterPerLine( width, fontsize )
 {
-    var maxCharPerLine = 0
+    var captionPixelEstimatePerLine = (width/fontsize) * 2
 
-    var captionPixelEstimate = width*fontsize
-
-    console.log(captionPixelEstimate)
-
-    return maxCharPerLine
+    return captionPixelEstimatePerLine
 }
 
 /**
