@@ -3,6 +3,7 @@
 context('Navigation Tests', () => {
   beforeEach(() => {
     cy.visit('http://localhost:8080/')
+    cy.get("#addcaptionbtn").click()
   })
 
   // https://on.cypress.io/interacting-with-elements
@@ -113,6 +114,43 @@ context('Navigation Tests', () => {
     it( "Other footer buttons should work perfectly." ,()=> {
       cy.get(".footerbuttongroup>a:first").next().should("not.have.class", "disabled")
       cy.get(".footerbuttongroup>a:first").should("not.have.class", "disabled")
+    });
+  });
+
+  /** Main Tests */
+  describe("Main Editor Tests -> ", () => {
+    // test that the background color can change
+    it("Background should change when the main background color input changes.", () => {
+      cy.get("button.windowminimizebtn").first().click()
+      cy.get("input[type='color']").first().invoke("val", '#ffeebb').trigger("change")
+      cy.get('#bgelement').should("have.attr", "fill", "#ffeebb")
+    });
+    // test that the dimensions work
+    it("Figure dimensions should change when the selected figure size changes.", () => {
+      cy.get("button.windowminimizebtn").first().click()
+      cy.get("select#figsizeselect").select("2500x2000")
+      cy.get("svg#figurecontainer").should("have.attr", "viewBox", "0 0 2500 2000")
+    });
+    // test that the toolbox can be hidden.
+    it("Should be able to minimize or close thetoolbox", () => {
+      cy.get("button.toolboxminimizebtn").click()
+      cy.get(".toolboxcontainer.closed").should("exist")
+    });
+    // test that the toolbox can be dragged and change the svg layers.
+    it("Should be able to drag toolboxes to shift the svg layers.", () => {
+      const startTopObject = {
+        toolbox: cy.get('.draggableToolbox').first(),
+        svg: cy.get('#figurecontainer').children().last()
+      };
+      cy.get("button.windowminimizebtn").eq(2).click()
+      cy.get("button.windoworderingbtn").first()
+        .trigger("mousedown")
+        .then(() => {
+          cy.document().trigger("mousemove", {pageY:1300, pageX:293})
+          cy.get("#toolbox").trigger("mousemove", {pageY:1300, pageX:293})
+        })
+        cy.get('#figurecontainer').children().last().should('not.eq', startTopObject.svg)
+        cy.get('.draggableToolbox').first().should('not.eq', startTopObject.toolbox)
     });
   });
 });

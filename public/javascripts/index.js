@@ -1447,6 +1447,17 @@ $( function()
                                         /** Nothing */
                                     }
                                 }
+                                else
+                                {
+                                    // remove the Scalebar icon b/c there is no observer data
+                                    try{
+                                        document.getElementById(`scalebarIcon-${imageId}`).remove()
+                                    }
+                                    catch(err)
+                                    {
+                                        /** No Thing */
+                                    }
+                                }
 
                                 ButtonManager.addImage(imageId, btnArray )
                             }    
@@ -3493,26 +3504,26 @@ function drawMouseDownListener( event )
  */
 function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 {
-    let linex1input = document.createElement("input")
-    let linex1inputlabel = document.createElement("label")
-    let liney1input = document.createElement("input")
-    let liney1inputlabel = document.createElement("label")
-    let widthlabel = document.createElement("label")
-    let linewidthinput = document.createElement("input")
-    let colorlabel = document.createElement("label")
-    let linecolorinput = document.createElement("input")
-    let linetoolbox = document.createElement("div")
-    let lineoptionbar = document.createElement("div")
-    let lineoptionheader = document.createElement("h4")
-    let deletebtn = document.createElement("button")
-    let minibtn = document.createElement("button")
-    let layerbtn = document.createElement("button")
-    let linex2input = document.createElement("input")
-    let linex2inputlabel = document.createElement("label")
-    let liney2input = document.createElement("input")
-    let liney2inputlabel = document.createElement("label")
-    let lineheadinput = document.createElement("select")
-    let lineheadinputlabel = document.createElement("label")
+    let linex1input = document.createElement("input"),
+        linex1inputlabel = document.createElement("label"),
+        liney1input = document.createElement("input"),
+        liney1inputlabel = document.createElement("label"),
+        widthlabel = document.createElement("label"),
+        linewidthinput = document.createElement("input"),
+        colorlabel = document.createElement("label"),
+        linecolorinput = document.createElement("input"),
+        linetoolbox = document.createElement("div"),
+        lineoptionbar = document.createElement("div"),
+        lineoptionheader = document.createElement("h4"),
+        deletebtn = document.createElement("button"),
+        minibtn = document.createElement("button"),
+        layerbtn = document.createElement("button"),
+        linex2input = document.createElement("input"),
+        linex2inputlabel = document.createElement("label"),
+        liney2input = document.createElement("input"),
+        liney2inputlabel = document.createElement("label"),
+        lineheadinput = document.createElement("select"),
+        lineheadinputlabel = document.createElement("label");
 
     lineoptionbar.addEventListener("click", function( event ){
         optionsAction(event.target)
@@ -3547,8 +3558,6 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         // y1 translate input
         
         document.getElementById( this.attributes.objectid.value).setAttribute("y1", this.value )
-        
-
     })
 
     // input line width fields
@@ -3699,7 +3708,6 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     linex2input.addEventListener("change", function(event)
     {
         // x2 translate attribute
-        
         document.getElementById( this.attributes.objectid.value).setAttribute("x2", this.value )
     })
 
