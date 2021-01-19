@@ -41,45 +41,38 @@ app.use('/images',imageRouter);
 app.use('/export',exportRouter);
 app.use('/download', downloadRouter);
 
-if( !fs.existsSync( UPLOAD_PATH ) )
+
+/**
+ * @function cleanCreateFolder
+ * @param {string} folderPath 
+ */
+function cleanCreateFolder( folderPath )
 {
-    fs.mkdirSync( UPLOAD_PATH );
-    console.log(`Created Directory ${UPLOAD_PATH}`)
-}
-else
-{
-    fs.readdir( UPLOAD_PATH, ( err, files ) =>
+    if( !fs.existsSync( folderPath ) )
     {
-        if( err ){ return }
-        files.forEach( filename =>
+        fs.mkdirSync( folderPath );
+        console.log(`Created Directory ${folderPath}`)
+    }
+    else
+    {
+        fs.readdir( folderPath, ( err, files ) =>
         {
-            fs.unlink( path.resolve(`${UPLOAD_PATH}/${filename}`), () =>
+            if( err ){ return }
+            files.forEach( filename =>
             {
-                console.log("Removed " + filename)
+                fs.unlink( path.resolve(`${folderPath}/${filename}`), () =>
+                {
+                    console.log("Removed " + filename)
+                })
             })
         })
-    })
+    }
 }
 
-if( !fs.existsSync( EXPORT_PATH ) )
-{
-    fs.mkdirSync( EXPORT_PATH );
-    console.log(`Created Directory ${EXPORT_PATH}`)
-}
-else
-{
-    fs.readdir( EXPORT_PATH, ( err, files ) =>
-    {
-        if( err ){ return }
-        files.forEach( filename =>
-        {
-            fs.unlink( path.resolve(`${EXPORT_PATH}/${filename}`), () =>
-            {
-                console.log("Removed " + filename)
-            })
-        })
-    })
-}
+// create export and upload path
+cleanCreateFolder( EXPORT_PATH )
+cleanCreateFolder( UPLOAD_PATH )
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
