@@ -1458,8 +1458,8 @@ $( function()
                                         /** No Thing */
                                     }
                                 }
-
                                 ButtonManager.addImage(imageId, btnArray )
+                                console.log(responseObject) // this is not the same in the testing environment
                             }    
                             // convert to base64 string
                             reader.readAsDataURL(blob)
@@ -2164,7 +2164,6 @@ var startButtonManager = function() {
     return {
         refresh: function()
         {
-
             // deactivate all the buttons
             document.getElementById("northarrowopt").classList.add("disabled")
             document.getElementById("sunarrowopt").classList.add("disabled")
@@ -2208,8 +2207,8 @@ var startButtonManager = function() {
             if( MemoryObject[imagename] ) 
             {
                 delete MemoryObject[imagename]
+                this.refresh()
             }
-            this.refresh()
         }
     }
 }

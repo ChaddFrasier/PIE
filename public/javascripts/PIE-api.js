@@ -58,7 +58,7 @@ module.exports = {
         {
             for(var i = 0; i < keys.length; i++ )
             {
-                if( object[keys[i]] === undefined && keys[i] !== undefined )
+                if( object[keys[i]] === undefined && keys[i] !== undefined && keys[i] !== null )
                 {
                     // start at the index of the unknown key and remove 1 element from the array
                     keys.splice(i, 1)
@@ -324,7 +324,6 @@ module.exports = {
                     child.on("close", code => {
                         // if the gdal command exited with 0
                         resolveFunc(code);
-                        
                     });
                 });
             },
