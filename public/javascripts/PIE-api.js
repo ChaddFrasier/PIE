@@ -3,6 +3,8 @@
  * @fileoverview this is a file that creates exportable functions to interact with the ISIS and GDAL command line interfaces. 
  * 
 */
+// TODO: this file will use the logger to write a log file for development purposes
+
 
 "use strict";
 
@@ -24,6 +26,27 @@ module.exports = {
      */
     PIEAPI: function()
     {
+        const logFilename = "./bin/log/pieLog" + Date.now();
+
+        /**
+         * @function logToFile
+         * @param {*} filename 
+         * @param {*} text 
+         * @param {*} append 
+         */
+        function logToFile( filename, text, append=true)
+        {
+            if( append )
+            {
+                fs.appendFileSync(filename, text)
+            }
+            else
+            {
+                fs.writeFileSync(filename, text)
+            }
+        }
+
+
         /**
          * @function getOutputFormat
          * @param {string} filename the name of the file that we are testing
@@ -185,7 +208,7 @@ module.exports = {
                         "-scale","-outsize", scale, scale,
                         inputfile, outputfile] )
 
-                    child.stdout.on("data", data => { console.log(`stdout: ${data}`) });
+                    //child.stdout.on("data", data => { console.log(`stdout: ${data}`) });
 
                     // append the buffer data into the error data stream
                     child.stderr.on("data", data => { errorBuf += data });
@@ -279,16 +302,13 @@ module.exports = {
 
                     child.on('isis2std Error', (error) => {
                         console.log(`error: ${error.message}`);
-                        rejectFunc(error.message);
+                        logToFile(logFilename, error.message);
                     });
 
                     // when the response is ready to close
                     child.on("close", code => {
-                        if( code == 0 )
-                        {
-                            // if the gdal command exited with 0
-                            resolveFunc(code);
-                        }
+                        // if the gdal command exited with 0
+                        resolveFunc(code);
                     });
                 });
             },
@@ -310,19 +330,27 @@ module.exports = {
                             "FROM=", inputfile, 
                             "TO=", outputfile] )
         
-                    child.stdout.on("data", data => { console.log(`Campt Output -> ${data}`) });
+                    child.stdout.on("data", data => { 
+                        console.log(`Campt Output -> ${data}`)
+                    });
             
                     // append the buffer data into the error data stream
-                    child.stderr.on("data", data => { errorBuf += data });
+                    child.stderr.on("data", data => { 
+                        errorBuf += "Campt Error:\n\t" + data 
+                    });
 
                     child.on('error', (error) => {
-                        console.log(`Campt Error: ${error.message}`);
-                        rejectFunc(error.message);
+                        logToFile(logFilename, `ISIS Error:\n\t${error.name}: ${error.message}`);
                     });
 
                     // when the response is ready to close
                     child.on("close", code => {
-                        // if the gdal command exited with 0
+                        if( code !== 0 )
+                        {
+                            logToFile(logFilename, errorBuf);
+                        }
+
+                        // resolve with the return code
                         resolveFunc(code);
                     });
                 });
@@ -345,19 +373,28 @@ module.exports = {
                             "FROM=", inputfile, 
                             "TO=", outputfile] )
         
-                    child.stdout.on("data", data => { console.log(`Catlab Output -> ${data}`) });
+                    // these are never called when useing append true
+                    child.stdout.on("data", data => {
+                        console.log(`Catlab Output -> ${data}`) 
+                    });
             
                     // append the buffer data into the error data stream
-                    child.stderr.on("data", data => { errorBuf += data });
+                    child.stderr.on("data", data => 
+                    {
+                        errorBuf += "Catlab Error:\n\t" + data;
+                    });
 
                     child.on('error', (error) => {
-                        console.log(`Catlab Error: ${error.message}`);
-                        rejectFunc(error.message);
+                        logToFile(logFilename, `ISIS Error:\n\t${error.name}: ${error.message}`);
                     });
 
                     // when the response is ready to close
                     child.on("close", code => {
-                        // if the gdal command exited with 0
+                        if( code !== 0 )
+                        {
+                            logToFile( logFilename, errorBuf)
+                        }
+                        
                         resolveFunc(code);
                     });
                 });
@@ -380,19 +417,28 @@ module.exports = {
                             "FROM=", inputfile, 
                             "TO=", outputfile] )
 
-                    child.stdout.on("data", data => { console.log(`Catoriglab Output -> ${data}`) });
+                    child.stdout.on("data", data => { 
+                        console.log(`Catoriglab Output -> ${data}`) 
+                    });
             
                     // append the buffer data into the error data stream
-                    child.stderr.on("data", data => { errorBuf += data });
+                    child.stderr.on("data", data => 
+                    { 
+                        errorBuf += "Catoriglab Error:\n\t" + data 
+                    });
 
                     child.on('error', (error) => {
-                        console.log(`error: ${error.message}`);
-                        rejectFunc(error.message);
+                        logToFile(logFilename, `ISIS Error:\n\t${error.name}: ${error.message}`);
                     });
 
                     // when the response is ready to close
                     child.on("close", code => {
-                        // if the gdal command exited with 0
+
+                        if( code !== 0 )
+                        {
+                            logToFile( logFilename, errorBuf)
+                        }
+                        
                         resolveFunc(code);
                     });
                 });
