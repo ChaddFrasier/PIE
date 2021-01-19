@@ -29,6 +29,7 @@ var upload = multer( { storage: storage } );
 /**
  * This route will handle the file upload by the user and make the ISIS connections
  */
+// TODO: this is where i should execute all the functions in an order that makes sense, __never failing__!
 router.post('/', upload.single('imageinput') , (req, res, next) => {
     var isisregexp = new RegExp("^.*\.(CUB|cub|tif|TIF)$");
 
@@ -58,36 +59,24 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
                     path.join("public", "uploads", req.file.filename),
                     path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
                     );
+                var promise2 = pieapi.isis_catlab(
+                    path.join("public", "uploads", req.file.filename),
+                    path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
+                    );
 
-                // handle failure and success in that order
-                promise1.catch(err => {
-                    console.log(`ISIS Error: ${err}`)
-                }).then((code) => {
-                    // create a promises array for the next two functions
-                    var promises = [
-                        pieapi.isis_catlab(
-                            path.join("public", "uploads", req.file.filename),
-                            path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
-                        ),
-                        pieapi.isis_catoriglab(
-                            path.join("public", "uploads", req.file.filename),
-                            path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
-                        )
-                    ];
-
-                    // when both promises finish read the data out of the pvl file
-                    Promise.all(promises).then( codes => {
-                        // read the resulting pvl file
-                        (pieapi.pie_readPVL(path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl")),
-                        ['Lines', 'Samples', 'SubSpacecraftGroundAzimuth', 'SubSolarAzimuth', 'NorthAzimuth', 'PixelResolution', 'ObliquePixelResolution', 'Phase', 'Emission', 'Incidence',])
-                        ).then( object => {
-                            res.status(200).send({ imagefile: pieapi.URLerize(filepath, "upload"), pvlData: object })
-                        })
-                    }).catch( err => {
-                        console.log(err)
-                    });
-                }).catch( err => {
-                    console.log(err)
+                var promise3 = pieapi.isis_catoriglab(
+                    path.join("public", "uploads", req.file.filename),
+                    path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl"))
+                    );
+                
+                // when both promises finish read the data out of the pvl file
+                Promise.all([promise1, promise2, promise3]).then( codes => {
+                    // read the resulting pvl file
+                    (pieapi.pie_readPVL(path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl")),
+                    ['Lines', 'Samples', 'SubSpacecraftGroundAzimuth', 'SubSolarAzimuth', 'NorthAzimuth', 'PixelResolution', 'ObliquePixelResolution', 'Phase', 'Emission', 'Incidence',])
+                    ).then( object => {
+                        res.status(200).send({ imagefile: pieapi.URLerize(filepath, "upload"), pvlData: object })
+                    })
                 });
             }
             else
