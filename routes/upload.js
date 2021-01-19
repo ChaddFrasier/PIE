@@ -79,9 +79,9 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
                     Promise.all(promises).then( codes => {
                         // read the resulting pvl file
                         (pieapi.pie_readPVL(path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl")),
-                        ['Lines', 'Samples', 'Phase', 'Emission', 'Incidence', 'SubSpacecraftGroundAzimuth', 'SubSolarAzimuth', 'NorthAzimuth', 'PixelResolution', 'ObliquePixelResolution'])
+                        ['Lines', 'Samples', 'SubSpacecraftGroundAzimuth', 'SubSolarAzimuth', 'NorthAzimuth', 'PixelResolution', 'ObliquePixelResolution', 'Phase', 'Emission', 'Incidence',])
                         ).then( object => {
-                        res.status(200).send({ imagefile: pieapi.URLerize(filepath, "upload"), pvlData: object })
+                            res.status(200).send({ imagefile: pieapi.URLerize(filepath, "upload"), pvlData: object })
                         })
                     }).catch( err => {
                         console.log(err)
