@@ -8,6 +8,7 @@ const compression = require('compression');
 
 const UPLOAD_PATH = path.join(__dirname, "public", "uploads")
 const EXPORT_PATH = path.join(__dirname, "public", "exports")
+const LOG_PATH = path.join(__dirname, "bin", "log")
 
 var indexRouter = require('./routes/index');
 var aboutRouter = require('./routes/about');
@@ -69,9 +70,10 @@ function cleanCreateFolder( folderPath )
     }
 }
 
-// create export and upload path
+// create export, log, and upload path
 cleanCreateFolder( EXPORT_PATH )
 cleanCreateFolder( UPLOAD_PATH )
+cleanCreateFolder( LOG_PATH )
 
 
 // catch 404 and forward to error handler
