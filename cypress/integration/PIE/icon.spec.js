@@ -21,18 +21,20 @@ context('Tools Tests', () => {
     // run before each icon test set
     beforeEach(() => {
       // upload the test cub image
-      cy.get("input[type='file']").attachFile('M102200199CE.vis.even.band0004.geo.cub').then(() =>
+      cy.get(".windowminimizebtn").eq(1).click()
+      cy.get("input[type='file']").attachFile('3640r.stretch.cub')
+        .trigger("change", {bubbles: true}).wait(1000)
+        .then((res) =>
       {
+        console.log(res)
         // validate when upload finishes
         cy.get('image.holder').invoke("attr", "href").should("match", /^(data\:image\/jpeg;base64,).*/i)
-        // drag north icon into the image
-        cy.get(".windowminimizebtn").eq(1).click()
       })
     });
 
     it("Should scale the icon when input updates.", () => {
-      cy.get("#observerarrowopt").trigger("mousedown", {button: 0}).then((btn) => {
-        cy.document().trigger("mouseup", { target: cy.get("image[GEO='true']")})
+      cy.get("#observerarrowopt").trigger("mousedown", {button: 0, bubbles: true}).then((btn) => {
+        cy.document().trigger("mouseup", { target: cy.get("image[GEO='true']"), bubbles: true})
       });
 
       // capture the old scale value
