@@ -1,6 +1,7 @@
 # Uploaded Files
 uploads/
 exports/
+bin/log/
 cypress/integration/examples/
 print.prt
 
