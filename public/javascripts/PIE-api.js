@@ -3,8 +3,6 @@
  * @fileoverview this is a file that creates exportable functions to interact with the ISIS and GDAL command line interfaces. 
  * 
 */
-// TODO: this file will use the logger to write a log file for development purposes
-
 
 "use strict";
 
@@ -26,7 +24,7 @@ module.exports = {
      */
     PIEAPI: function()
     {
-        const logFilename = "./bin/log/pieLog" + Date.now();
+        const logFilename = "./bin/log/pieLog.txt"
 
         /**
          * @function logToFile
@@ -211,7 +209,12 @@ module.exports = {
                     //child.stdout.on("data", data => { console.log(`stdout: ${data}`) });
 
                     // append the buffer data into the error data stream
-                    child.stderr.on("data", data => { errorBuf += data });
+                    child.stderr.on("data", data => { 
+                        if( data !== " " )
+                        {
+                            logToFile(logFilename, errorBuf);
+                        }
+                    })
 
                     child.on('error', (error) => {
                         console.log(`Resize Error: ${error.message}`);
@@ -335,8 +338,11 @@ module.exports = {
                     });
             
                     // append the buffer data into the error data stream
-                    child.stderr.on("data", data => { 
-                        errorBuf += "Campt Error:\n\t" + data 
+                    child.stderr.on("data", data => {
+                        if( data !== " ")
+                        {
+                            errorBuf += "Campt Error:\n\t" + data 
+                        }
                     });
 
                     child.on('error', (error) => {
@@ -381,7 +387,10 @@ module.exports = {
                     // append the buffer data into the error data stream
                     child.stderr.on("data", data => 
                     {
-                        errorBuf += "Catlab Error:\n\t" + data;
+                        if( data !== " ")
+                        {
+                            errorBuf += "Catlab Error:\n\t" + data 
+                        }
                     });
 
                     child.on('error', (error) => {
@@ -424,7 +433,10 @@ module.exports = {
                     // append the buffer data into the error data stream
                     child.stderr.on("data", data => 
                     { 
-                        errorBuf += "Catoriglab Error:\n\t" + data 
+                        if( data !== " ")
+                        {
+                            errorBuf += "Catoriglab Error:\n\t" + data 
+                        }
                     });
 
                     child.on('error', (error) => {
