@@ -3,7 +3,7 @@ name: Bug report
 about: Create a report to help us improve
 title: User Submitted Bug Report
 labels: bug
-assignees: ''
+assignees: ChaddFrasier
 
 ---
 
