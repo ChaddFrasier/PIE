@@ -7,6 +7,21 @@ context("Image Object Tests -> ", () => {
     cy.get("#addcaptionbtn").click()
     cy.get("#addimagebtn").click()
   })
+
+  describe("Input Tests", () => {
+    // change image width and height
+    it( "Should change image scale and position when input changes." ,() => {
+      cy.get("input[type='file']").attachFile('testimg.jpg')
+
+      cy.get("input[type='number']").eq(0).clear().type('1.2{enter}')
+      cy.get("image.holder").parent().should("have.attr", "transform", "scale(1.2)")
+
+      cy.get("input[type='number']").eq(1).clear().type('100{enter}')
+      cy.get("image.holder").should("have.attr", "x", "100")
+      cy.get("input[type='number']").eq(2).clear().type('100{enter}')
+      cy.get("image.holder").should("have.attr", "y", "100")
+    });
+  });
   
   /** Image Tests */
   describe("JPEG File Tests ->", () => {     
@@ -17,12 +32,6 @@ context("Image Object Tests -> ", () => {
       cy.get("input[type='file']").attachFile('testimg.jpg')
       cy.get("image.holder").should("not.have.attr", "href", "#")
     });
-
-    // change image width and height
-    it( "Should change image dimensions and position when input changes." ,() => {
-      // TODO: finish writting this test
-      cy.get("input[type='file']").attachFile('testimg.jpg')
-    });
   });
 
   describe("Cub File Tests ->", () => {
@@ -31,6 +40,7 @@ context("Image Object Tests -> ", () => {
       cy.get("input[type='file']").attachFile('M102200199CE.vis.even.band0004.geo.cub').then(() =>
       {
         cy.get('image.holder').invoke("attr", "href").should("match", /^(data\:image\/jpeg;base64,)/i)
+        cy.get(".windowminimizebtn").eq(1).click()
       });
     });
 
