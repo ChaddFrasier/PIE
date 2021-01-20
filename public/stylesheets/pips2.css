@@ -612,6 +612,11 @@ button.disabled {
     text-align: center;
 }
 
+.imagetoolsbox > .dividerline {
+    width: 65%;
+    margin: 10px auto 0 auto;
+}
+
 .filetoolsbox > input[type="file"] {
     width: 90%;
 }
@@ -697,6 +702,7 @@ button.selected {
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
     margin: 0;
     color: white;
+    text-align: center;
 }
 
 .captiontoolsbox > input[type='number'], .imagetoolsbox > input[type='number'] {
@@ -731,16 +737,6 @@ button.selected {
     margin: 0 0 0 0;
     border-radius: 5px;
     padding: 3px;
-}
-
-.imagetoolsbox>.dividerline {
-    width: 70%;
-    margin: 10px 0 0 0;
-}
-
-.captiontoolsbox>.dividerline {
-    width: 75%;
-    margin: 0 auto 0 auto;
 }
 
 .linetoolsbox {
@@ -786,6 +782,7 @@ button.selected {
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
     padding: 0;
     margin: 0;
+    text-align:  center;
 }
 
 .toolboxminimizebtn {
