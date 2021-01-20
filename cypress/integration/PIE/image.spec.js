@@ -11,7 +11,6 @@ context("Image Object Tests -> ", () => {
   describe("Input Tests", () => {
     // change image width and height
     it( "Should change image scale and position when input changes." ,() => {
-      // TODO: finish writting this test
       cy.get("input[type='file']").attachFile('testimg.jpg')
 
       cy.get("input[type='number']").eq(0).clear().type('1.2{enter}')
