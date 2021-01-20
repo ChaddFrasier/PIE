@@ -15,6 +15,11 @@ context("Image Object Tests -> ", () => {
 
       cy.get("input[type='number']").eq(0).clear().type('1.2{enter}')
       cy.get("image.holder").parent().should("have.attr", "transform", "scale(1.2)")
+
+      cy.get("input[type='number']").eq(1).clear().type('100{enter}')
+      cy.get("image.holder").should("have.attr", "x", "100")
+      cy.get("input[type='number']").eq(2).clear().type('100{enter}')
+      cy.get("image.holder").should("have.attr", "y", "100")
     });
   });
   
