@@ -12,7 +12,6 @@ const LOG_PATH = path.join(__dirname, "bin", "log")
 
 var indexRouter = require('./routes/index');
 var aboutRouter = require('./routes/about');
-var contactRouter = require('./routes/contact');
 var faqRouter = require('./routes/faq');
 var uploadRouter = require('./routes/upload')
 var exportRouter = require('./routes/export')
@@ -35,7 +34,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/about', aboutRouter);
-app.use('/contact', contactRouter);
 app.use('/faq', faqRouter);
 app.use('/upload', uploadRouter);
 app.use('/images',imageRouter);

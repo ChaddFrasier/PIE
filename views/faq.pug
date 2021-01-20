@@ -10,7 +10,7 @@ block content
             img(src="/images/pieLogo.svg", alt="PIElogo", class="titleLogo")
         .rightcontainer(style="text-align:right")
             img.faqimage(src="/images/questionMark.svg", alt="question")
-    span.maincontent
+    span.maincontent-sm
         .mainaboutbox
             h2.basicpageheader="What is PIE?"
             #faqcontent1.basicfaqcontent
@@ -53,8 +53,18 @@ block content
                     a.descanchor(href='/about', target='_blank')="here."
                     text=" When POW gives you a job id come back here and type it into the folder address field."
             br
+            h2.basicpageheader="How do I contact the devs?"
+            #faqcontent4.basicfaqcontent
+                .answerBox
+                    i
+                        b="File an issue on our GitHub"
+                .descBox
+                    text="Navigate to this "
+                    a.descanchor(href='https://github.com/ChaddFrasier/PIE/issues/new/choose', target='_blank')="link"
+                    text=" to file an issue or ask questions. Be sure to choose the issue template that best fits your needs."
+                    br
             h2.basicpageheader="Helpful Links"
-            #faqcontent4.basicpagecontent(style='display: flex; padding:0; text-align:left')
+            #faqcontent5.basicpagecontent(style='display: flex; padding:0; text-align:left')
                 .answerBox
                     .linklist
                         a(href='https://github.com/ChaddFrasier/PIE' , target='_blank')="Planetary Image Editor (PIE) Code"
@@ -95,7 +105,6 @@ block footer
         .leftfooter
             .footerbuttongroup
                 a(href="/about")='Getting Started'
-                a(href="/contact")='Contact Us'
                 a.disabled(href="")='FAQ'
 
         h5.rightfooter="Developed by the USGS Astrogeology Science Center"

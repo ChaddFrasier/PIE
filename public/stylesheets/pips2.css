@@ -314,7 +314,7 @@ pre > i > b {
     background: var(--accent-color);
     color: var(--primary-color);
     font-size: var(--medium-font);
-    width:100%;
+    width: 100%;
     overflow-y: auto;
 }
 
@@ -530,6 +530,15 @@ button.disabled {
     top: 20vh;
     border: 3px solid black;
     border-radius: 3px 3px;
+}
+
+.maincontent-sm {
+    display: flex; 
+    height: auto;
+    max-height: var(--main-content-height);
+    width: 92%;
+    margin: auto auto;
+    text-align: left;
 }
 
 .maincontent {
