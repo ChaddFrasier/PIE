@@ -48,9 +48,6 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
        
         // wait for conversion to finish
         promise.then( ( filepath ) => {
-            console.log("Image Converted >")
-            console.log(filepath)
-
             // if the file is found
             if( fs.existsSync( path.resolve(filepath)) )
             {
