@@ -1320,8 +1320,8 @@ $( function()
                                 // use jquery to update the image source
                                 $('#'+imageId).attr('href', e.target.result)
                                 $('#'+imageId).attr('GEO', 'true')
-                                $('#'+imageId).attr('filePath', getCookie("filepath"))
 
+                                // TODO: if the lines or samples is not there then we need to figure out how to get 
                                 // set the height and width of the actual image.
                                 $('#'+imageId).attr('width', responseObject.pvlData.data['Samples'])
                                 $('#'+imageId).attr('height', responseObject.pvlData.data['Lines'])
@@ -4626,37 +4626,6 @@ function getMaxCharacterPerLine( width, fontsize )
     var captionPixelEstimatePerLine = (width/fontsize) * 2
 
     return captionPixelEstimatePerLine
-}
-
-/**
- * @function getCookie
- * @param {string} cname the name of the cookie
- * @description return a cookie from the users cookie object 
- */
-function getCookie(cname)
-{
-    // atach the '=' to the name
-    var name = cname + "=";
-    // get the string version of the object
-    var decodedCookie = decodeURIComponent(document.cookie);
-    // get array of every cookie found
-    var cookieArr = decodedCookie.split(';');
-    // loop through the cookies and match the name
-    for(var i = 0; i < cookieArr.length; i++){
-        var cookie = cookieArr[i];
-        // if the first character is a space, find the start of the cookie name
-        while (cookie.charAt(0) == ' '){
-            // get a substring of the cookie with the ' ' removed
-            cookie = cookie.substring(1);
-        }
-        // if the cookie string contains the cname+'='
-        if (cookie.indexOf(name) == 0){
-            // return that cookie
-            return cookie.substring(name.length, cookie.length);
-        }
-    }
-    // not found
-    return "";
 }
 
 /**

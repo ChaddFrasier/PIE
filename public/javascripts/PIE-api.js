@@ -26,6 +26,11 @@ module.exports = {
     {
         const logFilename = "./bin/log/pieLog.txt"
 
+        if( fs.existsSync(logFilename))
+        {
+            fs.unlinkSync(logFilename)
+        }
+
         /**
          * @function logToFile
          * @param {*} filename 
@@ -333,9 +338,7 @@ module.exports = {
                             "FROM=", inputfile, 
                             "TO=", outputfile] )
         
-                    child.stdout.on("data", data => { 
-                        console.log(`Campt Output -> ${data}`)
-                    });
+                    //child.stdout.on("data", data => { console.log(`Campt Output -> ${data}`)});
             
                     // append the buffer data into the error data stream
                     child.stderr.on("data", data => {
