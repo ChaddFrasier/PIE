@@ -16,7 +16,7 @@ block content
             #faqcontent1.basicfaqcontent
                 .answerBox
                     i
-                        b="Planetary Image Editor"
+                        b="Planetary Image Editor."
                 .descBox
                     text="Born from the "
                     i="Planetary Image Caption Writer Project "
@@ -29,40 +29,41 @@ block content
                     a.descanchor(href='https://pilot.wr.usgs.gov/' , target='_blank')="PILOT"
                     text=" to create publication images. Using ISIS Cube files or GeoTIFF files, PIE helps automate some of the more tedious parts of creating a scientificly acceptable figure"
             br
+            h2.basicpageheader="How do I talk to developers?"
+            #faqcontent4.basicfaqcontent
+                .answerBox
+                    i
+                        b="File an issue on our GitHub."
+                .descBox
+                    text="Navigate to this "
+                    a.descanchor(href='https://github.com/ChaddFrasier/PIE/issues/new/choose', target='_blank')="link"
+                    text=" to file an issue or ask questions. Be sure to choose the issue template that best fits your needs."
+                    br
+            br
             h2.basicpageheader="How does it work?"
             #faqcontent2.basicfaqcontent
                 .answerBox
                         i
-                            b="GDAL & ISIS"
+                            b="GDAL & ISIS."
                 .descBox
                     text="GDAL is the "
                     i="Geospacial Data Abstraction Library "
                     text="It is primarily used to manipulate GeoTIFF files and other special purpose data files (Ex: ISIS3 Cube Files). ISIS3 is the "
                     b
                         i="Integrated System for Imagers and Spectrometers "
-                    text="which is a software system built by the Astrogeology team at the USGS for the purpose of reading PDS image data into a more managable format."
+                    text="which is a software system built by the Astrogeology team at the USGS for the purpose of reading PDS image data into a more managable format. Both of these softwares combined make up the backbone for the image processing that takes place on the PIE server."
             
             br
-            h2.basicpageheader="How do I start?"
+            h2.basicpageheader="How do I get started?"
             #faqcontent3.basicfaqcontent
                 .answerBox
                     i
-                        b="Follow How To"
+                        b="Follow out how to."
                 .descBox
                     text="Follow the instructions presented "
-                    a.descanchor(href='/about', target='_blank')="here."
-                    text=" When POW gives you a job id come back here and type it into the folder address field."
+                    a.descanchor(href='/about', target='_blank')="here"
+                    text=". When POW gives you a job id come back here and type it into the folder address field."
             br
-            h2.basicpageheader="How do I contact the devs?"
-            #faqcontent4.basicfaqcontent
-                .answerBox
-                    i
-                        b="File an issue on our GitHub"
-                .descBox
-                    text="Navigate to this "
-                    a.descanchor(href='https://github.com/ChaddFrasier/PIE/issues/new/choose', target='_blank')="link"
-                    text=" to file an issue or ask questions. Be sure to choose the issue template that best fits your needs."
-                    br
             h2.basicpageheader="Helpful Links"
             #faqcontent5.basicpagecontent(style='display: flex; padding:0; text-align:left')
                 .answerBox
