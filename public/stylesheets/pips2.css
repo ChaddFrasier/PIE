@@ -859,6 +859,21 @@ button#scalebarbtnopt  {
     max-height: var(--max-svg-btn);
 }
 
+.toolboxaddpowbtn {
+    background: var(--bar-gradient);
+    border-radius: 2px 2px;
+    font-size: var(--large-font);
+    vertical-align: top;
+    width: auto;
+    height: auto;
+    box-shadow: 2px 2px rgb(177, 177, 177);
+    padding: 0;
+    min-width: var(--min-svg-btn);
+    max-width: var(--max-svg-btn);
+    min-height: var(--min-svg-btn);
+    max-height: var(--max-svg-btn);
+}
+
 .draggableToolbox {
     background: yellow;
     display: block;

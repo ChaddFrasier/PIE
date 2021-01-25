@@ -772,7 +772,8 @@ $( function()
     {
         let toolbox = document.getElementById('toolbox'),
             imgbtn = document.getElementById('addimagebtn'),
-            capbtn = document.getElementById('addcaptionbtn')
+            capbtn = document.getElementById('addcaptionbtn'),
+            POWbtn = document.getElementById('addpowbtn');
 
         // check if the box is already closed, if true, open it, otherwise close
         if( toolbox.classList.contains('closed') )
@@ -781,6 +782,7 @@ $( function()
             // reactivate the other buttons
             imgbtn.classList.remove("disabled")
             capbtn.classList.remove("disabled")
+            POWbtn.classList.remove("disabled")
             event.target.innerHTML = "&larrb;"
         }
         else
@@ -789,6 +791,8 @@ $( function()
             // disable the other buttons to help focus on editing image
             imgbtn.classList.add("disabled")
             capbtn.classList.add("disabled")
+            POWbtn.classList.add("disabled")
+
             event.target.innerHTML = "&rarrb;"
         }
     })
