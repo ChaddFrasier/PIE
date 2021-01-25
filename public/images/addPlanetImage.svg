@@ -12,7 +12,7 @@
    version="1.1"
    viewBox="0 0 25 25"
    id="svg884"
-   sodipodi:docname="addPlanetImage2.svg"
+   sodipodi:docname="addPlanetImage.svg"
    inkscape:version="1.0.1 (c497b03c, 2020-09-10)">
   <sodipodi:namedview
      pagecolor="#ffffff"
@@ -23,15 +23,15 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1680"
-     inkscape:window-height="933"
+     inkscape:window-width="1440"
+     inkscape:window-height="783"
      id="namedview886"
      showgrid="false"
      inkscape:zoom="6.4135129"
-     inkscape:cx="69.167312"
-     inkscape:cy="47.867683"
-     inkscape:window-x="0"
-     inkscape:window-y="23"
+     inkscape:cx="68.231787"
+     inkscape:cy="36.953228"
+     inkscape:window-x="1087"
+     inkscape:window-y="2183"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg884"
      inkscape:document-rotation="0" />
@@ -81,20 +81,6 @@
      id="g870"
      transform="translate(-0.28877889,-0.330033)" />
   <rect
-     style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.256117;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     id="rect892"
-     width="3.0940597"
-     height="1.2376238"
-     x="18.990234"
-     y="4.8133998" />
-  <ellipse
-     style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.198862;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     id="path902-1"
-     cx="13.629068"
-     cy="10.647185"
-     rx="1.0478189"
-     ry="1.2258781" />
-  <rect
      style="fill:#000000;stroke-width:1.18411;stroke-linejoin:round"
      id="rect993"
      width="23.0644"
@@ -102,19 +88,19 @@
      x="1.0028094"
      y="20.062614" />
   <rect
-     style="fill:#000000;stroke-width:0.871879;stroke-linejoin:round"
+     style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.872002;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
      id="rect995"
      width="4.5942912"
      height="4.7651401"
      x="1.0028094"
-     y="15.297474" />
+     y="15.95754" />
   <rect
      style="fill:#000000;stroke-width:0.8459;stroke-linejoin:round"
      id="rect995-4"
      width="4.3245745"
      height="4.7651401"
-     x="19.742634"
-     y="15.297475" />
+     x="19.70138"
+     y="16.081305" />
   <rect
      style="fill:#000000;stroke-width:0.558969;stroke-linejoin:round"
      id="rect1012"
@@ -125,18 +111,18 @@
   <path
      id="rect1034"
      style="fill:#000000;stroke-width:0.418831;stroke-linejoin:round"
-     d="M 9.0759084,15.299919 12.896674,9.5709573 16.584159,15.216889 14.451638,15.00932 h -2.754506 z"
+     d="M 9.1076425,15.680475 12.928408,9.9515127 16.615894,15.597445 14.483372,15.389876 H 11.728866 Z"
      sodipodi:nodetypes="cccccc" />
   <text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.9913px;line-height:1.25;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.299781"
-     x="1.4625012"
-     y="9.143836"
+     x="1.2988542"
+     y="9.4350319"
      id="text934"
-     transform="scale(1.0083688,0.99170067)"><tspan
+     transform="scale(1.0083688,0.99170066)"><tspan
        sodipodi:role="line"
        id="tspan932"
-       x="1.4625012"
-       y="9.143836"
+       x="1.2988542"
+       y="9.4350319"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.9913px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.299781">IMG</tspan></text>
 </svg>
