@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="94.488"
+   height="94.488"
+   version="1.1"
+   viewBox="0 0 25 25"
+   id="svg884"
+   sodipodi:docname="addPOW.svg"
+   inkscape:version="1.0.1 (c497b03c, 2020-09-10)">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1440"
+     inkscape:window-height="783"
+     id="namedview886"
+     showgrid="false"
+     inkscape:zoom="6.4135129"
+     inkscape:cx="69.167312"
+     inkscape:cy="47.867683"
+     inkscape:window-x="1087"
+     inkscape:window-y="2183"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg884"
+     inkscape:document-rotation="0" />
+  <defs
+     id="defs838">
+    <linearGradient
+       id="linearGradient955"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop953" />
+    </linearGradient>
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="22.953604 : -91.48199 : 1"
+       inkscape:vp_y="1073.8351 : 11424.263 : 0"
+       inkscape:vp_z="-39.568891 : 19.084282 : 1"
+       inkscape:persp3d-origin="-12.781956 : -83.799953 : 1"
+       id="perspective977" />
+    <linearGradient
+       id="linearGradient843"
+       x1="13.229"
+       x2="25.424"
+       y1="10.583"
+       y2="25.417"
+       gradientTransform="matrix(.95745 0 0 .96809 .52917 .52917)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#00000f"
+         offset="0"
+         id="stop833" />
+      <stop
+         stop-color="#00000f"
+         stop-opacity="0"
+         offset="1"
+         id="stop835" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient955"
+       id="linearGradient1029"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.2070309,0,1.4195956e-8,1.2070308,-0.26287382,-3.8850551)"
+       x1="4.2049506"
+       y1="12.038659"
+       x2="25.588919"
+       y2="12.038659" />
+  </defs>
+  <metadata
+     id="metadata840">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     fill="none"
+     stroke="#00000f"
+     id="g870"
+     transform="translate(-0.28877889,-0.330033)" />
+  <path
+     id="path950"
+     style="fill:#ff0000;fill-opacity:1;stroke:#980000;stroke-width:0.984517;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="m 24.610206,10.940051 -1.626905,5.882823 1.07403,7.813365 -6.494029,-6.698555 -4.69744,5.17852 L 8.4543592,19.659358 1.3601253,23.457933 4.1250465,16.005412 0.42872424,11.617457 3.8440464,9.2671365 1.5422143,1.250631 8.6864885,5.3470437 12.674069,1.1844312 17.960447,4.2441816 23.77051,0.92705319 22.619794,7.4855878 Z"
+     sodipodi:nodetypes="ccccccccccccccccc" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.247px;line-height:1.05;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:url(#linearGradient1029);stroke-width:0.448702;stroke-miterlimit:4;stroke-dasharray:none"
+     x="4.2634587"
+     y="14.696126"
+     id="text934"
+     transform="matrix(0.70574694,-0.18060306,0.11716848,1.3869547,0,0)"><tspan
+       sodipodi:role="line"
+       id="tspan932"
+       x="4.2634587"
+       y="14.696126"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:11.247px;font-family:'Comic Sans MS';-inkscape-font-specification:'Comic Sans MS Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:url(#linearGradient1029);stroke-width:0.448702;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">POW</tspan></text>
+</svg>
