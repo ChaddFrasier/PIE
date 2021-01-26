@@ -305,9 +305,8 @@ pre > i > b {
 }
 
 .mainaboutbox {
-    margin: 1px 2vw;
     text-align: left;
-    padding: 0 .5em;
+    padding: 0 1em;
     min-width: 30em;
     height: auto;
     text-align: center;
@@ -639,7 +638,9 @@ label.text {
 
 .concisebtngroup > button {
     padding: 2px;
-    height: auto;
+    height: 10%;
+    width: auto;
+    max-width: 200px;
     border: 5px solid black;
     padding: 2px 2px;
 }

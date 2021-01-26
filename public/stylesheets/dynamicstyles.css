@@ -109,6 +109,7 @@
 
         --inner-main-content-max-height: 79vh;
 
+        /* Add Object Btns */
         --min-svg-btn: 25px;
         --max-svg-btn: 25px;
 
@@ -141,13 +142,17 @@
         --usgs-image-width: 17em;
 
         /* Center Icon*/
-        --max-title-height: 9em;
+        --max-title-height: 8em;
         --max-title-width: 18em;
 
         --header-height: 10%;
         --main-content-height: 85vh;
         --toolcontainer-height: 84vh;
         --footer-height: 8%;
+
+        /* Add Object Btns */
+        --min-svg-btn: 35px;
+        --max-svg-btn: 35px;
     }
 }
 
@@ -167,6 +172,10 @@
         /* Center Icon*/
         --max-title-height: 9em;
         --max-title-width: 18em;
+
+        /* Add Object Btns */
+        --min-svg-btn: 40px;
+        --max-svg-btn: 40px;
 
         --header-height: 10%;
         --main-content-height: 85vh;
