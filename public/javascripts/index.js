@@ -1120,6 +1120,120 @@ $( function()
         getObjectCount(1, "caption")
     })
     
+
+    /**
+     * @function button.toolboxaddimagebtn.click()
+     * @description add the image to the svg and the toolbox stuff
+     * 
+     * TODO: refactor
+     * 
+     */
+    $('button.toolboxaddpowbtn').on("click", () =>
+    {
+        console.log("ADD A POW OBJECT")
+
+        // used for identifying the tool box for each caption in the image 
+        let imageId = randomId("image"),
+            newoptionsbar = document.createElement("div"),
+            header = document.createElement("h4"),
+            minibtn = document.createElement("button"),
+            deletebtn = document.createElement("button"),
+            layerbtn = document.createElement("button"),
+            toolsarea = document.createElement("div"),
+            powIdLabel = document.createElement("label"),
+            powIdInput = document.createElement("input"),
+            imagesvg = document.createElementNS(NS.svg, "image");
+
+        // create the main holder group for the image
+        var holdergroup = document.createElementNS(NS.svg, "g");
+
+        // set the class for the options bar
+        newoptionsbar.classList.add("windowoptionsbar")
+        newoptionsbar.style.display = "flex"
+
+        newoptionsbar.addEventListener("click", function ( event )
+        {
+            optionsAction(event.target)
+        })
+
+        header.innerHTML = "POW Layer"
+
+        // setup minimize button
+        minibtn.classList.add("windowminimizebtn")
+        minibtn.innerHTML = "▲"
+        minibtn.addEventListener( "click", function(event) {
+            minimizeToolsWindow(event)
+        })
+
+        // setup delete button
+        deletebtn.classList.add("windowremovebtn")
+        deletebtn.innerHTML = "&times"
+        
+        deletebtn.addEventListener("click", function(event){removeToolsWindow(event) })
+
+        // set the class css and the svg button graphic
+        createLayerBtn(layerbtn, draggableList)
+        
+        /** End Dynamic button*/
+
+        // toolbox attributes
+        toolsarea.classList.add("powtoolsbox")
+        toolsarea.setAttribute("id", "powtoolsbox-"+imageId)
+        toolsarea.setAttribute("objectid", imageId)
+
+        powIdLabel.innerHTML = "Enter POW Job Id:";
+        
+        powIdInput.placeholder = "125674923678";
+
+        toolsarea.append(
+            powIdLabel,
+            powIdInput
+        )
+
+        // set caption id on all input elements
+        toolsarea.childNodes.forEach(element => {
+            element.setAttribute("objectid", imageId)
+        });
+
+        // append all elements together
+        newoptionsbar.append(header, minibtn, deletebtn, layerbtn, toolsarea)
+        newoptionsbar.setAttribute("objectid", imageId)
+    
+        // finish by appending the whole thing
+        let holderbox = document.createElement("div")
+        holderbox.setAttribute("class", "draggableToolbox")
+        holderbox.setAttribute("objectid", imageId+"-hg")
+        holderbox.setAttribute("width", "100%")
+        holderbox.setAttribute("height", "100%")
+        holderbox.append(newoptionsbar, toolsarea)
+
+        draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
+
+        // set image initial attributes
+        imagesvg.setAttribute("x", "0")
+        imagesvg.setAttribute("y", "0")
+        imagesvg.setAttribute("width", "1500")
+        imagesvg.setAttribute("height", "1000")
+        imagesvg.setAttribute("id", imageId)
+        imagesvg.setAttribute("class", "holder")
+
+        // this is where the desfault image is set
+        imagesvg.setAttribute("href", "#")
+
+        holdergroup.appendChild(imagesvg)
+
+        // This is the box that will hold the image and the icons for said image
+        holdergroup.setAttribute("id", imageId+ "-hg")
+        holdergroup.setAttribute("transform", "scale(1)")
+        holdergroup.classList.add("containingelement")
+
+        draggableSvg.getContainerObject().appendChild(holdergroup)
+
+        // add 1 to the totaly image count
+        getObjectCount(1, "image")
+    });
+
+
     /**
      * @function button.toolboxaddimagebtn.click()
      * @description add the image to the svg and the toolbox stuff
