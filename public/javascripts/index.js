@@ -1120,6 +1120,20 @@ $( function()
         getObjectCount(1, "caption")
     })
     
+
+    /**
+     * @function button.toolboxaddimagebtn.click()
+     * @description add the image to the svg and the toolbox stuff
+     * 
+     * TODO: refactor
+     * 
+     */
+    $('button.toolboxaddpowbtn').on("click", () =>
+    {
+        console.log("ADD A POW OBJECT")
+    });
+
+
     /**
      * @function button.toolboxaddimagebtn.click()
      * @description add the image to the svg and the toolbox stuff
