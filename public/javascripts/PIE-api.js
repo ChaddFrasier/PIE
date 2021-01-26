@@ -84,7 +84,7 @@ module.exports = {
         {
             for(var i = 0; i < keys.length; i++ )
             {
-                if( object[keys[i]] === undefined || keys[i] !== undefined || isNaN(object[keys[i]]) )
+                if( object[keys[i]] === undefined || keys[i] === undefined )
                 {
                     // start at the index of the unknown key and remove 1 element from the array
                     keys.splice(i, 1)
