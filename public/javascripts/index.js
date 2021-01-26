@@ -1142,6 +1142,7 @@ $( function()
             toolsarea = document.createElement("div"),
             powIdLabel = document.createElement("label"),
             powIdInput = document.createElement("input"),
+            powIdSubmitBtn = document.createElement("button"),
             imagesvg = document.createElementNS(NS.svg, "image");
 
         // create the main holder group for the image
@@ -1182,12 +1183,30 @@ $( function()
         toolsarea.setAttribute("objectid", imageId)
 
         powIdLabel.innerHTML = "Enter POW Job Id:";
+        powIdInput.name = "powIdInput"
         
-        powIdInput.placeholder = "125674923678";
+        powIdInput.placeholder = "4580b40493f62edca422fb1958d7635";
+
+        powIdSubmitBtn.addEventListener("click", (e) => {
+            let powId = powIdInput.value;
+            const powRegExp = /(\d|\w){31}$/
+            if( powRegExp.test(powId) )
+            {
+                console.log("THIS IS WHERE I NEED TO MAKE THE REQUEST TO THE SERVER TO FIND THE JOB ID FOLDER")
+            }
+            else
+            {
+                console.log("THIS CANNOT BE A POW ID.")
+                // TODO: add an indicator for the user that the id is wrong
+            }
+        });
+
+        powIdSubmitBtn.innerHTML = "Submit Id"
 
         toolsarea.append(
             powIdLabel,
-            powIdInput
+            powIdInput,
+            powIdSubmitBtn
         )
 
         // set caption id on all input elements
@@ -3308,7 +3327,7 @@ function changeIconColor( colorid, colorval, icon )
             else if( icon.id.indexOf( "sun" ) > -1 )
             {
                 // change the primary of the sun icon
-                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "stroke", "stroke", "fill" )
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "fill", "", "", "", "","", "","", "","", "","", "","", "", "", "", "")
             }
             else if( icon.id.indexOf( "observer" ) > -1 )
             {
@@ -3331,7 +3350,7 @@ function changeIconColor( colorid, colorval, icon )
             else if( icon.id.indexOf( "sun" ) > -1 )
             {
                 // change the secondary of the sun icon
-                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "fill", "fill", "stroke" )
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "stroke", "fill stroke", "fill stroke", "fill stroke", "fill stroke","fill stroke", "fill stroke","fill stroke", "fill stroke","fill stroke", "fill stroke","fill stroke", "fill stroke","fill stroke", "fill stroke", "fill stroke", "fill stroke", "fill stroke")
             }
             else if( icon.id.indexOf( "observer" ) > -1 )
             {

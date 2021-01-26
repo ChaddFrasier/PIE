@@ -714,7 +714,7 @@ button.selected {
     min-height: 0%;
     background: var(--accent-color);
     max-height: 100%;
-    height: 50px;
+    height: 80px;
     overflow-y: auto;
     overflow-x: hidden;
     padding: 0;
@@ -726,6 +726,18 @@ button.selected {
     margin: 0;
     color: white;
     text-align: center;
+}
+
+.powtoolsbox > input[name='powIdInput']
+{
+    width: 90%;
+    font-size: 10px;
+}
+
+.powtoolsbox > button
+{
+    border-radius: 5px 5px;
+    background: var(--bar-gradient);
 }
 
 .captiontoolsbox > input[type='number'], .imagetoolsbox > input[type='number'] {
