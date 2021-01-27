@@ -1,12 +1,10 @@
 "use strict";
-
 const express = require('express');
 const multer = require('multer');
 const path  = require('path');
 const fs  = require('fs');
 const router = express.Router();
 var PIEAPI = require('../public/javascripts/PIE-api.js');
-
 // init storage object to tell multer what to do
 var storage = multer.diskStorage(
     {
@@ -22,30 +20,24 @@ var storage = multer.diskStorage(
         }
     }
 );
-    
 // set the upload object for multer
 var upload = multer( { storage: storage } );
-
 /**
  * This route will handle the file upload by the user and make the ISIS connections
  */
-// TODO: this is where i should execute all the functions in an order that makes sense, __never failing__!
 router.post('/', upload.single('imageinput') , (req, res, next) => {
     var isisregexp = new RegExp("^.*\.(CUB|cub|tif|TIF)$");
-
     // check if the file uploaded was an isis3 file
     if( isisregexp.test(req.file.filename) )
     {
         // start the api object
         var pieapi = PIEAPI.PIEAPI();
-
         // call the gdal scaling function that Trent uses and convert the output to jpg at 50% size
         var promise = pieapi.gdal_rescale(
             path.join("public", "uploads", req.file.filename),
             "50%",
             path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "jpg"))
             );
-       
         // wait for conversion to finish
         promise.then( ( filepath ) => {
             // if the file is found
@@ -86,7 +78,9 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
         });
     }
 });
-
+/**
+ * Send the uploaded file images back to the user using the same handler path
+ */
 router.get('/*', function(req, res)
 {
     if(  fs.existsSync(path.resolve( path.join( "public", "uploads", req.url))) )
@@ -98,5 +92,4 @@ router.get('/*', function(req, res)
         console.error("FAIL")
     }
 });
-
 module.exports = router;
