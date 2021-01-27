@@ -1116,13 +1116,11 @@ $( function()
      * @function button.toolboxaddimagebtn.click()
      * @description add the image to the svg and the toolbox stuff
      * 
-     * TODO: refactor
+     * TODO: POW
      * 
      */
     $('button.toolboxaddpowbtn').on("click", () =>
     {
-        console.log("ADD A POW OBJECT")
-
         // used for identifying the tool box for each caption in the image 
         let imageId = randomId("image"),
             newoptionsbar = document.createElement("div"),
@@ -1184,6 +1182,16 @@ $( function()
             if( powRegExp.test(powId) )
             {
                 console.log("THIS IS WHERE I NEED TO MAKE THE REQUEST TO THE SERVER TO FIND THE JOB ID FOLDER")
+
+                // send request to server
+                fetch(`/pow?pow=${powId}`, {
+                    method: "GET",
+                    header: {"Content-Type": "json"}
+                })
+                .then( imagedatares => imagedatares.json())
+                .then((json) => {
+                    console.log(json)
+                });
             }
             else
             {
