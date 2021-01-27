@@ -53,10 +53,10 @@
 
         --svg-icon-width: 30px;
 
-        --header-height: 7%;
+        --header-height: 5%;
         --main-content-height: 80vh;
         --toolcontainer-height: 80vh;
-        --footer-height: 7%;
+        --footer-height: 5%;
 
         /* New Section Here */
         --inner-main-content-max-width: 75vw;
@@ -66,8 +66,8 @@
 @media only screen and (min-width: 930px)
 {
     :root {
-        --large-font: 16px;
-        --medium-font: 15px;
+        --large-font: 15px;
+        --medium-font: 14px;
         --sm-medium-font: 13px;
         --small-font: 12px;
         --xsmall-font: 10px;
@@ -118,10 +118,10 @@
 
         --svg-icon-width: 30px;
 
-        --header-height: 6%;
+        --header-height: 5%;
         --main-content-height: 80vh;
         --toolcontainer-height: 80vh;
-        --footer-height: 8%;
+        --footer-height: 5%;
 
         /* New Section Here */
         --inner-main-content-max-width: 81vw;
@@ -131,24 +131,29 @@
 /*  2k Screen */
 @media only screen and (min-width:1800px) {
     :root {
-        --large-font: 28px;
+        --large-font: 20px;
         --medium-font: 22px;
         --sm-medium-font: 20px;
         --small-font: 18px;
         --xsmall-font: 15px;
 
+        --max-image-width: 70%;
+        --max-header-image-width: 6em;
+
         /* Top left Icon*/
-        --usgs-image-height: 7em;
-        --usgs-image-width: 17em;
+        --usgs-image-height: 6m;
+        --usgs-image-width: 13em;
 
         /* Center Icon*/
-        --max-title-height: 8em;
-        --max-title-width: 18em;
+        --max-title-height: 6em;
+        --max-title-width: 13em;
 
-        --header-height: 10%;
-        --main-content-height: 85vh;
-        --toolcontainer-height: 84vh;
-        --footer-height: 8%;
+        --main-export-box-heigh: 300px;
+
+        --header-height: 6%;
+        --main-content-height: 80vh;
+        --toolcontainer-height: 80vh;
+        --footer-height: 6%;
 
         /* Add Object Btns */
         --min-svg-btn: 35px;
@@ -165,21 +170,26 @@
         --small-font: 18px;
         --xsmall-font: 15px;
 
+        --max-image-width: 70%;
+        --max-header-image-width: 8em;
+
         /* Top left Icon*/
-        --usgs-image-height: 7em;
-        --usgs-image-width: 17em;
+        --usgs-image-height: 6em;
+        --usgs-image-width: 13em;
 
         /* Center Icon*/
-        --max-title-height: 9em;
-        --max-title-width: 18em;
+        --max-title-height: 6em;
+        --max-title-width: 14em;
 
         /* Add Object Btns */
         --min-svg-btn: 40px;
         --max-svg-btn: 40px;
 
-        --header-height: 10%;
-        --main-content-height: 85vh;
-        --toolcontainer-height: 84vh;
-        --footer-height: 8%;
+        --main-export-box-heigh: 300px;
+
+        --header-height: 6%;
+        --main-content-height: 86vh;
+        --toolcontainer-height: 86vh;
+        --footer-height: 6%;
     }
 }
