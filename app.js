@@ -17,6 +17,7 @@ var uploadRouter = require('./routes/upload')
 var exportRouter = require('./routes/export')
 var imageRouter = require('./routes/images');
 var downloadRouter = require('./routes/download');
+var powRouter = require('./routes/pow')
 
 var app = express();
 
@@ -35,6 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/about', aboutRouter);
 app.use('/faq', faqRouter);
+app.use('/pow', powRouter);
 app.use('/upload', uploadRouter);
 app.use('/images',imageRouter);
 app.use('/export',exportRouter);
