@@ -56,7 +56,7 @@
         --header-height: 5%;
         --main-content-height: 80vh;
         --toolcontainer-height: 80vh;
-        --footer-height: 5%;
+        --footer-height: 4%;
 
         /* New Section Here */
         --inner-main-content-max-width: 75vw;
@@ -121,7 +121,7 @@
         --header-height: 5%;
         --main-content-height: 80vh;
         --toolcontainer-height: 80vh;
-        --footer-height: 5%;
+        --footer-height: 4%;
 
         /* New Section Here */
         --inner-main-content-max-width: 81vw;
@@ -153,7 +153,7 @@
         --header-height: 6%;
         --main-content-height: 80vh;
         --toolcontainer-height: 80vh;
-        --footer-height: 6%;
+        --footer-height: 4%;
 
         /* Add Object Btns */
         --min-svg-btn: 35px;
@@ -190,6 +190,6 @@
         --header-height: 6%;
         --main-content-height: 86vh;
         --toolcontainer-height: 86vh;
-        --footer-height: 6%;
+        --footer-height: 4%;
     }
 }
