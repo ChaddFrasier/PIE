@@ -378,7 +378,7 @@ $( function()
         }
 
         // TODO: this is temporary
-        console.log(`Key & Code: \n\n\tKey: '${event.key}' \n\tCode: ${event.keyCode}`)
+        //console.log(`Key & Code: \n\n\tKey: '${event.key}' \n\tCode: ${event.keyCode}`)
         return true;
     }
 
@@ -521,8 +521,6 @@ $( function()
     /**
      * @function exportbtn.mousedown()
      * @description drae the box that is used for inputing export information
-     * 
-     * TODO: refactor
      */
     $('#exportbtn').on("mousedown", function(event) {
 
@@ -715,7 +713,6 @@ $( function()
 
                 // when the requests load handle the response
                 xhr.onloadend = () => {
-                    
                     // response has all the links for downloading images
                     Object.keys(xhr.response).forEach( filetype => {
                         const filename = xhr.response[filetype];
@@ -732,7 +729,6 @@ $( function()
                         // download the blob as a file
                         xhrd.onload = function (event) {
                             var blob = this.response;
-                            
                             saveBlob(blob, filename);
                         }
                         xhrd.send(postData);
@@ -757,7 +753,6 @@ $( function()
 
         // append the main section boxes for the button holder
         buttonholder.append(leftbox, centerbox, rightbox);
-
         mainholder.append(titleholder, inputholder, document.createElement("br"), buttonholder);
         mainholder.classList.add("exportmainbox");
         // append the main content box
@@ -840,8 +835,6 @@ $( function()
         
         // set the class css and the svg button graphic
         createLayerBtn(layerbtn, draggableList)
-
-        /** End Dragging */
 
         // this is all dynamic css for the caption tool box
         // the most important part is just the 'objectid' attribute
@@ -994,9 +987,7 @@ $( function()
             // updpate the text inside once found
             if(matchingCaption && !isNaN(Number(this.value)))
             {
-                
                 matchingCaption.setAttribute("x", Number(this.value))
-                
             }
         })
         
