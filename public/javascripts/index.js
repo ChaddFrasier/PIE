@@ -3331,7 +3331,7 @@ function changeIconColor( colorid, colorval, icon )
             else if( icon.id.indexOf( "observer" ) > -1 )
             {
                 // change the primary of the observer icon
-                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "stroke", "stroke", "stroke", "fill stroke", "", "stroke fill" )
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "fill", "fill", "fill", "fill", "fill" )
             }
             else if( icon.id.indexOf( "scalebar" ) > -1 )
             {
@@ -3354,7 +3354,7 @@ function changeIconColor( colorid, colorval, icon )
             else if( icon.id.indexOf( "observer" ) > -1 )
             {
                 // change the secondary of the observer icon
-                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "fill", "fill", "fill", "", "fill stroke", "")
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "stroke", "stroke", "stroke", "stroke", "stroke")
             }
             else if( icon.id.indexOf( "scalebar" ) > -1 )
             {
