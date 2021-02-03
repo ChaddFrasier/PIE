@@ -9,14 +9,14 @@
    </cc:Work>
   </rdf:RDF>
  </metadata>
- <g stroke="#000000" stroke-width=".66146">
-  <path d="m2.6546 19.165 2.1771-0.62564-0.041303-2.1895h14.26v2.0193l2.1167 0.0074v-2.099c0.0072-1.9145 3.3532-2.1043 3.4396-0.14305v8.7001h-21.952z" fill="#ffffff" stroke-linecap="round" stroke-linejoin="round" style="paint-order:fill markers stroke"/>
-  <path d="m9.2491 2.0203h6.8675v14.071h-6.8675z" fill="#ffffff" stroke-linecap="round" stroke-linejoin="round" style="paint-order:fill markers stroke"/>
-  <ellipse cx="22.889" cy="16.838" rx=".68787" ry=".61257" fill="#000000" stroke-linecap="round" stroke-linejoin="round" style="paint-order:fill markers stroke"/>
-  <ellipse cx="19.242" cy="21.328" rx="2.2929" ry="2.0419" fill="#ffffff" stroke-linecap="round" stroke-linejoin="round" style="paint-order:fill markers stroke"/>
-  <path d="m3.542 20.187c-0.015528-0.7396 0.86779-0.74495 0.87905 0v2.8851c0.015399 0.69328-0.87781 0.62059-0.87905 0z" fill="#000000" stroke-linecap="round" stroke-linejoin="round" style="paint-order:fill markers stroke"/>
-  <path d="m9.2079 0.84245h7.1315c1.4527 0.10413 1.6347 1.7284 0 1.1543h-7.1315c-1.5342 0.68291-1.2668-1.0939 0-1.1543z" fill="#ffffff" stroke-linecap="round" stroke-linejoin="round" style="paint-order:fill markers stroke"/>
-  <path d="m8.2149 18.03v-5.5133h8.9433v5.5133h-2.683v-3.623h-3.5773v3.623z" fill="#ffffff"/>
-  <path d="m9.757 6.9425 2.9738-3.9977 2.8313 3.9665-1.7027 0.00612-0.01313 4.8475h-2.4593l0.06875-4.8271z" fill="#ffffff" stroke-linecap="round" stroke-linejoin="round" style="paint-order:fill markers stroke"/>
+ <g stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width=".66146">
+  <path d="m2.6546 19.165 2.1771-0.62564-0.041303-2.1895h14.26v2.0193l2.1167 0.0074v-2.099c0.0072-1.9145 3.3532-2.1043 3.4396-0.14305v8.7001h-21.952z" fill="#ffffff" style="paint-order:fill markers stroke"/>
+  <path d="m8.9713 9.4987h7.2418v6.6892h-7.2418z" fill="#ffffff" stroke-width=".46833" style="paint-order:fill markers stroke"/>
+  <ellipse cx="22.889" cy="16.838" rx=".68787" ry=".61257" fill="#000000" style="paint-order:fill markers stroke"/>
+  <ellipse cx="19.242" cy="21.328" rx="2.2929" ry="2.0419" fill="#ffffff" style="paint-order:fill markers stroke"/>
+  <path d="m3.542 20.187c-0.015528-0.7396 0.86779-0.74495 0.87905 0v2.8851c0.015399 0.69328-0.87781 0.62059-0.87905 0z" fill="#000000" style="paint-order:fill markers stroke"/>
+  <path d="m8.9713 8.3444h7.1315c1.4527 0.10413 1.6347 1.7284 0 1.1543h-7.1315c-1.5342 0.68291-1.2668-1.0939 0-1.1543z" fill="#ffffff" style="paint-order:fill markers stroke"/>
+  <path d="m9.9927 3.6633 2.6874-3.0923 2.5586 3.0682-1.5387 0.00473-0.01187 3.7497h-2.2225l0.06213-3.7339z" fill="#ffffff" stroke-width=".55303" style="paint-order:fill markers stroke"/>
+  <rect x="8.7516" y="14.188" width="7.9037" height="1.7785" fill="#000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width=".40524" style="paint-order:fill markers stroke"/>
  </g>
 </svg>

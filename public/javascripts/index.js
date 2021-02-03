@@ -1532,7 +1532,7 @@ $( function()
                                     btnArray.push('observer')
 
                                     try{
-                                        document.getElementById(`observerIcon-${imageId}`).firstElementChild.setAttribute("transform", "rotate(" + (parseFloat(document.getElementById(imageId+"-hg").getAttribute("SubSpacecraftGroundAzimuth")) + 90) + " 13.5 13.5" + ")")
+                                        document.getElementById(`observerIcon-${imageId}`).firstElementChild.setAttribute("transform", "rotate(" + (parseFloat(document.getElementById(imageId+"-hg").getAttribute("SubSpacecraftGroundAzimuth")) + 90) + " 14 14" + ")")
                                     }
                                     catch(err)
                                     {
@@ -3354,7 +3354,7 @@ function changeIconColor( colorid, colorval, icon )
             else if( icon.id.indexOf( "observer" ) > -1 )
             {
                 // change the secondary of the observer icon
-                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "stroke", "stroke", "stroke fill", "stroke", "fill stroke", "stroke", "stroke", "stroke fill")
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "stroke", "stroke", "stroke fill", "stroke", "fill stroke", "stroke", "stroke", "stroke fill" )
             }
             else if( icon.id.indexOf( "scalebar" ) > -1 )
             {
