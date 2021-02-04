@@ -1594,6 +1594,11 @@ $( function()
                                         /** No Thing */
                                     }
                                 }
+
+                                // TODO:
+                                // run a function to enable the key button by checking if the response data in not null
+                                // only show the icons and values that are there and not any null values.
+
                                 ButtonManager.addImage(imageId, btnArray )
                                 console.log(responseObject) // this is not the same in the testing environment
                             }    
