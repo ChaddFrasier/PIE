@@ -377,8 +377,6 @@ $( function()
             document.addEventListener("keyup", shiftKeyup);
         }
 
-        // TODO: this is temporary
-        //console.log(`Key & Code: \n\n\tKey: '${event.key}' \n\tCode: ${event.keyCode}`)
         return true;
     }
 
@@ -524,7 +522,7 @@ $( function()
      */
     $('#exportbtn').on("mousedown", function(event) {
 
-        // TODO: format the output box better
+        // TODO: 3 format the output box better
 
         // if the exportbox exists cancel whole function
         if( document.querySelectorAll("div[class='exportmainbox']").length !== 0)
@@ -1191,12 +1189,11 @@ $( function()
                 .then( imagedatares => imagedatares.json())
                 .then((json) => {
                     console.log(json)
-                });
+                })
             }
             else
             {
-                console.log("THIS CANNOT BE A POW ID.")
-                // TODO: add an indicator for the user that the id is wrong
+                window.alert("The ID you have entered could not be validated as a valid POW Job Id.")
             }
         });
 
@@ -1576,7 +1573,7 @@ $( function()
                                         scalebar.setAttribute("height", (scaleObject.sc * 700) )
                 
                                         document.getElementById("scalestart-"+imageId).innerHTML = scaleObject.display
-                                        document.getElementById("scaleend-"+imageId).innerHTML = scaleObject.display + " " +  scaleObject.units
+                                        document.getElementById("scaleend-"+imageId).innerHTML = scaleObject.display + " " + scaleObject.units
                                     }
                                     catch( err )
                                     {
@@ -1595,12 +1592,10 @@ $( function()
                                     }
                                 }
 
-                                // TODO:
-                                // run a function to enable the key button by checking if the response data in not null
-                                // only show the icons and values that are there and not any null values.
-
                                 ButtonManager.addImage(imageId, btnArray )
-                                console.log(responseObject) // this is not the same in the testing environment
+
+                                // this is not the same in the testing environment
+                                console.log(responseObject)
                             }    
                             // convert to base64 string
                             reader.readAsDataURL(blob)
@@ -1908,6 +1903,48 @@ $( function()
             }
         }
     })
+
+    /**
+     * @function sunarrowopt.onmousedown
+     * @description this function starts the drag and drop logic for the sun icon
+     */
+    $('#keyopt').on("mousedown", (event) =>
+    {
+        if( leftClick(event.button) )
+        {
+            event.preventDefault()
+
+            let btn = event.target
+
+            if( btn.classList.contains("disabled") )
+            {
+                return false;
+            }
+            // check if there is an image
+            else if( getObjectCount(0,"image") != 0 )
+            {
+                // set selected and se selected UI
+                if( selectedObject )
+                {
+                    selectedObject = null
+                }
+                else
+                {
+                    // make new shadow icon
+                    shadowIcon.icon = shadowIcon.drawShadowIcon( event )
+                    document.addEventListener("mousemove", shadowIcon.shadowAnimate);
+                    document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
+
+                    btn.classList.add("selected")
+                    document.addEventListener("mouseup", setElement, true)
+                }
+            }
+            else
+            {
+                alert("There Must be an image in the figure to attach a Figure Key")
+            }
+        }
+    })
     
     /**
      * @function observerharrowopt.onmousedown
@@ -1988,6 +2025,11 @@ $( function()
                 // set element
                 selectedObject = event.target
             }
+            else if( btn.id.indexOf("key") > -1 )
+            {
+                // set element
+                selectedObject = event.target
+            }
             else
             {
                 alert("Data Error:\nThe image you are adding the icon to does not have the required metadata for this icon.")
@@ -2023,6 +2065,10 @@ $( function()
             else if( btn.id.indexOf( "scalebar" ) > -1 )
             {
                 iconType = "scalebar"
+            }
+            else if( btn.id.indexOf( "key" ) > -1 )
+            {
+                iconType = "key"
             }
             else
             {
@@ -2241,6 +2287,93 @@ $( function()
                     iconFailureAlert()
                 }
                 break
+
+            case "key":
+                if( !document.getElementById("keyIcon-" + image.id) )
+                {
+                    // get svg transformed point
+                    svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
+                        
+                    // set group attributes for svg
+                    icongroupsvg = document.createElementNS( NS.svg, "svg")
+
+                    // add dimensions to svg
+                    icongroupsvg.setAttributeNS(NS.svg, "viewBox", "0 0 27 27")
+                    icongroupsvg.setAttribute("scale", "5")
+                    icongroupsvg.setAttribute("id", image.id+"-keygroup")
+                    icongroupsvg.setAttribute("objectid", "keyIcon-" + image.id)
+
+                    icongroupsvg.setAttribute("objectid", image.id)
+                    icongroupsvg.setAttribute("id", "keyIcon-" + image.id)
+
+                    // set the translate location of the icon to where the mouse was released
+                    newX = getScaledPoint( svgP.x, 1, 27*5 )
+                    newY = getScaledPoint( svgP.y, 1, 27*5 )
+
+                    // test valid input and set the transform for all browsers
+                    if( !isNaN(newX) && !isNaN(newY))
+                    {
+                        
+                        // determine how many lines the key box needs to have
+                        retrieveDataObject( image.id + "-hg" )
+
+                        let keyDim = {width: 400, height: 750};
+
+                        icongroupsvg.setAttribute("width", keyDim.width)
+                        icongroupsvg.setAttribute("height", keyDim.height)
+
+                        var holder = document.createElementNS( NS.svg, "g")
+                        holder.classList.add("holder")
+
+                        var mainkeybox = document.createElementNS(NS.svg, "rect")
+                        mainkeybox.setAttribute("width", keyDim.width)
+                        mainkeybox.setAttribute("height", keyDim.height)
+                        mainkeybox.setAttribute("fill", "#ffffff")
+                        mainkeybox.setAttribute("stroke", "#000000")
+                        mainkeybox.setAttribute("stroke-width", "20px")
+
+                        var text_header = document.createElementNS( NS.svg, "text")
+                        text_header.setAttribute("x", "170")
+                        text_header.setAttribute("y", "50")
+                        text_header.setAttribute("font-size", "40px")
+                        text_header.setAttribute("stroke-width", "30px")
+                        text_header.innerHTML = "Key"
+
+                        var innerbox = document.createElementNS(NS.svg, "rect")
+                        innerbox.setAttribute("x", 25)
+                        innerbox.setAttribute("y", 75)
+                        innerbox.setAttribute("width", keyDim.width - 50)
+                        innerbox.setAttribute("height", keyDim.height - 150 + 50)
+                        innerbox.setAttribute("fill", "#ffffff")
+                        innerbox.setAttribute("stroke", "#000000")
+                        innerbox.setAttribute("stroke-width", "10px")
+
+                        var marker = document.createElementNS( NS.svg, "rect")
+                        marker.setAttribute("width", keyDim.width)
+                        marker.setAttribute("height", keyDim.height)
+                        marker.setAttribute("class", "marker")
+                        marker.setAttribute("fill", "transparent")
+                        marker.setAttribute("stroke", "transparent")
+
+                        holder.append( mainkeybox, text_header , innerbox)
+                        icongroupsvg.append(holder, marker)
+
+                        icongroupsvg.setAttribute("x", newX)
+                        icongroupsvg.setAttribute("y", newY)
+                    }
+                    else
+                    {
+                        console.error("Translate Values Failed")
+                    }
+
+                    // append the icon
+                    document.getElementById(image.id+"-hg").appendChild(icongroupsvg)
+                }
+                else
+                {
+                    iconFailureAlert()
+                }
+                break
         }
 
         if( icongroup != null )
@@ -2255,6 +2388,20 @@ $( function()
 }) // end of jquery functions
 
 /* Helper functions */
+/**
+ * @function retrieveDataObject
+ * @param {string} holderid the id of the object holding the metadata
+ */
+function retrieveDataObject( holderid )
+{
+    var holder =  document.getElementById( holderid )
+    var keyObject = {}
+
+    // TODO: THIS IS WHERE I CAN ADD THE PARSER FOR ALL THE KEY DATA
+    console.log(holder.getAttribute("Emission"))
+
+}
+
 
 /**
  * @function configDraggables
@@ -2310,6 +2457,7 @@ var startButtonManager = function() {
             document.getElementById("sunarrowopt").classList.add("disabled")
             document.getElementById("observerarrowopt").classList.add("disabled")
             document.getElementById("scalebarbtnopt").classList.add("disabled")
+            document.getElementById("keyopt").classList.add("disabled")
 
             // activate only the ones that are needed
             Object.keys(MemoryObject).forEach( imageId => {
@@ -2318,21 +2466,25 @@ var startButtonManager = function() {
                 {
                     // activate the north button
                     document.getElementById("northarrowopt").classList.remove("disabled")
+                    document.getElementById("keyopt").classList.remove("disabled")
                 }
                 if( MemoryObject[imageId].indexOf("sun") > -1 )
                 {
                     // activate the north button
                     document.getElementById("sunarrowopt").classList.remove("disabled")
+                    document.getElementById("keyopt").classList.remove("disabled")
                 }
                 if( MemoryObject[imageId].indexOf("observer") > -1 )
                 {
                     // activate the north button
                     document.getElementById("observerarrowopt").classList.remove("disabled")
+                    document.getElementById("keyopt").classList.remove("disabled")
                 }
                 if( MemoryObject[imageId].indexOf("scale") > -1 )
                 {
                     // activate the north button
                     document.getElementById("scalebarbtnopt").classList.remove("disabled")
+                    document.getElementById("keyopt").classList.remove("disabled")
                 }
             });
         },
