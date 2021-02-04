@@ -850,12 +850,12 @@ button.selected {
     height: var(--svg-icon-height);
 }
 
-button#northarrowopt, button#sunarrowopt, button#observerarrowopt , button#scalebarbtnopt , button#penciloptbtn, button#outlinebtnopt{
+button#northarrowopt, button#sunarrowopt, button#observerarrowopt , button#scalebarbtnopt , button#penciloptbtn, button#outlinebtnopt, button#keyopt{
     background: var(--bar-gradient);
     border: 3px solid black;
 }
 
-button#northarrowopt:hover, button#sunarrowopt:hover, button#observerarrowopt:hover , button#scalebarbtnopt:hover , button#penciloptbtn:hover, button#outlinebtnopt:hover{
+button#northarrowopt:hover, button#sunarrowopt:hover, button#observerarrowopt:hover , button#scalebarbtnopt:hover , button#penciloptbtn:hover, button#outlinebtnopt:hover, button#keyopt{
     background: var(--hover-contrast-color);
 }
 

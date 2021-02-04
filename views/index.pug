@@ -94,6 +94,11 @@ block content
                                         path(d="m9.9927 3.6633 2.6874-3.0923 2.5586 3.0682-1.5387 0.00473-0.01187 3.7497h-2.2225l0.06213-3.7339z" fill="#ffffff" stroke-width=".55303" style="paint-order:fill markers stroke")
                                         rect(x="8.7516" y="14.188" width="7.9037" height="1.7785" fill="#000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width=".40524" style="paint-order:fill markers stroke")
                                     rect.marker(width=30 height=30 fill="transparent" stroke="transparent")
+
+                        button#keyopt.disabled(type="button" title="Figure/Data Key")
+                            img.svgimg(src="/images/addKey.svg")
+
+
                         button#scalebarbtnopt.disabled(type="button" title="Scale Bar")
                             svg.btnvectorgraphic(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 4500 700" width="27" height="27" )
                                 svg#scalebargroup(viewBox="0 0 4500 700")
@@ -172,7 +177,7 @@ block content
                 button#addcaptionbtn.toolboxaddcaptionbtn(title="Add Caption Object")
                     img.svgimg(src="/images/addCaptionImage.svg")
                 button#addpowbtn.toolboxaddpowbtn(title="Add POW Object")
-                    img.svgimg(src="/images/newaddPOW.svg")
+                    img.svgimg(src="/images/addPOW-new.svg")
         #editbox.editbox
             //- Other Options Button Group
             .exportoptionsbar(style="display:flex;")
