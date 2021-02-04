@@ -3331,7 +3331,7 @@ function changeIconColor( colorid, colorval, icon )
             else if( icon.id.indexOf( "sun" ) > -1 )
             {
                 // change the primary of the sun icon
-                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "fill", "", "", "", "","", "","", "","", "","", "","", "", "", "", "")
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "fill", "fill", "stroke")
             }
             else if( icon.id.indexOf( "observer" ) > -1 )
             {
@@ -3354,7 +3354,7 @@ function changeIconColor( colorid, colorval, icon )
             else if( icon.id.indexOf( "sun" ) > -1 )
             {
                 // change the secondary of the sun icon
-                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "stroke", "fill stroke", "fill stroke", "fill stroke", "fill stroke","fill stroke", "fill stroke","fill stroke", "fill stroke","fill stroke", "fill stroke","fill stroke", "fill stroke","fill stroke", "fill stroke", "fill stroke", "fill stroke", "fill stroke")
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "stroke", "stroke", "fill")
             }
             else if( icon.id.indexOf( "observer" ) > -1 )
             {
