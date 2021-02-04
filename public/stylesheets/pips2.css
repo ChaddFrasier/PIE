@@ -855,7 +855,7 @@ button#northarrowopt, button#sunarrowopt, button#observerarrowopt , button#scale
     border: 3px solid black;
 }
 
-button#northarrowopt:hover, button#sunarrowopt:hover, button#observerarrowopt:hover , button#scalebarbtnopt:hover , button#penciloptbtn:hover, button#outlinebtnopt:hover, button#keyopt{
+button#northarrowopt:hover, button#sunarrowopt:hover, button#observerarrowopt:hover , button#scalebarbtnopt:hover , button#penciloptbtn:hover, button#outlinebtnopt:hover, button#keyopt:hover{
     background: var(--hover-contrast-color);
 }
 

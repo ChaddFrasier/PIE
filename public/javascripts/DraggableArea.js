@@ -126,6 +126,7 @@ function DraggableArea( objectbox=undefined )
             // transform the mouse event location to the svg subspace
             let svgP = createSVGP(event.clientX, event.clientY);
 
+    
             if( draggingIcon.nodeName == "g" && draggingIcon.getAttribute("id").indexOf("-hg") > -1)
             {
                 // get the current mouse location with no object body attached
