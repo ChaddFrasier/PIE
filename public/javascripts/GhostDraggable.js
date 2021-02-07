@@ -4,7 +4,7 @@
  *              This file is used to create a simple object 
  *      that allows you to add Ghost-like objects to the browser. This is used to mimic a drag-and-drop
  *      feature where you drag a svg group from inside of a another SVG box. This file can help create 
- *      an exact copy of the button and then make that "Ghost" copy follow the mouse until the mouse ius released
+ *      an exact copy of the button and then make that "Ghost" copy follow the mouse until the mouse is released
 */
 
 "use strict";
