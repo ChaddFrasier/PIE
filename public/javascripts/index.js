@@ -2274,12 +2274,8 @@ var startButtonManager = function() {
         refresh: function()
         {
             // deactivate all the buttons
-            document.getElementById("northarrowopt").classList.add("disabled")
-            document.getElementById("sunarrowopt").classList.add("disabled")
-            document.getElementById("observerarrowopt").classList.add("disabled")
-            document.getElementById("scalebarbtnopt").classList.add("disabled")
-            document.getElementById("keyopt").classList.add("disabled")
-
+            setMains("disable")
+            
             // activate only the ones that are needed
             Object.keys(MemoryObject).forEach( imageId => {
 
