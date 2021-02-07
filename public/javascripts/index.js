@@ -9,7 +9,7 @@
  * @fileoverview main event loop for the index page of PIE
 */
 
-var draggableSvg = null, draggableList = null;
+var draggableSvg = null, draggableList = null, geoIconArray = Array('#northarrowopt', '#scalebarbtnopt', '#sunarrowopt', '#keyopt', '#observerarrowopt');;
 /**
  * @function document.ready()
  * @description Function that runs when the page is done loading
@@ -20,8 +20,7 @@ $( function()
     preConfigPage()
 
     // local jquery variables
-    var bgPicker = document.getElementById("backgroundcolor"),
-        PencilFlag = false,
+    var PencilFlag = false,
         selectedObject = null,
         OutlineFlag = false,
         shadowIcon = initShadowIcon(),
@@ -34,8 +33,6 @@ $( function()
     let svgContainer = document.getElementById("figurecontainer")
     // add the custom keys 
     document.addEventListener("keydown", customKeys);
-    // set background right away when page loads
-    setSVGBackground("bgelement", bgPicker.value)
     // start draggable actions
     configDraggables( svgContainer, document.getElementById("DraggableContainer") )
 
@@ -384,10 +381,7 @@ $( function()
      * @function .windowminimizebtn.click()
      * @description Show and hide contents of the tool windows works generically so we can add more later
      */
-    $('button.windowminimizebtn').on( "click", function(event)
-    {
-        minimizeToolsWindow(event)
-    });
+    $('button.windowminimizebtn').on( "click", (event) => { minimizeToolsWindow(event) });
     
     /**
      * @function #penciloptbtn.click()
@@ -511,251 +505,239 @@ $( function()
      * @function .windowoptionsbar.click()
      * @description Hide and show the toolbox if the option bar is clicked
      */
-    $(".windowoptionsbar").on("click", function(event)
-    {
-        optionsAction(event.target)
-    })
+    $(".windowoptionsbar").on("click", (event) => { optionsAction(event.target); });
 
     /**
      * @function exportbtn.mousedown()
      * @description drae the box that is used for inputing export information
      */
-    $('#exportbtn').on("mousedown", function(event) {
+    $('#exportbtn').on("mousedown", () => {
+            // TODO: 3 format the output box better
 
-        // TODO: 3 format the output box better
-
-        // if the exportbox exists cancel whole function
-        if( document.querySelectorAll("div[class='exportmainbox']").length !== 0)
-        {
-            // dont allow bubbling
-            return false;
-        }
-
-        let mainholder = document.createElement("div"),
-            titleholder = document.createElement("div"),
-            inputholder = document.createElement("div"),
-            buttonholder = document.createElement("div"),
-            title = document.createElement("h3"),
-            savebtn = document.createElement("button"),
-            cancelbtn = document.createElement("button"),
-            leftbox = document.createElement("div"),
-            centerbox = document.createElement("div"),
-            form = document.createElement("form"),
-            fileinputname = document.createElement("input"),
-            fileinputtype = document.createElement("input"),
-            fileinputtypelabel = document.createElement("label"),
-            fileinputtypesvglabel = document.createElement("label"),
-            fileinputnamelabel = document.createElement("label"),
-            rightbox = document.createElement("div");
-
-        titleholder.classList.add("exporttitlebox");
-        inputholder.classList.add("exportinputholder");
-        buttonholder.classList.add("exportbuttonholder");
-
-        title.innerHTML = "Save Figure As ...";
-        titleholder.appendChild(title);
-
-        savebtn.innerHTML = "Download";
-        savebtn.type = "button"
-        savebtn.classList.add("exportpanelbtn")
-        savebtn.setAttribute("id", "savebtn")
-
-        cancelbtn.innerHTML = "Cancel";
-        cancelbtn.classList.add("exportpanelbtn")
-
-        centerbox.style.width = "30%";
-
-        leftbox.appendChild(cancelbtn)
-        leftbox.style.textAlign = "center"
-        leftbox.style.width = "30%"
-
-        rightbox.appendChild(savebtn)
-        rightbox.style.width = "30%"
-        rightbox.style.textAlign = "center"
-
-        fileinputname.setAttribute("name", "exportfilename")
-        fileinputname.setAttribute("type", "text")
-        fileinputnamelabel.innerHTML = "File Name:  "
-        fileinputname.placeholder = "filename"
-        
-        fileinputtype.setAttribute("name", "exportfiletype-svg")
-        fileinputtype.setAttribute("type", "checkbox")
-        fileinputtypelabel.innerHTML = "Output Types:   "
-
-        fileinputtypesvglabel.innerHTML = "SVG"
-        fileinputtypesvglabel.style.margin = "0 auto 0 0"
-        fileinputtypesvglabel.style.width = "3em"
-
-        var fileinputtype1 = fileinputtype.cloneNode(true);
-
-        let fileinputtypepnglabel = fileinputtypesvglabel.cloneNode(true)
-        fileinputtypepnglabel.innerHTML = "PNG"
-
-        var fileinputtype2 = fileinputtype.cloneNode(true);
-
-        let fileinputtypetifflabel = fileinputtypesvglabel.cloneNode(true)
-        fileinputtypetifflabel.innerHTML = "GeoTIFF"
-        
-        //remove this function for the next docker build of v1.1.0
-        //fileinputtype2.classList.add("disabled")
-
-        var fileinputtype3 = fileinputtype.cloneNode(true);
-
-        let fileinputtypejpeglabel = fileinputtypesvglabel.cloneNode(true)
-        fileinputtypejpeglabel.innerHTML = "JPEG"
-
-        form.setAttribute("method", "post")
-        form.setAttribute("enctype", "multipart/form-data")
-        form.setAttribute("runat", "server")
-        form.setAttribute("action", "/export")
-
-        let formlabelbox = document.createElement("div")
-        let forminputbox = document.createElement("div")
-        let forminputcheckboxholder = document.createElement("div")
-        let dividericonbox = document.createElement("div")
-
-        dividericonbox.innerHTML ="&rarr;"
-        dividericonbox.style.margin ="0 auto 0 0"
-        dividericonbox.style.width = "1em"
-
-        formlabelbox.classList.add("formlabelbox")
-        forminputbox.classList.add("forminputbox")
-        forminputcheckboxholder.classList.add("forminputcheckboxholder")
-
-        formlabelbox.append( fileinputnamelabel, document.createElement("br"),  document.createElement("br"), fileinputtypelabel )
-        forminputbox.append( fileinputname, forminputcheckboxholder )
-
-        let columnsvg = document.createElement("div")
-        let columnpng = document.createElement("div")
-        let columntiff = document.createElement("div")
-        let columnjpg = document.createElement("div")
-
-        columnsvg.classList.add("column")
-        columnpng.classList.add("column")
-        columntiff.classList.add("column")
-        columnjpg.classList.add("column")
-
-        columnsvg.append(fileinputtypesvglabel, dividericonbox , fileinputtype)
-        columnpng.append(fileinputtypepnglabel, dividericonbox.cloneNode(true), fileinputtype1)
-        //columntiff.append(fileinputtypetifflabel, dividericonbox.cloneNode(true), fileinputtype2)
-        columnjpg.append(fileinputtypejpeglabel,  dividericonbox.cloneNode(true), fileinputtype3)
-
-        forminputcheckboxholder.append(columnsvg , columntiff, columnpng, columnjpg)
-
-        form.append( formlabelbox, forminputbox )
-
-        inputholder.appendChild(form)
-
-        /**
-         * @function onclick savebtn
-         * @description send a post to the server to download an svg file of the svgcontainer
-         * */
-        savebtn.addEventListener("click", function ( event )
-        {
-            event.preventDefault();
-
-            var regexp = new RegExp( /([A-Z]|[0-9])*(?:\.(png|jpg|svg|tiff|tif)|\s)$/i ),
-                breakFlag = false;
-
-            // change the color of the borde for bad filename
-            if(  regexp.test(fileinputname.value) || fileinputname.value.length == 0 )
-            {
-                fileinputname.classList.add("invalid")
-                breakFlag = true;
-                alert("User Error: filename should not include any file extension.\n Example: 'test.png' should be 'test'.")
-            }
-            else
-            {
-                fileinputname.classList.remove("invalid")
-            }
-
-            // change color of the input box if needed
-            if( validFileTypes( fileinputtype.checked, fileinputtype1.checked, fileinputtype2.checked, fileinputtype3.checked) && !breakFlag )
-            {
-                forminputcheckboxholder.classList.remove("invalid")
-            }
-            else if( !breakFlag )
-            {
-                forminputcheckboxholder.classList.add("invalid")
-                breakFlag = true;
-                alert("User Error: Must select an export type from the checkboxes.")
-            }
-
-            // send request if the filename input is not empty
-            if( fileinputname.value.length !== 0 && !breakFlag )
-            {
-                // create the request data using the form
-                var fd = new FormData(form)
-                var xhr = new XMLHttpRequest();
-
-                // set response type
-                xhr.responseType = 'json'
-
-                var temp = cleanSVG( document.getElementById("figurecontainer").cloneNode(true) )
-
-                // append the xml header line to make an official svg file
-                var data = 
-                    '<?xml version="1.0" encoding="UTF-8"?>'
-                    + (new XMLSerializer()).serializeToString( temp );
-
-                // creates a blob from the encoded svg and sets the type of the blob to and image svg
-                var svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
-
-                // append the svgBlob as a file with the name given the exportfile 
-                fd.append("exportfile", svgBlob, fileinputname.value+"_tmp.svg" )
-                fd.append("svg", fileinputtype.checked )
-                fd.append("png", fileinputtype1.checked )
-                //fd.append("tiff",fileinputtype2.checked )
-                fd.append("jpeg",fileinputtype3.checked )
-                fd.append("dims",figsizeselect.value )
-
-                // when the requests load handle the response
-                xhr.onloadend = () => {
-                    // response has all the links for downloading images
-                    Object.keys(xhr.response).forEach( filetype => {
-                        const filename = xhr.response[filetype];
-
-                        // create new formdata to tell the server what to download
-                        var postData = new FormData();
-                        postData.append('fileName', filename);
-
-                        // set up the XMLHttp request to the download link
-                        var xhrd = new XMLHttpRequest();
-                        xhrd.open('GET', '/download/'+filename, true);
-                        xhrd.responseType = 'blob';
-
-                        // download the blob as a file
-                        xhrd.onload = function (event) {
-                            var blob = this.response;
-                            saveBlob(blob, filename);
-                        }
-                        xhrd.send(postData);
-                    });
-                }
-
-                // open the request and send the data
-                xhr.open('POST', "/export", true)
-                xhr.send(fd)
-
-                // remove the UI download box
-                cancelbtn.click();
+            // if the exportbox exists cancel whole function
+            if (document.querySelectorAll("div[class='exportmainbox']").length !== 0) {
+                // dont allow bubbling
                 return false;
             }
-            return false;
-        })
 
-        // cancel button listener
-        cancelbtn.addEventListener("click", (event) => {
-            document.getElementById("maincontent").removeChild(mainholder)
-        })
+            let mainholder = document.createElement("div"),
+                titleholder = document.createElement("div"),
+                inputholder = document.createElement("div"),
+                buttonholder = document.createElement("div"),
+                title = document.createElement("h3"),
+                savebtn = document.createElement("button"),
+                cancelbtn = document.createElement("button"),
+                leftbox = document.createElement("div"),
+                centerbox = document.createElement("div"),
+                form = document.createElement("form"),
+                fileinputname = document.createElement("input"),
+                fileinputtype = document.createElement("input"),
+                fileinputtypelabel = document.createElement("label"),
+                fileinputtypesvglabel = document.createElement("label"),
+                fileinputnamelabel = document.createElement("label"),
+                rightbox = document.createElement("div");
 
-        // append the main section boxes for the button holder
-        buttonholder.append(leftbox, centerbox, rightbox);
-        mainholder.append(titleholder, inputholder, document.createElement("br"), buttonholder);
-        mainholder.classList.add("exportmainbox");
-        // append the main content box
-        document.getElementById("maincontent").appendChild(mainholder);
-    })
+            titleholder.classList.add("exporttitlebox");
+            inputholder.classList.add("exportinputholder");
+            buttonholder.classList.add("exportbuttonholder");
+
+            title.innerHTML = "Save Figure As ...";
+            titleholder.appendChild(title);
+
+            savebtn.innerHTML = "Download";
+            savebtn.type = "button";
+            savebtn.classList.add("exportpanelbtn");
+            savebtn.setAttribute("id", "savebtn");
+
+            cancelbtn.innerHTML = "Cancel";
+            cancelbtn.classList.add("exportpanelbtn");
+
+            centerbox.style.width = "30%";
+
+            leftbox.appendChild(cancelbtn);
+            leftbox.style.textAlign = "center";
+            leftbox.style.width = "30%";
+
+            rightbox.appendChild(savebtn);
+            rightbox.style.width = "30%";
+            rightbox.style.textAlign = "center";
+
+            fileinputname.setAttribute("name", "exportfilename");
+            fileinputname.setAttribute("type", "text");
+            fileinputnamelabel.innerHTML = "File Name:  ";
+            fileinputname.placeholder = "filename";
+
+            fileinputtype.setAttribute("name", "exportfiletype-svg");
+            fileinputtype.setAttribute("type", "checkbox");
+            fileinputtypelabel.innerHTML = "Output Types:   ";
+
+            fileinputtypesvglabel.innerHTML = "SVG";
+            fileinputtypesvglabel.style.margin = "0 auto 0 0";
+            fileinputtypesvglabel.style.width = "3em";
+
+            var fileinputtype1 = fileinputtype.cloneNode(true);
+
+            let fileinputtypepnglabel = fileinputtypesvglabel.cloneNode(true);
+            fileinputtypepnglabel.innerHTML = "PNG";
+
+            var fileinputtype2 = fileinputtype.cloneNode(true);
+
+            let fileinputtypetifflabel = fileinputtypesvglabel.cloneNode(true);
+            fileinputtypetifflabel.innerHTML = "GeoTIFF";
+
+            //remove this function for the next docker build of v1.1.0
+            //fileinputtype2.classList.add("disabled")
+            var fileinputtype3 = fileinputtype.cloneNode(true);
+
+            let fileinputtypejpeglabel = fileinputtypesvglabel.cloneNode(true);
+            fileinputtypejpeglabel.innerHTML = "JPEG";
+
+            form.setAttribute("method", "post");
+            form.setAttribute("enctype", "multipart/form-data");
+            form.setAttribute("runat", "server");
+            form.setAttribute("action", "/export");
+
+            let formlabelbox = document.createElement("div");
+            let forminputbox = document.createElement("div");
+            let forminputcheckboxholder = document.createElement("div");
+            let dividericonbox = document.createElement("div");
+
+            dividericonbox.innerHTML = "&rarr;";
+            dividericonbox.style.margin = "0 auto 0 0";
+            dividericonbox.style.width = "1em";
+
+            formlabelbox.classList.add("formlabelbox");
+            forminputbox.classList.add("forminputbox");
+            forminputcheckboxholder.classList.add("forminputcheckboxholder");
+
+            formlabelbox.append(fileinputnamelabel, document.createElement("br"), document.createElement("br"), fileinputtypelabel);
+            forminputbox.append(fileinputname, forminputcheckboxholder);
+
+            let columnsvg = document.createElement("div");
+            let columnpng = document.createElement("div");
+            let columntiff = document.createElement("div");
+            let columnjpg = document.createElement("div");
+
+            columnsvg.classList.add("column");
+            columnpng.classList.add("column");
+            columntiff.classList.add("column");
+            columnjpg.classList.add("column");
+
+            columnsvg.append(fileinputtypesvglabel, dividericonbox, fileinputtype);
+            columnpng.append(fileinputtypepnglabel, dividericonbox.cloneNode(true), fileinputtype1);
+            //columntiff.append(fileinputtypetifflabel, dividericonbox.cloneNode(true), fileinputtype2)
+            columnjpg.append(fileinputtypejpeglabel, dividericonbox.cloneNode(true), fileinputtype3);
+
+            forminputcheckboxholder.append(columnsvg, columntiff, columnpng, columnjpg);
+
+            form.append(formlabelbox, forminputbox);
+
+            inputholder.appendChild(form);
+
+            /**
+             * @function onclick savebtn
+             * @description send a post to the server to download an svg file of the svgcontainer
+             * */
+            savebtn.addEventListener("click", function (event) {
+                event.preventDefault();
+
+                var regexp = new RegExp(/([A-Z]|[0-9])*(?:\.(png|jpg|svg|tiff|tif)|\s)$/i),
+                    breakFlag = false;
+
+                // change the color of the borde for bad filename
+                if (regexp.test(fileinputname.value) || fileinputname.value.length == 0) {
+                    fileinputname.classList.add("invalid");
+                    breakFlag = true;
+                    alert("User Error: filename should not include any file extension.\n Example: 'test.png' should be 'test'.");
+                }
+
+                else {
+                    fileinputname.classList.remove("invalid");
+                }
+
+                // change color of the input box if needed
+                if (validFileTypes(fileinputtype.checked, fileinputtype1.checked, fileinputtype2.checked, fileinputtype3.checked) && !breakFlag) {
+                    forminputcheckboxholder.classList.remove("invalid");
+                }
+                else if (!breakFlag) {
+                    forminputcheckboxholder.classList.add("invalid");
+                    breakFlag = true;
+                    alert("User Error: Must select an export type from the checkboxes.");
+                }
+
+                // send request if the filename input is not empty
+                if (fileinputname.value.length !== 0 && !breakFlag) {
+                    // create the request data using the form
+                    var fd = new FormData(form);
+                    var xhr = new XMLHttpRequest();
+
+                    // set response type
+                    xhr.responseType = 'json';
+
+                    var temp = cleanSVG(document.getElementById("figurecontainer").cloneNode(true));
+
+                    // append the xml header line to make an official svg file
+                    var data = '<?xml version="1.0" encoding="UTF-8"?>'
+                        + (new XMLSerializer()).serializeToString(temp);
+
+                    // creates a blob from the encoded svg and sets the type of the blob to and image svg
+                    var svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
+
+                    // append the svgBlob as a file with the name given the exportfile 
+                    fd.append("exportfile", svgBlob, fileinputname.value + "_tmp.svg");
+                    fd.append("svg", fileinputtype.checked);
+                    fd.append("png", fileinputtype1.checked);
+                    //fd.append("tiff",fileinputtype2.checked )
+                    fd.append("jpeg", fileinputtype3.checked);
+                    fd.append("dims", figsizeselect.value);
+
+                    // when the requests load handle the response
+                    xhr.onloadend = () => {
+                        // response has all the links for downloading images
+                        Object.keys(xhr.response).forEach(filetype => {
+                            const filename = xhr.response[filetype];
+
+                            // create new formdata to tell the server what to download
+                            var postData = new FormData();
+                            postData.append('fileName', filename);
+
+                            // set up the XMLHttp request to the download link
+                            var xhrd = new XMLHttpRequest();
+                            xhrd.open('GET', '/download/' + filename, true);
+                            xhrd.responseType = 'blob';
+
+                            // download the blob as a file
+                            xhrd.onload = function (event) {
+                                var blob = this.response;
+                                saveBlob(blob, filename);
+                            };
+                            xhrd.send(postData);
+                        });
+                    };
+
+                    // open the request and send the data
+                    xhr.open('POST', "/export", true);
+                    xhr.send(fd);
+
+                    // remove the UI download box
+                    cancelbtn.click();
+                    return false;
+                }
+                return false;
+            });
+
+            // cancel button listener
+            cancelbtn.addEventListener("click", (event) => {
+                document.getElementById("maincontent").removeChild(mainholder);
+            });
+
+            // append the main section boxes for the button holder
+            buttonholder.append(leftbox, centerbox, rightbox);
+            mainholder.append(titleholder, inputholder, document.createElement("br"), buttonholder);
+            mainholder.classList.add("exportmainbox");
+            // append the main content box
+            document.getElementById("maincontent").appendChild(mainholder);
+        })
 
     /** 
      * @function .toolboxminimizebtn.click() 
@@ -1783,59 +1765,26 @@ $( function()
      * @description Changes the background color of the editing area.
      * will be visible when exported
      */
-    $('#backgroundcolor').on("change", () =>
-    {
-        setSVGBackground("bgelement", bgPicker.value)
-    })
+    $('#backgroundcolor').on("change", (event) => { setSVGBackground("bgelement", event.target.value) });
 
-    /** Annotation buttons */
     /**
-     * @function northarrowopt.onmousedown
-     * @description this function starts the drag and drop logic for the north icon
+     * Loop over all the buttons and set the custom drag and drop functions
      */
-    $('#northarrowopt').on("mousedown", (event) =>
+    geoIconArray.forEach(element => {
+        $(element).on("mousedown", geoIconButtonListener)
+    });
+
+    /**
+     * @function geoIconButtonListener
+     * @param {MouseEvent} event 
+     * @description this function is used to start the drag and drop events for the image metadata relignent buttons
+     */
+    function geoIconButtonListener( event )
     {
         if( leftClick(event.button) )
         {
             event.preventDefault()
-
-            let btn = event.target
-
-            if( btn.classList.contains("disabled") )
-            {
-                return false;
-            }
-            else if( getObjectCount(0,"image") != 0 )
-            {
-                if(selectedObject){
-                    selectedObject = null
-                }
-                else {
-
-                    // make new shadow icon
-                    shadowIcon.icon = shadowIcon.drawShadowIcon( event )
-                    document.addEventListener("mousemove", shadowIcon.shadowAnimate);
-                    document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
-
-                    btn.classList.add("selected")
-                    document.addEventListener("mouseup", setElement, true)
-                }
-            }
-            else{
-                alert("There Must be an image in the figure to attach a North Arrow")
-            }
-        }
-    })
-
-    /**
-     * @function scalebarbtnopt.onmousedown
-     * @description this function starts the drag and drop logic for the north icon
-     */
-    $('#scalebarbtnopt').on("mousedown", (event) =>
-    {
-        if( leftClick(event.button) )
-        {
-
+            
             let btn = ( event.target.nodeName == "BUTTON" )? event.target: event.target.parentElement;
             if( btn.classList.contains("disabled") )
             {
@@ -1857,138 +1806,11 @@ $( function()
                 }
             }
             else{
-                alert("There Must be an image in the figure to attach a Scalebar")
+                alert("There must be a Geospacial Image in the figure to add geo icons.")
             }
         }
-    })
-    
-    /**
-     * @function sunarrowopt.onmousedown
-     * @description this function starts the drag and drop logic for the sun icon
-     */
-    $('#sunarrowopt').on("mousedown", (event) =>
-    {
-        if( leftClick(event.button) )
-        {
-            event.preventDefault()
-
-            let btn = event.target
-
-            if( btn.classList.contains("disabled") )
-            {
-                return false;
-            }
-            // check if there is an image
-            else if( getObjectCount(0,"image") != 0 )
-            {
-                // set selected and se selected UI
-                if( selectedObject )
-                {
-                    selectedObject = null
-                }
-                else
-                {
-                    // make new shadow icon
-                    shadowIcon.icon = shadowIcon.drawShadowIcon( event )
-                    document.addEventListener("mousemove", shadowIcon.shadowAnimate);
-                    document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
-
-                    btn.classList.add("selected")
-                    document.addEventListener("mouseup", setElement, true)
-                }
-            }
-            else
-            {
-                alert("There Must be an image in the figure to attach a Sun Arrow")
-            }
-        }
-    })
-
-    /**
-     * @function sunarrowopt.onmousedown
-     * @description this function starts the drag and drop logic for the sun icon
-     */
-    $('#keyopt').on("mousedown", (event) =>
-    {
-        if( leftClick(event.button) )
-        {
-            event.preventDefault()
-
-            let btn = event.target
-
-            if( btn.classList.contains("disabled") )
-            {
-                return false;
-            }
-            // check if there is an image
-            else if( getObjectCount(0,"image") != 0 )
-            {
-                // set selected and se selected UI
-                if( selectedObject )
-                {
-                    selectedObject = null
-                }
-                else
-                {
-                    // make new shadow icon
-                    shadowIcon.icon = shadowIcon.drawShadowIcon( event )
-                    document.addEventListener("mousemove", shadowIcon.shadowAnimate);
-                    document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
-
-                    btn.classList.add("selected")
-                    document.addEventListener("mouseup", setElement, true)
-                }
-            }
-            else
-            {
-                alert("There Must be an image in the figure to attach a Figure Key")
-            }
-        }
-    })
-    
-    /**
-     * @function observerharrowopt.onmousedown
-     * @description this function starts the drag and drop logic for observer icon
-     */
-    $('#observerarrowopt').on("mousedown", (event) =>
-    {
-        if( leftClick(event.button) )
-        {
-            event.preventDefault()
-
-            let btn = event.target
-
-            if( btn.classList.contains("disabled") )
-            {
-                return false;
-            }
-            // if there is no image fail and alert
-            else if( getObjectCount(0,"image") != 0 )
-            {
-                // if the selected object is not null set it to null
-                if( selectedObject )
-                {
-                    selectedObject = null
-                }
-                else
-                {
-                    // make new shadow icon
-                    shadowIcon.icon = shadowIcon.drawShadowIcon( event )
-                    document.addEventListener("mousemove", shadowIcon.shadowAnimate);
-                    document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
-                    
-                    // set the selected UI for the observer
-                    btn.classList.add("selected")
-                    document.addEventListener("mouseup", setElement, true)
-                }
-            }
-            else
-            {
-                alert("There Must be an image in the figure to attach an Observer Arrow")
-            }
-        }
-    })
-
+    }
+ 
     /**
      * @function setElement
      * @param {_Event} event 
@@ -2399,7 +2221,6 @@ function retrieveDataObject( holderid )
 
     // TODO: THIS IS WHERE I CAN ADD THE PARSER FOR ALL THE KEY DATA
     console.log(holder.getAttribute("Emission"))
-
 }
 
 
@@ -2453,12 +2274,8 @@ var startButtonManager = function() {
         refresh: function()
         {
             // deactivate all the buttons
-            document.getElementById("northarrowopt").classList.add("disabled")
-            document.getElementById("sunarrowopt").classList.add("disabled")
-            document.getElementById("observerarrowopt").classList.add("disabled")
-            document.getElementById("scalebarbtnopt").classList.add("disabled")
-            document.getElementById("keyopt").classList.add("disabled")
-
+            setMains("disable")
+            
             // activate only the ones that are needed
             Object.keys(MemoryObject).forEach( imageId => {
 
@@ -3297,6 +3114,12 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             toolbox.append( scaleoptionbar, scaleicontoolbox )
             break
 
+        case "key":
+            
+            
+            
+            break
+
         default:
             console.log("UHHH OHH this is wrong")
     }
@@ -3555,6 +3378,30 @@ function changeColorsOfChildren( children, color , ...order )
     }
 }
 
+/**
+ * 
+ * @param {*} activation 
+ */
+function setMains( activation )
+{
+    switch( activation )
+    {
+        case "enable":
+            geoIconArray.forEach( (geoId) => {
+                document.getElementById(geoId.replace("#", '')).classList.remove( "disabled" )
+            });
+            break;
+        case "disable":
+            geoIconArray.forEach( (geoId) => {
+                document.getElementById(geoId.replace("#", '')).classList.add( "disabled" )
+            });
+            break;
+        default:
+            console.error("Unknown Activation Code")
+            break;
+    }
+}
+
 
 /**
  * @function changeButtonActivation
@@ -3567,63 +3414,45 @@ function changeButtonActivation( ActivationCode, code )
     {
         switch( code ) 
         {
-            case 0:
+            case 0: // change all icons and outline
+                setMains(ActivationCode)
+
                 // enable or disable buttons depending on code
                 if( ActivationCode == "enable" )
-                {
-                    document.getElementById( "northarrowopt" ).classList.remove( "disabled" )
-                    document.getElementById( "observerarrowopt" ).classList.remove( "disabled" )
-                    document.getElementById( "sunarrowopt" ).classList.remove( "disabled" )
-                    document.getElementById( "scalebarbtnopt" ).classList.remove( "disabled" )
+                {                    
                     document.getElementById( "outlinebtnopt" ).classList.remove( "disabled" )
                 }
                 else if( ActivationCode == "disable" )
                 {
-                    document.getElementById( "northarrowopt" ).classList.add( "disabled" )
-                    document.getElementById( "observerarrowopt" ).classList.add( "disabled" )
-                    document.getElementById( "scalebarbtnopt" ).classList.add( "disabled" )
-                    document.getElementById( "sunarrowopt" ).classList.add( "disabled" )
                     document.getElementById( "outlinebtnopt" ).classList.add( "disabled" )
                 }
                 break
             
-            case 1:
+            case 1: // change all icons and pencil
+                setMains(ActivationCode)
+
                 // enable or disable buttons depending on code
                 if( ActivationCode == "enable" )
                 {
-                    document.getElementById( "northarrowopt" ).classList.remove( "disabled" )
-                    document.getElementById( "observerarrowopt" ).classList.remove( "disabled" )
-                    document.getElementById( "scalebarbtnopt" ).classList.remove( "disabled" )
-                    document.getElementById( "sunarrowopt" ).classList.remove( "disabled" )
                     document.getElementById( "penciloptbtn" ).classList.remove( "disabled" )
                 }
                 else if( ActivationCode == "disable" )
                 {
-                    document.getElementById( "northarrowopt" ).classList.add( "disabled" )
-                    document.getElementById( "observerarrowopt" ).classList.add( "disabled" )
-                    document.getElementById( "scalebarbtnopt" ).classList.add( "disabled" )
-                    document.getElementById( "sunarrowopt" ).classList.add( "disabled" )
                     document.getElementById( "penciloptbtn" ).classList.add( "disabled" )
                 }
                 break
             
-            case 2:
+            case 2: // change all icons
+                setMains(ActivationCode)
+
                 // enable or disable buttons depending on code
                 if( ActivationCode == "enable" )
                 {
-                    document.getElementById( "northarrowopt" ).classList.remove( "disabled" )
-                    document.getElementById( "observerarrowopt" ).classList.remove( "disabled" )
-                    document.getElementById( "scalebarbtnopt" ).classList.remove( "disabled" )
-                    document.getElementById( "sunarrowopt" ).classList.remove( "disabled" )
                     document.getElementById( "penciloptbtn" ).classList.remove( "disabled" )
                     document.getElementById( "outlinebtnopt" ).classList.remove( "disabled" )
                 }
                 else if( ActivationCode == "disable" )
-                {
-                    document.getElementById( "northarrowopt" ).classList.add( "disabled" )
-                    document.getElementById( "observerarrowopt" ).classList.add( "disabled" )
-                    document.getElementById( "scalebarbtnopt" ).classList.add( "disabled" )
-                    document.getElementById( "sunarrowopt" ).classList.add( "disabled" )
+                {                    
                     document.getElementById( "penciloptbtn" ).classList.add( "disabled" )
                     document.getElementById( "outlinebtnopt" ).classList.add( "disabled" )
                 }
@@ -4272,7 +4101,8 @@ function createMarker( markerString, lineid, headcode, endCode )
                 newmarker.setAttribute( "id", lineid + "-markerEnd" )
                 newmarker.firstElementChild.setAttribute("fill", line.getAttribute("stroke") )     
                 
-                // Removed until these issue is resolved https://github.com/lovell/sharp/issues/2459 & https://github.com/ChaddFrasier/PIE/issues/180
+                // Removed until these issue is resolved https://github.com/lovell/sharp/issues/2459 
+                // & https://github.com/ChaddFrasier/PIE/issues/180
                 // newmarker.setAttribute( "orient", "auto-start-reverse")
                 
                 newmarker.setAttribute( "data-cy", "markertail")
@@ -4305,8 +4135,9 @@ function optionsAction( target )
 }
 
 /**
- * 
- * @param {*} buttonid 
+ * @function leftClick
+ * @param {number} buttonid 
+ * @description return trun if the left mouse click happened false otherwise
  */
 function leftClick ( buttonid )
 {
