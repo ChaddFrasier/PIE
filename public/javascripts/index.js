@@ -20,8 +20,7 @@ $( function()
     preConfigPage()
 
     // local jquery variables
-    var bgPicker = document.getElementById("backgroundcolor"),
-        PencilFlag = false,
+    var PencilFlag = false,
         selectedObject = null,
         OutlineFlag = false,
         shadowIcon = initShadowIcon(),
@@ -34,8 +33,6 @@ $( function()
     let svgContainer = document.getElementById("figurecontainer")
     // add the custom keys 
     document.addEventListener("keydown", customKeys);
-    // set background right away when page loads
-    setSVGBackground("bgelement", bgPicker.value)
     // start draggable actions
     configDraggables( svgContainer, document.getElementById("DraggableContainer") )
 
@@ -1783,10 +1780,7 @@ $( function()
      * @description Changes the background color of the editing area.
      * will be visible when exported
      */
-    $('#backgroundcolor').on("change", () =>
-    {
-        setSVGBackground("bgelement", bgPicker.value)
-    })
+    $('#backgroundcolor').on("change", (event) => { setSVGBackground("bgelement", event.target.value) });
 
     /**
      * Loop over all the buttons and set the custom drag and drop functions
