@@ -9,7 +9,7 @@
  * @fileoverview main event loop for the index page of PIE
 */
 
-var draggableSvg = null, draggableList = null;
+var draggableSvg = null, draggableList = null, geoIconArray = Array('#northarrowopt', '#scalebarbtnopt', '#sunarrowopt', '#keyopt', '#observerarrowopt');;
 /**
  * @function document.ready()
  * @description Function that runs when the page is done loading
@@ -27,8 +27,7 @@ $( function()
         activeEventManager = startActiveEM(),
         draggingDot = null,
         rectstartx = 0,
-        rectstarty = 0,
-        geoIconArray = Array('#northarrowopt', '#scalebarbtnopt', '#sunarrowopt', '#keyopt', '#observerarrowopt');
+        rectstarty = 0;
 
     // get the global figure element
     let svgContainer = document.getElementById("figurecontainer")
@@ -3392,20 +3391,15 @@ function setMains( activation )
     switch( activation )
     {
         case "enable":
-            document.getElementById( "northarrowopt" ).classList.remove( "disabled" )
-            document.getElementById( "observerarrowopt" ).classList.remove( "disabled" )
-            document.getElementById( "sunarrowopt" ).classList.remove( "disabled" )
-            document.getElementById( "scalebarbtnopt" ).classList.remove( "disabled" )
-            document.getElementById( "keyopt" ).classList.remove( "disabled" )
+            geoIconArray.forEach( (geoId) => {
+                document.getElementById(geoId.replace("#", '')).classList.remove( "disabled" )
+            });
             break;
         case "disable":
-            document.getElementById( "northarrowopt" ).classList.add( "disabled" )
-            document.getElementById( "observerarrowopt" ).classList.add( "disabled" )
-            document.getElementById( "sunarrowopt" ).classList.add( "disabled" )
-            document.getElementById( "scalebarbtnopt" ).classList.add( "disabled" )
-            document.getElementById( "keyopt" ).classList.add( "disabled" )
+            geoIconArray.forEach( (geoId) => {
+                document.getElementById(geoId.replace("#", '')).classList.add( "disabled" )
+            });
             break;
-
         default:
             console.error("Unknown Activation Code")
             break;
