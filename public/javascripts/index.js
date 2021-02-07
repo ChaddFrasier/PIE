@@ -1788,54 +1788,24 @@ $( function()
         setSVGBackground("bgelement", bgPicker.value)
     })
 
-    /** Annotation buttons */
     /**
-     * @function northarrowopt.onmousedown
-     * @description this function starts the drag and drop logic for the north icon
+     * Loop over all the buttons and set the custom drag and drop functions
      */
-    $('#northarrowopt').on("mousedown", (event) =>
+    Array('#northarrowopt', '#scalebarbtnopt', '#sunarrowopt', '#keyopt', '#observerarrowopt').forEach(element => {
+        $(element).on("mousedown", geoIconButtonListener)
+    });
+
+    /**
+     * @function geoIconButtonListener
+     * @param {MouseEvent} event 
+     * @description this function is used to start the drag and drop events for the image metadata relignent buttons
+     */
+    function geoIconButtonListener( event )
     {
         if( leftClick(event.button) )
         {
             event.preventDefault()
-
-            let btn = event.target
-
-            if( btn.classList.contains("disabled") )
-            {
-                return false;
-            }
-            else if( getObjectCount(0,"image") != 0 )
-            {
-                if(selectedObject){
-                    selectedObject = null
-                }
-                else {
-
-                    // make new shadow icon
-                    shadowIcon.icon = shadowIcon.drawShadowIcon( event )
-                    document.addEventListener("mousemove", shadowIcon.shadowAnimate);
-                    document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
-
-                    btn.classList.add("selected")
-                    document.addEventListener("mouseup", setElement, true)
-                }
-            }
-            else{
-                alert("There Must be an image in the figure to attach a North Arrow")
-            }
-        }
-    })
-
-    /**
-     * @function scalebarbtnopt.onmousedown
-     * @description this function starts the drag and drop logic for the north icon
-     */
-    $('#scalebarbtnopt').on("mousedown", (event) =>
-    {
-        if( leftClick(event.button) )
-        {
-
+            
             let btn = ( event.target.nodeName == "BUTTON" )? event.target: event.target.parentElement;
             if( btn.classList.contains("disabled") )
             {
@@ -1857,138 +1827,11 @@ $( function()
                 }
             }
             else{
-                alert("There Must be an image in the figure to attach a Scalebar")
+                alert("There must be a Geospacial Image in the figure to add geo icons.")
             }
         }
-    })
-    
-    /**
-     * @function sunarrowopt.onmousedown
-     * @description this function starts the drag and drop logic for the sun icon
-     */
-    $('#sunarrowopt').on("mousedown", (event) =>
-    {
-        if( leftClick(event.button) )
-        {
-            event.preventDefault()
-
-            let btn = event.target
-
-            if( btn.classList.contains("disabled") )
-            {
-                return false;
-            }
-            // check if there is an image
-            else if( getObjectCount(0,"image") != 0 )
-            {
-                // set selected and se selected UI
-                if( selectedObject )
-                {
-                    selectedObject = null
-                }
-                else
-                {
-                    // make new shadow icon
-                    shadowIcon.icon = shadowIcon.drawShadowIcon( event )
-                    document.addEventListener("mousemove", shadowIcon.shadowAnimate);
-                    document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
-
-                    btn.classList.add("selected")
-                    document.addEventListener("mouseup", setElement, true)
-                }
-            }
-            else
-            {
-                alert("There Must be an image in the figure to attach a Sun Arrow")
-            }
-        }
-    })
-
-    /**
-     * @function sunarrowopt.onmousedown
-     * @description this function starts the drag and drop logic for the sun icon
-     */
-    $('#keyopt').on("mousedown", (event) =>
-    {
-        if( leftClick(event.button) )
-        {
-            event.preventDefault()
-
-            let btn = event.target
-
-            if( btn.classList.contains("disabled") )
-            {
-                return false;
-            }
-            // check if there is an image
-            else if( getObjectCount(0,"image") != 0 )
-            {
-                // set selected and se selected UI
-                if( selectedObject )
-                {
-                    selectedObject = null
-                }
-                else
-                {
-                    // make new shadow icon
-                    shadowIcon.icon = shadowIcon.drawShadowIcon( event )
-                    document.addEventListener("mousemove", shadowIcon.shadowAnimate);
-                    document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
-
-                    btn.classList.add("selected")
-                    document.addEventListener("mouseup", setElement, true)
-                }
-            }
-            else
-            {
-                alert("There Must be an image in the figure to attach a Figure Key")
-            }
-        }
-    })
-    
-    /**
-     * @function observerharrowopt.onmousedown
-     * @description this function starts the drag and drop logic for observer icon
-     */
-    $('#observerarrowopt').on("mousedown", (event) =>
-    {
-        if( leftClick(event.button) )
-        {
-            event.preventDefault()
-
-            let btn = event.target
-
-            if( btn.classList.contains("disabled") )
-            {
-                return false;
-            }
-            // if there is no image fail and alert
-            else if( getObjectCount(0,"image") != 0 )
-            {
-                // if the selected object is not null set it to null
-                if( selectedObject )
-                {
-                    selectedObject = null
-                }
-                else
-                {
-                    // make new shadow icon
-                    shadowIcon.icon = shadowIcon.drawShadowIcon( event )
-                    document.addEventListener("mousemove", shadowIcon.shadowAnimate);
-                    document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
-                    
-                    // set the selected UI for the observer
-                    btn.classList.add("selected")
-                    document.addEventListener("mouseup", setElement, true)
-                }
-            }
-            else
-            {
-                alert("There Must be an image in the figure to attach an Observer Arrow")
-            }
-        }
-    })
-
+    }
+ 
     /**
      * @function setElement
      * @param {_Event} event 
@@ -2399,7 +2242,6 @@ function retrieveDataObject( holderid )
 
     // TODO: THIS IS WHERE I CAN ADD THE PARSER FOR ALL THE KEY DATA
     console.log(holder.getAttribute("Emission"))
-
 }
 
 
@@ -4305,8 +4147,9 @@ function optionsAction( target )
 }
 
 /**
- * 
- * @param {*} buttonid 
+ * @function leftClick
+ * @param {number} buttonid 
+ * @description return trun if the left mouse click happened false otherwise
  */
 function leftClick ( buttonid )
 {
