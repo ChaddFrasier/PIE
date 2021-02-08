@@ -586,32 +586,29 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         fileinputtypesvglabel.style.margin = "0 auto 0 0";
         fileinputtypesvglabel.style.width = "3em";
 
-        var fileinputtype1 = fileinputtype.cloneNode(true);
+        let fileinputtype1 = fileinputtype.cloneNode(true),
+            fileinputtypetifflabel = fileinputtypesvglabel.cloneNode(true),
+            fileinputtypepnglabel = fileinputtypesvglabel.cloneNode(true),
+            fileinputtype2 = fileinputtype.cloneNode(true),
+            fileinputtype3 = fileinputtype.cloneNode(true),
+            fileinputtypejpeglabel = fileinputtypesvglabel.cloneNode(true);
 
-        let fileinputtypepnglabel = fileinputtypesvglabel.cloneNode(true);
         fileinputtypepnglabel.innerHTML = "PNG";
-
-        var fileinputtype2 = fileinputtype.cloneNode(true);
-
-        let fileinputtypetifflabel = fileinputtypesvglabel.cloneNode(true);
         fileinputtypetifflabel.innerHTML = "GeoTIFF";
+        fileinputtypejpeglabel.innerHTML = "JPEG";
 
         //remove this function for the next docker build of v1.1.0
-        //fileinputtype2.classList.add("disabled")
-        var fileinputtype3 = fileinputtype.cloneNode(true);
-
-        let fileinputtypejpeglabel = fileinputtypesvglabel.cloneNode(true);
-        fileinputtypejpeglabel.innerHTML = "JPEG";
+        //fileinputtype2.classList.add("disabled") 
 
         form.setAttribute("method", "post");
         form.setAttribute("enctype", "multipart/form-data");
         form.setAttribute("runat", "server");
         form.setAttribute("action", "/export");
 
-        let formlabelbox = document.createElement("div");
-        let forminputbox = document.createElement("div");
-        let forminputcheckboxholder = document.createElement("div");
-        let dividericonbox = document.createElement("div");
+        let formlabelbox = document.createElement("div"),
+            forminputbox = document.createElement("div"), 
+            forminputcheckboxholder = document.createElement("div"),
+            dividericonbox = document.createElement("div");
 
         dividericonbox.innerHTML = "&rarr;";
         dividericonbox.style.margin = "0 auto 0 0";
@@ -624,10 +621,10 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         formlabelbox.append(fileinputnamelabel, document.createElement("br"), document.createElement("br"), fileinputtypelabel);
         forminputbox.append(fileinputname, forminputcheckboxholder);
 
-        let columnsvg = document.createElement("div");
-        let columnpng = document.createElement("div");
-        let columntiff = document.createElement("div");
-        let columnjpg = document.createElement("div");
+        let columnsvg = document.createElement("div"),
+            columnpng = document.createElement("div"),
+            columntiff = document.createElement("div"),
+            columnjpg = document.createElement("div");
 
         columnsvg.classList.add("column");
         columnpng.classList.add("column");
@@ -640,52 +637,55 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         columnjpg.append(fileinputtypejpeglabel, dividericonbox.cloneNode(true), fileinputtype3);
 
         forminputcheckboxholder.append(columnsvg, columntiff, columnpng, columnjpg);
-
         form.append(formlabelbox, forminputbox);
-
         inputholder.appendChild(form);
 
         /**
          * @function onclick savebtn
          * @description send a post to the server to download an svg file of the svgcontainer
          * */
-        savebtn.addEventListener("click", function (event) {
+        savebtn.addEventListener( "click", function( event ) {
+            // prevent default form submit
             event.preventDefault();
 
-            var regexp = new RegExp(/([A-Z]|[0-9])*(?:\.(png|jpg|svg|tiff|tif)|\s)$/i),
+            var regexp = new RegExp( /([A-Z]|[0-9])*(?:\.(png|jpg|svg|tiff|tif)|\s)$/i ),
                 breakFlag = false;
 
-            // change the color of the borde for bad filename
-            if (regexp.test(fileinputname.value) || fileinputname.value.length == 0) {
+            // change the color of the border for bad filename
+            if( regexp.test(fileinputname.value) || fileinputname.value.length == 0 )
+            {
                 fileinputname.classList.add("invalid");
                 breakFlag = true;
                 alert("User Error: filename should not include any file extension.\n Example: 'test.png' should be 'test'.");
             }
-
-            else {
+            else 
+            {
                 fileinputname.classList.remove("invalid");
             }
 
             // change color of the input box if needed
-            if (validFileTypes(fileinputtype.checked, fileinputtype1.checked, fileinputtype2.checked, fileinputtype3.checked) && !breakFlag) {
+            if( validFileTypes(fileinputtype.checked, fileinputtype1.checked, fileinputtype2.checked, fileinputtype3.checked) 
+                && !breakFlag )
+            {
                 forminputcheckboxholder.classList.remove("invalid");
             }
-            else if (!breakFlag) {
+            else if( !breakFlag ) 
+            {
                 forminputcheckboxholder.classList.add("invalid");
                 breakFlag = true;
                 alert("User Error: Must select an export type from the checkboxes.");
             }
 
             // send request if the filename input is not empty
-            if (fileinputname.value.length !== 0 && !breakFlag) {
+            if( fileinputname.value.length !== 0 && !breakFlag )
+            {
                 // create the request data using the form
-                var fd = new FormData(form);
-                var xhr = new XMLHttpRequest();
+                var fd = new FormData(form),
+                    xhr = new XMLHttpRequest(),
+                    temp = cleanSVG(document.getElementById("figurecontainer").cloneNode(true));
 
                 // set response type
                 xhr.responseType = 'json';
-
-                var temp = cleanSVG(document.getElementById("figurecontainer").cloneNode(true));
 
                 // append the xml header line to make an official svg file
                 var data = '<?xml version="1.0" encoding="UTF-8"?>'
@@ -709,11 +709,12 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         const filename = xhr.response[filetype];
 
                         // create new formdata to tell the server what to download
-                        var postData = new FormData();
+                        var postData = new FormData(),
+                            xhrd = new XMLHttpRequest()
+                            
                         postData.append('fileName', filename);
 
                         // set up the XMLHttp request to the download link
-                        var xhrd = new XMLHttpRequest();
                         xhrd.open('GET', '/download/' + filename, true);
                         xhrd.responseType = 'blob';
 
@@ -738,7 +739,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         });
 
         // cancel button listener
-        cancelbtn.addEventListener("click", (event) => {
+        cancelbtn.addEventListener("click", () => {
             document.getElementById("maincontent").removeChild(mainholder);
         });
 
@@ -4818,7 +4819,7 @@ function removeAttributes ( object, ...attrs )
 /**
  * @function validFileTypes
  * @param  {...any} arr array of true or false values
- * @description this function will iterate trough the given argumnet array and return true if any true value is found
+ * @description this function will iterate through the given argumet array and return true if any true value is found
  */
 function validFileTypes( ...arr )
 {
