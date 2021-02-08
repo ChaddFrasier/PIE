@@ -2,9 +2,12 @@
  * @file DraggableArea.js
  * @requires svgHelper.js
  * @fileoverview 
- *      This file is used in PIE and can be used as a basic framework for a draggable container in HTML using javascript listeners (No JQuery needed)
+ *      This file is used in PIE and can be used as a basic framework for a draggable 
+ * container in HTML using javascript listeners (No JQuery needed)
+ * 
+ * dragObject() is the function that performs the dragging on the draggingIcon. 
+ * This is where the draggig can be updated later
 */
-
 "use strict";
 
 /**
@@ -21,88 +24,6 @@ function DraggableArea( objectbox=undefined )
         currentX = null,
         currentY = null,
         paused = false;
-
-    // ---------------- Private functions --------------------------
-
-    /**
-     * @function validNode
-     * @param {string} nodeName
-     * @description this function only checks that the node in question is valid for becoming a draggable area
-     * @returns {Boolean} True if the node can be converted into draggable area; False otherwise.
-     */
-    function validNode( nodeName )
-    {
-        var testarray = ["svg"];
-        // check test nodes for the current node name
-        return (testarray.indexOf(nodeName) > -1) ? true: false;
-    }
-
-    /**
-     * @function validDraggableNode 
-     * @param {string} nodeName 
-     * @description this function is only designed to return true in the case that the dragging object is a valid node to drag
-     * @returns {Boolean} True if the node can be dragged; False otherwise.
-     */
-    function validDraggableNode( nodeName )
-    {
-        var testarray = ["g", "line", "rect"];
-
-        // check test nodes for the current node name
-        return (testarray.indexOf(nodeName) > -1) ? true: false;
-    }
-
-    /**
-     * @function createSVGPoint
-     * @param {number} x - x translate
-     * @param {number} y - y translate
-     * @description this function creates a svg point from the svgContainer matrix and transforms it into the client space.
-     *  This is used to get the pixel in the svg that was clicked when dropping icons on screen
-     */
-    function createSVGP( x, y )
-    {
-        // create a blank svg point on screen
-        let pt = DragBoxContainer.createSVGPoint();
-        
-        // Then Scale the x and y into the point object 
-        pt.x = parseFloat( x );
-        pt.y = parseFloat( y );
-
-        if( !isNaN( pt.x ) && !isNaN( pt.y ) )
-        {
-            /**
-             * Apply a matrix tranform on the new point using the transform matrix of the target svg
-             *  Note: must inverse the matrix before tranforming the points
-             * */ 
-            return pt.matrixTransform( DragBoxContainer.getScreenCTM().inverse() );
-        }
-        else
-        {
-            console.error( "Error: SVG Point Mapping Failed" )
-        }
-    }
-
-    /**
-     * @function getIconParentContainer
-     * @param {Object} target 
-     * @description this function loops until failure or until a expected / draggable parent is found (Usually Fails in 4 to 5 loops)
-     */
-    function getIconParentContainer( target )
-    {
-        try {
-            while( !( target == null )
-            && !validDraggableNode(target.nodeName) && target.classList.contains("holder") )
-            {
-                target = target.parentElement;
-            }
-        }catch(err)
-        {
-            console.log(err);
-        }
-
-        return target;
-    }
-
-    // ---------------- ^ End Private functions ^ --------------------------
 
     // ----------------- Main Task section ----------------------------
     // validate initialization of DraggableObject
@@ -337,4 +258,87 @@ function DraggableArea( objectbox=undefined )
             NodeName: objectbox.nodeName
         };
     }
+
+    // ---------------- Private functions --------------------------
+
+    /**
+     * @function validNode
+     * @param {string} nodeName
+     * @description this function only checks that the node in question is valid for becoming a draggable area
+     * @returns {Boolean} True if the node can be converted into draggable area; False otherwise.
+     */
+    function validNode( nodeName )
+    {
+        var testarray = ["svg"];
+        // check test nodes for the current node name
+        return (testarray.indexOf(nodeName) > -1) ? true: false;
+    }
+
+    /**
+     * @function validDraggableNode 
+     * @param {string} nodeName 
+     * @description this function is only designed to return true in the case that the dragging object is a valid node to drag
+     * @returns {Boolean} True if the node can be dragged; False otherwise.
+     */
+    function validDraggableNode( nodeName )
+    {
+        var testarray = ["g", "line", "rect"];
+
+        // check test nodes for the current node name
+        return (testarray.indexOf(nodeName) > -1) ? true: false;
+    }
+
+    /**
+     * @function createSVGPoint
+     * @param {number} x - x translate
+     * @param {number} y - y translate
+     * @description this function creates a svg point from the svgContainer matrix and transforms it into the client space.
+     *  This is used to get the pixel in the svg that was clicked when dropping icons on screen
+     */
+    function createSVGP( x, y )
+    {
+        // create a blank svg point on screen
+        let pt = DragBoxContainer.createSVGPoint();
+        
+        // Then Scale the x and y into the point object 
+        pt.x = parseFloat( x );
+        pt.y = parseFloat( y );
+
+        if( !isNaN( pt.x ) && !isNaN( pt.y ) )
+        {
+            /**
+             * Apply a matrix tranform on the new point using the transform matrix of the target svg
+             *  Note: must inverse the matrix before tranforming the points
+             * */ 
+            return pt.matrixTransform( DragBoxContainer.getScreenCTM().inverse() );
+        }
+        else
+        {
+            console.error( "Error: SVG Point Mapping Failed" )
+        }
+    }
+
+    /**
+     * @function getIconParentContainer
+     * @param {Object} target 
+     * @description this function loops until failure or until a expected / draggable parent is found (Usually Fails in 4 to 5 loops)
+     */
+    function getIconParentContainer( target )
+    {
+        try {
+            while( !( target == null )
+            && !validDraggableNode(target.nodeName) && target.classList.contains("holder") )
+            {
+                target = target.parentElement;
+            }
+        }catch(err)
+        {
+            console.log(err);
+        }
+
+        return target;
+    }
+
+    // ---------------- ^ End Private functions ^ --------------------------
+
 }

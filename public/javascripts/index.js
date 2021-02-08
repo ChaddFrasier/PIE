@@ -9,15 +9,25 @@
  * @fileoverview main event loop for the index page of PIE
 */
 
-var draggableSvg = null, draggableList = null, geoIconArray = Array('#northarrowopt', '#scalebarbtnopt', '#sunarrowopt', '#keyopt', '#observerarrowopt');;
+
+
 /**
- * @function document.ready()
- * @description Function that runs when the page is done loading
- */
-$( function()
-{
+ * TODO: huge refactor coming this week to the main script files. 
+ * 
+ * - index.js is a global file and all declarations inside it is capable of being accesed form the browser 'window' object
+ * 
+ * - Remove all 
+*/
+
+var draggableSvg = null,
+    draggableList = null,
+    geoIconArray = Array('northarrowopt', 'scalebarbtnopt', 'sunarrowopt', 'keyopt', 'observerarrowopt');
+
+
+// Function executes when the page loads fully
+document.addEventListener( "DOMContentLoaded", ( event ) => {
     // Pre config
-    preConfigPage()
+    preConfigPage();
 
     // local jquery variables
     var PencilFlag = false,
@@ -31,6 +41,7 @@ $( function()
 
     // get the global figure element
     let svgContainer = document.getElementById("figurecontainer")
+    
     // add the custom keys 
     document.addEventListener("keydown", customKeys);
     // start draggable actions
@@ -276,7 +287,7 @@ $( function()
 
             // get the child list and the last child in the figure
             let children = draggableSvg.getContainerObject().children;
-            let rmChild = children[children.length - 1]
+            let rmChild = children[children.length - 1];
 
             // the pencil function is going
             if( PencilFlag )
@@ -290,7 +301,7 @@ $( function()
                 else
                 {
                     // else just turn off the drawing function
-                    $("button.drawing").trigger("click")
+                    document.querySelector("button.drawing").trigger("click")
                 }
             }
 
@@ -303,7 +314,7 @@ $( function()
                 }
                 else
                 {
-                    $("button.outlining").trigger("click")
+                    document.querySelector("button.outlining").trigger("click")
                 }
             }
         }
@@ -381,13 +392,15 @@ $( function()
      * @function .windowminimizebtn.click()
      * @description Show and hide contents of the tool windows works generically so we can add more later
      */
-    $('button.windowminimizebtn').on( "click", (event) => { minimizeToolsWindow(event) });
+    document.querySelectorAll('button.windowminimizebtn').forEach( button => {
+        button.addEventListener( "click", (event) => { minimizeToolsWindow(event) }) 
+    });
     
     /**
      * @function #penciloptbtn.click()
      * @description this function activates the drawing listeners and handles multiple click instances.
      */
-    $('#penciloptbtn').on("click", function( event )
+    document.getElementById('penciloptbtn').addEventListener("click", function( event )
     {    
         event.preventDefault()
         if( PencilFlag )
@@ -445,7 +458,7 @@ $( function()
      * @function #outlinebtnopt.click()
      * @description activate and deactivate the drawing capability of the rectangles 
      */
-    $('#outlinebtnopt').on("click", function( event )
+    document.getElementById('outlinebtnopt').addEventListener("click", function( event )
     {
         event.preventDefault()
         if( OutlineFlag )
@@ -505,13 +518,15 @@ $( function()
      * @function .windowoptionsbar.click()
      * @description Hide and show the toolbox if the option bar is clicked
      */
-    $(".windowoptionsbar").on("click", (event) => { optionsAction(event.target); });
+    document.querySelectorAll(".windowoptionsbar").forEach( bar => {
+        bar.addEventListener("click", (event) => { optionsAction(event.target); });
+    });
 
     /**
      * @function exportbtn.mousedown()
      * @description drae the box that is used for inputing export information
      */
-    $('#exportbtn').on("mousedown", () => {
+    document.getElementById('exportbtn').addEventListener("mousedown", () => {
             // TODO: 3 format the output box better
 
             // if the exportbox exists cancel whole function
@@ -743,40 +758,42 @@ $( function()
      * @function .toolboxminimizebtn.click() 
      * @description handler for the whole tool window mini button
      */
-    $('.toolboxminimizebtn').on("click", function(event)
-    {
-        let toolbox = document.getElementById('toolbox'),
-            imgbtn = document.getElementById('addimagebtn'),
-            capbtn = document.getElementById('addcaptionbtn'),
-            POWbtn = document.getElementById('addpowbtn');
-
-        // check if the box is already closed, if true, open it, otherwise close
-        if( toolbox.classList.contains('closed') )
+    document.querySelectorAll('.toolboxminimizebtn').forEach(button => {
+        button.addEventListener("click", function(event)
         {
-            toolbox.classList.remove('closed')
-            // reactivate the other buttons
-            imgbtn.classList.remove("disabled")
-            capbtn.classList.remove("disabled")
-            POWbtn.classList.remove("disabled")
-            event.target.innerHTML = "&larrb;"
-        }
-        else
-        {
-            toolbox.classList.add('closed')
-            // disable the other buttons to help focus on editing image
-            imgbtn.classList.add("disabled")
-            capbtn.classList.add("disabled")
-            POWbtn.classList.add("disabled")
+            let toolbox = document.getElementById('toolbox'),
+                imgbtn = document.getElementById('addimagebtn'),
+                capbtn = document.getElementById('addcaptionbtn'),
+                POWbtn = document.getElementById('addpowbtn');
 
-            event.target.innerHTML = "&rarrb;"
-        }
-    })
+            // check if the box is already closed, if true, open it, otherwise close
+            if( toolbox.classList.contains('closed') )
+            {
+                toolbox.classList.remove('closed')
+                // reactivate the other buttons
+                imgbtn.classList.remove("disabled")
+                capbtn.classList.remove("disabled")
+                POWbtn.classList.remove("disabled")
+                event.target.innerHTML = "&larrb;"
+            }
+            else
+            {
+                toolbox.classList.add('closed')
+                // disable the other buttons to help focus on editing image
+                imgbtn.classList.add("disabled")
+                capbtn.classList.add("disabled")
+                POWbtn.classList.add("disabled")
+
+                event.target.innerHTML = "&rarrb;"
+            }
+        });
+    });
 
     /**
      * @function button.toolboxaddcaptionbtn.click()
      * @description adds all caption elements to the svg and menu
      */
-    $('button.toolboxaddcaptionbtn').on("click", () =>
+    document.getElementById('addcaptionbtn').addEventListener("click", () =>
     {
         // used for identifying the tool box for each caption in the image 
         let captionId = randomId("caption"),
@@ -1099,7 +1116,7 @@ $( function()
      * TODO: POW
      * 
      */
-    $('button.toolboxaddpowbtn').on("click", () =>
+    document.getElementById('addpowbtn').addEventListener("click", () =>
     {
         // used for identifying the tool box for each caption in the image 
         let imageId = randomId("image"),
@@ -1238,7 +1255,7 @@ $( function()
      * TODO: refactor
      * 
      */
-    $('button.toolboxaddimagebtn').on("click", () =>
+    document.getElementById('addimagebtn').addEventListener("click", () =>
     {
         // used for identifying the tool box for each caption in the image 
         let imageId = randomId("image"),
@@ -1335,9 +1352,9 @@ $( function()
                     // occurs after readAsDataURL
                     reader.onload = function(e) {
                         // use jquery to update the image source
-                        $('#'+imageId).attr('href', e.target.result)
-                        $('#'+imageId).attr('GEO', null)
-                        $('#'+imageId).attr('filePath', null)
+                        document.getElementById(imageId).setAttribute('href', e.target.result)
+                        document.getElementById(imageId).setAttribute('GEO', null)
+                        document.getElementById(imageId).setAttribute('filePath', null)
 
                         ButtonManager.addImage( imageId, [])
 
@@ -1433,21 +1450,21 @@ $( function()
                             // occurs after readAsDataURL
                             reader.onload = function(e) {
                                 // use jquery to update the image source
-                                $('#'+imageId).attr('href', e.target.result)
-                                $('#'+imageId).attr('GEO', 'true')
+                                document.getElementById(imageId).setAttribute('href', e.target.result)
+                                document.getElementById(imageId).setAttribute('GEO', 'true')
 
                                 // TODO: if the lines or samples is not there then we need to figure out how to get 
                                 // set the height and width of the actual image.
-                                $('#'+imageId).attr('width', responseObject.pvlData.data['Samples'])
-                                $('#'+imageId).attr('height', responseObject.pvlData.data['Lines'])
+                                document.getElementById(imageId).setAttribute('width', responseObject.pvlData.data['Samples'])
+                                document.getElementById(imageId).setAttribute('height', responseObject.pvlData.data['Lines'])
 
                                 // update image input fields
-                                document.querySelector(`input[objectid='${imageId}'][name='widthinput']`).value = $('#'+imageId).attr("width")
-                                document.querySelector(`input[objectid='${imageId}'][name='heightinput']`).value = $('#'+imageId).attr("height")
+                                document.querySelector(`input[objectid='${imageId}'][name='widthinput']`).value = document.getElementById(imageId).getAttribute("width")
+                                document.querySelector(`input[objectid='${imageId}'][name='heightinput']`).value = document.getElementById(imageId).getAttribute("height")
                                 
                                 // read in the data values into attribute values for the image
                                 responseObject.pvlData.keys.forEach( key => {
-                                    $('#'+imageId).parent().attr(key, responseObject.pvlData.data[key])
+                                    document.getElementById(imageId).parentElement.setAttribute(key, responseObject.pvlData.data[key])
                                 });
 
                                 // test to see which data values where recieved and activate the buttons that need to be activated for each data value.
@@ -1750,7 +1767,7 @@ $( function()
      * @function figsizeselect.onchange
      * @description changes the viewbox setting of the output figure
      */
-    $('#figsizeselect').on("change", (event) =>
+    document.getElementById('figsizeselect').addEventListener("change", (event) =>
     {
         // update the svgContainer size
         let tmp = event.target.value.split("x")
@@ -1765,13 +1782,13 @@ $( function()
      * @description Changes the background color of the editing area.
      * will be visible when exported
      */
-    $('#backgroundcolor').on("change", (event) => { setSVGBackground("bgelement", event.target.value) });
+    document.getElementById('backgroundcolor').addEventListener("change", (event) => { setSVGBackground("bgelement", event.target.value) });
 
     /**
      * Loop over all the buttons and set the custom drag and drop functions
      */
     geoIconArray.forEach(element => {
-        $(element).on("mousedown", geoIconButtonListener)
+        document.getElementById(element).addEventListener("mousedown", geoIconButtonListener)
     });
 
     /**

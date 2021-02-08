@@ -1,9 +1,7 @@
 /**
  * @file PIE-api.js
- * @fileoverview this is a file that creates exportable functions to interact with the ISIS and GDAL command line interfaces. 
- * 
+ * @fileoverview this is a file that creates exportable functions to interact with the ISIS and GDAL command line interfaces.  
 */
-
 "use strict";
 
 // spawn to interact with the command line
