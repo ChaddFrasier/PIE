@@ -9,14 +9,10 @@
  * @fileoverview main event loop for the index page of PIE
 */
 
-
-
 /**
  * TODO: huge refactor coming this week to the main script files. 
  * 
  * - index.js is a global file and all declarations inside it is capable of being accesed form the browser 'window' object
- * 
- * - Remove all 
 */
 
 var draggableSvg = null,
@@ -452,7 +448,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             }
         }
         PencilFlag = !(PencilFlag)
-    })
+    });
 
     /**
      * @function #outlinebtnopt.click()
@@ -512,7 +508,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             }
         }
         OutlineFlag = !(OutlineFlag)
-    })
+    });
     
     /** 
      * @function .windowoptionsbar.click()
@@ -527,232 +523,232 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
      * @description drae the box that is used for inputing export information
      */
     document.getElementById('exportbtn').addEventListener("mousedown", () => {
-            // TODO: 3 format the output box better
+        // TODO: 3 format the output box better
 
-            // if the exportbox exists cancel whole function
-            if (document.querySelectorAll("div[class='exportmainbox']").length !== 0) {
-                // dont allow bubbling
-                return false;
+        // if the exportbox exists cancel whole function
+        if (document.querySelectorAll("div[class='exportmainbox']").length !== 0) {
+            // dont allow bubbling
+            return false;
+        }
+
+        let mainholder = document.createElement("div"),
+            titleholder = document.createElement("div"),
+            inputholder = document.createElement("div"),
+            buttonholder = document.createElement("div"),
+            title = document.createElement("h3"),
+            savebtn = document.createElement("button"),
+            cancelbtn = document.createElement("button"),
+            leftbox = document.createElement("div"),
+            centerbox = document.createElement("div"),
+            form = document.createElement("form"),
+            fileinputname = document.createElement("input"),
+            fileinputtype = document.createElement("input"),
+            fileinputtypelabel = document.createElement("label"),
+            fileinputtypesvglabel = document.createElement("label"),
+            fileinputnamelabel = document.createElement("label"),
+            rightbox = document.createElement("div");
+
+        titleholder.classList.add("exporttitlebox");
+        inputholder.classList.add("exportinputholder");
+        buttonholder.classList.add("exportbuttonholder");
+
+        title.innerHTML = "Save Figure As ...";
+        titleholder.appendChild(title);
+
+        savebtn.innerHTML = "Download";
+        savebtn.type = "button";
+        savebtn.classList.add("exportpanelbtn");
+        savebtn.setAttribute("id", "savebtn");
+
+        cancelbtn.innerHTML = "Cancel";
+        cancelbtn.classList.add("exportpanelbtn");
+
+        centerbox.style.width = "30%";
+
+        leftbox.appendChild(cancelbtn);
+        leftbox.style.textAlign = "center";
+        leftbox.style.width = "30%";
+
+        rightbox.appendChild(savebtn);
+        rightbox.style.width = "30%";
+        rightbox.style.textAlign = "center";
+
+        fileinputname.setAttribute("name", "exportfilename");
+        fileinputname.setAttribute("type", "text");
+        fileinputnamelabel.innerHTML = "File Name:  ";
+        fileinputname.placeholder = "filename";
+
+        fileinputtype.setAttribute("name", "exportfiletype-svg");
+        fileinputtype.setAttribute("type", "checkbox");
+        fileinputtypelabel.innerHTML = "Output Types:   ";
+
+        fileinputtypesvglabel.innerHTML = "SVG";
+        fileinputtypesvglabel.style.margin = "0 auto 0 0";
+        fileinputtypesvglabel.style.width = "3em";
+
+        var fileinputtype1 = fileinputtype.cloneNode(true);
+
+        let fileinputtypepnglabel = fileinputtypesvglabel.cloneNode(true);
+        fileinputtypepnglabel.innerHTML = "PNG";
+
+        var fileinputtype2 = fileinputtype.cloneNode(true);
+
+        let fileinputtypetifflabel = fileinputtypesvglabel.cloneNode(true);
+        fileinputtypetifflabel.innerHTML = "GeoTIFF";
+
+        //remove this function for the next docker build of v1.1.0
+        //fileinputtype2.classList.add("disabled")
+        var fileinputtype3 = fileinputtype.cloneNode(true);
+
+        let fileinputtypejpeglabel = fileinputtypesvglabel.cloneNode(true);
+        fileinputtypejpeglabel.innerHTML = "JPEG";
+
+        form.setAttribute("method", "post");
+        form.setAttribute("enctype", "multipart/form-data");
+        form.setAttribute("runat", "server");
+        form.setAttribute("action", "/export");
+
+        let formlabelbox = document.createElement("div");
+        let forminputbox = document.createElement("div");
+        let forminputcheckboxholder = document.createElement("div");
+        let dividericonbox = document.createElement("div");
+
+        dividericonbox.innerHTML = "&rarr;";
+        dividericonbox.style.margin = "0 auto 0 0";
+        dividericonbox.style.width = "1em";
+
+        formlabelbox.classList.add("formlabelbox");
+        forminputbox.classList.add("forminputbox");
+        forminputcheckboxholder.classList.add("forminputcheckboxholder");
+
+        formlabelbox.append(fileinputnamelabel, document.createElement("br"), document.createElement("br"), fileinputtypelabel);
+        forminputbox.append(fileinputname, forminputcheckboxholder);
+
+        let columnsvg = document.createElement("div");
+        let columnpng = document.createElement("div");
+        let columntiff = document.createElement("div");
+        let columnjpg = document.createElement("div");
+
+        columnsvg.classList.add("column");
+        columnpng.classList.add("column");
+        columntiff.classList.add("column");
+        columnjpg.classList.add("column");
+
+        columnsvg.append(fileinputtypesvglabel, dividericonbox, fileinputtype);
+        columnpng.append(fileinputtypepnglabel, dividericonbox.cloneNode(true), fileinputtype1);
+        //columntiff.append(fileinputtypetifflabel, dividericonbox.cloneNode(true), fileinputtype2)
+        columnjpg.append(fileinputtypejpeglabel, dividericonbox.cloneNode(true), fileinputtype3);
+
+        forminputcheckboxholder.append(columnsvg, columntiff, columnpng, columnjpg);
+
+        form.append(formlabelbox, forminputbox);
+
+        inputholder.appendChild(form);
+
+        /**
+         * @function onclick savebtn
+         * @description send a post to the server to download an svg file of the svgcontainer
+         * */
+        savebtn.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            var regexp = new RegExp(/([A-Z]|[0-9])*(?:\.(png|jpg|svg|tiff|tif)|\s)$/i),
+                breakFlag = false;
+
+            // change the color of the borde for bad filename
+            if (regexp.test(fileinputname.value) || fileinputname.value.length == 0) {
+                fileinputname.classList.add("invalid");
+                breakFlag = true;
+                alert("User Error: filename should not include any file extension.\n Example: 'test.png' should be 'test'.");
             }
 
-            let mainholder = document.createElement("div"),
-                titleholder = document.createElement("div"),
-                inputholder = document.createElement("div"),
-                buttonholder = document.createElement("div"),
-                title = document.createElement("h3"),
-                savebtn = document.createElement("button"),
-                cancelbtn = document.createElement("button"),
-                leftbox = document.createElement("div"),
-                centerbox = document.createElement("div"),
-                form = document.createElement("form"),
-                fileinputname = document.createElement("input"),
-                fileinputtype = document.createElement("input"),
-                fileinputtypelabel = document.createElement("label"),
-                fileinputtypesvglabel = document.createElement("label"),
-                fileinputnamelabel = document.createElement("label"),
-                rightbox = document.createElement("div");
+            else {
+                fileinputname.classList.remove("invalid");
+            }
 
-            titleholder.classList.add("exporttitlebox");
-            inputholder.classList.add("exportinputholder");
-            buttonholder.classList.add("exportbuttonholder");
+            // change color of the input box if needed
+            if (validFileTypes(fileinputtype.checked, fileinputtype1.checked, fileinputtype2.checked, fileinputtype3.checked) && !breakFlag) {
+                forminputcheckboxholder.classList.remove("invalid");
+            }
+            else if (!breakFlag) {
+                forminputcheckboxholder.classList.add("invalid");
+                breakFlag = true;
+                alert("User Error: Must select an export type from the checkboxes.");
+            }
 
-            title.innerHTML = "Save Figure As ...";
-            titleholder.appendChild(title);
+            // send request if the filename input is not empty
+            if (fileinputname.value.length !== 0 && !breakFlag) {
+                // create the request data using the form
+                var fd = new FormData(form);
+                var xhr = new XMLHttpRequest();
 
-            savebtn.innerHTML = "Download";
-            savebtn.type = "button";
-            savebtn.classList.add("exportpanelbtn");
-            savebtn.setAttribute("id", "savebtn");
+                // set response type
+                xhr.responseType = 'json';
 
-            cancelbtn.innerHTML = "Cancel";
-            cancelbtn.classList.add("exportpanelbtn");
+                var temp = cleanSVG(document.getElementById("figurecontainer").cloneNode(true));
 
-            centerbox.style.width = "30%";
+                // append the xml header line to make an official svg file
+                var data = '<?xml version="1.0" encoding="UTF-8"?>'
+                    + (new XMLSerializer()).serializeToString(temp);
 
-            leftbox.appendChild(cancelbtn);
-            leftbox.style.textAlign = "center";
-            leftbox.style.width = "30%";
+                // creates a blob from the encoded svg and sets the type of the blob to and image svg
+                var svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
 
-            rightbox.appendChild(savebtn);
-            rightbox.style.width = "30%";
-            rightbox.style.textAlign = "center";
+                // append the svgBlob as a file with the name given the exportfile 
+                fd.append("exportfile", svgBlob, fileinputname.value + "_tmp.svg");
+                fd.append("svg", fileinputtype.checked);
+                fd.append("png", fileinputtype1.checked);
+                //fd.append("tiff",fileinputtype2.checked )
+                fd.append("jpeg", fileinputtype3.checked);
+                fd.append("dims", figsizeselect.value);
 
-            fileinputname.setAttribute("name", "exportfilename");
-            fileinputname.setAttribute("type", "text");
-            fileinputnamelabel.innerHTML = "File Name:  ";
-            fileinputname.placeholder = "filename";
+                // when the requests load handle the response
+                xhr.onloadend = () => {
+                    // response has all the links for downloading images
+                    Object.keys(xhr.response).forEach(filetype => {
+                        const filename = xhr.response[filetype];
 
-            fileinputtype.setAttribute("name", "exportfiletype-svg");
-            fileinputtype.setAttribute("type", "checkbox");
-            fileinputtypelabel.innerHTML = "Output Types:   ";
+                        // create new formdata to tell the server what to download
+                        var postData = new FormData();
+                        postData.append('fileName', filename);
 
-            fileinputtypesvglabel.innerHTML = "SVG";
-            fileinputtypesvglabel.style.margin = "0 auto 0 0";
-            fileinputtypesvglabel.style.width = "3em";
+                        // set up the XMLHttp request to the download link
+                        var xhrd = new XMLHttpRequest();
+                        xhrd.open('GET', '/download/' + filename, true);
+                        xhrd.responseType = 'blob';
 
-            var fileinputtype1 = fileinputtype.cloneNode(true);
+                        // download the blob as a file
+                        xhrd.onload = function (event) {
+                            var blob = this.response;
+                            saveBlob(blob, filename);
+                        };
+                        xhrd.send(postData);
+                    });
+                };
 
-            let fileinputtypepnglabel = fileinputtypesvglabel.cloneNode(true);
-            fileinputtypepnglabel.innerHTML = "PNG";
+                // open the request and send the data
+                xhr.open('POST', "/export", true);
+                xhr.send(fd);
 
-            var fileinputtype2 = fileinputtype.cloneNode(true);
-
-            let fileinputtypetifflabel = fileinputtypesvglabel.cloneNode(true);
-            fileinputtypetifflabel.innerHTML = "GeoTIFF";
-
-            //remove this function for the next docker build of v1.1.0
-            //fileinputtype2.classList.add("disabled")
-            var fileinputtype3 = fileinputtype.cloneNode(true);
-
-            let fileinputtypejpeglabel = fileinputtypesvglabel.cloneNode(true);
-            fileinputtypejpeglabel.innerHTML = "JPEG";
-
-            form.setAttribute("method", "post");
-            form.setAttribute("enctype", "multipart/form-data");
-            form.setAttribute("runat", "server");
-            form.setAttribute("action", "/export");
-
-            let formlabelbox = document.createElement("div");
-            let forminputbox = document.createElement("div");
-            let forminputcheckboxholder = document.createElement("div");
-            let dividericonbox = document.createElement("div");
-
-            dividericonbox.innerHTML = "&rarr;";
-            dividericonbox.style.margin = "0 auto 0 0";
-            dividericonbox.style.width = "1em";
-
-            formlabelbox.classList.add("formlabelbox");
-            forminputbox.classList.add("forminputbox");
-            forminputcheckboxholder.classList.add("forminputcheckboxholder");
-
-            formlabelbox.append(fileinputnamelabel, document.createElement("br"), document.createElement("br"), fileinputtypelabel);
-            forminputbox.append(fileinputname, forminputcheckboxholder);
-
-            let columnsvg = document.createElement("div");
-            let columnpng = document.createElement("div");
-            let columntiff = document.createElement("div");
-            let columnjpg = document.createElement("div");
-
-            columnsvg.classList.add("column");
-            columnpng.classList.add("column");
-            columntiff.classList.add("column");
-            columnjpg.classList.add("column");
-
-            columnsvg.append(fileinputtypesvglabel, dividericonbox, fileinputtype);
-            columnpng.append(fileinputtypepnglabel, dividericonbox.cloneNode(true), fileinputtype1);
-            //columntiff.append(fileinputtypetifflabel, dividericonbox.cloneNode(true), fileinputtype2)
-            columnjpg.append(fileinputtypejpeglabel, dividericonbox.cloneNode(true), fileinputtype3);
-
-            forminputcheckboxholder.append(columnsvg, columntiff, columnpng, columnjpg);
-
-            form.append(formlabelbox, forminputbox);
-
-            inputholder.appendChild(form);
-
-            /**
-             * @function onclick savebtn
-             * @description send a post to the server to download an svg file of the svgcontainer
-             * */
-            savebtn.addEventListener("click", function (event) {
-                event.preventDefault();
-
-                var regexp = new RegExp(/([A-Z]|[0-9])*(?:\.(png|jpg|svg|tiff|tif)|\s)$/i),
-                    breakFlag = false;
-
-                // change the color of the borde for bad filename
-                if (regexp.test(fileinputname.value) || fileinputname.value.length == 0) {
-                    fileinputname.classList.add("invalid");
-                    breakFlag = true;
-                    alert("User Error: filename should not include any file extension.\n Example: 'test.png' should be 'test'.");
-                }
-
-                else {
-                    fileinputname.classList.remove("invalid");
-                }
-
-                // change color of the input box if needed
-                if (validFileTypes(fileinputtype.checked, fileinputtype1.checked, fileinputtype2.checked, fileinputtype3.checked) && !breakFlag) {
-                    forminputcheckboxholder.classList.remove("invalid");
-                }
-                else if (!breakFlag) {
-                    forminputcheckboxholder.classList.add("invalid");
-                    breakFlag = true;
-                    alert("User Error: Must select an export type from the checkboxes.");
-                }
-
-                // send request if the filename input is not empty
-                if (fileinputname.value.length !== 0 && !breakFlag) {
-                    // create the request data using the form
-                    var fd = new FormData(form);
-                    var xhr = new XMLHttpRequest();
-
-                    // set response type
-                    xhr.responseType = 'json';
-
-                    var temp = cleanSVG(document.getElementById("figurecontainer").cloneNode(true));
-
-                    // append the xml header line to make an official svg file
-                    var data = '<?xml version="1.0" encoding="UTF-8"?>'
-                        + (new XMLSerializer()).serializeToString(temp);
-
-                    // creates a blob from the encoded svg and sets the type of the blob to and image svg
-                    var svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
-
-                    // append the svgBlob as a file with the name given the exportfile 
-                    fd.append("exportfile", svgBlob, fileinputname.value + "_tmp.svg");
-                    fd.append("svg", fileinputtype.checked);
-                    fd.append("png", fileinputtype1.checked);
-                    //fd.append("tiff",fileinputtype2.checked )
-                    fd.append("jpeg", fileinputtype3.checked);
-                    fd.append("dims", figsizeselect.value);
-
-                    // when the requests load handle the response
-                    xhr.onloadend = () => {
-                        // response has all the links for downloading images
-                        Object.keys(xhr.response).forEach(filetype => {
-                            const filename = xhr.response[filetype];
-
-                            // create new formdata to tell the server what to download
-                            var postData = new FormData();
-                            postData.append('fileName', filename);
-
-                            // set up the XMLHttp request to the download link
-                            var xhrd = new XMLHttpRequest();
-                            xhrd.open('GET', '/download/' + filename, true);
-                            xhrd.responseType = 'blob';
-
-                            // download the blob as a file
-                            xhrd.onload = function (event) {
-                                var blob = this.response;
-                                saveBlob(blob, filename);
-                            };
-                            xhrd.send(postData);
-                        });
-                    };
-
-                    // open the request and send the data
-                    xhr.open('POST', "/export", true);
-                    xhr.send(fd);
-
-                    // remove the UI download box
-                    cancelbtn.click();
-                    return false;
-                }
+                // remove the UI download box
+                cancelbtn.click();
                 return false;
-            });
+            }
+            return false;
+        });
 
-            // cancel button listener
-            cancelbtn.addEventListener("click", (event) => {
-                document.getElementById("maincontent").removeChild(mainholder);
-            });
+        // cancel button listener
+        cancelbtn.addEventListener("click", (event) => {
+            document.getElementById("maincontent").removeChild(mainholder);
+        });
 
-            // append the main section boxes for the button holder
-            buttonholder.append(leftbox, centerbox, rightbox);
-            mainholder.append(titleholder, inputholder, document.createElement("br"), buttonholder);
-            mainholder.classList.add("exportmainbox");
-            // append the main content box
-            document.getElementById("maincontent").appendChild(mainholder);
-        })
+        // append the main section boxes for the button holder
+        buttonholder.append(leftbox, centerbox, rightbox);
+        mainholder.append(titleholder, inputholder, document.createElement("br"), buttonholder);
+        mainholder.classList.add("exportmainbox");
+        // append the main content box
+        document.getElementById("maincontent").appendChild(mainholder);
+    });
 
     /** 
      * @function .toolboxminimizebtn.click() 
@@ -1106,7 +1102,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         draggableSvg.getContainerObject().appendChild(textholder)
 
         getObjectCount(1, "caption")
-    })
+    });
     
 
     /**
@@ -1251,9 +1247,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
     /**
      * @function button.toolboxaddimagebtn.click()
      * @description add the image to the svg and the toolbox stuff
-     * 
-     * TODO: refactor
-     * 
      */
     document.getElementById('addimagebtn').addEventListener("click", () =>
     {
@@ -1277,15 +1270,12 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             ycoordinput = document.createElement("input"),
             scalelabel = document.createElement("label"),
             scaleinput = document.createElement("input"),
-            imagesvg = document.createElementNS(NS.svg, "image");
-
-        // create the main holder group for the image
-        var holdergroup = document.createElementNS(NS.svg, "g");
+            imagesvg = document.createElementNS(NS.svg, "image"),
+            holdergroup = document.createElementNS(NS.svg, "g");
 
         // set the class for the options bar
         newoptionsbar.classList.add("windowoptionsbar")
         newoptionsbar.style.display = "flex"
-
         newoptionsbar.addEventListener("click", function ( event )
         {
             optionsAction(event.target)
@@ -1308,8 +1298,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
 
         // set the class css and the svg button graphic
         createLayerBtn(layerbtn, draggableList)
-        
-        /** End Dynamic button*/
 
         // toolbox attributes
         toolsarea.classList.add("imagetoolsbox")
@@ -1761,7 +1749,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
 
         // add 1 to the totaly image count
         getObjectCount(1, "image")
-    })
+    });
 
     /**
      * @function figsizeselect.onchange
@@ -1775,7 +1763,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         draggableSvg.getContainerObject().parentElement.setAttribute("viewBox", "-500 0 " + (Number(tmp[0])+1000) + ' ' + tmp[1])
         draggableSvg.getContainerObject().setAttribute("width", tmp[0])
         draggableSvg.getContainerObject().setAttribute("height", tmp[1])
-    })
+    });
 
     /**
      * @function backgroundcolor.onchange
