@@ -115,9 +115,8 @@
         --min-svg-btn: 30px;
         --max-svg-btn: 30px;
 
-        --svg-icon-width: 27px;
+    
         --svg-icon-height: 2.5em;
-
         --svg-icon-width: 30px;
 
         --header-height: 5%;
@@ -125,7 +124,7 @@
         --toolcontainer-height: 80vh;
         --footer-height: 4%;
 
-        --btn-group-btn: 40px;
+        --btn-group-btn: 55px;
 
         /* New Section Here */
         --inner-main-content-max-width: 81vw;
@@ -163,8 +162,9 @@
         --min-svg-btn: 35px;
         --max-svg-btn: 35px;
 
-        --btn-group-btn: 45px;
+        --btn-group-btn: 60px;
 
+        --svg-icon-width: 50px;
     }
 }
 
@@ -192,7 +192,9 @@
         --min-svg-btn: 42px;
         --max-svg-btn: 42px;
 
-        --btn-group-btn: 50px;
+        --btn-group-btn: 70px;
+        --svg-icon-width: 65px;
+        --svg-icon-height: 65px;
 
         --main-export-box-heigh: 300px;
 

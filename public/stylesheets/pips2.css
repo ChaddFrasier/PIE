@@ -470,7 +470,8 @@ button.disabled {
 
 .exportpanelbtn {
     border-radius: 5px 5px;
-    font-size: var(--medium-font);
+    height: auto;
+    font-size: var(--small-font);
     background: var(--bar-gradient);
 }
 
