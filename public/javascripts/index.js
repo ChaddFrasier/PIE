@@ -9,16 +9,9 @@
  * @fileoverview main event loop for the index page of PIE
 */
 
-/**
- * TODO: huge refactor coming this week to the main script files. 
- * 
- * - index.js is a global file and all declarations inside it is capable of being accesed form the browser 'window' object
-*/
-
 var draggableSvg = null,
     draggableList = null,
     geoIconArray = Array('northarrowopt', 'scalebarbtnopt', 'sunarrowopt', 'keyopt', 'observerarrowopt');
-
 
 // Function executes when the page loads fully
 document.addEventListener( "DOMContentLoaded", ( event ) => {
@@ -523,8 +516,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
      * @description drae the box that is used for inputing export information
      */
     document.getElementById('exportbtn').addEventListener("mousedown", () => {
-        // TODO: 3 format the output box better
-
         // if the exportbox exists cancel whole function
         if (document.querySelectorAll("div[class='exportmainbox']").length !== 0) {
             // dont allow bubbling
@@ -669,7 +660,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             {
                 forminputcheckboxholder.classList.remove("invalid");
             }
-            else if( !breakFlag ) 
+            else if( !breakFlag )
             {
                 forminputcheckboxholder.classList.add("invalid");
                 breakFlag = true;
@@ -1917,8 +1908,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
      * @param {string} icontype 
      * @param {_Event} event
      * @description this function draws the svg icons over the svg figure image where the mouse drop occurs
-     * 
-     * TODO: refactor
      */
     function drawSvgIcon( image, icontype, event )
     {
@@ -3626,8 +3615,6 @@ function drawMouseDownListener( event )
  * @param {number} y2 - the y value of the tail of the line
  * @param {number} strokeWidth - the stroke-width of the line
  * @description create the toolbox for the given line
- * 
- * TODO: refactor
  */
 function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 {
@@ -4552,6 +4539,9 @@ function distance( x1, y1, x2, y2 )
         )
 }
 
+/**
+ * TODO: this should probably change
+ */
 function NewFigure()
 {
     location.reload()
@@ -4610,7 +4600,6 @@ function recurseFixedIndex( unfixedIndex, text )
  * @param {number} fontsize size of the font in the caption
  * @description this function takes the text of the caption and formats it for the caption object in the svg element.
  */
- /**TODO: then refactor and removed copy pasted code */
 function text2PieText( text, captionWidth, fontsize )
 {
     // create return data and helper data
