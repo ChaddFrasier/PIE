@@ -9,16 +9,9 @@
  * @fileoverview main event loop for the index page of PIE
 */
 
-/**
- * TODO: huge refactor coming this week to the main script files. 
- * 
- * - index.js is a global file and all declarations inside it is capable of being accesed form the browser 'window' object
-*/
-
 var draggableSvg = null,
     draggableList = null,
     geoIconArray = Array('northarrowopt', 'scalebarbtnopt', 'sunarrowopt', 'keyopt', 'observerarrowopt');
-
 
 // Function executes when the page loads fully
 document.addEventListener( "DOMContentLoaded", ( event ) => {
@@ -523,8 +516,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
      * @description drae the box that is used for inputing export information
      */
     document.getElementById('exportbtn').addEventListener("mousedown", () => {
-        // TODO: 3 format the output box better
-
         // if the exportbox exists cancel whole function
         if (document.querySelectorAll("div[class='exportmainbox']").length !== 0) {
             // dont allow bubbling
@@ -669,7 +660,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             {
                 forminputcheckboxholder.classList.remove("invalid");
             }
-            else if( !breakFlag ) 
+            else if( !breakFlag )
             {
                 forminputcheckboxholder.classList.add("invalid");
                 breakFlag = true;
@@ -1917,8 +1908,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
      * @param {string} icontype 
      * @param {_Event} event
      * @description this function draws the svg icons over the svg figure image where the mouse drop occurs
-     * 
-     * TODO: refactor
      */
     function drawSvgIcon( image, icontype, event )
     {
@@ -2143,7 +2132,9 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     {
                         
                         // determine how many lines the key box needs to have
-                        retrieveDataObject( image.id + "-hg" )
+                        let imageDataObject = retrieveDataObject( image.id + "-hg" )
+
+                        console.log(imageDataObject)
 
                         let keyDim = {width: 400, height: 750};
 
@@ -2183,11 +2174,47 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         marker.setAttribute("fill", "transparent")
                         marker.setAttribute("stroke", "transparent")
 
-                        holder.append( mainkeybox, text_header , innerbox)
+
+                        var keybox = document.createElementNS(NS.svg, "text")
+                        keybox.classList.add("keybox")
+                        keybox.innerHTML = "THISISKEY"
+                        keybox.setAttribute("x", 75)
+                        keybox.setAttribute("y", 100)
+                        keybox.setAttribute("font-size", "40px")
+                        keybox.setAttribute("stroke-width", "30px")
+
+                        var valbox = keybox.cloneNode(true)
+                        valbox.innerHTML = "36.4827642783"
+                        valbox.className = "valbox";
+                        valbox.setAttribute("x", 200)
+                        valbox.setAttribute("y", 100)
+
+                        holder.append( mainkeybox, text_header, innerbox)
+
+                        // iterate over all the data values from the image
+                        Object.keys(imageDataObject).forEach( key => {
+                            var newkey = keybox.cloneNode(true)
+                            var newval = valbox.cloneNode(true)
+
+                            newkey.innerHTML = key;
+                            newval.innerHTML = imageDataObject[key];
+
+                            newkey.setAttribute('dx', '0')
+                            newkey.setAttribute('dy', '40px')
+
+                            newval.setAttribute('dx', '0')
+                            newval.setAttribute('dy', '40px')
+
+                            holder.append( newkey, newval )
+
+                        });
+
                         icongroupsvg.append(holder, marker)
 
                         icongroupsvg.setAttribute("x", newX)
                         icongroupsvg.setAttribute("y", newY)
+
+
                     }
                     else
                     {
@@ -2223,10 +2250,21 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
 function retrieveDataObject( holderid )
 {
     var holder =  document.getElementById( holderid )
-    var keyObject = {}
+    var keyObject = {
+        "Emission": null,
+        "Incidence": null,
+        "Phase": null,
+        "NorthAzimuth": null,
+        "SubSolarAzimuth": null,
+        "SubSpacecraftGroundAzimuth": null,
+        "PixelResolution": null,
+        "ObliquePixelResolution": null,
+    }
 
-    // TODO: THIS IS WHERE I CAN ADD THE PARSER FOR ALL THE KEY DATA
-    console.log(holder.getAttribute("Emission"))
+    Object.keys(keyObject).forEach( key => {
+        keyObject[key] = holder.getAttribute(key)
+    })
+    return keyObject;
 }
 
 
@@ -2627,25 +2665,24 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
     switch ( icontype )
     {
         case "north":
-            let iconscaleinput = document.createElement("input")
-            let iconmaincolorinput = document.createElement("input")
-            let iconaccentcolorinput = document.createElement("input")
-            let scalelabel = document.createElement("label")
-            let maincolorlabel = document.createElement("label")
-            let accentcolorlabel = document.createElement("label")
-            let icontoolbox = document.createElement("div")
-            let iconoptionbar = document.createElement("div")
-            let iconoptionheader = document.createElement("h4")
-            let deletebtn = document.createElement("button")
-            let northicontranslatex = document.createElement("input")
-            let northicontranslatexlabel = document.createElement("label")
-            let northicontranslatey = document.createElement("input")
-            let northicontranslateylabel = document.createElement("label")
+            let iconscaleinput = document.createElement("input"),
+                iconmaincolorinput = document.createElement("input"),
+                iconaccentcolorinput = document.createElement("input"),
+                scalelabel = document.createElement("label"),
+                maincolorlabel = document.createElement("label"),
+                accentcolorlabel = document.createElement("label"),
+                icontoolbox = document.createElement("div"),
+                iconoptionbar = document.createElement("div"),
+                iconoptionheader = document.createElement("h4"),
+                deletebtn = document.createElement("button"),
+                northicontranslatex = document.createElement("input"),
+                northicontranslatexlabel = document.createElement("label"),
+                northicontranslatey = document.createElement("input"),
+                northicontranslateylabel = document.createElement("label");
 
             // options bar stuff
             iconoptionbar.setAttribute("class", 'windowoptionsbar')
             iconoptionbar.style.display = "flex"
-
             iconoptionbar.addEventListener("click", function ( event )
             {
                 optionsAction(event.target)
@@ -2759,32 +2796,30 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
     
         case "sun":
 
-            let suniconscaleinput = document.createElement("input")
-            let suniconmaincolorinput = document.createElement("input")
-            let suniconaccentcolorinput = document.createElement("input")
-            let sunscalelabel = document.createElement("label")
-            let sunmaincolorlabel = document.createElement("label")
-            let sunaccentcolorlabel = document.createElement("label")
-            let sunicontoolbox = document.createElement("div")
-            let sunoptionbar = document.createElement("div")
-            let sunoptionheader = document.createElement("h4")
-            let deletebtn1 = document.createElement("button")
-            let sunicontranslatex = document.createElement("input")
-            let sunicontranslatexlabel = document.createElement("label")
-            let sunicontranslatey = document.createElement("input")
-            let sunicontranslateylabel = document.createElement("label")
+            let suniconscaleinput = document.createElement("input"),
+                suniconmaincolorinput = document.createElement("input"),
+                suniconaccentcolorinput = document.createElement("input"),
+                sunscalelabel = document.createElement("label"),
+                sunmaincolorlabel = document.createElement("label"),
+                sunaccentcolorlabel = document.createElement("label"),
+                sunicontoolbox = document.createElement("div"),
+                sunoptionbar = document.createElement("div"),
+                sunoptionheader = document.createElement("h4"),
+                deletebtn1 = document.createElement("button"),
+                sunicontranslatex = document.createElement("input"),
+                sunicontranslatexlabel = document.createElement("label"),
+                sunicontranslatey = document.createElement("input"),
+                sunicontranslateylabel = document.createElement("label");
 
             // options bar stuff
             sunoptionbar.setAttribute("class", 'windowoptionsbar')
             sunoptionbar.style.display = "flex"
-
             sunoptionbar.addEventListener("click", function ( event )
             {
                 optionsAction(event.target)
             })
 
             sunoptionheader.innerHTML = "Sun Icon"
-
 
             // same for delete as minimize
             deletebtn1.classList.add("windowremovebtn")
@@ -2890,25 +2925,24 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
     
         case "observer":
 
-            let obsiconscaleinput = document.createElement("input")
-            let obsiconmaincolorinput = document.createElement("input")
-            let obsiconaccentcolorinput = document.createElement("input")
-            let obsscalelabel = document.createElement("label")
-            let obsmaincolorlabel = document.createElement("label")
-            let obsaccentcolorlabel = document.createElement("label")
-            let obsicontoolbox = document.createElement("div")
-            let obsoptionbar = document.createElement("div")
-            let obsoptionheader = document.createElement("h4")
-            let deletebtn2 = document.createElement("button")
-            let obsicontranslatex = document.createElement("input")
-            let obsicontranslatexlabel = document.createElement("label")
-            let obsicontranslatey = document.createElement("input")
-            let obsicontranslateylabel = document.createElement("label")
+            let obsiconscaleinput = document.createElement("input"),
+                obsiconmaincolorinput = document.createElement("input"),
+                obsiconaccentcolorinput = document.createElement("input"),
+                obsscalelabel = document.createElement("label"),
+                obsmaincolorlabel = document.createElement("label"),
+                obsaccentcolorlabel = document.createElement("label"),
+                obsicontoolbox = document.createElement("div"),
+                obsoptionbar = document.createElement("div"),
+                obsoptionheader = document.createElement("h4"),
+                deletebtn2 = document.createElement("button"),
+                obsicontranslatex = document.createElement("input"),
+                obsicontranslatexlabel = document.createElement("label"),
+                obsicontranslatey = document.createElement("input"),
+                obsicontranslateylabel = document.createElement("label");
 
             // Set Options bar stuff
             obsoptionbar.setAttribute("class", 'windowoptionsbar')
             obsoptionbar.style.display = "flex"
-
             obsoptionbar.addEventListener("click", function ( event )
             {
                 optionsAction(event.target)
@@ -2976,7 +3010,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             obsiconaccentcolorinput.value = "#000000"
             obsiconaccentcolorinput.setAttribute("name", "iconsecondarycolorinput")
 
-
             // add events
             obsiconscaleinput.addEventListener("change", updateIconScale, false)
             obsiconmaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)}, false)
@@ -3019,23 +3052,22 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
 
         case "scalebar":
-            let scalemaincolorinput = document.createElement("input")
-            let scaleaccentcolorinput = document.createElement("input")
-            let scaleaccentcolorlabel = document.createElement("label")
-            let scalemaincolorlabel = document.createElement("label")
-            let scaleicontoolbox = document.createElement("div")
-            let scaleoptionbar = document.createElement("div")
-            let scaleoptionheader = document.createElement("h4")
-            let deletebtn3 = document.createElement("button")
-            let scaleicontranslatex = document.createElement("input")
-            let scaleicontranslatexlabel = document.createElement("label")
-            let scaleicontranslatey = document.createElement("input")
-            let scaleicontranslateylabel = document.createElement("label")
+            let scalemaincolorinput = document.createElement("input"),
+                scaleaccentcolorinput = document.createElement("input"),
+                scaleaccentcolorlabel = document.createElement("label"),
+                scalemaincolorlabel = document.createElement("label"),
+                scaleicontoolbox = document.createElement("div"),
+                scaleoptionbar = document.createElement("div"),
+                scaleoptionheader = document.createElement("h4"),
+                deletebtn3 = document.createElement("button"),
+                scaleicontranslatex = document.createElement("input"),
+                scaleicontranslatexlabel = document.createElement("label"),
+                scaleicontranslatey = document.createElement("input"),
+                scaleicontranslateylabel = document.createElement("label");
 
             // Set Options bar stuff
             scaleoptionbar.setAttribute("class", 'windowoptionsbar')
             scaleoptionbar.style.display = "flex"
-
             scaleoptionbar.addEventListener("click", function ( event )
             {
                 optionsAction(event.target)
@@ -3123,7 +3155,7 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
         case "key":
             
             
-            
+            // TODO: create the key toolbox here
             break
 
         default:
@@ -3626,8 +3658,6 @@ function drawMouseDownListener( event )
  * @param {number} y2 - the y value of the tail of the line
  * @param {number} strokeWidth - the stroke-width of the line
  * @description create the toolbox for the given line
- * 
- * TODO: refactor
  */
 function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 {
@@ -4552,6 +4582,9 @@ function distance( x1, y1, x2, y2 )
         )
 }
 
+/**
+ * TODO: this should probably change
+ */
 function NewFigure()
 {
     location.reload()
@@ -4610,7 +4643,6 @@ function recurseFixedIndex( unfixedIndex, text )
  * @param {number} fontsize size of the font in the caption
  * @description this function takes the text of the caption and formats it for the caption object in the svg element.
  */
- /**TODO: then refactor and removed copy pasted code */
 function text2PieText( text, captionWidth, fontsize )
 {
     // create return data and helper data

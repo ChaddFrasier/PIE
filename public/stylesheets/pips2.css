@@ -470,7 +470,8 @@ button.disabled {
 
 .exportpanelbtn {
     border-radius: 5px 5px;
-    font-size: var(--medium-font);
+    height: auto;
+    font-size: var(--small-font);
     background: var(--bar-gradient);
 }
 
@@ -659,6 +660,19 @@ label.text {
 
 #icongroup > button:hover {
     cursor: grab;
+}
+
+.keybox {
+    margin: "2px auto 3px 5px";
+    font-size: large;
+    color: black;
+}
+
+
+.valbox {
+    font-size: large;
+    margin: "2px 5px 3px auto";
+    color: black;
 }
 
 .edittoolsbox {
