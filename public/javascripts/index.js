@@ -2132,7 +2132,9 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     {
                         
                         // determine how many lines the key box needs to have
-                        retrieveDataObject( image.id + "-hg" )
+                        let imageDataObject = retrieveDataObject( image.id + "-hg" )
+
+                        console.log(imageDataObject)
 
                         let keyDim = {width: 400, height: 750};
 
@@ -2172,11 +2174,47 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         marker.setAttribute("fill", "transparent")
                         marker.setAttribute("stroke", "transparent")
 
-                        holder.append( mainkeybox, text_header , innerbox)
+
+                        var keybox = document.createElementNS(NS.svg, "text")
+                        keybox.classList.add("keybox")
+                        keybox.innerHTML = "THISISKEY"
+                        keybox.setAttribute("x", 75)
+                        keybox.setAttribute("y", 100)
+                        keybox.setAttribute("font-size", "40px")
+                        keybox.setAttribute("stroke-width", "30px")
+
+                        var valbox = keybox.cloneNode(true)
+                        valbox.innerHTML = "36.4827642783"
+                        valbox.className = "valbox";
+                        valbox.setAttribute("x", 200)
+                        valbox.setAttribute("y", 100)
+
+                        holder.append( mainkeybox, text_header, innerbox)
+
+                        // iterate over all the data values from the image
+                        Object.keys(imageDataObject).forEach( key => {
+                            var newkey = keybox.cloneNode(true)
+                            var newval = valbox.cloneNode(true)
+
+                            newkey.innerHTML = key;
+                            newval.innerHTML = imageDataObject[key];
+
+                            newkey.setAttribute('dx', '0')
+                            newkey.setAttribute('dy', '40px')
+
+                            newval.setAttribute('dx', '0')
+                            newval.setAttribute('dy', '40px')
+
+                            holder.append( newkey, newval )
+
+                        });
+
                         icongroupsvg.append(holder, marker)
 
                         icongroupsvg.setAttribute("x", newX)
                         icongroupsvg.setAttribute("y", newY)
+
+
                     }
                     else
                     {
@@ -2212,10 +2250,21 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
 function retrieveDataObject( holderid )
 {
     var holder =  document.getElementById( holderid )
-    var keyObject = {}
+    var keyObject = {
+        "Emission": null,
+        "Incidence": null,
+        "Phase": null,
+        "NorthAzimuth": null,
+        "SubSolarAzimuth": null,
+        "SubSpacecraftGroundAzimuth": null,
+        "PixelResolution": null,
+        "ObliquePixelResolution": null,
+    }
 
-    // TODO: THIS IS WHERE I CAN ADD THE PARSER FOR ALL THE KEY DATA
-    console.log(holder.getAttribute("Emission"))
+    Object.keys(keyObject).forEach( key => {
+        keyObject[key] = holder.getAttribute(key)
+    })
+    return keyObject;
 }
 
 

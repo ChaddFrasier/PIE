@@ -662,6 +662,19 @@ label.text {
     cursor: grab;
 }
 
+.keybox {
+    margin: "2px auto 3px 5px";
+    font-size: large;
+    color: black;
+}
+
+
+.valbox {
+    font-size: large;
+    margin: "2px 5px 3px auto";
+    color: black;
+}
+
 .edittoolsbox {
     border: 1.5px solid var(--primary-color);
     width: auto;
