@@ -1374,6 +1374,15 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                             /** No Thing */
                         }
 
+                        // remove the key icon b/c there is no scale data
+                        try{
+                            document.getElementById(`keyIcon-${imageId}`).remove()
+                        }
+                        catch(err)
+                        {
+                            /** No Thing */
+                        }
+
                         // remove the load icon from the UI
                         document.getElementById("loadicon").style.visibility = "hidden"
                     }
@@ -1433,7 +1442,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                                 document.getElementById(imageId).setAttribute('href', e.target.result)
                                 document.getElementById(imageId).setAttribute('GEO', 'true')
 
-                                // TODO: if the lines or samples is not there then we need to figure out how to get 
+                                // TODO: if the lines or samples is not there then we need to figure out how to get
                                 // set the height and width of the actual image.
                                 document.getElementById(imageId).setAttribute('width', responseObject.pvlData.data['Samples'])
                                 document.getElementById(imageId).setAttribute('height', responseObject.pvlData.data['Lines'])
@@ -1531,6 +1540,15 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                                     {
                                         /** No Thing */
                                     }
+                                }
+
+                                // remove the key icon b/c there is no scale data
+                                try{
+                                    document.getElementById(`keyIcon-${imageId}`).remove()
+                                }
+                                catch(err)
+                                {
+                                    /** No Thing */
                                 }
 
                                 // test if the scalebar data is valid and activte the button
@@ -2115,7 +2133,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     icongroupsvg = document.createElementNS( NS.svg, "svg")
 
                     // add dimensions to svg
-                    icongroupsvg.setAttributeNS(NS.svg, "viewBox", "0 0 27 27")
+                    icongroupsvg.setAttributeNS(NS.svg, "viewBox", "0 0 25 25")
                     icongroupsvg.setAttribute("scale", "5")
                     icongroupsvg.setAttribute("id", image.id+"-keygroup")
                     icongroupsvg.setAttribute("objectid", "keyIcon-" + image.id)
@@ -2135,13 +2153,52 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         let imageDataObject = retrieveDataObject( image.id + "-hg" ),
                             svgStringsObject = getSvgIcons( imageDataObject );
 
-                        let keyDim = {width: 400, height: 750};
+                            // svgStringsObject will contain the icons as innerHTML strings and keys that coordinate with imageDataObject
+
+                            console.log(svgStringsObject)
+
+                        let keyDim = {width: 400, height: 800};
 
                         icongroupsvg.setAttribute("width", keyDim.width)
                         icongroupsvg.setAttribute("height", keyDim.height)
 
-                        var holder = document.createElementNS( NS.svg, "g")
+                        var holder = document.createElementNS( NS.svg, "g"),
+                            metagroup = document.createElementNS( NS.svg, "g")
                         holder.classList.add("holder")
+
+                        metagroup.setAttribute("fill", "#000000")
+
+                        var offset = -30,
+                            textoffset = 110;
+                        Object.keys(svgStringsObject).forEach(key => {
+                            // parts to meta line
+                            var text = document.createElementNS(NS.svg, "text"),
+                                imagesvg = document.createElementNS(NS.svg, "svg"),
+                                angle = document.createElementNS(NS.svg, "text");
+
+                            imagesvg.setAttribute("viewBox", "0 0 100 160")
+                            imagesvg.setAttribute("x", 285)
+                            imagesvg.setAttribute("y", offset)
+
+                            // set the key
+                            text.innerHTML = key
+                            text.setAttribute("x", 25)
+                            text.setAttribute("height", 30)
+                            text.setAttribute("font-size", "22px")
+                            text.setAttribute("y", textoffset)
+
+                            imagesvg.innerHTML = svgStringsObject[key];
+
+                            angle.innerHTML = imageDataObject[key];
+                            angle.setAttribute("x", 40)
+                            angle.setAttribute("height", 30)
+                            angle.setAttribute("font-size", "25px")
+                            angle.setAttribute("y", textoffset + 35)
+
+                            metagroup.append(text, imagesvg, angle);
+                            offset += 120;
+                            textoffset += 115;
+                        });
 
                         var mainkeybox = document.createElementNS(NS.svg, "rect")
                         mainkeybox.setAttribute("width", keyDim.width)
@@ -2157,15 +2214,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         text_header.setAttribute("stroke-width", "30px")
                         text_header.innerHTML = "Key"
 
-                        var innerbox = document.createElementNS(NS.svg, "rect")
-                        innerbox.setAttribute("x", 25)
-                        innerbox.setAttribute("y", 75)
-                        innerbox.setAttribute("width", keyDim.width - 50)
-                        innerbox.setAttribute("height", keyDim.height - 150 + 50)
-                        innerbox.setAttribute("fill", "#ffffff")
-                        innerbox.setAttribute("stroke", "#000000")
-                        innerbox.setAttribute("stroke-width", "10px")
-
                         var marker = document.createElementNS( NS.svg, "rect")
                         marker.setAttribute("width", keyDim.width)
                         marker.setAttribute("height", keyDim.height)
@@ -2173,14 +2221,12 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         marker.setAttribute("fill", "transparent")
                         marker.setAttribute("stroke", "transparent")
 
-                        holder.append( mainkeybox, text_header, innerbox)
+                        holder.append( mainkeybox, text_header, metagroup)
 
                         icongroupsvg.append(holder, marker)
 
                         icongroupsvg.setAttribute("x", newX)
                         icongroupsvg.setAttribute("y", newY)
-
-
                     }
                     else
                     {
@@ -2213,6 +2259,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
 /**
  * 
  * @param {*} obj 
+ * 
+ * TODO: this function needs to help populate the key icon by finding all the svg icons we need for the icon after finidng the data points
  */
 function getSvgIcons( obj )
 {
@@ -2220,24 +2268,55 @@ function getSvgIcons( obj )
     Object.keys( obj ).forEach( key => {
         if( key.indexOf('North') > -1 )
         {
-            returnObj[key] = document.getElementById("northgroup").firstChild.innerHTML
+            returnObj[key] = document.getElementById("northgroup").innerHTML
         }
         else if( key.indexOf('Solar') > -1 )
         {
-            returnObj[key] = document.getElementById("sungroup").firstChild.innerHTML
+            returnObj[key] = document.getElementById("sungroup").innerHTML
         }
         else if( key.indexOf('Spacecraft') > -1 )
         {
-            returnObj[key] = document.getElementById("observergroup").firstChild.innerHTML
+            returnObj[key] = document.getElementById("observergroup").innerHTML
         }
-        else if( key.indexOf('Pixel') > -1 )
+        else if( key.indexOf('Phase') > -1 || key.indexOf('Emission') > -1 || key.indexOf('Incidence') > -1  )
         {
-            returnObj[key] = document.getElementById("scalebargroup").firstChild.innerHTML
+            returnObj[key] = createIcon( key )
         }
     });
 
     return returnObj;
     
+}
+
+/**
+ * 
+ * @param {*} key 
+ */
+function createIcon( key )
+{
+    switch( key )
+    {
+        case "Phase":
+            return '<g transform="rotate(2.5024 14.59 14.013)">\
+            <text font-family="sans-serif" font-size="10.583px" style="line-height:1.25;shape-inside:url(#rect1673);white-space:pre" xml:space="preserve"/>\
+            <text transform="matrix(.92397 -.004502 .0052733 1.0823 0 0)" x="7.4832063" y="23.212523" font-family="PT Serif" font-size="29.143px" font-weight="bold" stroke-width=".72858" style="line-height:1.25" xml:space="preserve"><tspan x="7.4832063" y="23.212523" font-family="PT Serif" font-weight="bold" stroke-width=".72858">0</tspan></text>\
+            <rect x="9.8557" y="13.56" width="9.1943" height="1.6536" fill="#000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width=".23998" style="paint-order:fill markers stroke"/>\
+           </g>';
+
+        case "Incidence":
+            return  '<g transform="translate(1.0708 -.35694)">\
+            <g transform="matrix(.90664 .17818 -.2087 1.062 0 0)" stroke-width=".72858" aria-label="i">\
+             <path d="m11.905 7.4232v-0.99086q0.43714-0.17486 1.1657-0.34972 0.72858-0.204 1.5446-0.34972t1.6029-0.23314q0.816-0.11657 1.428-0.11657l0.52457 0.34972-2.6229 12.561h2.04v0.99086q-0.37886 0.26229-0.90343 0.49543-0.49543 0.23314-1.0783 0.408-0.55372 0.17486-1.1366 0.26229-0.58286 0.11657-1.1074 0.11657-1.1074 0-1.5446-0.408-0.408-0.43714-0.408-0.93258 0-0.58286 0.08743-1.1366t0.23314-1.224l1.9817-9.0343zm2.448-6.5572q0-0.99086 0.67029-1.5446t1.6903-0.55372q1.1074 0 1.7486 0.55372 0.67029 0.55372 0.67029 1.5446 0 0.93258-0.67029 1.4863-0.64115 0.55372-1.7486 0.55372-1.02 0-1.6903-0.55372-0.67029-0.55372-0.67029-1.4863z" stroke-width=".72858"/>\
+            </g>\
+           </g>';
+        
+        case "Emission":
+            return '<g transform="translate(.086042 -4.2161)">\
+            <g transform="matrix(.90664 .17818 -.2087 1.062 0 0)" stroke-width=".72858" aria-label="e">\
+             <path d="m22.688 17.128q-0.32057 0.58286-0.93258 1.224-0.612 0.612-1.428 1.1366-0.816 0.49543-1.8069 0.816-0.99086 0.34972-2.0692 0.34972-2.5937 0-4.0509-1.3989-1.428-1.428-1.428-4.0217 0-2.0109 0.64115-3.7886 0.64115-1.7777 1.7777-3.1183 1.1657-1.3697 2.7394-2.1566 1.6029-0.78686 3.4972-0.78686 1.7486 0 2.8852 0.816 1.1366 0.78686 1.1366 2.1857 0 1.9817-1.9817 3.264-1.9526 1.2823-6.3532 1.6029-0.08743 0.408-0.14572 0.84515-0.02914 0.408-0.02914 0.78686 0 1.6612 0.84515 2.5646 0.84515 0.87429 2.1566 0.87429 0.55372 0 1.1074-0.17486t1.0491-0.46629q0.52457-0.29143 0.93258-0.612 0.43714-0.34972 0.75772-0.67029zm-3.7303-10.083q-0.99086 0-1.9234 1.0783-0.90343 1.0783-1.5154 3.6429 2.1566-0.05829 3.468-0.96172 1.3406-0.90343 1.3406-2.3606 0-0.58286-0.32057-0.99086-0.29143-0.408-1.0491-0.408z" stroke-width=".72858"/>\
+            </g>\
+           </g>';
+    }
 }
 
 /**
