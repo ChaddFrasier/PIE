@@ -2132,9 +2132,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     {
                         
                         // determine how many lines the key box needs to have
-                        let imageDataObject = retrieveDataObject( image.id + "-hg" )
-
-                        console.log(imageDataObject)
+                        let imageDataObject = retrieveDataObject( image.id + "-hg" ),
+                            svgStringsObject = getSvgIcons( imageDataObject );
 
                         let keyDim = {width: 400, height: 750};
 
@@ -2174,40 +2173,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         marker.setAttribute("fill", "transparent")
                         marker.setAttribute("stroke", "transparent")
 
-
-                        var keybox = document.createElementNS(NS.svg, "text")
-                        keybox.classList.add("keybox")
-                        keybox.innerHTML = "THISISKEY"
-                        keybox.setAttribute("x", 75)
-                        keybox.setAttribute("y", 100)
-                        keybox.setAttribute("font-size", "40px")
-                        keybox.setAttribute("stroke-width", "30px")
-
-                        var valbox = keybox.cloneNode(true)
-                        valbox.innerHTML = "36.4827642783"
-                        valbox.className = "valbox";
-                        valbox.setAttribute("x", 200)
-                        valbox.setAttribute("y", 100)
-
                         holder.append( mainkeybox, text_header, innerbox)
-
-                        // iterate over all the data values from the image
-                        Object.keys(imageDataObject).forEach( key => {
-                            var newkey = keybox.cloneNode(true)
-                            var newval = valbox.cloneNode(true)
-
-                            newkey.innerHTML = key;
-                            newval.innerHTML = imageDataObject[key];
-
-                            newkey.setAttribute('dx', '0')
-                            newkey.setAttribute('dy', '40px')
-
-                            newval.setAttribute('dx', '0')
-                            newval.setAttribute('dy', '40px')
-
-                            holder.append( newkey, newval )
-
-                        });
 
                         icongroupsvg.append(holder, marker)
 
@@ -2243,6 +2209,37 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
 }) // end of jquery functions
 
 /* Helper functions */
+
+/**
+ * 
+ * @param {*} obj 
+ */
+function getSvgIcons( obj )
+{
+    var returnObj = {};
+    Object.keys( obj ).forEach( key => {
+        if( key.indexOf('North') > -1 )
+        {
+            returnObj[key] = document.getElementById("northgroup").firstChild.innerHTML
+        }
+        else if( key.indexOf('Solar') > -1 )
+        {
+            returnObj[key] = document.getElementById("sungroup").firstChild.innerHTML
+        }
+        else if( key.indexOf('Spacecraft') > -1 )
+        {
+            returnObj[key] = document.getElementById("observergroup").firstChild.innerHTML
+        }
+        else if( key.indexOf('Pixel') > -1 )
+        {
+            returnObj[key] = document.getElementById("scalebargroup").firstChild.innerHTML
+        }
+    });
+
+    return returnObj;
+    
+}
+
 /**
  * @function retrieveDataObject
  * @param {string} holderid the id of the object holding the metadata
