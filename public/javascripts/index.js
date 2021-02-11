@@ -1407,9 +1407,11 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 xhr.onloadend = () => {
                     var reader = new FileReader()
 
+                    var responseObject = {}
                     try
                     {
                         JSON.parse(xhr.response)
+                        console.log("Server responded with " + xhr.response)
                     }
                     catch(err)
                     {
@@ -1420,11 +1422,12 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         imgRemoveBtn.click()
                         return false
                     }
-                    var responseObject = {}
+                    
                     if (xhr.status == 200)
                     {
                         // Helps when testing server returns
-                        //console.log(xhr.response)
+                        console.log(xhr.response)
+
                         responseObject = JSON.parse(xhr.response)
 
                         fetch(responseObject.imagefile, {
@@ -2130,16 +2133,17 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     svgP = draggableSvg.svgAPI(event.clientX, event.clientY)
                         
                     // set group attributes for svg
-                    icongroupsvg = document.createElementNS( NS.svg, "svg")
+                    icongroup = document.createElementNS( NS.svg, "svg")
 
                     // add dimensions to svg
-                    icongroupsvg.setAttributeNS(NS.svg, "viewBox", "0 0 25 25")
-                    icongroupsvg.setAttribute("scale", "5")
-                    icongroupsvg.setAttribute("id", image.id+"-keygroup")
-                    icongroupsvg.setAttribute("objectid", "keyIcon-" + image.id)
+                    icongroup.setAttribute("xlink", NS.svg)
+                    icongroup.setAttribute("viewBox", "0 0 400 800")
+                    icongroup.setAttribute("scale", "5")
+                    icongroup.setAttribute("id", image.id+"-keygroup")
+                    icongroup.setAttribute("objectid", "keyIcon-" + image.id)
 
-                    icongroupsvg.setAttribute("objectid", image.id)
-                    icongroupsvg.setAttribute("id", "keyIcon-" + image.id)
+                    icongroup.setAttribute("objectid", image.id)
+                    icongroup.setAttribute("id", "keyIcon-" + image.id)
 
                     // set the translate location of the icon to where the mouse was released
                     newX = getScaledPoint( svgP.x, 1, 27*5 )
@@ -2159,8 +2163,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
 
                         let keyDim = {width: 400, height: 800};
 
-                        icongroupsvg.setAttribute("width", keyDim.width)
-                        icongroupsvg.setAttribute("height", keyDim.height)
+                        icongroup.setAttribute("width", keyDim.width)
+                        icongroup.setAttribute("height", keyDim.height)
 
                         var holder = document.createElementNS( NS.svg, "g"),
                             metagroup = document.createElementNS( NS.svg, "g")
@@ -2223,10 +2227,10 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
 
                         holder.append( mainkeybox, text_header, metagroup)
 
-                        icongroupsvg.append(holder, marker)
+                        icongroup.append(holder, marker)
 
-                        icongroupsvg.setAttribute("x", newX)
-                        icongroupsvg.setAttribute("y", newY)
+                        icongroup.setAttribute("x", newX)
+                        icongroup.setAttribute("y", newY)
                     }
                     else
                     {
@@ -2234,7 +2238,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     }
 
                     // append the icon
-                    document.getElementById(image.id+"-hg").appendChild(icongroupsvg)
+                    document.getElementById(image.id+"-hg").appendChild(icongroup)
                 }
                 else
                 {
@@ -2297,10 +2301,11 @@ function createIcon( key )
     switch( key )
     {
         case "Phase":
-            return '<g transform="rotate(2.5024 14.59 14.013)">\
-            <text font-family="sans-serif" font-size="10.583px" style="line-height:1.25;shape-inside:url(#rect1673);white-space:pre" xml:space="preserve"/>\
-            <text transform="matrix(.92397 -.004502 .0052733 1.0823 0 0)" x="7.4832063" y="23.212523" font-family="PT Serif" font-size="29.143px" font-weight="bold" stroke-width=".72858" style="line-height:1.25" xml:space="preserve"><tspan x="7.4832063" y="23.212523" font-family="PT Serif" font-weight="bold" stroke-width=".72858">0</tspan></text>\
-            <rect x="9.8557" y="13.56" width="9.1943" height="1.6536" fill="#000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width=".23998" style="paint-order:fill markers stroke"/>\
+            return '<g transform="rotate(1.0153 60.444 -51.232)">\
+            <g transform="matrix(.92397 -.004502 .0052733 1.0823 0 0)" stroke-width=".72858" aria-label="0">\
+             <path d="m15.48 23.654q-1.5653 0-2.8602-0.73996-1.2807-0.73996-2.2056-2.0633-0.91072-1.3234-1.4088-3.1591-0.49805-1.8357-0.49805-4.0129 0-2.0064 0.49805-3.7852 0.49805-1.7787 1.4088-3.1021 0.92495-1.3376 2.2056-2.106 1.2949-0.76842 2.8602-0.76842t2.846 0.76842q1.2807 0.76842 2.1914 2.106 0.92495 1.3234 1.423 3.1021 0.49805 1.7787 0.49805 3.7852 0 2.1772-0.49805 4.0129-0.49805 1.8357-1.423 3.1591-0.91072 1.3234-2.1914 2.0633t-2.846 0.73996zm0-0.93918q0.95341 0 1.6649-0.73996t1.1811-1.9922q0.46959-1.2522 0.69727-2.8745 0.24191-1.6364 0.24191-3.4294 0-1.793-0.24191-3.401-0.22768-1.608-0.69727-2.8033-0.46959-1.2095-1.1811-1.921-0.7115-0.7115-1.6649-0.7115-0.96764 0-1.6791 0.7115-0.7115 0.7115-1.1811 1.921-0.46959 1.1953-0.69727 2.8033-0.22768 1.608-0.22768 3.401 0 1.793 0.22768 3.4294 0.22768 1.6222 0.69727 2.8745 0.46959 1.2522 1.1811 1.9922t1.6791 0.73996z" stroke-width=".72858"/>\
+            </g>\
+            <path d="m9.8557 13.56h9.1943v1.6536h-9.1943z" fill="#000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width=".23998" style="paint-order:fill markers stroke"/>\
            </g>';
 
         case "Incidence":
@@ -3229,9 +3234,105 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             break
 
         case "key":
-            
-            
             // TODO: create the key toolbox here
+            let keymaincolorinput = document.createElement("input"),
+                keyaccentcolorinput = document.createElement("input"),
+                keyaccentcolorlabel = document.createElement("label"),
+                keymaincolorlabel = document.createElement("label"),
+                keyicontoolbox = document.createElement("div"),
+                keyoptionbar = document.createElement("div"),
+                keyoptionheader = document.createElement("h4"),
+                deletebtn4 = document.createElement("button"),
+                keyicontranslatex = document.createElement("input"),
+                keyicontranslatexlabel = document.createElement("label"),
+                keyicontranslatey = document.createElement("input"),
+                keyicontranslateylabel = document.createElement("label");
+
+            // Set Options bar stuff
+            keyoptionbar.setAttribute("class", 'windowoptionsbar')
+            keyoptionbar.style.display = "flex"
+            keyoptionbar.addEventListener("click", function ( event )
+            {
+                optionsAction(event.target)
+            })
+            
+            keyoptionheader.innerHTML = "Image Key"
+
+            // same for delete as minimize
+            deletebtn4.classList.add("windowremovebtn")
+            deletebtn4.innerHTML = "&times"
+
+            // add event listener for delete btn
+            deletebtn4.addEventListener( "click", function(event) {
+                removeIconWindow(event)
+            })
+
+            // x and y translate
+            keyicontranslatex.setAttribute("type", "number")
+            keyicontranslatex.setAttribute("objectid", iconId)
+            keyicontranslatex.setAttribute("min", "0")
+
+            keyicontranslatex.setAttribute("name", "iconxcoordinput")
+            keyicontranslatey.setAttribute("name", "iconycoordinput")
+
+            keyicontranslatey.setAttribute("type", "number")
+            keyicontranslatey.setAttribute("objectid", iconId)
+            keyicontranslatey.setAttribute("min", "1")
+
+            // set start values for label and value of translate
+            keyicontranslateylabel.innerHTML = "Key Y: "
+            keyicontranslatexlabel.innerHTML = "Key X: "
+
+            keyicontranslatex.value = (transX*0.5).toFixed(0)
+            keyicontranslatey.value = (transY*0.5).toFixed(0)
+
+            // create labels
+            keymaincolorlabel.innerHTML = "Key Main Color: "
+            keyaccentcolorlabel.innerHTML = "Key Secondary Color: "
+
+            // primary color input
+            keymaincolorinput.setAttribute("type", "color")
+            keymaincolorinput.setAttribute("objectid", iconId)
+            keymaincolorinput.value = "#ffffff"
+
+            // color input secondary
+            keyaccentcolorinput.setAttribute("type", "color")
+            keyaccentcolorinput.setAttribute("objectid", iconId)
+            keyaccentcolorinput.value = "#000000"
+
+            // add events
+            keymaincolorinput.addEventListener("change", function(event){updateIconColor(event, 0)}, false)
+            keyaccentcolorinput.addEventListener("change", function(event){updateIconColor(event, 1)}, false)
+            keyicontranslatex.addEventListener("change", function(event){updateIconPosition(event, 0)}, false)
+            keyicontranslatey.addEventListener("change", function(event){updateIconPosition(event, 1)}, false)
+
+            keyicontoolbox.classList.add("icontoolbox")
+
+            // append aspect to options bar
+            keyoptionbar.append( keyoptionheader, document.createElement("br"), deletebtn4 )
+            keyoptionbar.setAttribute( "objectid", iconId )
+
+            // append rest of options
+            keyicontoolbox.append( 
+                keymaincolorlabel,
+                document.createElement("br"),
+                keymaincolorinput,
+                document.createElement("br"),
+                keyaccentcolorlabel,
+                document.createElement("br"),
+                keyaccentcolorinput,
+                document.createElement("br"),
+                keyicontranslatexlabel, 
+                document.createElement("br"),
+                keyicontranslatex,
+                document.createElement("br"),
+                keyicontranslateylabel, 
+                document.createElement("br"),
+                keyicontranslatey
+            )
+            
+            // append optionsbar and tools
+            toolbox.append( keyoptionbar, keyicontoolbox )
             break
 
         default:
@@ -4072,7 +4173,6 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         }
     })
 
-
     // append the objects
     linetoolbox.append(
         colorlabel,
@@ -4897,6 +4997,27 @@ function saveBlob(blob, fileName)
 function cleanSVG( clone )
 {
     removeAttributes(clone, "id", "class")
+
+    // fixes errors when exporting as svg image
+    clone.setAttribute("xmlns:rdf", NS.rdf)
+    clone.setAttribute("xmlns", NS.svg)
+    clone.setAttribute("xmlns:cc", NS.cc)
+    clone.setAttribute("xmlns:dc", NS.dc)
+
+    console.log(clone.outerHTML)
+
+
+    var metastring = '<metadata>\
+<rdf:RDF>\
+<cc:Work rdf:about="">\
+    <dc:format>image/svg+xml</dc:format>\
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>\
+    <dc:title/>\
+</cc:Work>\
+</rdf:RDF>\
+</metadata>';
+
+
 
     // recursivly remove all ids, classes, styles
     return clone
