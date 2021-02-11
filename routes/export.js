@@ -124,14 +124,14 @@ function beautifySVG( from, to )
     var parentElementArray = ["<?xml ", "<svg ", "<defs>", "<marker ", '<g'];
     var parentEndArray = ["</svg>", "</defs>", "</marker>", '</g>'];
     var count = 0,
-        metaString = '<metadata>\
-        <rdf:RDF>\
-        <cc:Work rdf:about="">\
-            <dc:format>image/svg+xml</dc:format>\
-            <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>\
-            <dc:title/>\
-        </cc:Work>\
-        </rdf:RDF>\
+        metaString = '<metadata>\n\
+        <rdf:RDF>\n\
+        <cc:Work rdf:about="">\n\
+            <dc:format>image/svg+xml</dc:format>\n\
+            <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>\n\
+            <dc:title/>\n\
+        </cc:Work>\n\
+        </rdf:RDF>\n\
         </metadata>',
         passOver = false,
         metaFlag = false;
