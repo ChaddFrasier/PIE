@@ -5003,21 +5003,6 @@ function cleanSVG( clone )
     clone.setAttribute("xmlns:cc", NS.cc)
     clone.setAttribute("xmlns:dc", NS.dc)
 
-    console.log(clone.outerHTML)
-
-
-    var metastring = '<metadata>\
-<rdf:RDF>\
-<cc:Work rdf:about="">\
-    <dc:format>image/svg+xml</dc:format>\
-    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>\
-    <dc:title/>\
-</cc:Work>\
-</rdf:RDF>\
-</metadata>';
-
-
-
     // recursivly remove all ids, classes, styles
     return clone
 }

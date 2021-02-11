@@ -123,8 +123,18 @@ function beautifySVG( from, to )
     // this object will hold the beginning portion of each tag we want to keep and the ending tag
     var parentElementArray = ["<?xml ", "<svg ", "<defs>", "<marker ", '<g'];
     var parentEndArray = ["</svg>", "</defs>", "</marker>", '</g>'];
-    var count = 0, 
-        passOver = false;
+    var count = 0,
+        metaString = '<metadata>\
+        <rdf:RDF>\
+        <cc:Work rdf:about="">\
+            <dc:format>image/svg+xml</dc:format>\
+            <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>\
+            <dc:title/>\
+        </cc:Work>\
+        </rdf:RDF>\
+        </metadata>',
+        passOver = false,
+        metaFlag = false;
 
     // replace all > with >\n so I can break each section on the \n
     filecontent.replace(/>/g, ">\n").split("\n").forEach( line => {
@@ -135,6 +145,11 @@ function beautifySVG( from, to )
         if( line.indexOf("<style>") > -1 )
         {
             passOver = true;
+        }
+
+        if( line.indexOf(parentElementArray[2]) > -1 )
+        {
+            metaFlag = true;
         }
 
         // set this line in the new file if the passOver is false
@@ -148,6 +163,12 @@ function beautifySVG( from, to )
                     count--;
                 }
             })
+
+            if( metaFlag )
+            {
+                fileStream.write(`${metaString}\n`)
+                metaFlag = false;
+            }
 
             // write the current line to file
             fileStream.write(`${repeat('\t', count)}${line}\n`);
