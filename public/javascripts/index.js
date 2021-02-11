@@ -9,8 +9,6 @@
  * @fileoverview main event loop for the index page of PIE
 */
 
-const { functionsIn } = require("cypress/types/lodash");
-
 var draggableSvg = null,
     draggableList = null,
     geoIconArray = Array('northarrowopt', 'scalebarbtnopt', 'sunarrowopt', 'keyopt', 'observerarrowopt');
