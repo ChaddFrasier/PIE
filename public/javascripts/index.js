@@ -3532,6 +3532,12 @@ function changeIconColor( colorid, colorval, icon )
                 // change the primary of the observer icon
                 changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "stroke", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "stroke")
             }
+            else if( icon.id.indexOf( "key" ) > -1 )
+            {
+
+                // TODO: have to update the key differently because of the complex svg structure
+                   // change the primary of the observer icon
+            }
             break
         case 1:
             // change secondary color
@@ -3554,6 +3560,11 @@ function changeIconColor( colorid, colorval, icon )
             {
                 // change the primary of the observer icon
                 changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "fill", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" )
+            }
+            else if( icon.id.indexOf( "key" ) > -1 )
+            {
+                // TODO: have to update the key differently because of the complex svg structure
+                    // change the primary of the observer icon
             }
     }
 }
