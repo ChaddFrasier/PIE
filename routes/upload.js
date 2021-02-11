@@ -73,7 +73,8 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
                 console.error("GDAL Error: Conversion finished but the file was not found.")
             }
         }).catch( (err) => {
-            // reset code 205
+            console.error(err)
+            // reset code to non-200
             res.status(205).send(err)
         });
     }
