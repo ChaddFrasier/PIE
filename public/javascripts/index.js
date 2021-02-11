@@ -2261,10 +2261,10 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
 /* Helper functions */
 
 /**
- * 
- * @param {*} obj 
- * 
- * TODO: this function needs to help populate the key icon by finding all the svg icons we need for the icon after finidng the data points
+ * @function getSvgIcons
+ * @param {JSON} obj the json object that houses the data values and their keys 
+ * @description this function helps the key drawing functions by returning a batch of icons that need to used during the key construction
+ * @return it's important that returnObj has the same key map as the input obj
  */
 function getSvgIcons( obj )
 {
@@ -2287,14 +2287,13 @@ function getSvgIcons( obj )
             returnObj[key] = createIcon( key )
         }
     });
-
     return returnObj;
-    
 }
 
 /**
- * 
- * @param {*} key 
+ * @function createIcon
+ * @param {string} key the keys of the special object
+ * @description this function passes back the html string of the icon that will be used by the key to show angle values and any other icon needed that is not already an svg icon on the screen
  */
 function createIcon( key )
 {
