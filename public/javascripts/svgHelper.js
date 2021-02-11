@@ -7,7 +7,10 @@
 // Namespaces Global
 var NS = {
         xhtml:"http://www.w3.org/1999/xhtml",
-        svg: "http://www.w3.org/2000/svg"
+        svg: "http://www.w3.org/2000/svg",
+        cc: "http://creativecommons.org/ns#",
+        dc: "http://purl.org/dc/elements/1.1/",
+        rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     };
 
 /**
