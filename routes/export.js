@@ -110,7 +110,6 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
  * @description clean the single line svg and create a more readable svg format
  * 
  * TODO: format the svg so more people can read and use it in other program viewers
- * 
  */
 function beautifySVG( from, to )
 {   
