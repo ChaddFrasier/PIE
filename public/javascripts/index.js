@@ -9,6 +9,8 @@
  * @fileoverview main event loop for the index page of PIE
 */
 
+const { functionsIn } = require("cypress/types/lodash");
+
 var draggableSvg = null,
     draggableList = null,
     geoIconArray = Array('northarrowopt', 'scalebarbtnopt', 'sunarrowopt', 'keyopt', 'observerarrowopt');
@@ -3534,9 +3536,9 @@ function changeIconColor( colorid, colorval, icon )
             }
             else if( icon.id.indexOf( "key" ) > -1 )
             {
+                // change the primary
+                updateKeyColor( 0, colorval, icon.id )
 
-                // TODO: have to update the key differently because of the complex svg structure
-                   // change the primary of the observer icon
             }
             break
         case 1:
@@ -3563,11 +3565,24 @@ function changeIconColor( colorid, colorval, icon )
             }
             else if( icon.id.indexOf( "key" ) > -1 )
             {
-                // TODO: have to update the key differently because of the complex svg structure
-                    // change the primary of the observer icon
+                // change the accent color of the key
+                updateKeyColor( 1, colorval, icon.id )
             }
     }
 }
+
+/**
+ * 
+ * @param {*} code 
+ * @param {*} value 
+ * @param {*} iconId 
+ */
+function updateKeyColor( code, value, iconId )
+{
+    alert("This feature is still being implimentened. Check back later.")
+}
+
+
 
 /**
  * @function changeColorsOfChildren
