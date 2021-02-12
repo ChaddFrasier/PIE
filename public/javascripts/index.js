@@ -1411,7 +1411,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     try
                     {
                         JSON.parse(xhr.response)
-                        console.log("Server responded with " + xhr.response)
                     }
                     catch(err)
                     {
@@ -1595,7 +1594,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                                 ButtonManager.addImage(imageId, btnArray )
 
                                 // this is not the same in the testing environment
-                                console.log(responseObject)
+                                //console.log(responseObject)
                             }    
                             // convert to base64 string
                             reader.readAsDataURL(blob)
@@ -2158,8 +2157,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                             svgStringsObject = getSvgIcons( imageDataObject );
 
                             // svgStringsObject will contain the icons as innerHTML strings and keys that coordinate with imageDataObject
-
-                            console.log(svgStringsObject)
+                            // console.log(svgStringsObject)
 
                         let keyDim = {width: 400, height: 800};
 
@@ -2214,8 +2212,11 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         var text_header = document.createElementNS( NS.svg, "text")
                         text_header.setAttribute("x", "170")
                         text_header.setAttribute("y", "50")
-                        text_header.setAttribute("font-size", "40px")
-                        text_header.setAttribute("stroke-width", "30px")
+                        text_header.setAttribute("font-size", "42px")
+                        text_header.setAttribute("font-family", "Ariel")
+                        text_header.setAttribute("fill", "#000000")
+                        text_header.setAttribute("stroke", "#ffffff")
+                        text_header.setAttribute("stroke-width", "1px")
                         text_header.innerHTML = "Key"
 
                         var marker = document.createElementNS( NS.svg, "rect")
@@ -2304,7 +2305,7 @@ function createIcon( key )
             <g transform="matrix(.92397 -.004502 .0052733 1.0823 0 0)" stroke-width=".72858" aria-label="0">\
              <path d="m15.48 23.654q-1.5653 0-2.8602-0.73996-1.2807-0.73996-2.2056-2.0633-0.91072-1.3234-1.4088-3.1591-0.49805-1.8357-0.49805-4.0129 0-2.0064 0.49805-3.7852 0.49805-1.7787 1.4088-3.1021 0.92495-1.3376 2.2056-2.106 1.2949-0.76842 2.8602-0.76842t2.846 0.76842q1.2807 0.76842 2.1914 2.106 0.92495 1.3234 1.423 3.1021 0.49805 1.7787 0.49805 3.7852 0 2.1772-0.49805 4.0129-0.49805 1.8357-1.423 3.1591-0.91072 1.3234-2.1914 2.0633t-2.846 0.73996zm0-0.93918q0.95341 0 1.6649-0.73996t1.1811-1.9922q0.46959-1.2522 0.69727-2.8745 0.24191-1.6364 0.24191-3.4294 0-1.793-0.24191-3.401-0.22768-1.608-0.69727-2.8033-0.46959-1.2095-1.1811-1.921-0.7115-0.7115-1.6649-0.7115-0.96764 0-1.6791 0.7115-0.7115 0.7115-1.1811 1.921-0.46959 1.1953-0.69727 2.8033-0.22768 1.608-0.22768 3.401 0 1.793 0.22768 3.4294 0.22768 1.6222 0.69727 2.8745 0.46959 1.2522 1.1811 1.9922t1.6791 0.73996z" stroke-width=".72858"/>\
             </g>\
-            <path d="m9.8557 13.56h9.1943v1.6536h-9.1943z" fill="#000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width=".23998" style="paint-order:fill markers stroke"/>\
+            <path d="m9.8557 13.56h9.1943v1.6536h-9.1943z" stroke-linecap="round" stroke-linejoin="round" stroke-width=".23998" style="paint-order:fill markers stroke"/>\
            </g>';
 
         case "Incidence":
@@ -3233,7 +3234,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             break
 
         case "key":
-            // TODO: create the key toolbox here
             let keymaincolorinput = document.createElement("input"),
                 keyaccentcolorinput = document.createElement("input"),
                 keyaccentcolorlabel = document.createElement("label"),
@@ -3570,14 +3570,91 @@ function changeIconColor( colorid, colorval, icon )
 }
 
 /**
- * 
+ * @function updateKeyColor
  * @param {*} code 
  * @param {*} value 
- * @param {*} iconId 
+ * @param {*} iconId
+ * TODO: finish this function  
  */
 function updateKeyColor( code, value, iconId )
 {
-    alert("This feature is still being implimentened. Check back later.")
+    var icon = document.getElementById( iconId ),
+        childNodeArr = icon.firstElementChild.children;
+
+    // # to represent complex structure used to hold the other peices
+    var changeArray = (code === 0)?['fill', 'stroke', '#']:['stroke', 'fill', '#'];
+
+   for (let index = 0; index < childNodeArr.length; index++) {
+       const child = childNodeArr[index];
+
+        if( changeArray[index] !== '#')
+        {
+            if( changeArray[index].indexOf(' ') == -1 )
+            {
+                child.setAttribute(changeArray[index], value)
+            }
+        }
+        else
+        {
+            // set the values of the special ones
+
+            var svgMirrorArray = (code == 0)? [ [""], [""], [""], ["", "", "", "", "","fill", "fill", "fill", "fill", "fill"], ["fill", "fill", "stroke"], ["fill", "fill", "", "fill", "", "fill", "fill", ""] ]:
+                 [ ["fill"], ["fill"], ["fill"], ["fill stroke", "fill stroke", "fill stroke", "fill stroke", "fill stroke","stroke", "stroke", "stroke", "stroke", "stroke"], ["stroke", "stroke", "fill"], ["stroke", "stroke", "fill stroke", "stroke", "fill stroke", "stroke", "stroke", "fill stroke"]];
+            var svgIndex = 0;
+
+            for (let iindex = 0; iindex < child.childNodes.length; iindex++)
+            {
+                const innerChild = child.childNodes[iindex];
+                const svgAttrs = svgMirrorArray[svgIndex];    
+                
+                switch( innerChild.nodeName.toString().toLowerCase() )
+                {
+                    case "svg":
+                        if ( innerChild.childNodes.length == 1 )
+                        {
+                            if( svgAttrs.length == 1 && svgAttrs[0] != "" )
+                            {
+                                innerChild.childNodes[0].setAttribute(svgAttrs[0], value)
+                            }
+                        }
+                        else
+                        {
+
+                            for (let d = 0; d < innerChild.firstChild.childNodes.length; d++) {
+                                const currentChild = innerChild.firstChild.childNodes[d];
+
+                                
+                                if( String(svgAttrs[d]).indexOf(" ") > -1 &&  String(svgAttrs[d]) != "")
+                                {
+                                    var svgArr = svgAttrs[d].split(" ")
+
+                                    currentChild.setAttribute(svgArr[0], value)
+                                    currentChild.setAttribute(svgArr[1], value)
+                                }
+                                else if( String(svgAttrs[d]) != "" )
+                                { 
+                                    currentChild.setAttribute(svgAttrs[d], value)
+                                }   
+                            }
+                        }
+
+                        svgIndex++;
+                        break;
+                
+                    case "text":
+                        if( code == 1 )
+                        {
+                            innerChild.setAttribute("stroke", value)
+                            innerChild.setAttribute("fill", value)
+                        }
+                        break;
+                    
+                    default:
+                        console.log(`Something went very wrong here: nodeName = ${innerChild.nodeName}`)
+                }
+            }
+        }
+   }
 }
 
 
