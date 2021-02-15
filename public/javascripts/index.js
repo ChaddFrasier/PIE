@@ -1444,7 +1444,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                                 document.getElementById(imageId).setAttribute('href', e.target.result)
                                 document.getElementById(imageId).setAttribute('GEO', 'true')
 
-                                // TODO: if the lines or samples is not there then we need to figure out how to get
                                 // set the height and width of the actual image.
                                 document.getElementById(imageId).setAttribute('width', responseObject.pvlData.data['Samples'])
                                 document.getElementById(imageId).setAttribute('height', responseObject.pvlData.data['Lines'])
@@ -2738,8 +2737,6 @@ function typeofObject(testString)
  * @param {number} transX 
  * @param {number} transY
  * @description draws tool boxes for each icon, this method allows for more than 1 of each icon
- * 
- * TODO: refactor this function
  */
 function drawToolbox( toolbox, icontype, iconId, transX, transY )
 {
@@ -4860,7 +4857,8 @@ function distance( x1, y1, x2, y2 )
 }
 
 /**
- * TODO: this should probably change
+ * @function NewFigure
+ * @description this function is used when the user wants to remove and restart the entire figure.
  */
 function NewFigure()
 {
