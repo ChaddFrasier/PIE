@@ -1444,7 +1444,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                                 document.getElementById(imageId).setAttribute('href', e.target.result)
                                 document.getElementById(imageId).setAttribute('GEO', 'true')
 
-                                // TODO: if the lines or samples is not there then we need to figure out how to get
                                 // set the height and width of the actual image.
                                 document.getElementById(imageId).setAttribute('width', responseObject.pvlData.data['Samples'])
                                 document.getElementById(imageId).setAttribute('height', responseObject.pvlData.data['Lines'])
@@ -2738,8 +2737,6 @@ function typeofObject(testString)
  * @param {number} transX 
  * @param {number} transY
  * @description draws tool boxes for each icon, this method allows for more than 1 of each icon
- * 
- * TODO: refactor this function
  */
 function drawToolbox( toolbox, icontype, iconId, transX, transY )
 {
@@ -3571,24 +3568,27 @@ function changeIconColor( colorid, colorval, icon )
 
 /**
  * @function updateKeyColor
- * @param {*} code 
- * @param {*} value 
- * @param {*} iconId
- * TODO: finish this function  
+ * @param {number} code the code to tell if the function works on the main colo or the secondary color 
+ * @param {string} value the color value to change to
+ * @param {string} iconId the id of the icon we are changing 
+ * @description this function is used to set the color of the key and all pf the interroir icons 
  */
 function updateKeyColor( code, value, iconId )
 {
     var icon = document.getElementById( iconId ),
         childNodeArr = icon.firstElementChild.children;
 
-    // # to represent complex structure used to hold the other peices
+    // # to represent complex structure used to hold the other icons and text
     var changeArray = (code === 0)?['fill', 'stroke', '#']:['stroke', 'fill', '#'];
 
-   for (let index = 0; index < childNodeArr.length; index++) {
-       const child = childNodeArr[index];
+    // loop through the main elements
+    for (let index = 0; index < childNodeArr.length; index++) {
+        const child = childNodeArr[index];
 
+        // check if this element is a complex group
         if( changeArray[index] !== '#')
         {
+            // set the value using the attrobute array grabbed from the code
             if( changeArray[index].indexOf(' ') == -1 )
             {
                 child.setAttribute(changeArray[index], value)
@@ -3596,17 +3596,17 @@ function updateKeyColor( code, value, iconId )
         }
         else
         {
-            // set the values of the special ones
-
+            // set the values of the special group
             var svgMirrorArray = (code == 0)? [ [""], [""], [""], ["", "", "", "", "","fill", "fill", "fill", "fill", "fill"], ["fill", "fill", "stroke"], ["fill", "fill", "", "fill", "", "fill", "fill", ""] ]:
                  [ ["fill"], ["fill"], ["fill"], ["fill stroke", "fill stroke", "fill stroke", "fill stroke", "fill stroke","stroke", "stroke", "stroke", "stroke", "stroke"], ["stroke", "stroke", "fill"], ["stroke", "stroke", "fill stroke", "stroke", "fill stroke", "stroke", "stroke", "fill stroke"]];
             var svgIndex = 0;
 
+            // loop through the child doing the same thing as before settting the values of the children of each svg and text elements
             for (let iindex = 0; iindex < child.childNodes.length; iindex++)
             {
-                const innerChild = child.childNodes[iindex];
-                const svgAttrs = svgMirrorArray[svgIndex];    
-                
+                const innerChild = child.childNodes[iindex],
+                    svgAttrs = svgMirrorArray[svgIndex];
+
                 switch( innerChild.nodeName.toString().toLowerCase() )
                 {
                     case "svg":
@@ -3619,11 +3619,9 @@ function updateKeyColor( code, value, iconId )
                         }
                         else
                         {
-
                             for (let d = 0; d < innerChild.firstChild.childNodes.length; d++) {
                                 const currentChild = innerChild.firstChild.childNodes[d];
 
-                                
                                 if( String(svgAttrs[d]).indexOf(" ") > -1 &&  String(svgAttrs[d]) != "")
                                 {
                                     var svgArr = svgAttrs[d].split(" ")
@@ -4859,7 +4857,8 @@ function distance( x1, y1, x2, y2 )
 }
 
 /**
- * TODO: this should probably change
+ * @function NewFigure
+ * @description this function is used when the user wants to remove and restart the entire figure.
  */
 function NewFigure()
 {
