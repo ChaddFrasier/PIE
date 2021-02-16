@@ -2211,7 +2211,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         text_header.setAttribute("x", "170")
                         text_header.setAttribute("y", "50")
                         text_header.setAttribute("font-size", "42px")
-                        text_header.setAttribute("font-family", "Ariel")
                         text_header.setAttribute("fill", "#000000")
                         text_header.setAttribute("stroke", "#ffffff")
                         text_header.setAttribute("stroke-width", "1px")
