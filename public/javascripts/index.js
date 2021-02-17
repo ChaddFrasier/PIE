@@ -2185,6 +2185,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                             text.setAttribute("x", 25)
                             text.setAttribute("height", 30)
                             text.setAttribute("font-size", "20px")
+                            text.style.fontSize = "20px"
                             text.setAttribute("font-family", "Helvetica")
                             text.setAttribute("y", textoffset)
 
