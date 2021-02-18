@@ -2183,7 +2183,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                             // set the key
                             text.innerHTML = key
                             text.setAttribute("x", 25)
-                            text.setAttribute("font-size", "18")
+                            text.setAttribute("font-size", "20")
                             text.setAttribute("font-family", "Arial")
                             text.setAttribute("y", textoffset)
 
@@ -2193,7 +2193,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                             angle.setAttribute("x", 40)
                             angle.setAttribute("height", 30)
                             text.setAttribute("font-family", "Arial")
-                            angle.setAttribute("font-size", "20")
+                            angle.setAttribute("font-size", "22")
                             angle.setAttribute("y", textoffset + 35)
 
                             metagroup.append(text, imagesvg, angle);
