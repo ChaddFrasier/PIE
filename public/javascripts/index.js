@@ -2183,8 +2183,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                             // set the key
                             text.innerHTML = key
                             text.setAttribute("x", 25)
-                            text.setAttribute("height", 30)
-                            text.setAttribute("font-size", "20px")
+                            text.setAttribute("font-size", "20")
                             text.setAttribute("font-family", "Arial")
                             text.setAttribute("y", textoffset)
 
