@@ -91,16 +91,21 @@ function DraggableArea( objectbox=undefined )
                 {
                     sc = 1
                 }
-                // get only mouse position, not adjusted for icon size and convert to parent element matrix
-                currentX = getScaledPoint(svgP.x, sc, parseFloat(draggingIcon.getAttribute("width")) );
-                currentY = getScaledPoint(svgP.y, sc, parseFloat(draggingIcon.getAttribute("height")) );
 
+                // get the current mouse location with no body to the rect
+                currentX = getScaledPoint(svgP.x, 1, 1);
+                currentY = getScaledPoint(svgP.y, 1, 1);
+
+                // get the x and y of the new point using the diffrence of the old and current mouse locations
+                let y = Number(draggingIcon.getAttribute("y")) + (currentY - oldY);
+                let x = Number(draggingIcon.getAttribute("x")) + (currentX - oldX);
+        
                 // update the input fields using the id of the draggingObject
-                updateInputField( draggingIcon.getAttribute("id"), currentX, currentY );
+                updateInputField( draggingIcon.getAttribute("id"), x, y );
 
                 // set the new icon transform using the uniform setter function
-                draggingIcon.setAttribute("x", currentX);
-                draggingIcon.setAttribute("y", currentY);
+                draggingIcon.setAttribute("x", x);
+                draggingIcon.setAttribute("y", y);
             }
             else if( draggingIcon.nodeName == "rect" )
             {
