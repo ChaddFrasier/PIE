@@ -41,6 +41,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
      * @param {Event} event 
      * @description remove the dots and listener events from the dots if the shift key if lifted
      */
+    // TODO: this shift key thing needs to update the input fields and should not actuvate when the focus element becomes a caption
     function shiftKeyup( event )
     {
         // stop event chain
@@ -1650,7 +1651,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         ycoordlabel.innerHTML = "Image Y: "
         ycoordlabel.setAttribute("for", "ycoordinput")
         ycoordinput.setAttribute("type", "number")
-        ycoordinput.setAttribute("min", '0')
         ycoordinput.value = 0
         ycoordinput.setAttribute("name","ycoordinput")
 
@@ -2817,12 +2817,10 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             // set translate x and y element attributes
             northicontranslatex.setAttribute("type", "number")
             northicontranslatex.setAttribute("objectid", iconId)
-            northicontranslatex.setAttribute("min", "0")
             northicontranslatex.setAttribute("name", "iconxcoordinput")
 
             northicontranslatey.setAttribute("type", "number")
             northicontranslatey.setAttribute("objectid", iconId)
-            northicontranslatey.setAttribute("min", "1")
             northicontranslatey.setAttribute("name", "iconycoordinput")
 
             // set translate value based on icon scale and fix to integer
@@ -2910,12 +2908,10 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             // translate x and y input fields
             sunicontranslatex.setAttribute("type", "number")
             sunicontranslatex.setAttribute("objectid", iconId)
-            sunicontranslatex.setAttribute("min", "0")
             sunicontranslatex.setAttribute("name", "iconxcoordinput")
 
             sunicontranslatey.setAttribute("type", "number")
             sunicontranslatey.setAttribute("objectid", iconId)
-            sunicontranslatey.setAttribute("min", "1")
             sunicontranslatey.setAttribute("name", "iconycoordinput")
 
             // set label input
@@ -3039,12 +3035,10 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             // x and y translate
             obsicontranslatex.setAttribute("type", "number")
             obsicontranslatex.setAttribute("objectid", iconId)
-            obsicontranslatex.setAttribute("min", "0")
             obsicontranslatex.setAttribute("name", "iconxcoordinput")
 
             obsicontranslatey.setAttribute("type", "number")
             obsicontranslatey.setAttribute("objectid", iconId)
-            obsicontranslatey.setAttribute("min", "1")
             obsicontranslatey.setAttribute("name", "iconycoordinput")
 
             // set start values for label and value of translate
@@ -3164,14 +3158,12 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             // x and y translate
             scaleicontranslatex.setAttribute("type", "number")
             scaleicontranslatex.setAttribute("objectid", iconId)
-            scaleicontranslatex.setAttribute("min", "0")
 
             scaleicontranslatex.setAttribute("name", "iconxcoordinput")
             scaleicontranslatey.setAttribute("name", "iconycoordinput")
 
             scaleicontranslatey.setAttribute("type", "number")
             scaleicontranslatey.setAttribute("objectid", iconId)
-            scaleicontranslatey.setAttribute("min", "1")
 
             // set start values for label and value of translate
             scaleicontranslateylabel.innerHTML = "Scalebar Y: "
@@ -3265,14 +3257,12 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             // x and y translate
             keyicontranslatex.setAttribute("type", "number")
             keyicontranslatex.setAttribute("objectid", iconId)
-            keyicontranslatex.setAttribute("min", "0")
 
             keyicontranslatex.setAttribute("name", "iconxcoordinput")
             keyicontranslatey.setAttribute("name", "iconycoordinput")
 
             keyicontranslatey.setAttribute("type", "number")
             keyicontranslatey.setAttribute("objectid", iconId)
-            keyicontranslatey.setAttribute("min", "1")
 
             // set start values for label and value of translate
             keyicontranslateylabel.innerHTML = "Key Y: "
@@ -3979,7 +3969,6 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     liney1inputlabel.setAttribute("objectid", objectid)
     liney1inputlabel.innerHTML = "Line Start-Point Y: "
     liney1input.setAttribute("type", "number")
-    liney1input.setAttribute("min", "0")
     liney1input.value = parseFloat(y1).toFixed(0)
     liney1inputlabel.setAttribute("for","liney1input")
     liney1input.setAttribute("name","liney1input")
@@ -4129,7 +4118,6 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     linex2inputlabel.setAttribute("objectid", objectid)
     linex2inputlabel.innerHTML = "Line End-Point X: "
     linex2inputlabel.setAttribute("for", "linex2input")
-    linex2input.setAttribute("min", "0")
     linex2input.setAttribute("type", "number")
     
     linex2input.setAttribute("name", "linex2input")
@@ -4149,7 +4137,6 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     liney2inputlabel.innerHTML = "Line End-Point Y"
     liney2inputlabel.setAttribute("for", "liney2input")
 
-    liney2input.setAttribute("min", "0")
     liney2input.setAttribute("type", "number")
 
     liney2input.setAttribute("name", "liney2input")
@@ -4600,7 +4587,6 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     rectxinput.setAttribute( "objectid", objectid )
     rectxinputlabel.setAttribute( "objectid", objectid )
     rectxinput.setAttribute( "type", "number" )
-    rectxinput.setAttribute( "min", "0" )
     rectxinputlabel.innerHTML = "Outline X: "
     rectxinput.value = parseFloat(rectX).toFixed(0)
 
@@ -4609,16 +4595,7 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
 
     rectxinput.addEventListener("change", function(event)
     {
-        // perform line movements
-        if( Number(this.getAttribute("min")) > Number(this.value) )
-        {
-            document.getElementById( this.attributes.objectid.value).setAttribute("x", Number(this.getAttribute("min")) )
-            this.value = Number(this.getAttribute("min"))
-        }
-        else
-        {
-            document.getElementById( this.attributes.objectid.value).setAttribute("x", this.value )
-        }
+        document.getElementById( this.attributes.objectid.value).setAttribute("x", this.value )   
     })
 
     // input y node attributes
@@ -4626,7 +4603,6 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     rectyinputlabel.setAttribute("objectid", objectid)
     rectyinputlabel.innerHTML = "Outline Y: "
     rectyinput.setAttribute("type", "number")
-    rectyinput.setAttribute("min", "0")
     rectyinput.value = parseFloat(rectY).toFixed(0)
 
     rectyinputlabel.setAttribute("for", "rectyinput")
@@ -4634,16 +4610,7 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
 
     rectyinput.addEventListener("change", function(event)
     {
-        if( Number(this.getAttribute("min")) > Number(this.value) )
-        {
-            document.getElementById( this.attributes.objectid.value).setAttribute("y", Number(this.getAttribute("min")) )
-            this.value = Number(this.getAttribute("min"))
-        }
-        else
-        {
-            document.getElementById( this.attributes.objectid.value).setAttribute("y", this.value )
-        }
-
+        document.getElementById( this.attributes.objectid.value).setAttribute("y", this.value )
     })
 
     // input rect width
