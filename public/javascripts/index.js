@@ -41,7 +41,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
      * @param {Event} event 
      * @description remove the dots and listener events from the dots if the shift key if lifted
      */
-    // TODO: this shift key thing needs to update the input fields and should not actuvate when the focus element becomes a caption
+    // TODO: this shift key thing needs to update the input fields
     function shiftKeyup( event )
     {
         // stop event chain
@@ -269,6 +269,11 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         // cross broswer key grab that works with older versions and newer versions of all browsers
         var key = event.key || event.keyCode
 
+        if ( String(event.target.nodeName).toUpperCase() !== "BODY")
+        {
+            return;
+        }
+
         // escape listener
         if( key === 'Escape' || key === 'Esc' || key === 27 )
         {
@@ -318,7 +323,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         }
         else if( (key === "Shift" 
                 || key === 'shift' 
-                || key === 16) 
+                || key === 16)
                 && (!PencilFlag && !OutlineFlag)
                 && (document.querySelectorAll("line.placed").length > 0 
                     || document.querySelectorAll("rect.placed").length > 0 )
