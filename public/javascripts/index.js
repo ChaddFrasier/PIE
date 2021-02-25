@@ -225,11 +225,11 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
     }
 
     /**
-     * 
-     * @param {*} id 
-     * @param {*} x 
-     * @param {*} y 
-     * @param {*} code 
+     * @function updateLineXY
+     * @param {string} id the id of the target line
+     * @param {number} x the new x of that line
+     * @param {number} y the new y of that line
+     * @param {number} code used to distinguish from both ends of the line
      */
     function updateLineXY( id, x, y, code )
     {
@@ -252,12 +252,12 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
     }
 
     /**
-     * 
-     * @param {*} id 
-     * @param {*} x 
-     * @param {*} y 
-     * @param {*} width 
-     * @param {*} height 
+     * @function updateRectDims
+     * @param {string} id the id of the rectangle
+     * @param {number} x the new x value of the rectangle
+     * @param {number} y the new y value of the rectangle
+     * @param {number} width the new width of the rectangle
+     * @param {number} height the new height of rectangle
      */
     function updateRectDims( id, x, y, width, height )
     {
