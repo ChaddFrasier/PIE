@@ -41,7 +41,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
      * @param {Event} event 
      * @description remove the dots and listener events from the dots if the shift key if lifted
      */
-    // TODO: this shift key thing needs to update the input fields
     function shiftKeyup( event )
     {
         // stop event chain
@@ -88,6 +87,9 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 draggingDot.setAttribute("cy", svgP.y)
                 svgObject.setAttribute(`x${code}`, svgP.x)
                 svgObject.setAttribute(`y${code}`, svgP.y)
+
+                // update the line input field
+                updateLineXY( svgObject.id, svgP.x, svgP.y, code )
             }
             else if( String(draggingDot.getAttribute("spyId")).indexOf('rect') > -1 )
             {
@@ -125,6 +127,12 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbl']`).setAttribute("cx", svgP.x )
                         rectstartx = svgP.x
                     }
+
+                    if( newwidth > 0 || newheight > 0 )
+                    {
+                        // standard drag update
+                        updateRectDims( svgObject.id, rectstartx, rectstarty, newwidth, newheight)
+                    }
                 }
                 else if( code === "ptr" )
                 {
@@ -148,6 +156,12 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`).setAttribute("cx", svgP.x )
                         rectstartx = svgP.x
                     }
+
+                    if( newwidth > 0 || newheight > 0 )
+                    {
+                        // standard drag update
+                        updateRectDims( svgObject.id, rectstartx - newwidth, rectstarty, newwidth, newheight)
+                    }
                 }
                 else if( code === "pbr" )
                 {
@@ -169,6 +183,12 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         svgObject.setAttribute( "width", newwidth )
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptr']`).setAttribute("cx", svgP.x )
                         rectstartx = svgP.x
+                    }
+
+                    if( newwidth > 0 || newheight > 0 )
+                    {
+                        // standard drag update
+                        updateRectDims( svgObject.id, rectstartx - newwidth, rectstarty - newheight, newwidth, newheight)
                     }
                 }
                 else if( code === "pbl" )
@@ -193,9 +213,91 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptl']`).setAttribute("cx", svgP.x )
                         rectstartx = svgP.x
                     }
+
+                    if( newwidth > 0 || newheight > 0 )
+                    {
+                        // standard drag update
+                        updateRectDims( svgObject.id, rectstartx, rectstarty - newheight, newwidth, newheight)
+                    }
                 }
+                
             }
         }
+    }
+
+    /**
+     * 
+     * @param {*} id 
+     * @param {*} x 
+     * @param {*} y 
+     * @param {*} code 
+     */
+    function updateLineXY( id, x, y, code )
+    {
+        var linexList = document.querySelectorAll(`input[name='linex${code}input']`),
+            lineyList = document.querySelectorAll(`input[name='liney${code}input']`);
+
+        linexList.forEach( lineinputfield => {
+            console.log(lineinputfield)
+
+            if( lineinputfield.getAttribute("objectid") == id )
+            {
+                console.log("RUNS")
+
+                lineinputfield.value = x
+            }
+        })
+
+        lineyList.forEach( lineinputfield => {
+            if( lineinputfield.getAttribute("objectid") == id )
+            {
+                lineinputfield.value = y
+            }
+        })
+    }
+
+    /**
+     * 
+     * @param {*} id 
+     * @param {*} x 
+     * @param {*} y 
+     * @param {*} width 
+     * @param {*} height 
+     */
+    function updateRectDims( id, x, y, width, height )
+    {
+        var rectxList = document.querySelectorAll(`input[name='rectxinput']`),
+            rectyList = document.querySelectorAll(`input[name='rectyinput']`),
+            rectwList = document.querySelectorAll(`input[name='rectwidthinput']`),
+            recthList = document.querySelectorAll(`input[name='rectheightinput']`);
+
+        rectxList.forEach( rectinputfield => {
+            if( rectinputfield.getAttribute("objectid") == id )
+            {
+                rectinputfield.value = x
+            }
+        })
+
+        rectyList.forEach( rectinputfield => {
+            if( rectinputfield.getAttribute("objectid") == id )
+            {
+                rectinputfield.value = y
+            }
+        })
+
+        rectwList.forEach( rectinputfield => {
+            if( rectinputfield.getAttribute("objectid") == id )
+            {
+                rectinputfield.value = width
+            }
+        })
+
+        recthList.forEach( rectinputfield => {
+            if( rectinputfield.getAttribute("objectid") == id )
+            {
+                rectinputfield.value = height
+            }
+        })
     }
 
     /**
