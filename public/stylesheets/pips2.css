@@ -376,7 +376,7 @@ button.disabled {
     cursor: auto;
 }
 
-/* Fixed Chrome Border Focus Whitespace*/
+ /* Fixed Chrome Border Focus Whitespace*/
 button {
     outline: none;
 }
@@ -426,7 +426,7 @@ button {
     padding: 5px 8px;
     vertical-align: top;
     margin: 0 0 0 0;
-    border: 1px solid black;
+    border: 1px solid transparent;
 }
 
 .exporttitlebox > h3 {
