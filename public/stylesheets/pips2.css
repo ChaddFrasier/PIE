@@ -413,14 +413,14 @@ button.disabled {
     position: fixed;
 }
 
-.windowremovebtn {
+.windowremovebtn  {
     background: transparent;
     border-radius: 2px 2px;
-    font-size: var(--medium-font);
-    padding: 5px;
+    font-size: var(--large-font);
+    padding: 5px 8px;
     vertical-align: top;
     margin: 0 0 0 0;
-    border: 1px solid transparent;
+    border: 1px solid black;
 }
 
 .exporttitlebox > h3 {
@@ -572,7 +572,7 @@ button.disabled {
     border-radius: 2px 2px;
     font-size: var(--medium-font);
     padding: 0;
-    width: var(--min-svg-btn);
+    width: var(--max-svg-btn);
     vertical-align: top;
     margin: 0 0 0 0;
     border: 1px solid transparent;
