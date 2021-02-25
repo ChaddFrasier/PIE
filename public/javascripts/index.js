@@ -220,7 +220,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         updateRectDims( svgObject.id, rectstartx, rectstarty - newheight, newwidth, newheight)
                     }
                 }
-                
             }
         }
     }
@@ -238,12 +237,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             lineyList = document.querySelectorAll(`input[name='liney${code}input']`);
 
         linexList.forEach( lineinputfield => {
-            console.log(lineinputfield)
-
             if( lineinputfield.getAttribute("objectid") == id )
             {
-                console.log("RUNS")
-
                 lineinputfield.value = x
             }
         })
