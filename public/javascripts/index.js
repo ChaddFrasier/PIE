@@ -87,6 +87,9 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 draggingDot.setAttribute("cy", svgP.y)
                 svgObject.setAttribute(`x${code}`, svgP.x)
                 svgObject.setAttribute(`y${code}`, svgP.y)
+
+                // update the line input field
+                updateLineXY( svgObject.id, svgP.x, svgP.y, code )
             }
             else if( String(draggingDot.getAttribute("spyId")).indexOf('rect') > -1 )
             {
@@ -124,6 +127,12 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbl']`).setAttribute("cx", svgP.x )
                         rectstartx = svgP.x
                     }
+
+                    if( newwidth > 0 || newheight > 0 )
+                    {
+                        // standard drag update
+                        updateRectDims( svgObject.id, rectstartx, rectstarty, newwidth, newheight)
+                    }
                 }
                 else if( code === "ptr" )
                 {
@@ -147,6 +156,12 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`).setAttribute("cx", svgP.x )
                         rectstartx = svgP.x
                     }
+
+                    if( newwidth > 0 || newheight > 0 )
+                    {
+                        // standard drag update
+                        updateRectDims( svgObject.id, rectstartx - newwidth, rectstarty, newwidth, newheight)
+                    }
                 }
                 else if( code === "pbr" )
                 {
@@ -168,6 +183,12 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         svgObject.setAttribute( "width", newwidth )
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptr']`).setAttribute("cx", svgP.x )
                         rectstartx = svgP.x
+                    }
+
+                    if( newwidth > 0 || newheight > 0 )
+                    {
+                        // standard drag update
+                        updateRectDims( svgObject.id, rectstartx - newwidth, rectstarty - newheight, newwidth, newheight)
                     }
                 }
                 else if( code === "pbl" )
@@ -192,9 +213,86 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptl']`).setAttribute("cx", svgP.x )
                         rectstartx = svgP.x
                     }
+
+                    if( newwidth > 0 || newheight > 0 )
+                    {
+                        // standard drag update
+                        updateRectDims( svgObject.id, rectstartx, rectstarty - newheight, newwidth, newheight)
+                    }
                 }
             }
         }
+    }
+
+    /**
+     * @function updateLineXY
+     * @param {string} id the id of the target line
+     * @param {number} x the new x of that line
+     * @param {number} y the new y of that line
+     * @param {number} code used to distinguish from both ends of the line
+     */
+    function updateLineXY( id, x, y, code )
+    {
+        var linexList = document.querySelectorAll(`input[name='linex${code}input']`),
+            lineyList = document.querySelectorAll(`input[name='liney${code}input']`);
+
+        linexList.forEach( lineinputfield => {
+            if( lineinputfield.getAttribute("objectid") == id )
+            {
+                lineinputfield.value = x
+            }
+        })
+
+        lineyList.forEach( lineinputfield => {
+            if( lineinputfield.getAttribute("objectid") == id )
+            {
+                lineinputfield.value = y
+            }
+        })
+    }
+
+    /**
+     * @function updateRectDims
+     * @param {string} id the id of the rectangle
+     * @param {number} x the new x value of the rectangle
+     * @param {number} y the new y value of the rectangle
+     * @param {number} width the new width of the rectangle
+     * @param {number} height the new height of rectangle
+     */
+    function updateRectDims( id, x, y, width, height )
+    {
+        var rectxList = document.querySelectorAll(`input[name='rectxinput']`),
+            rectyList = document.querySelectorAll(`input[name='rectyinput']`),
+            rectwList = document.querySelectorAll(`input[name='rectwidthinput']`),
+            recthList = document.querySelectorAll(`input[name='rectheightinput']`);
+
+        rectxList.forEach( rectinputfield => {
+            if( rectinputfield.getAttribute("objectid") == id )
+            {
+                rectinputfield.value = x
+            }
+        })
+
+        rectyList.forEach( rectinputfield => {
+            if( rectinputfield.getAttribute("objectid") == id )
+            {
+                rectinputfield.value = y
+            }
+        })
+
+        rectwList.forEach( rectinputfield => {
+            if( rectinputfield.getAttribute("objectid") == id )
+            {
+                rectinputfield.value = width
+            }
+        })
+
+        recthList.forEach( rectinputfield => {
+            if( rectinputfield.getAttribute("objectid") == id )
+            {
+                rectinputfield.value = height
+            }
+        })
     }
 
     /**
@@ -268,6 +366,11 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         // cross broswer key grab that works with older versions and newer versions of all browsers
         var key = event.key || event.keyCode
 
+        if ( String(event.target.nodeName).toUpperCase() !== "BODY")
+        {
+            return;
+        }
+
         // escape listener
         if( key === 'Escape' || key === 'Esc' || key === 27 )
         {
@@ -317,7 +420,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         }
         else if( (key === "Shift" 
                 || key === 'shift' 
-                || key === 16) 
+                || key === 16)
                 && (!PencilFlag && !OutlineFlag)
                 && (document.querySelectorAll("line.placed").length > 0 
                     || document.querySelectorAll("rect.placed").length > 0 )
@@ -1650,7 +1753,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         ycoordlabel.innerHTML = "Image Y: "
         ycoordlabel.setAttribute("for", "ycoordinput")
         ycoordinput.setAttribute("type", "number")
-        ycoordinput.setAttribute("min", '0')
         ycoordinput.value = 0
         ycoordinput.setAttribute("name","ycoordinput")
 
@@ -2817,12 +2919,10 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             // set translate x and y element attributes
             northicontranslatex.setAttribute("type", "number")
             northicontranslatex.setAttribute("objectid", iconId)
-            northicontranslatex.setAttribute("min", "0")
             northicontranslatex.setAttribute("name", "iconxcoordinput")
 
             northicontranslatey.setAttribute("type", "number")
             northicontranslatey.setAttribute("objectid", iconId)
-            northicontranslatey.setAttribute("min", "1")
             northicontranslatey.setAttribute("name", "iconycoordinput")
 
             // set translate value based on icon scale and fix to integer
@@ -2910,12 +3010,10 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             // translate x and y input fields
             sunicontranslatex.setAttribute("type", "number")
             sunicontranslatex.setAttribute("objectid", iconId)
-            sunicontranslatex.setAttribute("min", "0")
             sunicontranslatex.setAttribute("name", "iconxcoordinput")
 
             sunicontranslatey.setAttribute("type", "number")
             sunicontranslatey.setAttribute("objectid", iconId)
-            sunicontranslatey.setAttribute("min", "1")
             sunicontranslatey.setAttribute("name", "iconycoordinput")
 
             // set label input
@@ -3039,12 +3137,10 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             // x and y translate
             obsicontranslatex.setAttribute("type", "number")
             obsicontranslatex.setAttribute("objectid", iconId)
-            obsicontranslatex.setAttribute("min", "0")
             obsicontranslatex.setAttribute("name", "iconxcoordinput")
 
             obsicontranslatey.setAttribute("type", "number")
             obsicontranslatey.setAttribute("objectid", iconId)
-            obsicontranslatey.setAttribute("min", "1")
             obsicontranslatey.setAttribute("name", "iconycoordinput")
 
             // set start values for label and value of translate
@@ -3164,14 +3260,12 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             // x and y translate
             scaleicontranslatex.setAttribute("type", "number")
             scaleicontranslatex.setAttribute("objectid", iconId)
-            scaleicontranslatex.setAttribute("min", "0")
 
             scaleicontranslatex.setAttribute("name", "iconxcoordinput")
             scaleicontranslatey.setAttribute("name", "iconycoordinput")
 
             scaleicontranslatey.setAttribute("type", "number")
             scaleicontranslatey.setAttribute("objectid", iconId)
-            scaleicontranslatey.setAttribute("min", "1")
 
             // set start values for label and value of translate
             scaleicontranslateylabel.innerHTML = "Scalebar Y: "
@@ -3265,14 +3359,12 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             // x and y translate
             keyicontranslatex.setAttribute("type", "number")
             keyicontranslatex.setAttribute("objectid", iconId)
-            keyicontranslatex.setAttribute("min", "0")
 
             keyicontranslatex.setAttribute("name", "iconxcoordinput")
             keyicontranslatey.setAttribute("name", "iconycoordinput")
 
             keyicontranslatey.setAttribute("type", "number")
             keyicontranslatey.setAttribute("objectid", iconId)
-            keyicontranslatey.setAttribute("min", "1")
 
             // set start values for label and value of translate
             keyicontranslateylabel.innerHTML = "Key Y: "
@@ -3979,7 +4071,6 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     liney1inputlabel.setAttribute("objectid", objectid)
     liney1inputlabel.innerHTML = "Line Start-Point Y: "
     liney1input.setAttribute("type", "number")
-    liney1input.setAttribute("min", "0")
     liney1input.value = parseFloat(y1).toFixed(0)
     liney1inputlabel.setAttribute("for","liney1input")
     liney1input.setAttribute("name","liney1input")
@@ -4129,7 +4220,6 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     linex2inputlabel.setAttribute("objectid", objectid)
     linex2inputlabel.innerHTML = "Line End-Point X: "
     linex2inputlabel.setAttribute("for", "linex2input")
-    linex2input.setAttribute("min", "0")
     linex2input.setAttribute("type", "number")
     
     linex2input.setAttribute("name", "linex2input")
@@ -4149,7 +4239,6 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     liney2inputlabel.innerHTML = "Line End-Point Y"
     liney2inputlabel.setAttribute("for", "liney2input")
 
-    liney2input.setAttribute("min", "0")
     liney2input.setAttribute("type", "number")
 
     liney2input.setAttribute("name", "liney2input")
@@ -4600,7 +4689,6 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     rectxinput.setAttribute( "objectid", objectid )
     rectxinputlabel.setAttribute( "objectid", objectid )
     rectxinput.setAttribute( "type", "number" )
-    rectxinput.setAttribute( "min", "0" )
     rectxinputlabel.innerHTML = "Outline X: "
     rectxinput.value = parseFloat(rectX).toFixed(0)
 
@@ -4609,16 +4697,7 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
 
     rectxinput.addEventListener("change", function(event)
     {
-        // perform line movements
-        if( Number(this.getAttribute("min")) > Number(this.value) )
-        {
-            document.getElementById( this.attributes.objectid.value).setAttribute("x", Number(this.getAttribute("min")) )
-            this.value = Number(this.getAttribute("min"))
-        }
-        else
-        {
-            document.getElementById( this.attributes.objectid.value).setAttribute("x", this.value )
-        }
+        document.getElementById( this.attributes.objectid.value).setAttribute("x", this.value )   
     })
 
     // input y node attributes
@@ -4626,7 +4705,6 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     rectyinputlabel.setAttribute("objectid", objectid)
     rectyinputlabel.innerHTML = "Outline Y: "
     rectyinput.setAttribute("type", "number")
-    rectyinput.setAttribute("min", "0")
     rectyinput.value = parseFloat(rectY).toFixed(0)
 
     rectyinputlabel.setAttribute("for", "rectyinput")
@@ -4634,16 +4712,7 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
 
     rectyinput.addEventListener("change", function(event)
     {
-        if( Number(this.getAttribute("min")) > Number(this.value) )
-        {
-            document.getElementById( this.attributes.objectid.value).setAttribute("y", Number(this.getAttribute("min")) )
-            this.value = Number(this.getAttribute("min"))
-        }
-        else
-        {
-            document.getElementById( this.attributes.objectid.value).setAttribute("y", this.value )
-        }
-
+        document.getElementById( this.attributes.objectid.value).setAttribute("y", this.value )
     })
 
     // input rect width

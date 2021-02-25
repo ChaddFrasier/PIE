@@ -326,7 +326,5 @@ function moveSvgDown( element )
  */
 function updateTranslate ( object, attr, value )
 {
-    // quick fix for unknown javascript 0px error that changes the transform string
-    value = ( value == 0 ) ? 1 : value
     object.setAttribute(attr, value)
 }
