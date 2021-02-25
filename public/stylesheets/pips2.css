@@ -376,6 +376,12 @@ button.disabled {
     cursor: auto;
 }
 
+/* Fixed Chrome Border Focus Whitespace*/
+button {
+    outline: none;
+}
+
+
 .titleLogo {
     width: auto;
     height: auto;
