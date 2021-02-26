@@ -1226,9 +1226,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
     /**
      * @function button.toolboxaddimagebtn.click()
      * @description add the image to the svg and the toolbox stuff
-     * 
-     * TODO: POW
-     * 
      */
     document.getElementById('addpowbtn').addEventListener("click", () =>
     {
@@ -1293,6 +1290,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             if( powRegExp.test(powId) )
             {
                 console.log("THIS IS WHERE I NEED TO MAKE THE REQUEST TO THE SERVER TO FIND THE JOB ID FOLDER")
+
+                // TODO: POW
 
                 // send request to server
                 fetch(`/pow?pow=${powId}`, {
