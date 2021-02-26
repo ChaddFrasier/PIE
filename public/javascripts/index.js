@@ -53,10 +53,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             draggableSvg.unpauseDraggables();
             // reactivate the UI buttons
             changeButtonActivation("enable", 2)
-
-            // TODO: instead of using another class I can change the activation of the icons and only allow for the draggableDots focused
+            // update the main dom elements and inner children to class
             applyClassToMainDOMandChildren("shifting", "remove")
-
 
             // remove the color the endpoints of the lines and the endpoints of the rectangles
             document.removeEventListener("keyup", shiftKeyup)
@@ -433,8 +431,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     || document.querySelectorAll("rect.placed").length > 0 )
             )
         {
-            // TODO:
-                // add shifting class to line and remove the hand using toggleLayerUI
+            // parse over all dom objects and children to add the class
             applyClassToMainDOMandChildren("shifting", "add")
 
             // pause the drag stuff from the DraggableArea Object
@@ -484,11 +481,9 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     }
                 });
             });
-
             // add the key listener specifically to cancel the shift function
             document.addEventListener("keyup", shiftKeyup);
         }
-
         return true;
     }
 
@@ -513,9 +508,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             {
                 // cancel the drawing functionality
                 event.target.classList.remove("drawing")
-                
                 // remove the class to draw
-                applyClassToMainDOMandChildren( "drawing", "remove");
+                applyClassToMainDOMandChildren( "drawing", "remove" );
 
                 changeButtonActivation("enable", 0)
                 // allow dragging again
@@ -535,9 +529,9 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 event.target.classList.add("drawing")
                 
                 // add class to the main content peices *Helps force a cursor look when there is an unknown number of interor objects*; must remove class later. 
-                applyClassToMainDOMandChildren( "drawing", "add");
+                applyClassToMainDOMandChildren( "drawing", "add" );
+                changeButtonActivation("disable", 0);
 
-                changeButtonActivation("disable", 0)
                 // pause the dragging function for now
                 draggableSvg.pauseDraggables()
                 // add event listener for click on svg
@@ -550,6 +544,12 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         PencilFlag = !(PencilFlag)
     });
 
+    /**
+     * @function applyClassToMainDOMandChildren
+     * @param {string} cls the class to apply
+     * @param {'add' || 'remove'} interaction the key work to 'add' or 'remove'
+     * @description this class simplified the part of the index.js that controlled the user cursor UI
+     */
     function applyClassToMainDOMandChildren( cls, interaction ){
         
         switch (interaction) {
@@ -565,7 +565,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 break;
         
             case "add":
-                
                 // add the pencil cursor icon to the main content objects
                 document.getElementById("maincontent").childNodes.forEach((childel) => {
                     childel.classList.add(cls)
@@ -593,7 +592,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 document.getElementById("editbox").classList.remove("outlining")
                 event.target.classList.remove("outlining")
                 
-                // TODO
+                // remove the outline cursor
                 applyClassToMainDOMandChildren("outlining", "remove")
 
 
@@ -615,7 +614,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 document.getElementById("editbox").classList.add("outlining")
                 event.target.classList.add("outlining")
                 
-                // TODO:
+                // add the outline cursor
                 applyClassToMainDOMandChildren("outlining", "add")
 
                 changeButtonActivation("disable", 1)
