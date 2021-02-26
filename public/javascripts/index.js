@@ -53,6 +53,11 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             draggableSvg.unpauseDraggables();
             // reactivate the UI buttons
             changeButtonActivation("enable", 2)
+
+            // TODO: instead of using another class I can change the activation of the icons and only allow for the draggableDots focused
+            applyClassToMainDOMandChildren("shifting", "remove")
+
+
             // remove the color the endpoints of the lines and the endpoints of the rectangles
             document.removeEventListener("keyup", shiftKeyup)
             // remove all draggable dots
@@ -60,6 +65,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 dot.removeEventListener("mousedown", dotMouseDownFunction)
                 draggableSvg.getContainerObject().removeChild( dot )
             });
+
+
         }
         return true
     }
@@ -426,6 +433,10 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     || document.querySelectorAll("rect.placed").length > 0 )
             )
         {
+            // TODO:
+                // add shifting class to line and remove the hand using toggleLayerUI
+            applyClassToMainDOMandChildren("shifting", "add")
+
             // pause the drag stuff from the DraggableArea Object
             draggableSvg.pauseDraggables();
             // disable the buttons in the toolbox
@@ -450,7 +461,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                             createDot(`${dotObjectName}end`, obj.getAttribute("x2"), obj.getAttribute("y2"))
                             break;
 
-                        case 'rect':
+                        case 'rect':                        
                             // create a new dot element that has an attribute for spy element attribute name
                                 // Example:   <circle ... spyId="rect123-ptl" ... /> top left 
                                 //            <circle ... spyId="rect123-ptr" ... /> top right
@@ -473,6 +484,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     }
                 });
             });
+
             // add the key listener specifically to cancel the shift function
             document.addEventListener("keyup", shiftKeyup);
         }
@@ -501,14 +513,10 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             {
                 // cancel the drawing functionality
                 event.target.classList.remove("drawing")
-                // remove the pencil icon to the main box on hover
-                document.getElementById("maincontent").childNodes.forEach(childel => {
-                    childel.classList.remove("drawing")
-                });
-                // remove the pencil icon to the main box on svg main elements
-                document.getElementById("figurecontainer").childNodes.forEach(childel => {
-                    childel.classList.remove("drawing")
-                });
+                
+                // remove the class to draw
+                applyClassToMainDOMandChildren( "drawing", "remove");
+
                 changeButtonActivation("enable", 0)
                 // allow dragging again
                 draggableSvg.unpauseDraggables()
@@ -525,14 +533,10 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             {
                 // start the drawing functionality
                 event.target.classList.add("drawing")
-                // add the pencil cursor icon to the main content objects
-                document.getElementById("maincontent").childNodes.forEach((childel) => {
-                    childel.classList.add("drawing")
-                });
-                // add the pencil cursor icon to the svg objects
-                document.getElementById("figurecontainer").childNodes.forEach((childel) => {
-                    childel.classList.add("drawing")
-                });
+                
+                // add class to the main content peices *Helps force a cursor look when there is an unknown number of interor objects*; must remove class later. 
+                applyClassToMainDOMandChildren( "drawing", "add");
+
                 changeButtonActivation("disable", 0)
                 // pause the dragging function for now
                 draggableSvg.pauseDraggables()
@@ -545,6 +549,34 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         }
         PencilFlag = !(PencilFlag)
     });
+
+    function applyClassToMainDOMandChildren( cls, interaction ){
+        
+        switch (interaction) {
+            case "remove":
+                // add the pencil cursor icon to the main content objects
+                document.getElementById("maincontent").childNodes.forEach((childel) => {
+                    childel.classList.remove(cls)
+                });
+                // add the pencil cursor icon to the svg objects
+                document.getElementById("figurecontainer").childNodes.forEach((childel) => {
+                    childel.classList.remove(cls)
+                });
+                break;
+        
+            case "add":
+                
+                // add the pencil cursor icon to the main content objects
+                document.getElementById("maincontent").childNodes.forEach((childel) => {
+                    childel.classList.add(cls)
+                });
+                // add the pencil cursor icon to the svg objects
+                document.getElementById("figurecontainer").childNodes.forEach((childel) => {
+                    childel.classList.add(cls)
+                });
+                break;
+        }    
+    }
 
     /**
      * @function #outlinebtnopt.click()
@@ -560,14 +592,11 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 // cancel the drawing functionality
                 document.getElementById("editbox").classList.remove("outlining")
                 event.target.classList.remove("outlining")
-                // add the crosshair cursor icon to the main content objects
-                document.getElementById("maincontent").childNodes.forEach((childel) => {
-                    childel.classList.remove("outlining")
-                });
-                // add the crosshair cursor icon to the svg objects
-                document.getElementById("figurecontainer").childNodes.forEach((childel) => {
-                    childel.classList.remove("outlining")
-                });
+                
+                // TODO
+                applyClassToMainDOMandChildren("outlining", "remove")
+
+
                 // unblock dragging
                 draggableSvg.unpauseDraggables()
                 changeButtonActivation("enable", 1)
@@ -585,14 +614,10 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 // start the drawing functionality
                 document.getElementById("editbox").classList.add("outlining")
                 event.target.classList.add("outlining")
-                // add the crosshair cursor icon to the main content objects
-                document.getElementById("maincontent").childNodes.forEach((childel) => {
-                    childel.classList.add("outlining")
-                });
-                // add the crosshair cursor icon to the svg objects
-                document.getElementById("figurecontainer").childNodes.forEach((childel) => {
-                    childel.classList.add("outlining")
-                });
+                
+                // TODO:
+                applyClassToMainDOMandChildren("outlining", "add")
+
                 changeButtonActivation("disable", 1)
                 // block dragging again
                 draggableSvg.pauseDraggables()
@@ -3913,7 +3938,7 @@ function updateCaptionBoxColor ( color, objectid )
  * 
  * @param {*} activation 
  */
-function toggleLayerUI( activation )
+function toggleLayerUI( activation, cls )
 {
     let requiredLayers = [ document.getElementById("toolbox"), document.getElementById("editbox") ]
 
@@ -3921,11 +3946,11 @@ function toggleLayerUI( activation )
         switch(activation)
         {
             case "remove":
-                div.classList.remove("hand")
+                div.classList.remove(cls)
                 break
             
             case "add":
-                div.classList.add("hand")
+                div.classList.add(cls)
                 break
         }
     });

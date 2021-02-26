@@ -144,6 +144,10 @@ i>b>a, i>b>a:visited {
     cursor: move;
 }
 
+.shifting:hover {
+    cursor: move !important;
+}
+
 .UIIntro {
     width: 100%;
     height: auto;
