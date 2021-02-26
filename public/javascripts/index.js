@@ -423,7 +423,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 document.getElementById("savebtn").click()
             }
         }
-        else if( (key === "Shift" 
+        else if( 
+                (key === "Shift" 
                 || key === 'shift' 
                 || key === 16)
                 && (!PencilFlag && !OutlineFlag)
@@ -510,7 +511,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 event.target.classList.remove("drawing")
                 // remove the class to draw
                 applyClassToMainDOMandChildren( "drawing", "remove" );
-
                 changeButtonActivation("enable", 0)
                 // allow dragging again
                 draggableSvg.unpauseDraggables()
@@ -1289,9 +1289,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             const powRegExp = /(\d|\w){31}$/
             if( powRegExp.test(powId) )
             {
-                console.log("THIS IS WHERE I NEED TO MAKE THE REQUEST TO THE SERVER TO FIND THE JOB ID FOLDER")
-
-                // TODO: POW
+                window.alert("This feature is yet to be implimented, check back soon."); // *Temporary*
 
                 // send request to server
                 fetch(`/pow?pow=${powId}`, {
@@ -1300,6 +1298,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 })
                 .then( imagedatares => imagedatares.json())
                 .then((json) => {
+                    // TODO: POW
+
                     console.log(json)
                 })
             }
