@@ -63,8 +63,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 dot.removeEventListener("mousedown", dotMouseDownFunction)
                 draggableSvg.getContainerObject().removeChild( dot )
             });
-
-
         }
         return true
     }
@@ -698,7 +696,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
 
         fileinputtype.setAttribute("name", "exportfiletype-svg");
         fileinputtype.setAttribute("type", "checkbox");
-        fileinputtypelabel.innerHTML = "Output Types:   ";
+        fileinputtypelabel.innerHTML = "Output Types: ";
 
         fileinputtypesvglabel.innerHTML = "SVG";
         fileinputtypesvglabel.style.margin = "0 auto 0 0";
@@ -836,7 +834,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         xhrd.responseType = 'blob';
 
                         // download the blob as a file
-                        xhrd.onload = function (event) {
+                        xhrd.onload = function () {
                             var blob = this.response;
                             saveBlob(blob, filename);
                         };
