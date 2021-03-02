@@ -1298,8 +1298,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     if(json.err)
                     {
                         // notify of error
-                        console.error(`Server Error: ${json.err}`)
-                        window.alert(`Server Error: ${json.err}`)
+                        console.error(`Server Error ${json.err}`)
+                        window.alert(`Server Error ${json.err}`)
                     }
                     else
                     {
