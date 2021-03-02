@@ -14,7 +14,6 @@
 @-webkit-keyframes loading {
     from{
         -webkit-transform: rotate(0deg);
-        
     }
 
     to{
@@ -25,7 +24,6 @@
 @keyframes loading {
     from{
         transform: rotate(0deg);
-        
     }
 
     to{
@@ -144,6 +142,10 @@ i>b>a, i>b>a:visited {
 
 .draggableDot:hover {
     cursor: move;
+}
+
+.shifting:hover {
+    cursor: move !important;
 }
 
 .UIIntro {
@@ -376,6 +378,12 @@ button.disabled {
     cursor: auto;
 }
 
+ /* Fixed Chrome Border Focus Whitespace*/
+button {
+    outline: none;
+}
+
+
 .titleLogo {
     width: auto;
     height: auto;
@@ -420,7 +428,7 @@ button.disabled {
     padding: 5px 8px;
     vertical-align: top;
     margin: 0 0 0 0;
-    border: 1px solid black;
+    border: 1px solid transparent;
 }
 
 .exporttitlebox > h3 {

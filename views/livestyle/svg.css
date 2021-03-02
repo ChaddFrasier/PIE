@@ -19,6 +19,14 @@ line.placed.outlining, rect.placed.outlining, svg.outlining, g.outlining {
     cursor: crosshair;
 }
 
+line.shifting:hover, rect.shifting:hover {
+    cursor: not-allowed !important;
+}
+
+.shifting:hover, #bgelement.shifting:hover {
+    cursor: move !important;
+}
+
 tspan {
     font-family: Arial, Helvetica, sans-serif;
 }

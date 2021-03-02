@@ -128,7 +128,7 @@ function DraggableList( inobject=undefined )
         // try to remove the mouse events for the dragging
         try{
             document.getElementById("toolbox").removeEventListener("mousemove", docucmentMouseOverHandler);
-            toggleLayerUI("remove");
+            toggleLayerUI("remove", "hand");
             window.removeEventListener("mouseup", documentMouseUpListener);
             document.removeEventListener("mousemove", getMouseDirection);
         }
@@ -159,7 +159,7 @@ function DraggableList( inobject=undefined )
         // capture the start y when the click happens
         oldY = event.pageY;
 
-        toggleLayerUI("add");
+        toggleLayerUI("add", "hand");
 
         event.target.addEventListener("mouseup", documentMouseUpListener, false);
         document.addEventListener("mousemove", getMouseDirection, false);

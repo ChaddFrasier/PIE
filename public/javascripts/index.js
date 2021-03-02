@@ -53,6 +53,9 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             draggableSvg.unpauseDraggables();
             // reactivate the UI buttons
             changeButtonActivation("enable", 2)
+            // update the main dom elements and inner children to class
+            applyClassToMainDOMandChildren("shifting", "remove")
+
             // remove the color the endpoints of the lines and the endpoints of the rectangles
             document.removeEventListener("keyup", shiftKeyup)
             // remove all draggable dots
@@ -418,7 +421,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 document.getElementById("savebtn").click()
             }
         }
-        else if( (key === "Shift" 
+        else if( 
+                (key === "Shift" 
                 || key === 'shift' 
                 || key === 16)
                 && (!PencilFlag && !OutlineFlag)
@@ -426,6 +430,9 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     || document.querySelectorAll("rect.placed").length > 0 )
             )
         {
+            // parse over all dom objects and children to add the class
+            applyClassToMainDOMandChildren("shifting", "add")
+
             // pause the drag stuff from the DraggableArea Object
             draggableSvg.pauseDraggables();
             // disable the buttons in the toolbox
@@ -450,7 +457,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                             createDot(`${dotObjectName}end`, obj.getAttribute("x2"), obj.getAttribute("y2"))
                             break;
 
-                        case 'rect':
+                        case 'rect':                        
                             // create a new dot element that has an attribute for spy element attribute name
                                 // Example:   <circle ... spyId="rect123-ptl" ... /> top left 
                                 //            <circle ... spyId="rect123-ptr" ... /> top right
@@ -476,7 +483,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             // add the key listener specifically to cancel the shift function
             document.addEventListener("keyup", shiftKeyup);
         }
-
         return true;
     }
 
@@ -501,14 +507,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             {
                 // cancel the drawing functionality
                 event.target.classList.remove("drawing")
-                // remove the pencil icon to the main box on hover
-                document.getElementById("maincontent").childNodes.forEach(childel => {
-                    childel.classList.remove("drawing")
-                });
-                // remove the pencil icon to the main box on svg main elements
-                document.getElementById("figurecontainer").childNodes.forEach(childel => {
-                    childel.classList.remove("drawing")
-                });
+                // remove the class to draw
+                applyClassToMainDOMandChildren( "drawing", "remove" );
                 changeButtonActivation("enable", 0)
                 // allow dragging again
                 draggableSvg.unpauseDraggables()
@@ -525,15 +525,11 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             {
                 // start the drawing functionality
                 event.target.classList.add("drawing")
-                // add the pencil cursor icon to the main content objects
-                document.getElementById("maincontent").childNodes.forEach((childel) => {
-                    childel.classList.add("drawing")
-                });
-                // add the pencil cursor icon to the svg objects
-                document.getElementById("figurecontainer").childNodes.forEach((childel) => {
-                    childel.classList.add("drawing")
-                });
-                changeButtonActivation("disable", 0)
+                
+                // add class to the main content peices *Helps force a cursor look when there is an unknown number of interor objects*; must remove class later. 
+                applyClassToMainDOMandChildren( "drawing", "add" );
+                changeButtonActivation("disable", 0);
+
                 // pause the dragging function for now
                 draggableSvg.pauseDraggables()
                 // add event listener for click on svg
@@ -545,6 +541,39 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         }
         PencilFlag = !(PencilFlag)
     });
+
+    /**
+     * @function applyClassToMainDOMandChildren
+     * @param {string} cls the class to apply
+     * @param {'add' || 'remove'} interaction the key work to 'add' or 'remove'
+     * @description this class simplified the part of the index.js that controlled the user cursor UI
+     */
+    function applyClassToMainDOMandChildren( cls, interaction ){
+        
+        switch (interaction) {
+            case "remove":
+                // add the pencil cursor icon to the main content objects
+                document.getElementById("maincontent").childNodes.forEach((childel) => {
+                    childel.classList.remove(cls)
+                });
+                // add the pencil cursor icon to the svg objects
+                document.getElementById("figurecontainer").childNodes.forEach((childel) => {
+                    childel.classList.remove(cls)
+                });
+                break;
+        
+            case "add":
+                // add the pencil cursor icon to the main content objects
+                document.getElementById("maincontent").childNodes.forEach((childel) => {
+                    childel.classList.add(cls)
+                });
+                // add the pencil cursor icon to the svg objects
+                document.getElementById("figurecontainer").childNodes.forEach((childel) => {
+                    childel.classList.add(cls)
+                });
+                break;
+        }    
+    }
 
     /**
      * @function #outlinebtnopt.click()
@@ -560,14 +589,11 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 // cancel the drawing functionality
                 document.getElementById("editbox").classList.remove("outlining")
                 event.target.classList.remove("outlining")
-                // add the crosshair cursor icon to the main content objects
-                document.getElementById("maincontent").childNodes.forEach((childel) => {
-                    childel.classList.remove("outlining")
-                });
-                // add the crosshair cursor icon to the svg objects
-                document.getElementById("figurecontainer").childNodes.forEach((childel) => {
-                    childel.classList.remove("outlining")
-                });
+                
+                // remove the outline cursor
+                applyClassToMainDOMandChildren("outlining", "remove")
+
+
                 // unblock dragging
                 draggableSvg.unpauseDraggables()
                 changeButtonActivation("enable", 1)
@@ -585,14 +611,10 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 // start the drawing functionality
                 document.getElementById("editbox").classList.add("outlining")
                 event.target.classList.add("outlining")
-                // add the crosshair cursor icon to the main content objects
-                document.getElementById("maincontent").childNodes.forEach((childel) => {
-                    childel.classList.add("outlining")
-                });
-                // add the crosshair cursor icon to the svg objects
-                document.getElementById("figurecontainer").childNodes.forEach((childel) => {
-                    childel.classList.add("outlining")
-                });
+                
+                // add the outline cursor
+                applyClassToMainDOMandChildren("outlining", "add")
+
                 changeButtonActivation("disable", 1)
                 // block dragging again
                 draggableSvg.pauseDraggables()
@@ -674,7 +696,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
 
         fileinputtype.setAttribute("name", "exportfiletype-svg");
         fileinputtype.setAttribute("type", "checkbox");
-        fileinputtypelabel.innerHTML = "Output Types:   ";
+        fileinputtypelabel.innerHTML = "Output Types: ";
 
         fileinputtypesvglabel.innerHTML = "SVG";
         fileinputtypesvglabel.style.margin = "0 auto 0 0";
@@ -812,7 +834,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         xhrd.responseType = 'blob';
 
                         // download the blob as a file
-                        xhrd.onload = function (event) {
+                        xhrd.onload = function () {
                             var blob = this.response;
                             saveBlob(blob, filename);
                         };
@@ -1202,9 +1224,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
     /**
      * @function button.toolboxaddimagebtn.click()
      * @description add the image to the svg and the toolbox stuff
-     * 
-     * TODO: POW
-     * 
      */
     document.getElementById('addpowbtn').addEventListener("click", () =>
     {
@@ -1268,8 +1287,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             const powRegExp = /(\d|\w){31}$/
             if( powRegExp.test(powId) )
             {
-                console.log("THIS IS WHERE I NEED TO MAKE THE REQUEST TO THE SERVER TO FIND THE JOB ID FOLDER")
-
                 // send request to server
                 fetch(`/pow?pow=${powId}`, {
                     method: "GET",
@@ -1277,8 +1294,20 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 })
                 .then( imagedatares => imagedatares.json())
                 .then((json) => {
-                    console.log(json)
-                })
+                    // handle pow response
+                    if(json.err)
+                    {
+                        // notify of error
+                        console.error(`Server Error: ${json.err}`)
+                        window.alert(`Server Error: ${json.err}`)
+                    }
+                    else
+                    {
+                        // show the list of filenames
+                        console.log(json)
+
+                    }
+                });
             }
             else
             {
@@ -3913,7 +3942,7 @@ function updateCaptionBoxColor ( color, objectid )
  * 
  * @param {*} activation 
  */
-function toggleLayerUI( activation )
+function toggleLayerUI( activation, cls )
 {
     let requiredLayers = [ document.getElementById("toolbox"), document.getElementById("editbox") ]
 
@@ -3921,11 +3950,11 @@ function toggleLayerUI( activation )
         switch(activation)
         {
             case "remove":
-                div.classList.remove("hand")
+                div.classList.remove(cls)
                 break
             
             case "add":
-                div.classList.add("hand")
+                div.classList.add(cls)
                 break
         }
     });
