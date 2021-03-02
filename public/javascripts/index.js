@@ -1287,8 +1287,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             const powRegExp = /(\d|\w){31}$/
             if( powRegExp.test(powId) )
             {
-                window.alert("This feature is yet to be implimented, check back soon."); // *Temporary*
-
                 // send request to server
                 fetch(`/pow?pow=${powId}`, {
                     method: "GET",
@@ -1296,10 +1294,20 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 })
                 .then( imagedatares => imagedatares.json())
                 .then((json) => {
-                    // TODO: POW
+                    // handle pow response
+                    if(json.err)
+                    {
+                        // notify of error
+                        console.error(`Server Error: ${json.err}`)
+                        window.alert(`Server Error: ${json.err}`)
+                    }
+                    else
+                    {
+                        // show the list of filenames
+                        console.log(json)
 
-                    console.log(json)
-                })
+                    }
+                });
             }
             else
             {
