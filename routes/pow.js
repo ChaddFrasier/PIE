@@ -1,7 +1,7 @@
 "use strict";
 
 var express = require('express');
-var fs = require('fs')
+var fs = require('fs');
 var router = express.Router();
 
 /**
@@ -23,7 +23,6 @@ router.get('/', ( req, res, next) =>
         // otherwise query the folder and extract all the filenames inside it. (Display only the image files, cubs or TIFFs )
             // use the filenames to return the the server so the user can investigate which ever file they want from the list.  
         res.send({err: '200: Your job ID has been validated. THIS IS NOT AN ERROR!'})
-
     }
     else
     {

@@ -302,7 +302,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
      * @function dotEndFunction
      * @description clear the globals and reove the functions
      */
-    function dotEndFunction( )
+    function dotEndFunction()
     {
         draggingDot = null
         rectstartx = 0
@@ -3772,7 +3772,7 @@ function updateKeyColor( code, value, iconId )
                 }
             }
         }
-   }
+    }
 }
 
 
