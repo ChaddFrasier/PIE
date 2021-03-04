@@ -1,4 +1,8 @@
-
+/**
+ * @function updateAboutContent
+ * @param {string} id button id the user clicked
+ * @description this file is only used to control the navbar options on the about page
+ */
 function updateAboutContent( id )
 {
 
