@@ -34,7 +34,7 @@
 html {
     background: var(--main-bg-color);
     overflow-x: hidden;
-    overflow-y: hidden;
+    overflow-y: auto;
     color: var(--contrast-color);
     padding: 0 0px;
     margin: 0;
@@ -218,11 +218,20 @@ h5.importantnote-desc {
 }
 
 .descBox {
-    width: 75%;
+    width: 65%;
     margin: 0 0 0 auto;
     background: rgba(0, 0, 0, 0.1);
     text-align: left;
-    padding: 10px 5px;
+    padding: 5px 30px;
+    font-size: var(--large-font);
+}
+
+.descBox2 {
+    width: 90%;
+    margin: 0 auto 0 auto;
+    background: rgba(0, 0, 0, 0.1);
+    text-align: left;
+    padding: 5px 30px;
     font-size: var(--large-font);
 }
 
@@ -234,8 +243,11 @@ h5.importantnote-desc {
 }
 
 .basicpageheader {
-    margin: 0 auto;
     text-align: left;
+    width: 100%;
+    font-weight: bold;
+    font-size: x-large;
+    margin: 5px 10px;
 }
 
 .innerpageheader {
@@ -255,11 +267,42 @@ h5.importantnote-desc {
 
 .basicpagecontent {
     background-color: rgba(0,0,0,.1);
-    padding: 1em;
+    padding: 0;
     font-size: var(--large-font);
 }
 
-pre > h2 {
+.navbar {
+    display: flex;
+    width: 100%;
+    text-align: center;
+    color: var(--secondary-color);
+}
+
+.changebox {
+    width: 100%;
+    margin: 0 auto auto auto;
+    padding: 0px 5px;
+    overflow-y: visible;
+}
+
+.navbar > h3:hover {
+    color: var(--contrast-color);
+    cursor: default;
+}
+
+.navbar > h3.disabled {
+    color: var(--main-bg-color);
+    cursor: default;
+}
+
+.navbar > h3 {
+    font: 20px;
+    margin: 0 0 0 15px;
+    text-decoration: underline;
+    padding: 10px;
+}
+
+pre > h3 {
     font-size: var(--medium-font);
 }
 
@@ -267,9 +310,9 @@ pre > i > b {
     word-wrap: break-word;
 }
 .basicpagecontent > pre {
-    padding: 10px;
+    padding: 10px 20px;
     font-size: var(--medium-font);
-    max-width: none;
+    max-width: 1200px;
     background-color: rgba(255, 255, 255, 0.1);
     margin: auto;
     text-align: left;
@@ -277,7 +320,7 @@ pre > i > b {
 }
 
 .basicpagecontent > pre > pre {
-    padding: 10px;
+    padding: 20px;
     max-width: none;
     background-color: rgba(0, 0, 0, 0.1);
     margin: auto;
@@ -307,15 +350,15 @@ pre > i > b {
 }
 
 .mainaboutbox {
-    text-align: left;
-    padding: 0 1em;
-    min-width: 30em;
+    text-align: center;
+    margin: auto auto;
+    padding: 10px 20px;
     height: auto;
     text-align: center;
     background: var(--accent-color);
     color: var(--primary-color);
     font-size: var(--medium-font);
-    width: 100%;
+    width: 65%;
     overflow-y: auto;
 }
 
@@ -544,7 +587,6 @@ button {
 }
 
 .maincontent-sm {
-    display: flex; 
     height: auto;
     max-height: var(--main-content-height);
     width: 92%;
