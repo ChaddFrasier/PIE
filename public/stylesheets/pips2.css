@@ -285,24 +285,24 @@ h5.importantnote-desc {
     overflow-y: visible;
 }
 
-.navbar > p:hover {
+.navbar > h3:hover {
     color: var(--contrast-color);
     cursor: default;
 }
 
-.navbar > p.disabled {
+.navbar > h3.disabled {
     color: var(--main-bg-color);
     cursor: default;
 }
 
-.navbar > p {
+.navbar > h3 {
     font: 20px;
     margin: 0 0 0 15px;
     text-decoration: underline;
     padding: 10px;
 }
 
-pre > h2 {
+pre > h3 {
     font-size: var(--medium-font);
 }
 

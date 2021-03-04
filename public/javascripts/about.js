@@ -3,7 +3,7 @@ function updateAboutContent( id )
 {
 
     console.log(id)
-    document.querySelectorAll('.navbar > p').forEach( p => {
+    document.querySelectorAll('.navbar > h3').forEach( p => {
         p.classList.remove("disabled")
     });
 
@@ -61,7 +61,6 @@ function updateAboutContent( id )
             break;
         
         case "pilot":
-            // TODO: create the new portion of the about page using js and set to the .changebox.innerHTML
             var container = document.createElement('div'),
                 header = document.createElement('div'),
                 desc = document.createElement('pre'),
@@ -77,19 +76,12 @@ function updateAboutContent( id )
             header.innerHTML = "Using PILOT to Find Images"
             header.classList.add('basicpageheader');
 
-
             innerpre.innerHTML = "<i><b>1. Select </b></i> the <i><b>planetary body</b></i> you would like to search within.<br><img class='pilotstepsimage' alt='pilotimage1' src='/images/pilot1.PNG'/>";
-
             innerpre2.innerHTML = "<i><b>2. Click</b></i> the <i><b>Map tab</b></i> to view the planetary map.<br><img class='pilotstepsimage' alt='pilotimage3' src='/images/pilot3.PNG'/>";
-
             innerpre3.innerHTML = "<i><b>3. Click</b></i> the <i><b>Polygon Button</b></i> to the left side of the map.<br><img class='pilotstepsimage' alt='pilotimage4' src='/images/pilot4.PNG'/>";
-
             innerpre4.innerHTML = "<i><b>4. Draw a shape</b></i> on the map to select images in that area.<br><img class='pilotstepsimage' alt='pilotimage5' src='/images/pilot5.PNG'/>";
-
             innerpre5.innerHTML = "<i><b>5. Check the checkboxes</b></i> for the images you want to use.<br><img class='pilotstepsimage' alt='pilotimage6' src='/images/pilot6.PNG'/>";
-
             innerpre6.innerHTML = "<i><b>6. Click</b></i> the POW bubble for Projections On the Web. Then just click go! and wait for your POW Id to be returned to your email.<br><img class='pilotstepsimage' alt='pilotimage7' src='/images/pilot7.PNG'/>";
-
             innerpre7.innerHTML = "<i><b>6. Click submit.</b></i><br><img class='pilotstepsimage' alt='pilotimage8' src='/images/pilot8.PNG'/>";
 
             mainpre.append(innerpre, innerpre2, innerpre3, innerpre4, innerpre5, innerpre6, innerpre7 )
