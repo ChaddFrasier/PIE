@@ -247,6 +247,7 @@ h5.importantnote-desc {
     width: 100%;
     font-weight: bold;
     font-size: x-large;
+    margin: 5px 10px;
 }
 
 .innerpageheader {
