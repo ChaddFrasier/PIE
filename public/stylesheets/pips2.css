@@ -34,7 +34,7 @@
 html {
     background: var(--main-bg-color);
     overflow-x: hidden;
-    overflow-y: hidden;
+    overflow-y: auto;
     color: var(--contrast-color);
     padding: 0 0px;
     margin: 0;
@@ -281,6 +281,7 @@ h5.importantnote-desc {
     width: 100%;
     margin: 0 auto auto auto;
     padding: 0px 5px;
+    overflow-y: visible;
 }
 
 .navbar > p:hover {
