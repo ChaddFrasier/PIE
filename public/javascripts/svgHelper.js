@@ -3,7 +3,6 @@
  * @fileoverview file for helping the DraggableArea and DraggableList files
 */
 "use strict";
-
 // Namespaces Global
 var NS = {
         xhtml:"http://www.w3.org/1999/xhtml",
@@ -23,27 +22,24 @@ function setSVGBackground( id, color )
 {
     document.getElementById(id).setAttribute("fill", color);
 }
-
 /**
  * @function detectRightMouse
  * @param { event } evt
  * @see https://github.com/ChaddFrasier/PIPS/blob/master/js/index.js detectRightButton
  * @description this function takes in an event and checks to see if it was a left click event
 */
-function detectRightMouse(evt) {
+function detectRightMouse(evt)
+{
     // if evt is null then get the currently active window event
     evt = evt || window.event;
-
     // if browser has which then use which code check
     if ("which" in evt) {
         return evt.which == 3;
-    }
-    
+    }   
     // otherwise check for the button code
     var button = evt.buttons || evt.button;   
     return button == 2;
 }
-
 /**
  * @function setTransform
  * @param {string} scaleString - a string returned by scaleString()
@@ -105,12 +101,11 @@ function getTransform( attr, object)
                         throw -1
                 }
             }
-        } 
+        }
     catch (error) {
         console.log(error)
     }
 }
-
 /**
  * @function translateString
  * @param {number} x - the x value in pixels
@@ -121,7 +116,6 @@ function translateString( x, y )
 {
     return String( "translate(" +  x  + "px, " +  y  + "px)" )
 }
-
 /**
  * @function translateString
  * @param {number} x - the x value in pixels
@@ -133,7 +127,6 @@ function scaleString( scale)
 {
     return String( "scale3d(" + scale + "," + scale + ",1)" )
 }
-
 /**
  * @function getScaledPoint
  * @param {number} p - the point that we need to scale
@@ -145,12 +138,9 @@ function getScaledPoint( p, scale, objectDim )
 {
     // scale object dimension and get half of it because we want the center of the object
     let p_half = (objectDim * scale) / 2
-
     // scale the point down with half subtracted to find the center of the icon
     return ( p  - p_half ) /  scale  
 }
-
-
 /**
  * @function updateInputField
  * @param {string} objectid the object id to change
@@ -162,22 +152,20 @@ function updateInputField( objectid, ...args )
     if( objectid.indexOf("line") > -1)
     {
         var objectArr = document.getElementsByClassName("draggableToolbox")
-
         // more than 1 toolbox present
-        for(let i = 0; i < objectArr.length; i++ ){
+        for(let i = 0; i < objectArr.length; i++ )
+        {
             if( objectArr[i].getAttribute("objectid") == objectid )
             { 
                 // set the ui input boxes
-                var x1input = objectArr[i].children[1].querySelector("input[name='linex1input']")
+                var x1input = objectArr[i].children[1].querySelector("input[name='linex1input']"),
+                    y1input = objectArr[i].children[1].querySelector("input[name='liney1input']"),
+                    x2input = objectArr[i].children[1].querySelector("input[name='linex2input']"),
+                    y2input = objectArr[i].children[1].querySelector("input[name='liney2input']");
+                
                 x1input.value = Number(args[0]).toFixed(0)
-
-                var y1input = objectArr[i].children[1].querySelector("input[name='liney1input']")
                 y1input.value = Number(args[1]).toFixed(0)
-
-                var x2input = objectArr[i].children[1].querySelector("input[name='linex2input']")
                 x2input.value = Number(args[2]).toFixed(0)
-
-                var y2input = objectArr[i].children[1].querySelector("input[name='liney2input']")
                 y2input.value = Number(args[3]).toFixed(0)
             }
         }
@@ -191,17 +179,16 @@ function updateInputField( objectid, ...args )
             if( objectArr[i].getAttribute("objectid") == objectid )
             {
                 // set the ui input boxes
-                var xinput = objectArr[i].children[1].querySelector("input[name='rectxinput']")
-                xinput.value = Number(args[0]).toFixed(0)
+                var xinput = objectArr[i].children[1].querySelector("input[name='rectxinput']"),
+                    yinput = objectArr[i].children[1].querySelector("input[name='rectyinput']");
 
-                var yinput = objectArr[i].children[1].querySelector("input[name='rectyinput']")
+                xinput.value = Number(args[0]).toFixed(0)
                 yinput.value = Number(args[1]).toFixed(0)
             }
         }
     }
     else if( objectid.indexOf("Icon") > -1 )
     {
-    
         var objectArr = document.getElementsByClassName("draggableToolbox") 
  
         if( objectArr.length > 0)
@@ -211,9 +198,8 @@ function updateInputField( objectid, ...args )
                 if( objectArr[i].getAttribute("objectid").indexOf(objectid.split("-")[1]) > -1 )
                 {
                     // set the ui input boxes
-                    var xinput = objectArr[i].children[1].querySelectorAll("input[name='iconxcoordinput']")
-                    var yinput = objectArr[i].children[1].querySelectorAll("input[name='iconycoordinput']")
-
+                    var xinput = objectArr[i].children[1].querySelectorAll("input[name='iconxcoordinput']"),
+                        yinput = objectArr[i].children[1].querySelectorAll("input[name='iconycoordinput']");
 
                     if(xinput.length > 0 && yinput.length > 0)
                     {
@@ -250,10 +236,10 @@ function updateInputField( objectid, ...args )
                 if( objectArr[i].getAttribute("objectid").split('-')[0] === objectid )
                 {
                     // set the ui input boxes
-                    var xinput = objectArr[i].children[1].querySelector("input[name='xcoordinput']")
-                    xinput.value = Number(args[0]).toFixed(0)
+                    var xinput = objectArr[i].children[1].querySelector("input[name='xcoordinput']"),
+                        yinput = objectArr[i].children[1].querySelector("input[name='ycoordinput']")
 
-                    var yinput = objectArr[i].children[1].querySelector("input[name='ycoordinput']")
+                    xinput.value = Number(args[0]).toFixed(0)
                     yinput.value = Number(args[1]).toFixed(0)
                 }
             }
@@ -274,10 +260,10 @@ function updateInputField( objectid, ...args )
                 if( objectArr[i].getAttribute("objectid").split('-')[0] === objectid )
                 {
                     // set the ui input boxes
-                    var xinput = objectArr[i].children[1].querySelector("input[name='xcoordinput']")
-                    xinput.value = Number(args[0]).toFixed(0)
+                    var xinput = objectArr[i].children[1].querySelector("input[name='xcoordinput']"),
+                        yinput = objectArr[i].children[1].querySelector("input[name='ycoordinput']");
 
-                    var yinput = objectArr[i].children[1].querySelector("input[name='ycoordinput']")
+                    xinput.value = Number(args[0]).toFixed(0)
                     yinput.value = Number(args[1]).toFixed(0)
                 }
             }
@@ -292,8 +278,6 @@ function updateInputField( objectid, ...args )
         console.error("Could not find object to correct")
     }
 }
-
-
 /**
  * @function moveSvgUp
  * @param {Node} element - the element to shift layers
@@ -305,7 +289,6 @@ function moveSvgUp( element )
     element.nextSibling.insertAdjacentElement("afterend", element)
     
 }
-
 /**
  * @function moveSvgDown
  * @param {Node} element - the element to shift down a layer of the svg parent
@@ -315,7 +298,6 @@ function moveSvgDown( element )
 {
     document.getElementById("figurecontainer").insertBefore(element, element.previousSibling)
 }
-
 /**
  * @function updateTranslate
  * @requires translateSring()
