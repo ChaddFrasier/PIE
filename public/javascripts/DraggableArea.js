@@ -8,7 +8,6 @@
  * dragObject() is the function that performs the dragging on the draggingIcon. 
  * This is where the draggig can be updated later
 */
-
 "use strict";
 /**
  * @function constructor

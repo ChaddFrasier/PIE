@@ -3,7 +3,6 @@
  * @requires svgHelper.js
  * @fileoverview This will a file that generates a draggable list box and an ordered array of list objects
 */
-
 "use strict";
 /**
  * @function DraggableList
