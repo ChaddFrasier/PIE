@@ -3,8 +3,8 @@
  * @requires svgHelper.js
  * @fileoverview This will a file that generates a draggable list box and an ordered array of list objects
 */
-"use strict";
 
+"use strict";
 /**
  * @function DraggableList
  * @param {object} inobject - an object to force into becomeing a draggable list
@@ -25,7 +25,6 @@ function DraggableList( inobject=undefined )
         update = false,
         oldY = 0,
         sensitivity = 55;
-
     /**
     * @function getMouseDirection
     * @param {_MouseEvent} e - the event that is happening at the time of calling
@@ -70,11 +69,10 @@ function DraggableList( inobject=undefined )
         }
         else
         {
-            // direction not determined
+            // direction not determined using current sensetivity
             yDirection = "";
         }
     }
-        
     /**
      * @function shiftUp
      * @param {number} newY - the pageY value that will become the new "oldY" in this object
@@ -96,7 +94,6 @@ function DraggableList( inobject=undefined )
             oldY = newY;
         }
     }
-
     /**
      * @function shiftDown
      * @param {number} newY - the new oldY value that will be set after the UI is updated
@@ -117,8 +114,6 @@ function DraggableList( inobject=undefined )
             yDirection = "";
         }
     }
-
-
     /**
      * @function documentMouseUpListener
      * @description when the mouse is released remove the listeners
@@ -136,10 +131,11 @@ function DraggableList( inobject=undefined )
         {
             console.log("document listener remove failed");
         }
-
         // remove the selected class indicator for CSS and JS listeners
-        if( shiftObjects ){ shiftObjects.classList.remove("selectedBox") }
-
+        if( shiftObjects )
+        { 
+            shiftObjects.classList.remove("selectedBox")
+        }
         // remove element markers
         lowerObject = null;
         upperObject = null;
@@ -158,31 +154,26 @@ function DraggableList( inobject=undefined )
     {  
         // capture the start y when the click happens
         oldY = event.pageY;
-
+        // add class to main page
         toggleLayerUI("add", "hand");
-
+        // add the dragging functions
         event.target.addEventListener("mouseup", documentMouseUpListener, false);
         document.addEventListener("mousemove", getMouseDirection, false);
-
         // objects that need to shift
         try {
             shiftObjects = event.target.parentElement.parentElement;
-
             // the element to put things below
             lowerObject = shiftObjects.nextElementSibling;
-
             // the element to put things above
             upperObject = shiftObjects.previousElementSibling;
-
             // put dragging stuff here
             document.getElementById("toolbox").addEventListener("mousemove", docucmentMouseOverHandler);
-
             // set shiftObjects css
             shiftObjects.classList.add("selectedBox");
         }
         catch(err)
         {
-            console.log(err)
+            // if error then init to null
             upperObject, lowerObject, shiftObjects = null;
         }
     }
@@ -250,7 +241,6 @@ function DraggableList( inobject=undefined )
              */
             addDraggable: (startBtn) => {
                 startBtn.addEventListener("mousedown", draggableStart)
-
                 // add the window lister to remove active dragging
                 window.addEventListener("mousedown", () => {
                     window.addEventListener("mouseup", documentMouseUpListener)
