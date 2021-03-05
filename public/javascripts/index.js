@@ -14,7 +14,7 @@ var draggableSvg = null,
     geoIconArray = Array('northarrowopt', 'scalebarbtnopt', 'sunarrowopt', 'keyopt', 'observerarrowopt');
 
 // Function executes when the page loads fully
-document.addEventListener( "DOMContentLoaded", ( event ) => {
+document.addEventListener( "DOMContentLoaded", ( ) => {
     // Pre config
     preConfigPage();
 
@@ -29,8 +29,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         rectstarty = 0;
 
     // get the global figure element
-    let svgContainer = document.getElementById("figurecontainer")
-    
+    let svgContainer = document.getElementById("figurecontainer");
     // add the custom keys 
     document.addEventListener("keydown", customKeys);
     // start draggable actions
@@ -55,7 +54,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             changeButtonActivation("enable", 2)
             // update the main dom elements and inner children to class
             applyClassToMainDOMandChildren("shifting", "remove")
-
             // remove the color the endpoints of the lines and the endpoints of the rectangles
             document.removeEventListener("keyup", shiftKeyup)
             // remove all draggable dots
@@ -120,7 +118,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptr']`).setAttribute("cy", svgP.y )
                         rectstarty = svgP.y
                     }
-
                     if( newwidth > 0 )
                     {
                         draggingDot.setAttribute("cx", svgP.x)
@@ -151,7 +148,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptl']`).setAttribute("cy", svgP.y )
                         rectstarty = svgP.y
                     }
-
                     if( newwidth > 0 )
                     {
                         draggingDot.setAttribute("cx", svgP.x)
@@ -179,7 +175,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbl']`).setAttribute("cy", svgP.y )
                         rectstarty = svgP.y
                     }
-
                     if( newwidth > 0 )
                     {
                         draggingDot.setAttribute("cx", svgP.x)
@@ -207,7 +202,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`).setAttribute("cy", svgP.y )
                         rectstarty = svgP.y
                     }
-
                     if( newwidth > 0 )
                     {
                         draggingDot.setAttribute("cx", svgP.x)
@@ -244,14 +238,13 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             {
                 lineinputfield.value = x
             }
-        })
-
+        });
         lineyList.forEach( lineinputfield => {
             if( lineinputfield.getAttribute("objectid") == id )
             {
                 lineinputfield.value = y
             }
-        })
+        });
     }
 
     /**
@@ -274,28 +267,25 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             {
                 rectinputfield.value = x
             }
-        })
-
+        });
         rectyList.forEach( rectinputfield => {
             if( rectinputfield.getAttribute("objectid") == id )
             {
                 rectinputfield.value = y
             }
-        })
-
+        });
         rectwList.forEach( rectinputfield => {
             if( rectinputfield.getAttribute("objectid") == id )
             {
                 rectinputfield.value = width
             }
-        })
-
+        });
         recthList.forEach( rectinputfield => {
             if( rectinputfield.getAttribute("objectid") == id )
             {
                 rectinputfield.value = height
             }
-        })
+        });
     }
 
     /**
@@ -323,19 +313,19 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
     function dotMouseDownFunction( event )
     {
         // get the dot the user clicks and the svg it belongs to
-        draggingDot = event.target
-        let svg = document.getElementById(draggingDot.getAttribute("spyId").split("-")[0])
+        draggingDot = event.target;
+
+        let svg = document.getElementById( draggingDot.getAttribute("spyId").split("-")[0] )
 
         // read in the starting data as floats
-        rectstartx = parseFloat(draggingDot.getAttribute("cx"))
-        rectstarty = parseFloat(draggingDot.getAttribute("cy"))
-        rectwidth = parseFloat(svg.getAttribute('width'))
-        rectheight = parseFloat(svg.getAttribute('height'))
-
+        rectstartx = parseFloat( draggingDot.getAttribute("cx") );
+        rectstarty = parseFloat( draggingDot.getAttribute("cy") );
+        rectwidth = parseFloat( svg.getAttribute('width') );
+        rectheight = parseFloat( svg.getAttribute('height') );
         // activate the dragging and stopping function
-        draggableSvg.getContainerObject().addEventListener("mousemove", dotMouseMoveFunction)
-        draggableSvg.getContainerObject().addEventListener("mouseup", dotEndFunction)
-        draggableSvg.getContainerObject().addEventListener("mouseleave", dotEndFunction)
+        draggableSvg.getContainerObject().addEventListener( "mousemove", dotMouseMoveFunction );
+        draggableSvg.getContainerObject().addEventListener( "mouseup", dotEndFunction );
+        draggableSvg.getContainerObject().addEventListener( "mouseleave", dotEndFunction );
     }
 
     /**
@@ -348,15 +338,15 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
     function createDot( spyId, x, y )
     {
         // add a dot where one of the line points are
-        var dot = document.createElementNS(NS.svg, "circle")
-        dot.setAttribute("class", "draggableDot")
-        dot.setAttribute("r", "13")
+        var dot = document.createElementNS( NS.svg, "circle" );
+        dot.setAttribute( "class", "draggableDot" );
+        dot.setAttribute( "r", "13" );
         // get the x and y of all the points of the rectangles and lines
-        dot.setAttribute("cx", x)
-        dot.setAttribute("cy", y)
-        dot.setAttribute("spyId", spyId)
-        dot.addEventListener("mousedown", dotMouseDownFunction)
-        draggableSvg.getContainerObject().append(dot)
+        dot.setAttribute( "cx", x );
+        dot.setAttribute( "cy", y );
+        dot.setAttribute( "spyId", spyId );
+        dot.addEventListener( "mousedown", dotMouseDownFunction );
+        draggableSvg.getContainerObject().append( dot );
     }
 
     /**
@@ -379,11 +369,9 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         {
             // disable any default esc function
             event.preventDefault()
-
             // get the child list and the last child in the figure
             let children = draggableSvg.getContainerObject().children;
             let rmChild = children[children.length - 1];
-
             // the pencil function is going
             if( PencilFlag )
             {
@@ -399,7 +387,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     document.querySelector("button.drawing").trigger("click")
                 }
             }
-
             // same with outline
             if( OutlineFlag )
             {
@@ -514,7 +501,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 draggableSvg.unpauseDraggables()
                 // remove draw listeners
                 draggableSvg.getContainerObject().removeEventListener("mousedown", drawMouseDownListener)
-
                 activeEventManager.setEventFlag(undefined)
                 activeEventManager.reactivateBtn( 'outlinebtnopt' )
             }
@@ -525,16 +511,13 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             {
                 // start the drawing functionality
                 event.target.classList.add("drawing")
-                
                 // add class to the main content peices *Helps force a cursor look when there is an unknown number of interor objects*; must remove class later. 
                 applyClassToMainDOMandChildren( "drawing", "add" );
                 changeButtonActivation("disable", 0);
-
                 // pause the dragging function for now
                 draggableSvg.pauseDraggables()
                 // add event listener for click on svg
                 draggableSvg.getContainerObject().addEventListener("mousedown", drawMouseDownListener )
-
                 activeEventManager.setEventFlag(true)
                 activeEventManager.deactivateBtn( 'outlinebtnopt' )
             }
@@ -588,18 +571,14 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             {
                 // cancel the drawing functionality
                 document.getElementById("editbox").classList.remove("outlining")
-                event.target.classList.remove("outlining")
-                
+                event.target.classList.remove("outlining")                
                 // remove the outline cursor
                 applyClassToMainDOMandChildren("outlining", "remove")
-
-
                 // unblock dragging
                 draggableSvg.unpauseDraggables()
                 changeButtonActivation("enable", 1)
                 // remove draw listeners
                 draggableSvg.getContainerObject().removeEventListener("mousedown", drawBoxMouseDownListener )
-
                 activeEventManager.setEventFlag(undefined)
                 activeEventManager.reactivateBtn( 'penciloptbtn' )
             }
@@ -611,16 +590,13 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 // start the drawing functionality
                 document.getElementById("editbox").classList.add("outlining")
                 event.target.classList.add("outlining")
-                
                 // add the outline cursor
                 applyClassToMainDOMandChildren("outlining", "add")
-
                 changeButtonActivation("disable", 1)
                 // block dragging again
                 draggableSvg.pauseDraggables()
                 // add event listener for click on svg
                 draggableSvg.getContainerObject().addEventListener("mousedown", drawBoxMouseDownListener )
-
                 activeEventManager.setEventFlag(true)
                 activeEventManager.deactivateBtn( 'penciloptbtn' )
             }
@@ -802,13 +778,10 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
 
                 // set response type
                 xhr.responseType = 'json';
-
                 // append the xml header line to make an official svg file
                 var data = `<?xml version="1.0" encoding="UTF-8"?>\n${(new XMLSerializer()).serializeToString(temp)}`;
-
                 // creates a blob from the encoded svg and sets the type of the blob to and image svg
                 var svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
-
                 // append the svgBlob as a file with the name given the exportfile 
                 fd.append("exportfile", svgBlob, `${fileinputname.value}_tmp.svg`);
                 fd.append("svg", fileinputtype.checked);
@@ -816,7 +789,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 //fd.append("tiff",fileinputtype2.checked )
                 fd.append("jpeg", fileinputtype3.checked);
                 fd.append("dims", figsizeselect.value);
-
                 // when the requests load handle the response
                 xhr.onloadend = () => {
                     // response has all the links for downloading images
@@ -841,11 +813,9 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         xhrd.send(postData);
                     });
                 };
-
                 // open the request and send the data
                 xhr.open('POST', "/export", true);
                 xhr.send(fd);
-
                 // remove the UI download box
                 cancelbtn.click();
                 return false;
@@ -895,7 +865,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 imgbtn.classList.add("disabled")
                 capbtn.classList.add("disabled")
                 POWbtn.classList.add("disabled")
-
                 event.target.innerHTML = "&rarrb;"
             }
         });
@@ -1162,7 +1131,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         // set caption id on all input elements
         toolsarea.childNodes.forEach(element => {
             element.setAttribute("objectid", captionId)
-        })
+        });
 
         // append all elements together
         newoptionsbar.append(
@@ -1219,7 +1188,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
 
         getObjectCount(1, "caption")
     });
-    
 
     /**
      * @function button.toolboxaddimagebtn.click()
@@ -1517,7 +1485,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         // remove the load icon from the UI
                         document.getElementById("loadicon").style.visibility = "hidden"
                     }
-
                     // convert to base64 string
                     reader.readAsDataURL(this.files[0])
                 }
@@ -1555,9 +1522,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     
                     if (xhr.status == 200)
                     {
-                        // Helps when testing server returns
-                        console.log(xhr.response)
-
+                        // ** Helps when testing server returns **
+                        // console.log(xhr.response)
                         responseObject = JSON.parse(xhr.response)
 
                         fetch(responseObject.imagefile, {
@@ -1722,7 +1688,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                                 }
 
                                 ButtonManager.addImage(imageId, btnArray )
-
                                 // this is not the same in the testing environment
                                 //console.log(responseObject)
                             }    
@@ -1736,7 +1701,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         console.error(xhr.response)
                     }
                 }
-
                 // open the request and send the data
                 xhr.open('POST', "/upload", true)
                 xhr.send(fd)
@@ -2436,14 +2400,12 @@ function createIcon( key )
             </g>\
             <path d="m9.8557 13.56h9.1943v1.6536h-9.1943z" stroke-linecap="round" stroke-linejoin="round" stroke-width=".23998" style="paint-order:fill markers stroke"/>\
            </g>';
-
         case "Incidence":
             return  '<g transform="translate(1.0708 -.35694)">\
             <g transform="matrix(.90664 .17818 -.2087 1.062 0 0)" stroke-width=".72858" aria-label="i">\
              <path d="m11.905 7.4232v-0.99086q0.43714-0.17486 1.1657-0.34972 0.72858-0.204 1.5446-0.34972t1.6029-0.23314q0.816-0.11657 1.428-0.11657l0.52457 0.34972-2.6229 12.561h2.04v0.99086q-0.37886 0.26229-0.90343 0.49543-0.49543 0.23314-1.0783 0.408-0.55372 0.17486-1.1366 0.26229-0.58286 0.11657-1.1074 0.11657-1.1074 0-1.5446-0.408-0.408-0.43714-0.408-0.93258 0-0.58286 0.08743-1.1366t0.23314-1.224l1.9817-9.0343zm2.448-6.5572q0-0.99086 0.67029-1.5446t1.6903-0.55372q1.1074 0 1.7486 0.55372 0.67029 0.55372 0.67029 1.5446 0 0.93258-0.67029 1.4863-0.64115 0.55372-1.7486 0.55372-1.02 0-1.6903-0.55372-0.67029-0.55372-0.67029-1.4863z" stroke-width=".72858"/>\
             </g>\
            </g>';
-        
         case "Emission":
             return '<g transform="translate(.086042 -4.2161)">\
             <g transform="matrix(.90664 .17818 -.2087 1.062 0 0)" stroke-width=".72858" aria-label="e">\
@@ -2459,24 +2421,25 @@ function createIcon( key )
  */
 function retrieveDataObject( holderid )
 {
-    var holder =  document.getElementById( holderid )
-    var keyObject = {
-        "Emission": null,
-        "Incidence": null,
-        "Phase": null,
-        "NorthAzimuth": null,
-        "SubSolarAzimuth": null,
-        "SubSpacecraftGroundAzimuth": null,
-        "PixelResolution": null,
-        "ObliquePixelResolution": null,
-    }
+    var holder =  document.getElementById( holderid ),
+        keyObject = 
+        {
+            "Emission": null,
+            "Incidence": null,
+            "Phase": null,
+            "NorthAzimuth": null,
+            "SubSolarAzimuth": null,
+            "SubSpacecraftGroundAzimuth": null,
+            "PixelResolution": null,
+            "ObliquePixelResolution": null,
+        };
 
     Object.keys(keyObject).forEach( key => {
         keyObject[key] = holder.getAttribute(key)
-    })
+    });
+
     return keyObject;
 }
-
 
 /**
  * @function configDraggables
@@ -2712,10 +2675,8 @@ function removeToolsWindow( event )
             svgcontainer = draggableSvg.getContainerObject()
 
         ButtonManager.removeImage(event.target.parentElement.attributes.objectid.value)
-
         // remove the options and other things for image
         draggableList.removeObject(parentBox)
-
         // remove the image holder now
         if( svgcontainer === svgObject.parentElement )
         {
@@ -3500,8 +3461,10 @@ function findImageToolbox( id, array )
  */
 function updateIconScale( event )
 {
-    var icon = document.getElementById( event.target.attributes.objectid.value )
-    var inputvalue = parseFloat( event.target.value )
+    var icon = document.getElementById( event.target.attributes.objectid.value ),
+        inputvalue = parseFloat( event.target.value );
+
+    // update the scale if it is valid
     if( !isNaN( inputvalue ) )
     {   
         icon.setAttribute("scale", inputvalue)
@@ -3520,8 +3483,8 @@ function updateIconScale( event )
  */
 function rescaleIconTransform ( oldscale, scale, x, y )
 {
-    let newx = x * oldscale / scale 
-    let newy = y * oldscale / scale 
+    let newx = x * oldscale / scale,
+        newy = y * oldscale / scale;
 
     // return new transform dimensions
     return {sc: scale, x:newx, y:newy}
@@ -3603,8 +3566,8 @@ function removeLineWindow( event )
  */
 function updateIconColor( event , colorid )
 {
-    let icon = document.getElementById( event.target.attributes.objectid.value )
-    let inputvalue = event.target.value
+    let icon = document.getElementById( event.target.attributes.objectid.value ),
+        inputvalue = event.target.value
 
     switch( colorid )
     {
@@ -3632,7 +3595,7 @@ function changeIconColor( colorid, colorval, icon )
             if( icon.id.indexOf( "north" ) > -1 )
             {
                 // change all three children of the north icon
-                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "", "", "", "", "","fill", "fill", "fill", "fill", "fill")
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "", "", "", "", "", "fill", "fill", "fill", "fill", "fill")
             }
             else if( icon.id.indexOf( "sun" ) > -1 )
             {
@@ -3653,7 +3616,6 @@ function changeIconColor( colorid, colorval, icon )
             {
                 // change the primary
                 updateKeyColor( 0, colorval, icon.id )
-
             }
             break
         case 1:
@@ -3702,7 +3664,8 @@ function updateKeyColor( code, value, iconId )
     var changeArray = (code === 0)?['fill', 'stroke', '#']:['stroke', 'fill', '#'];
 
     // loop through the main elements
-    for (let index = 0; index < childNodeArr.length; index++) {
+    for (let index = 0; index < childNodeArr.length; index++) 
+    {
         const child = childNodeArr[index];
 
         // check if this element is a complex group
@@ -3797,8 +3760,8 @@ function changeColorsOfChildren( children, color , ...order )
         for ( let index = 0; index < children.length; index++ )
         {
             // get current element and command
-            let element = children[ index ]
-            let commandArr = order[ index ].split(" ")
+            let element = children[ index ],
+                commandArr = order[ index ].split(" ")
 
             // for each command
             commandArr.forEach( attribute => {
@@ -3812,8 +3775,9 @@ function changeColorsOfChildren( children, color , ...order )
 }
 
 /**
- * 
- * @param {*} activation 
+ * @function setMains
+ * @param {"enable"|"disabled"} activation activation string to tell the function to add or remove
+ * @description disable and re-enable the buttons
  */
 function setMains( activation )
 {
@@ -3834,7 +3798,6 @@ function setMains( activation )
             break;
     }
 }
-
 
 /**
  * @function changeButtonActivation
@@ -3939,8 +3902,9 @@ function updateCaptionBoxColor ( color, objectid )
 }
 
 /**
- * 
- * @param {*} activation 
+ * @function toggleLayerUI
+ * @param {"add"|"remove"} activation tells the func to add or remove classes
+ * @description add or remove class from all major parts of the UI
  */
 function toggleLayerUI( activation, cls )
 {
@@ -4133,7 +4097,6 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         {
             document.getElementById( this.attributes.objectid.value).setAttribute("stroke-width", this.value )
         }
-
     })
 
     // input line color fields
@@ -4193,7 +4156,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         {
             console.error("Line Has No Head")
         }
-    })
+    });
 
     //  outer toolbox info
     linetoolbox.setAttribute("objectid", objectid)
@@ -4232,9 +4195,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 
     // set the class css and the svg button graphic
     createLayerBtn(layerbtn, draggableList)
-
     /** End Dragging */
-
 
     // set aptions bar nodes
     lineoptionbar.append(
@@ -4556,7 +4517,8 @@ function optionsAction( target )
 {
     let btn = target.firstChild.nextSibling
 
-    if( btn && btn.nodeName == "BUTTON" ){
+    if( btn && btn.nodeName == "BUTTON" )
+    {
         btn.click()
     }
 }
@@ -4639,40 +4601,39 @@ function drawBoxMouseDownListener( event )
         // set the update function
         function updateBoxUI ( event )
         {
-                let svgP = draggableSvg.svgAPI( event.clientX, event.clientY )
+            let svgP = draggableSvg.svgAPI( event.clientX, event.clientY )
 
-                // if newx is lt startclick X  + left 20px 
-                if( svgP.x < startClickX - 20 )
-                {
-                    // newx = mouse location
-                    rect.setAttribute("x", svgP.x)
-                    // new width = startlocation - mouseX
-                    rect.setAttribute("width", startClickX - svgP.x)
-                }
-                else if( svgP.x > startClickX + 20 )
-                {
-                    // calculate difference in x values to get width
-                    rect.setAttribute("x", startClickX)
-                    rect.setAttribute("width", svgP.x - Number(rect.getAttribute("x")) )
-                }
+            // if newx is lt startclick X  + left 20px 
+            if( svgP.x < startClickX - 20 )
+            {
+                // newx = mouse location
+                rect.setAttribute("x", svgP.x)
+                // new width = startlocation - mouseX
+                rect.setAttribute("width", startClickX - svgP.x)
+            }
+            else if( svgP.x > startClickX + 20 )
+            {
+                // calculate difference in x values to get width
+                rect.setAttribute("x", startClickX)
+                rect.setAttribute("width", svgP.x - Number(rect.getAttribute("x")) )
+            }
 
-                // check if the new y is less than the start point
-                if( svgP.y < startClickY - 20)
-                {
-                    // update the new x location
-                    rect.setAttribute("y", svgP.y)
-                    rect.setAttribute("height", startClickY - svgP.y)
-                }
-                else if( svgP.y > startClickY + 20 )
-                {
-                    rect.setAttribute("y", startClickY)
-                    rect.setAttribute("height", svgP.y - Number(rect.getAttribute("y")) )
-                }
+            // check if the new y is less than the start point
+            if( svgP.y < startClickY - 20)
+            {
+                // update the new x location
+                rect.setAttribute("y", svgP.y)
+                rect.setAttribute("height", startClickY - svgP.y)
+            }
+            else if( svgP.y > startClickY + 20 )
+            {
+                rect.setAttribute("y", startClickY)
+                rect.setAttribute("height", svgP.y - Number(rect.getAttribute("y")) )
+            }
         }
 
         // event listener for mousemove
         draggableSvg.getContainerObject().addEventListener( "mousemove", updateBoxUI )
-
         // put the line on the svg image
         draggableSvg.getContainerObject().appendChild(rect)
     }
