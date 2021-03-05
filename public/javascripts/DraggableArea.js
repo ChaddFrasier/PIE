@@ -9,7 +9,6 @@
  * This is where the draggig can be updated later
 */
 "use strict";
-
 /**
  * @function constructor
  *       var dragObj = DraggableArea( HTML_Object )
@@ -24,7 +23,6 @@ function DraggableArea( objectbox=undefined )
         currentX = null,
         currentY = null,
         paused = false;
-
     // ----------------- Main Task section ----------------------------
     // validate initialization of DraggableObject
     if( objectbox &&
@@ -34,7 +32,6 @@ function DraggableArea( objectbox=undefined )
     ){
         // private variables
         var DragBoxContainer = objectbox;
-
         // ---------------- Private Listener Functions ( Only Needed on Successful Init ) --------------------------
         /**
          * @function dragObject
@@ -46,35 +43,32 @@ function DraggableArea( objectbox=undefined )
             event.preventDefault();
             // transform the mouse event location to the svg subspace
             let svgP = createSVGP(event.clientX, event.clientY);
-
-    
+            // drag all icons and image things at one time
             if( draggingIcon.nodeName == "g" && draggingIcon.getAttribute("id").indexOf("-hg") > -1)
             {
                 // get the current mouse location with no object body attached
                 currentX = getScaledPoint(svgP.x, 1, 1);
                 currentY = getScaledPoint(svgP.y, 1, 1);
-
+                // drag each child
                 draggingIcon.childNodes.forEach(child => {
-
-                    let childScale = 1;
-                    let origX = parseFloat(child.getAttribute("x"));
-                    let origY = parseFloat( child.getAttribute("y"));
-
-                    let newX = origX + (currentX - oldX)/childScale;
-                    let newY = origY + (currentY - oldY)/childScale;
-
+                    // init the starting data
+                    let childScale = 1,
+                        origX = parseFloat(child.getAttribute("x")),
+                        origY = parseFloat( child.getAttribute("y"));
+                        // calculate the new x value given the scale and the old x subtracted by the new x
+                    let newX = origX + (currentX - oldX)/childScale,
+                        newY = origY + (currentY - oldY)/childScale;
+                    // if the icon in an image then manipulate the image
                     if( child.nodeName === "image")
                     {
                         // update the input fields using the id of the draggingObject
                         updateInputField( child.getAttribute("id"), newX, newY );
-
                         updateImageLocation( child.getAttribute("id"), newX, newY);
                     }
                     else
                     {
                         // update the input fields using the id of the draggingObject
                         updateInputField( child.getAttribute("id"), newX*childScale, newY*childScale );
-
                         // set the new icon transform using the uniform setter function
                         child.setAttribute("x", newX);
                         child.setAttribute("y", newY);
@@ -83,7 +77,8 @@ function DraggableArea( objectbox=undefined )
             }
             else if( draggingIcon.nodeName == "svg" ) // 'svg' nodes house complex icons like the north arrow
             {
-                var sc = null
+                var sc = undefined;
+                // try and grab the scale from the holder group
                 try{
                     sc = parseFloat(document.getElementById(draggingIcon.getAttribute("objectid")+ "-hg").getAttribute("transform").replace("scale(",""))
                 }
@@ -91,18 +86,14 @@ function DraggableArea( objectbox=undefined )
                 {
                     sc = 1
                 }
-
                 // get the current mouse location with no body to the rect
                 currentX = getScaledPoint(svgP.x, 1, 1);
                 currentY = getScaledPoint(svgP.y, 1, 1);
-
                 // get the x and y of the new point using the diffrence of the old and current mouse locations
                 let y = Number(draggingIcon.getAttribute("y")) + (currentY - oldY);
                 let x = Number(draggingIcon.getAttribute("x")) + (currentX - oldX);
-        
                 // update the input fields using the id of the draggingObject
                 updateInputField( draggingIcon.getAttribute("id"), x, y );
-
                 // set the new icon transform using the uniform setter function
                 draggingIcon.setAttribute("x", x);
                 draggingIcon.setAttribute("y", y);
@@ -112,30 +103,25 @@ function DraggableArea( objectbox=undefined )
                 // get the current mouse location with no body to the rect
                 currentX = getScaledPoint(svgP.x, 1, 1);
                 currentY = getScaledPoint(svgP.y, 1, 1);
-
                 // get the x and y of the new point using the diffrence of the old and current mouse locations
                 let y = Number(draggingIcon.getAttribute("y")) + (currentY - oldY);
                 let x = Number(draggingIcon.getAttribute("x")) + (currentX - oldX);
-
                 // set the icon x and y
                 draggingIcon.setAttribute("x", x);
                 draggingIcon.setAttribute("y", y);
                 // update the input fields
                 updateInputField(draggingIcon.getAttribute("id"), x, y);
-
             }
             else if( draggingIcon.nodeName == "line" )
             {
                 // get transformed mouse position
                 currentX = getScaledPoint(svgP.x, 1, 1);
                 currentY = getScaledPoint(svgP.y, 1, 1);
-
                 // get the new location of all the points of the line element
-                let x1 = Number(draggingIcon.getAttribute("x1")) + (currentX - oldX);
-                let y1 = Number(draggingIcon.getAttribute("y1")) + (currentY - oldY);
-                let x2 = Number(draggingIcon.getAttribute("x2")) + (currentX - oldX);
-                let y2 = Number(draggingIcon.getAttribute("y2")) + (currentY - oldY);
-                
+                let x1 = Number(draggingIcon.getAttribute("x1")) + (currentX - oldX),
+                    y1 = Number(draggingIcon.getAttribute("y1")) + (currentY - oldY),
+                    x2 = Number(draggingIcon.getAttribute("x2")) + (currentX - oldX),
+                    y2 = Number(draggingIcon.getAttribute("y2")) + (currentY - oldY);
                 // set the new location of the line and uodate the line input fields
                 draggingIcon.setAttribute("x1", x1);
                 draggingIcon.setAttribute("y1", y1);
@@ -143,7 +129,6 @@ function DraggableArea( objectbox=undefined )
                 draggingIcon.setAttribute("y2", y2);
                 updateInputField(draggingIcon.getAttribute("id"), x1, y1, x2, y2);
             }
-
             // update the old location to the current after every cycle
             oldX = currentX;
             oldY = currentY;
@@ -156,20 +141,22 @@ function DraggableArea( objectbox=undefined )
          */
         function endDrag( )
         {
+            // copy the dragcontainer object
             let svgcontainer = DragBoxContainer;
-
+            // attempt to remove the dragging listeners
             try{
                 svgcontainer.removeEventListener("mousemove", dragObject );
                 svgcontainer.removeEventListener("mouseleave", endDrag );
                 svgcontainer.removeEventListener("mouseup", endDrag );
             }catch( err )
             {
+                // log an error but dont fail
                 console.log(err)
             }
-
+            // remove the class to show the cursor 'dragging'
             draggingIcon.classList.remove('dragging');
             svgcontainer.classList.remove('dragging');
-
+            // reset all data
             draggingIcon = null;
             oldX = null;
             oldY = null;
@@ -185,33 +172,26 @@ function DraggableArea( objectbox=undefined )
         function dragHandler ( event )
         {
             event.preventDefault();
-
             // IF THE NODE IS AN IMAGE IGNORE
-        
             // get the parent container of the target if it is valid
             draggingIcon = getIconParentContainer( event.target );
-
             if(draggingIcon.classList.contains("marker"))
             {
                 draggingIcon = draggingIcon.parentElement;
             }
-
-            console.log(draggingIcon)
-
             // if the drag icon is found to be valid then initiate the dragging functions
             if( draggingIcon != null && !paused && draggingIcon.getAttribute("id") != "bgelement")
             {   
                 // requires svgHelper.js
                 let svgP = createSVGP( event.clientX, event.clientY );
+                // set the oldX for later
                 oldX = svgP.x;
                 oldY = svgP.y;
-
-                console.log(event)
-        
+                // start dragging events
                 DragBoxContainer.addEventListener("mousemove", dragObject );
                 DragBoxContainer.addEventListener("mouseleave", endDrag );
                 DragBoxContainer.addEventListener("mouseup", endDrag );
-
+                // add class for 'dragging' cursor
                 draggingIcon.classList.add('dragging');
                 DragBoxContainer.classList.add('dragging');
             }
@@ -232,14 +212,15 @@ function DraggableArea( objectbox=undefined )
             },
             /**
              * @function svgAPI
-             * @description
+             * @description create  point that when given an x,y in client space returns and x,y in svg space
              */
             svgAPI: (x, y) => {
                 return createSVGP( x, y );
             },
 
             /**
-             * 
+             * @function pauseDraggables
+             * @description prevent dragging using flag
              */
             pauseDraggables: () => {
                 DragBoxContainer.removeEventListener("mousedown", dragHandler );
@@ -247,7 +228,8 @@ function DraggableArea( objectbox=undefined )
             },
 
             /**
-             * 
+             * @function unpauseDraggables
+             * @description set the dragging flags to start capture again
              */
             unpauseDraggables: () => {
                 // add the main listener to the object targeted by DraggableArea() init function
@@ -263,9 +245,7 @@ function DraggableArea( objectbox=undefined )
             NodeName: objectbox.nodeName
         };
     }
-
     // ---------------- Private functions --------------------------
-
     /**
      * @function validNode
      * @param {string} nodeName
@@ -278,7 +258,6 @@ function DraggableArea( objectbox=undefined )
         // check test nodes for the current node name
         return (testarray.indexOf(nodeName) > -1) ? true: false;
     }
-
     /**
      * @function validDraggableNode 
      * @param {string} nodeName 
@@ -288,11 +267,9 @@ function DraggableArea( objectbox=undefined )
     function validDraggableNode( nodeName )
     {
         var testarray = ["g", "line", "rect"];
-
         // check test nodes for the current node name
         return (testarray.indexOf(nodeName) > -1) ? true: false;
     }
-
     /**
      * @function createSVGPoint
      * @param {number} x - x translate
@@ -304,11 +281,9 @@ function DraggableArea( objectbox=undefined )
     {
         // create a blank svg point on screen
         let pt = DragBoxContainer.createSVGPoint();
-        
         // Then Scale the x and y into the point object 
         pt.x = parseFloat( x );
         pt.y = parseFloat( y );
-
         if( !isNaN( pt.x ) && !isNaN( pt.y ) )
         {
             /**
@@ -322,7 +297,6 @@ function DraggableArea( objectbox=undefined )
             console.error( "Error: SVG Point Mapping Failed" )
         }
     }
-
     /**
      * @function getIconParentContainer
      * @param {Object} target 
@@ -336,14 +310,12 @@ function DraggableArea( objectbox=undefined )
             {
                 target = target.parentElement;
             }
-        }catch(err)
+        }
+        catch(err)
         {
             console.log(err);
         }
-
         return target;
     }
-
     // ---------------- ^ End Private functions ^ --------------------------
-
 }

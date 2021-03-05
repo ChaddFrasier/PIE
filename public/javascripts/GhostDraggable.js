@@ -6,9 +6,7 @@
  *      feature where you drag a svg group from inside of a another SVG box. This file can help create 
  *      an exact copy of the button and then make that "Ghost" copy follow the mouse until the mouse is released
 */
-
 "use strict";
-
 /**
  * @function initShadowIcon
  * @description this is the initializer for the GhostDraggable icon
@@ -17,12 +15,10 @@ function initShadowIcon( )
 {
     // init the icon to copy
     var PrivateIcon = null;
-
     // then return the usable function
     return {
         // return the icon we are copying
         icon: PrivateIcon,
-
         /**
          * @function drawShadowIcon
          * @param {Event} event - the mouse click event that begins the shadow icon
@@ -35,17 +31,14 @@ function initShadowIcon( )
             shadowdiv.setAttribute("width", "50px");
             shadowdiv.setAttribute("height", "50px");
             shadowdiv.innerHTML = (event.target.nodeName == "BUTTON") ? event.target.innerHTML: event.target.parentElement.parentElement.parentElement.innerHTML;
-            
             shadowdiv.style.opacity = .5;
             shadowdiv.style.position = "fixed";
             shadowdiv.style.left = event.pageX+'px';
             shadowdiv.style.top = event.pageY+'px';
             shadowdiv.style.pointerEvents = "none";
-
             PrivateIcon = shadowdiv;
             return shadowdiv;
         }, 
-
         /**
          * @function shadowAnimate
          * @param {Event} event- mouse dragging event

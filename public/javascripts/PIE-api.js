@@ -3,11 +3,9 @@
  * @fileoverview this is a file that creates exportable functions to interact with the ISIS and GDAL command line interfaces.  
 */
 "use strict";
-
 // spawn to interact with the command line
-var { spawn } = require('child_process');
+const { spawn } = require('child_process');
 const fs = require('fs');
-
 /**
  * module.exports allows me to write any number of fucntions that can be used at anypoint after it is included with some code file or in a <script> tag
  */
@@ -23,17 +21,15 @@ module.exports = {
     PIEAPI: function()
     {
         const logFilename = "./bin/log/pieLog.txt"
-
-        if( fs.existsSync(logFilename))
+        if( fs.existsSync(logFilename) )
         {
             fs.unlinkSync(logFilename)
         }
-
         /**
          * @function logToFile
-         * @param {*} filename 
-         * @param {*} text 
-         * @param {*} append 
+         * @param {string} filename name of log 
+         * @param {string} text the text to append
+         * @param {boolean} append fal to say create new file or append to old file
          */
         function logToFile( filename, text, append=true)
         {
@@ -46,8 +42,6 @@ module.exports = {
                 fs.writeFileSync(filename, text)
             }
         }
-
-
         /**
          * @function getOutputFormat
          * @param {string} filename the name of the file that we are testing
@@ -55,14 +49,13 @@ module.exports = {
          */
         function getOutputFormat( filename )
         {
-            let chunks = filename.split(".");
-            var ext = chunks[chunks.length-1];
+            let chunks = filename.split("."),
+                pngs = [ "PNG", "png" ],
+                jpegs = [ "JPEG", "jpeg", "JPG", "jpg" ],
+                vrts = ["VRT", "vrt" ],
+                svg = ["SVG", "svg" ],
+                ext = chunks[chunks.length-1];
 
-            let pngs = [ "PNG", "png" ];
-            let jpegs = [ "JPEG", "jpeg", "JPG", "jpg" ];
-            let vrts = ["VRT", "vrt" ];
-            let svg = ["SVG", "svg" ];        
-            
             Array(jpegs, pngs, vrts, svg).forEach(array => {
                 if(array.includes(ext))
                 { 
@@ -71,7 +64,6 @@ module.exports = {
             });
             return ext
         }
-
         /**
          * @function cleanPvlObject
          * @param {JSON} object the JSON object that to update
@@ -94,11 +86,9 @@ module.exports = {
             }
             return {data: object, keys: keys}
         }
-    
+
         return {
-
             /** These Function are returned with the PIEAPI object from the init call */
-
             /**
              * @function pie_readPVL
              * @param {string} pvlfilename filename for the pvl file
@@ -130,9 +120,7 @@ module.exports = {
                                     }
                                 }
                             }
-
                             let resolveData = cleanPvlObject( returnObject, keys)
-
                             resolve( resolveData )
                         }
                     }
@@ -145,7 +133,7 @@ module.exports = {
             },
 
             /**
-             * @functoq URLerize
+             * @function URLerize
              * @param {string} filepath the path to the file the user needs to dwnload 
              * @param {string} baseUrl the baseurl to turn the file into a download url
              */
@@ -153,6 +141,7 @@ module.exports = {
             {
                 var newurl = "",
                     regexp = (/^.*(public\/uploads)/i);
+
                 newurl = filepath.replace(regexp, baseUrl)
                 return newurl
             },
@@ -168,14 +157,12 @@ module.exports = {
                 var child = spawn( "gdal_translate", argv )
     
                 child.stdout.on("data", data => { console.log(`stdout: ${data}`) });
-    
                 child.stderr.on("data", data => { console.log(`stderr: ${data}`) });
-    
                 child.on('error', (error) => {
                     console.log(`Gdal Translate Error: ${error.message}`);
                     return error.message;
                 });
-    
+
                 // when the response is ready to close
                 child.on("close", code => {
                     console.log(`child process exited with code ${code}`);
@@ -198,7 +185,6 @@ module.exports = {
             gdal_rescale: function( inputfile=undefined, scale="50%", outputfile=undefined)
             {
                 return new Promise( (resolveFunc, rejectFunc) => {
-
                     var outputtype = getOutputFormat( outputfile ),
                         errorBuf = "";
 
@@ -209,15 +195,13 @@ module.exports = {
                         "-scale","-outsize", scale, scale,
                         inputfile, outputfile] )
 
-                    //child.stdout.on("data", data => { console.log(`stdout: ${data}`) });
-
                     // append the buffer data into the error data stream
                     child.stderr.on("data", data => { 
                         if( data !== " " )
                         {
                             logToFile(logFilename, errorBuf);
                         }
-                    })
+                    });
 
                     child.on('error', (error) => {
                         console.log(`Resize Error: ${error.message}`);
@@ -258,10 +242,8 @@ module.exports = {
                             inputfile, outputfile] )
         
                     child.stdout.on("data", data => { console.log(`stdout: ${data}`) });
-            
                     // append the buffer data into the error data stream
                     child.stderr.on("data", data => { errorBuf += data });
-
                     child.on('error', (error) => {
                         console.log(`error: ${error.message}`);
                         rejectFunc(error.message);
@@ -302,15 +284,12 @@ module.exports = {
                             "TO=", outputfile] )
         
                     child.stdout.on("data", data => { console.log(`stdout: ${data}`) });
-            
                     // append the buffer data into the error data stream
                     child.stderr.on("data", data => { errorBuf += data });
-
                     child.on('isis2std Error', (error) => {
                         console.log(`error: ${error.message}`);
                         logToFile(logFilename, error.message);
                     });
-
                     // when the response is ready to close
                     child.on("close", code => {
                         // if the gdal command exited with 0
@@ -336,8 +315,6 @@ module.exports = {
                             "FROM=", inputfile, 
                             "TO=", outputfile] )
         
-                    //child.stdout.on("data", data => { console.log(`Campt Output -> ${data}`)});
-            
                     // append the buffer data into the error data stream
                     child.stderr.on("data", data => {
                         if( data !== " ")
@@ -345,18 +322,15 @@ module.exports = {
                             errorBuf += "Campt Error:\n\t" + data 
                         }
                     });
-
                     child.on('error', (error) => {
                         logToFile(logFilename, `ISIS Error:\n\t${error.name}: ${error.message}`);
                     });
-
                     // when the response is ready to close
                     child.on("close", code => {
                         if( code !== 0 )
                         {
                             logToFile(logFilename, errorBuf);
                         }
-
                         // resolve with the return code
                         resolveFunc(code);
                     });
@@ -384,7 +358,6 @@ module.exports = {
                     child.stdout.on("data", data => {
                         console.log(`Catlab Output -> ${data}`) 
                     });
-            
                     // append the buffer data into the error data stream
                     child.stderr.on("data", data => 
                     {
@@ -393,11 +366,9 @@ module.exports = {
                             errorBuf += "Catlab Error:\n\t" + data 
                         }
                     });
-
                     child.on('error', (error) => {
                         logToFile(logFilename, `ISIS Error:\n\t${error.name}: ${error.message}`);
                     });
-
                     // when the response is ready to close
                     child.on("close", code => {
                         if( code !== 0 )
@@ -430,7 +401,6 @@ module.exports = {
                     child.stdout.on("data", data => { 
                         console.log(`Catoriglab Output -> ${data}`) 
                     });
-            
                     // append the buffer data into the error data stream
                     child.stderr.on("data", data => 
                     { 
@@ -439,26 +409,21 @@ module.exports = {
                             errorBuf += "Catoriglab Error:\n\t" + data 
                         }
                     });
-
                     child.on('error', (error) => {
                         logToFile(logFilename, `ISIS Error:\n\t${error.name}: ${error.message}`);
                     });
-
                     // when the response is ready to close
                     child.on("close", code => {
-
                         if( code !== 0 )
                         {
                             logToFile( logFilename, errorBuf)
                         }
-                        
                         resolveFunc(code);
                     });
                 });
             }
         };
     },
-    
     /**
      * @function getNewImageName
      * @param {string} filename the basefilename with the origional ext

@@ -160,7 +160,8 @@ i>b>a, i>b>a:visited {
 
 pre.UIHolder {
     text-align: center;
-    margin: 0 auto;
+    padding: 0;
+    margin: auto auto;
 }
 
 .pilotstepsimage {
@@ -269,6 +270,7 @@ h5.importantnote-desc {
     background-color: rgba(0,0,0,.1);
     padding: 0;
     font-size: var(--large-font);
+    margin: auto auto;
 }
 
 .navbar {
@@ -281,7 +283,6 @@ h5.importantnote-desc {
 .changebox {
     width: 100%;
     margin: 0 auto auto auto;
-    padding: 0px 5px;
     overflow-y: visible;
 }
 
@@ -314,23 +315,23 @@ pre > i > b {
     font-size: var(--medium-font);
     max-width: 1200px;
     background-color: rgba(255, 255, 255, 0.1);
-    margin: auto;
+    margin: auto auto;
     text-align: left;
     height: auto;
 }
 
 .basicpagecontent > pre > pre {
-    padding: 20px;
-    max-width: none;
+    padding: 10px 5px;
+    max-width: 1000px;
     background-color: rgba(0, 0, 0, 0.1);
-    margin: auto;
-    text-align: center;
+    margin: 10px 20px;
+    text-align: left;
     height: auto;
 }
 
 .basicpagecontent > pre > img, .basicpagecontent > pre > pre > img {
     margin: 0 auto 0 auto;
-    text-align: center;
+    text-align: left;
 }
 
 .column {
@@ -352,13 +353,13 @@ pre > i > b {
 .mainaboutbox {
     text-align: center;
     margin: auto auto;
-    padding: 10px 20px;
+    padding: 10px;
     height: auto;
     text-align: center;
     background: var(--accent-color);
     color: var(--primary-color);
     font-size: var(--medium-font);
-    width: 65%;
+    width: 70%;
     overflow-y: auto;
 }
 

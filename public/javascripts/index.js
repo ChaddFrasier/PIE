@@ -14,7 +14,7 @@ var draggableSvg = null,
     geoIconArray = Array('northarrowopt', 'scalebarbtnopt', 'sunarrowopt', 'keyopt', 'observerarrowopt');
 
 // Function executes when the page loads fully
-document.addEventListener( "DOMContentLoaded", ( event ) => {
+document.addEventListener( "DOMContentLoaded", ( ) => {
     // Pre config
     preConfigPage();
 
@@ -29,8 +29,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         rectstarty = 0;
 
     // get the global figure element
-    let svgContainer = document.getElementById("figurecontainer")
-    
+    let svgContainer = document.getElementById("figurecontainer");
     // add the custom keys 
     document.addEventListener("keydown", customKeys);
     // start draggable actions
@@ -55,7 +54,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             changeButtonActivation("enable", 2)
             // update the main dom elements and inner children to class
             applyClassToMainDOMandChildren("shifting", "remove")
-
             // remove the color the endpoints of the lines and the endpoints of the rectangles
             document.removeEventListener("keyup", shiftKeyup)
             // remove all draggable dots
@@ -117,17 +115,19 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         draggingDot.setAttribute("cy", svgP.y)
                         svgObject.setAttribute("y", svgP.y)
                         svgObject.setAttribute( "height", newheight )
-                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptr']`).setAttribute("cy", svgP.y )
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptr']`)
+                            .setAttribute("cy", svgP.y );
                         rectstarty = svgP.y
                     }
-
                     if( newwidth > 0 )
                     {
-                        draggingDot.setAttribute("cx", svgP.x)
-                        svgObject.setAttribute("x", svgP.x)
-                        svgObject.setAttribute( "width", newwidth )
-                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`).setAttribute("cy", svgP.y + newheight)
-                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbl']`).setAttribute("cx", svgP.x )
+                        draggingDot.setAttribute("cx", svgP.x);
+                        svgObject.setAttribute("x", svgP.x);
+                        svgObject.setAttribute( "width", newwidth );
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`)
+                            .setAttribute("cy", svgP.y + newheight);
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbl']`)
+                            .setAttribute("cx", svgP.x );
                         rectstartx = svgP.x
                     }
 
@@ -145,18 +145,19 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     if( newheight > 0 )
                     {
                         // update the dot location
-                        draggingDot.setAttribute("cy", svgP.y)
-                        svgObject.setAttribute("y", svgP.y)
-                        svgObject.setAttribute( "height", newheight )
-                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptl']`).setAttribute("cy", svgP.y )
+                        draggingDot.setAttribute("cy", svgP.y);
+                        svgObject.setAttribute("y", svgP.y);
+                        svgObject.setAttribute( "height", newheight );
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptl']`)
+                            .setAttribute("cy", svgP.y );
                         rectstarty = svgP.y
                     }
-
                     if( newwidth > 0 )
                     {
                         draggingDot.setAttribute("cx", svgP.x)
                         svgObject.setAttribute( "width", newwidth )
-                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`).setAttribute("cx", svgP.x )
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`)
+                            .setAttribute("cx", svgP.x );
                         rectstartx = svgP.x
                     }
 
@@ -176,15 +177,16 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         // update the dot location
                         draggingDot.setAttribute("cy", svgP.y)
                         svgObject.setAttribute( "height", newheight )
-                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbl']`).setAttribute("cy", svgP.y )
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbl']`)
+                            .setAttribute("cy", svgP.y );
                         rectstarty = svgP.y
                     }
-
                     if( newwidth > 0 )
                     {
                         draggingDot.setAttribute("cx", svgP.x)
                         svgObject.setAttribute( "width", newwidth )
-                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptr']`).setAttribute("cx", svgP.x )
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptr']`)
+                            .setAttribute("cx", svgP.x );
                         rectstartx = svgP.x
                     }
 
@@ -197,23 +199,24 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 else if( code === "pbl" )
                 {
                     newwidth = width - (svgP.x - rectstartx),
-                    newheight = height + (svgP.y - rectstarty)
+                    newheight = height + (svgP.y - rectstarty);
 
                     if( newheight > 0 )
                     {
                         // update the dot location
                         draggingDot.setAttribute("cy", svgP.y)
                         svgObject.setAttribute( "height", newheight )
-                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`).setAttribute("cy", svgP.y )
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`)
+                            .setAttribute("cy", svgP.y );
                         rectstarty = svgP.y
                     }
-
                     if( newwidth > 0 )
                     {
                         draggingDot.setAttribute("cx", svgP.x)
                         svgObject.setAttribute("x", svgP.x)
                         svgObject.setAttribute( "width", newwidth )
-                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptl']`).setAttribute("cx", svgP.x )
+                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptl']`)
+                            .setAttribute("cx", svgP.x );
                         rectstartx = svgP.x
                     }
 
@@ -244,14 +247,13 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             {
                 lineinputfield.value = x
             }
-        })
-
+        });
         lineyList.forEach( lineinputfield => {
             if( lineinputfield.getAttribute("objectid") == id )
             {
                 lineinputfield.value = y
             }
-        })
+        });
     }
 
     /**
@@ -274,28 +276,25 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             {
                 rectinputfield.value = x
             }
-        })
-
+        });
         rectyList.forEach( rectinputfield => {
             if( rectinputfield.getAttribute("objectid") == id )
             {
                 rectinputfield.value = y
             }
-        })
-
+        });
         rectwList.forEach( rectinputfield => {
             if( rectinputfield.getAttribute("objectid") == id )
             {
                 rectinputfield.value = width
             }
-        })
-
+        });
         recthList.forEach( rectinputfield => {
             if( rectinputfield.getAttribute("objectid") == id )
             {
                 rectinputfield.value = height
             }
-        })
+        });
     }
 
     /**
@@ -323,19 +322,19 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
     function dotMouseDownFunction( event )
     {
         // get the dot the user clicks and the svg it belongs to
-        draggingDot = event.target
-        let svg = document.getElementById(draggingDot.getAttribute("spyId").split("-")[0])
+        draggingDot = event.target;
+
+        let svg = document.getElementById( draggingDot.getAttribute("spyId").split("-")[0] )
 
         // read in the starting data as floats
-        rectstartx = parseFloat(draggingDot.getAttribute("cx"))
-        rectstarty = parseFloat(draggingDot.getAttribute("cy"))
-        rectwidth = parseFloat(svg.getAttribute('width'))
-        rectheight = parseFloat(svg.getAttribute('height'))
-
+        rectstartx = parseFloat( draggingDot.getAttribute("cx") );
+        rectstarty = parseFloat( draggingDot.getAttribute("cy") );
+        rectwidth = parseFloat( svg.getAttribute('width') );
+        rectheight = parseFloat( svg.getAttribute('height') );
         // activate the dragging and stopping function
-        draggableSvg.getContainerObject().addEventListener("mousemove", dotMouseMoveFunction)
-        draggableSvg.getContainerObject().addEventListener("mouseup", dotEndFunction)
-        draggableSvg.getContainerObject().addEventListener("mouseleave", dotEndFunction)
+        draggableSvg.getContainerObject().addEventListener( "mousemove", dotMouseMoveFunction );
+        draggableSvg.getContainerObject().addEventListener( "mouseup", dotEndFunction );
+        draggableSvg.getContainerObject().addEventListener( "mouseleave", dotEndFunction );
     }
 
     /**
@@ -348,15 +347,15 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
     function createDot( spyId, x, y )
     {
         // add a dot where one of the line points are
-        var dot = document.createElementNS(NS.svg, "circle")
-        dot.setAttribute("class", "draggableDot")
-        dot.setAttribute("r", "13")
+        var dot = document.createElementNS( NS.svg, "circle" );
+        dot.setAttribute( "class", "draggableDot" );
+        dot.setAttribute( "r", "13" );
         // get the x and y of all the points of the rectangles and lines
-        dot.setAttribute("cx", x)
-        dot.setAttribute("cy", y)
-        dot.setAttribute("spyId", spyId)
-        dot.addEventListener("mousedown", dotMouseDownFunction)
-        draggableSvg.getContainerObject().append(dot)
+        dot.setAttribute( "cx", x );
+        dot.setAttribute( "cy", y );
+        dot.setAttribute( "spyId", spyId );
+        dot.addEventListener( "mousedown", dotMouseDownFunction );
+        draggableSvg.getContainerObject().append( dot );
     }
 
     /**
@@ -379,11 +378,9 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         {
             // disable any default esc function
             event.preventDefault()
-
             // get the child list and the last child in the figure
             let children = draggableSvg.getContainerObject().children;
             let rmChild = children[children.length - 1];
-
             // the pencil function is going
             if( PencilFlag )
             {
@@ -399,11 +396,11 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     document.querySelector("button.drawing").trigger("click")
                 }
             }
-
             // same with outline
             if( OutlineFlag )
             {
-                if( String(rmChild.nodeName).toUpperCase() === "RECT" && !rmChild.classList.contains("placed") && rmChild.getAttribute("id") !== "bgelement" )
+                if( String(rmChild.nodeName).toUpperCase() === "RECT" && !rmChild.classList.contains("placed") 
+                    && rmChild.getAttribute("id") !== "bgelement" )
                 {
                     draggableSvg.getContainerObject().removeChild(rmChild)
                 }
@@ -514,7 +511,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 draggableSvg.unpauseDraggables()
                 // remove draw listeners
                 draggableSvg.getContainerObject().removeEventListener("mousedown", drawMouseDownListener)
-
                 activeEventManager.setEventFlag(undefined)
                 activeEventManager.reactivateBtn( 'outlinebtnopt' )
             }
@@ -525,16 +521,14 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             {
                 // start the drawing functionality
                 event.target.classList.add("drawing")
-                
-                // add class to the main content peices *Helps force a cursor look when there is an unknown number of interor objects*; must remove class later. 
+                /* add class to the main content peices *Helps force a cursor look when there is 
+                an unknown number of interor objects*; must remove class later. */
                 applyClassToMainDOMandChildren( "drawing", "add" );
                 changeButtonActivation("disable", 0);
-
                 // pause the dragging function for now
                 draggableSvg.pauseDraggables()
                 // add event listener for click on svg
                 draggableSvg.getContainerObject().addEventListener("mousedown", drawMouseDownListener )
-
                 activeEventManager.setEventFlag(true)
                 activeEventManager.deactivateBtn( 'outlinebtnopt' )
             }
@@ -588,18 +582,14 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             {
                 // cancel the drawing functionality
                 document.getElementById("editbox").classList.remove("outlining")
-                event.target.classList.remove("outlining")
-                
+                event.target.classList.remove("outlining")                
                 // remove the outline cursor
                 applyClassToMainDOMandChildren("outlining", "remove")
-
-
                 // unblock dragging
                 draggableSvg.unpauseDraggables()
                 changeButtonActivation("enable", 1)
                 // remove draw listeners
                 draggableSvg.getContainerObject().removeEventListener("mousedown", drawBoxMouseDownListener )
-
                 activeEventManager.setEventFlag(undefined)
                 activeEventManager.reactivateBtn( 'penciloptbtn' )
             }
@@ -611,16 +601,13 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 // start the drawing functionality
                 document.getElementById("editbox").classList.add("outlining")
                 event.target.classList.add("outlining")
-                
                 // add the outline cursor
                 applyClassToMainDOMandChildren("outlining", "add")
-
                 changeButtonActivation("disable", 1)
                 // block dragging again
                 draggableSvg.pauseDraggables()
                 // add event listener for click on svg
                 draggableSvg.getContainerObject().addEventListener("mousedown", drawBoxMouseDownListener )
-
                 activeEventManager.setEventFlag(true)
                 activeEventManager.deactivateBtn( 'penciloptbtn' )
             }
@@ -734,7 +721,13 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         forminputbox.classList.add("forminputbox");
         forminputcheckboxholder.classList.add("forminputcheckboxholder");
 
-        formlabelbox.append(fileinputnamelabel, document.createElement("br"), document.createElement("br"), fileinputtypelabel);
+        formlabelbox.append(
+            fileinputnamelabel,
+            document.createElement("br"),
+            document.createElement("br"),
+            fileinputtypelabel
+        );
+
         forminputbox.append(fileinputname, forminputcheckboxholder);
 
         let columnsvg = document.createElement("div"),
@@ -772,7 +765,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             {
                 fileinputname.classList.add("invalid");
                 breakFlag = true;
-                alert("User Error: filename should not include any file extension.\n Example: 'test.png' should be 'test'.");
+                alert("User Error: filename should not include any file extension.\n\
+                 Example: 'test.png' should be 'test'.");
             }
             else 
             {
@@ -780,8 +774,12 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             }
 
             // change color of the input box if needed
-            if( validFileTypes(fileinputtype.checked, fileinputtype1.checked, fileinputtype2.checked, fileinputtype3.checked) 
-                && !breakFlag )
+            if( validFileTypes(
+                fileinputtype.checked,
+                fileinputtype1.checked,
+                fileinputtype2.checked,
+                fileinputtype3.checked
+            ) && !breakFlag )
             {
                 forminputcheckboxholder.classList.remove("invalid");
             }
@@ -802,13 +800,10 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
 
                 // set response type
                 xhr.responseType = 'json';
-
                 // append the xml header line to make an official svg file
                 var data = `<?xml version="1.0" encoding="UTF-8"?>\n${(new XMLSerializer()).serializeToString(temp)}`;
-
                 // creates a blob from the encoded svg and sets the type of the blob to and image svg
                 var svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
-
                 // append the svgBlob as a file with the name given the exportfile 
                 fd.append("exportfile", svgBlob, `${fileinputname.value}_tmp.svg`);
                 fd.append("svg", fileinputtype.checked);
@@ -816,7 +811,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 //fd.append("tiff",fileinputtype2.checked )
                 fd.append("jpeg", fileinputtype3.checked);
                 fd.append("dims", figsizeselect.value);
-
                 // when the requests load handle the response
                 xhr.onloadend = () => {
                     // response has all the links for downloading images
@@ -841,11 +835,9 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         xhrd.send(postData);
                     });
                 };
-
                 // open the request and send the data
                 xhr.open('POST', "/export", true);
                 xhr.send(fd);
-
                 // remove the UI download box
                 cancelbtn.click();
                 return false;
@@ -895,7 +887,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 imgbtn.classList.add("disabled")
                 capbtn.classList.add("disabled")
                 POWbtn.classList.add("disabled")
-
                 event.target.innerHTML = "&rarrb;"
             }
         });
@@ -991,7 +982,11 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 // updpate the text inside once found
                 if( matchingCaption )
                 {   
-                    matchingCaption.lastChild.innerHTML = text2PieText(textinput.value, parseFloat(matchingCaption.getAttribute("width")), parseInt(captionTextElement.getAttribute("font-size")))
+                    matchingCaption.lastChild.innerHTML = text2PieText(
+                        textinput.value, 
+                        parseFloat(matchingCaption.getAttribute("width")), 
+                        parseInt(captionTextElement.getAttribute("font-size"))
+                    );
                 }
             }
         })
@@ -1019,12 +1014,16 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             // find the matching html caption element
             let matchingCaption = document.getElementById( `${this.attributes.objectid.value}text` )
 
+            // REMOVE THIS **
             console.log(this.value)
-
             // updpate the text inside once found
             if(matchingCaption)
             {
-                matchingCaption.innerHTML = text2PieText(this.value, parseFloat(matchingCaption.parentElement.getAttribute("width")), parseInt(matchingCaption.getAttribute("font-size")));
+                matchingCaption.innerHTML = text2PieText(
+                    this.value,
+                    parseFloat(matchingCaption.parentElement.getAttribute("width")),
+                    parseInt(matchingCaption.getAttribute("font-size"))
+                );
             }
         })
 
@@ -1054,8 +1053,12 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 {
                     matchingCaption.setAttribute("width", Number(this.value))
                 }
-
-                matchingCaption.lastChild.innerHTML = text2PieText(textinput.value, parseFloat(matchingCaption.getAttribute("width")), parseInt(document.getElementById(`${this.attributes.objectid.value}text`).getAttribute("font-size")))
+                matchingCaption.lastChild.innerHTML = text2PieText(
+                    textinput.value,
+                    parseFloat(matchingCaption.getAttribute("width")),
+                    parseInt(document.getElementById(`${this.attributes.objectid.value}text`)
+                        .getAttribute("font-size"))
+                );
             }
         })
 
@@ -1162,7 +1165,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         // set caption id on all input elements
         toolsarea.childNodes.forEach(element => {
             element.setAttribute("objectid", captionId)
-        })
+        });
 
         // append all elements together
         newoptionsbar.append(
@@ -1202,7 +1205,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         rect.classList.add("marker")
 
         const text = document.createElementNS(NS.svg, "text")
-        
         text.setAttribute("id", `${captionId}text`)
         text.setAttribute("data-cy", "caption")
         text.setAttribute("width", "100%")
@@ -1219,7 +1221,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
 
         getObjectCount(1, "caption")
     });
-    
 
     /**
      * @function button.toolboxaddimagebtn.click()
@@ -1264,7 +1265,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         // setup delete button
         deletebtn.classList.add("windowremovebtn")
         deletebtn.innerHTML = "&times"
-        
         deletebtn.addEventListener("click", function(event){removeToolsWindow(event) })
 
         // set the class css and the svg button graphic
@@ -1305,7 +1305,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     {
                         // show the list of filenames
                         console.log(json)
-
                     }
                 });
             }
@@ -1316,7 +1315,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         });
 
         powIdSubmitBtn.innerHTML = "Submit Id"
-
         toolsarea.append(
             powIdLabel,
             powIdInput,
@@ -1354,7 +1352,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         imagesvg.setAttribute("href", "#")
 
         holdergroup.appendChild(imagesvg)
-
         // This is the box that will hold the image and the icons for said image
         holdergroup.setAttribute("id", `${imageId}-hg`)
         holdergroup.setAttribute("transform", "scale(1)")
@@ -1447,8 +1444,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         // listener for when the user changes the image of the input field
         fileinput.addEventListener("change", function(event){
             // use regexp to test the acceptable file types and handle either way
-            let imgregexp = new RegExp("^.*\.(png|PNG|jpg|JPG|SVG|svg)$")
-            let isisregexp = new RegExp("^.*\.(CUB|cub|tif|TIF)$")
+            let imgregexp = new RegExp("^.*\.(png|PNG|jpg|JPG|SVG|svg)$"),
+                isisregexp = new RegExp("^.*\.(CUB|cub|tif|TIF)$")
 
             if(imgregexp.test(this.value))
             {
@@ -1467,7 +1464,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         document.getElementById(imageId).setAttribute('GEO', null)
                         document.getElementById(imageId).setAttribute('filePath', null)
 
-                        ButtonManager.addImage( imageId, [])
+                        ButtonManager.addImage( imageId, [] )
 
                         // remove the north icon b/c there is no north data
                         try{
@@ -1517,7 +1514,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         // remove the load icon from the UI
                         document.getElementById("loadicon").style.visibility = "hidden"
                     }
-
                     // convert to base64 string
                     reader.readAsDataURL(this.files[0])
                 }
@@ -1531,14 +1527,13 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 event.preventDefault()
 
                 // create a form data and request object to call the server
-                var fd = new FormData(form)
-                var xhr = new XMLHttpRequest()
+                var fd = new FormData(form),
+                    xhr = new XMLHttpRequest()
 
                 // when the requests load handle the response
                 xhr.onloadend = () => {
-                    var reader = new FileReader()
-
-                    var responseObject = {}
+                    var reader = new FileReader(),
+                        responseObject = {}
                     try
                     {
                         JSON.parse(xhr.response)
@@ -1546,7 +1541,9 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     catch(err)
                     {
                         // remove the btn after displaying the error to the user
-                        var imgRemoveBtn = document.querySelector(`.windowoptionsbar[objectid='${imageId}']>.windowremovebtn`);
+                        var imgRemoveBtn = document.querySelector(
+                            `.windowoptionsbar[objectid='${imageId}']>.windowremovebtn`
+                            );
                         document.getElementById("loadicon").style.visibility = "hidden"
                         alert(`Image Failed to Upload:\nError: ${xhr.response}`)
                         imgRemoveBtn.click()
@@ -1555,9 +1552,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     
                     if (xhr.status == 200)
                     {
-                        // Helps when testing server returns
-                        console.log(xhr.response)
-
+                        // ** Helps when testing server returns **
+                        // console.log(xhr.response)
                         responseObject = JSON.parse(xhr.response)
 
                         fetch(responseObject.imagefile, {
@@ -1576,26 +1572,37 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                                 document.getElementById(imageId).setAttribute('GEO', 'true')
 
                                 // set the height and width of the actual image.
-                                document.getElementById(imageId).setAttribute('width', responseObject.pvlData.data['Samples'])
-                                document.getElementById(imageId).setAttribute('height', responseObject.pvlData.data['Lines'])
+                                document.getElementById(imageId).setAttribute('width',
+                                                                                responseObject.pvlData.data['Samples'])
+                                document.getElementById(imageId).setAttribute('height',
+                                                                                responseObject.pvlData.data['Lines'])
 
                                 // update image input fields
-                                document.querySelector(`input[objectid='${imageId}'][name='widthinput']`).value = document.getElementById(imageId).getAttribute("width")
-                                document.querySelector(`input[objectid='${imageId}'][name='heightinput']`).value = document.getElementById(imageId).getAttribute("height")
+                                document.querySelector(`input[objectid='${imageId}'][name='widthinput']`).value = 
+                                    document.getElementById(imageId).getAttribute("width");
+
+                                document.querySelector(`input[objectid='${imageId}'][name='heightinput']`).value = 
+                                    document.getElementById(imageId).getAttribute("height");
                                 
                                 // read in the data values into attribute values for the image
                                 responseObject.pvlData.keys.forEach( key => {
-                                    document.getElementById(imageId).parentElement.setAttribute(key, responseObject.pvlData.data[key])
+                                    document.getElementById(imageId).parentElement
+                                        .setAttribute(key, responseObject.pvlData.data[key])
                                 });
 
-                                // test to see which data values where recieved and activate the buttons that need to be activated for each data value.
+                                /* test to see which data values where recieved and activate the buttons 
+                                    that need to be activated for each data value. */
                                 var btnArray = []
                                 // test if the north arrow data is valid and activte the button
                                 if ( responseObject.pvlData.data['NorthAzimuth'] )
                                 {
                                     btnArray.push('north')
                                     try{
-                                        document.getElementById(`northIcon-${imageId}`).firstElementChild.setAttribute("transform", `rotate(${parseFloat(document.getElementById(imageId + "-hg").getAttribute("NorthAzimuth")) + 90} 13.5 13.5)`)
+                                        document.getElementById(`northIcon-${imageId}`).firstElementChild
+                                            .setAttribute("transform", `rotate(${
+                                                parseFloat(document.getElementById(imageId + "-hg")
+                                                    .getAttribute("NorthAzimuth")) + 90
+                                            } 13.5 13.5)`)
                                     }
                                     catch(err)
                                     {
@@ -1618,7 +1625,11 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                                 {
                                     btnArray.push('sun')
                                     try{
-                                        document.getElementById(`sunIcon-${imageId}`).firstElementChild.setAttribute("transform", `rotate(${parseFloat(document.getElementById(imageId + "-hg").getAttribute("SubSolarAzimuth")) + 90} 13.5 13.5)`)
+                                        document.getElementById(`sunIcon-${imageId}`).firstElementChild
+                                        .setAttribute("transform", `rotate(${
+                                            parseFloat(document.getElementById(imageId + "-hg")
+                                            .getAttribute("SubSolarAzimuth")) + 90
+                                        } 13.5 13.5)`);
                                     }
                                     catch(err)
                                     {
@@ -1649,7 +1660,11 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                                     btnArray.push('observer')
 
                                     try{
-                                        document.getElementById(`observerIcon-${imageId}`).firstElementChild.setAttribute("transform", `rotate(${parseFloat(document.getElementById(imageId + "-hg").getAttribute("SubSpacecraftGroundAzimuth")) + 90} 14 14)`)
+                                        document.getElementById(`observerIcon-${imageId}`).firstElementChild
+                                            .setAttribute("transform", `rotate(${
+                                                parseFloat(document.getElementById(imageId + "-hg")
+                                                .getAttribute("SubSpacecraftGroundAzimuth")) + 90
+                                            } 14 14)`)
                                     }
                                     catch(err)
                                     {
@@ -1689,20 +1704,26 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                                     btnArray.push('scale');
                                     try {
                                         // calculate the scale nneded for the scalebar and multiply by the svg dimensions
-                                        var scaleObject = getScalebarData( 
-                                            ( document.getElementById(`${imageId}-hg`).getAttribute("PixelResolution") ) 
-                                                ? document.getElementById(`${imageId}-hg`).getAttribute("PixelResolution")
-                                                : document.getElementById(`${imageId}-hg`).getAttribute("ObliquePixelResolution"),
-                                            document.getElementById(imageId).getAttribute("width"), document.getElementById(imageId).getAttribute("height"),
-                                            document.getElementById(`${imageId}-hg`).getAttribute("Lines"), document.getElementById(`${imageId}-hg`).getAttribute("Samples"))
+                                        var scaleObject = getScalebarData(
+                                            ( document.getElementById(`${imageId}-hg`).getAttribute("PixelResolution"))
+                                                ? document.getElementById(`${imageId}-hg`)
+                                                    .getAttribute("PixelResolution")
+                                                : document.getElementById(`${imageId}-hg`)
+                                                    .getAttribute("ObliquePixelResolution"),
+                                            document.getElementById(imageId).getAttribute("width"), 
+                                            document.getElementById(imageId).getAttribute("height"),
+                                            document.getElementById(`${imageId}-hg`).getAttribute("Lines"),
+                                            document.getElementById(`${imageId}-hg`).getAttribute("Samples")
+                                        )
 
                                         let scalebar = document.getElementById(`scalebarIcon-${imageId}`)
                 
                                         scalebar.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
                                         scalebar.setAttribute("height", (scaleObject.sc * 700) )
-                
-                                        document.getElementById(`scalestart-${imageId}`).innerHTML = scaleObject.display
-                                        document.getElementById(`scaleend-${imageId}`).innerHTML = `${scaleObject.display} ${scaleObject.units}`
+                                        document.getElementById(`scalestart-${imageId}`).innerHTML =
+                                            scaleObject.display;
+                                        document.getElementById(`scaleend-${imageId}`).innerHTML = 
+                                            `${scaleObject.display} ${scaleObject.units}`;
                                     }
                                     catch( err )
                                     {
@@ -1720,9 +1741,7 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                                         /** No Thing */
                                     }
                                 }
-
                                 ButtonManager.addImage(imageId, btnArray )
-
                                 // this is not the same in the testing environment
                                 //console.log(responseObject)
                             }    
@@ -1736,7 +1755,6 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         console.error(xhr.response)
                     }
                 }
-
                 // open the request and send the data
                 xhr.open('POST', "/upload", true)
                 xhr.send(fd)
@@ -1901,7 +1919,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
         // update the svgContainer size
         let tmp = event.target.value.split("x")
         draggableSvg.getContainerObject().setAttribute("viewBox", `0 0 ${tmp[0]} ${tmp[1]}`)
-        draggableSvg.getContainerObject().parentElement.setAttribute("viewBox", `-500 0 ${Number(tmp[0]) + 1000} ${tmp[1]}`)
+        draggableSvg.getContainerObject().parentElement.setAttribute("viewBox",
+        `-500 0 ${Number(tmp[0]) + 1000} ${tmp[1]}`);
         draggableSvg.getContainerObject().setAttribute("width", tmp[0])
         draggableSvg.getContainerObject().setAttribute("height", tmp[1])
     });
@@ -1911,7 +1930,10 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
      * @description Changes the background color of the editing area.
      * will be visible when exported
      */
-    document.getElementById('backgroundcolor').addEventListener("change", (event) => { setSVGBackground("bgelement", event.target.value) });
+    document.getElementById('backgroundcolor').addEventListener("change", (event) =>
+    { 
+        setSVGBackground("bgelement", event.target.value) 
+    });
 
     /**
      * Loop over all the buttons and set the custom drag and drop functions
@@ -1983,8 +2005,9 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                 // set element
                 selectedObject = event.target
             }
-            else if( btn.id.indexOf("observer") > -1 && event.target.parentElement.getAttribute("SubSpacecraftGroundAzimuth") )
-            {
+            else if( btn.id.indexOf("observer") > -1 && event.target.parentElement
+                .getAttribute("SubSpacecraftGroundAzimuth") 
+            ){
                 // set element
                 selectedObject = event.target
             }
@@ -2000,7 +2023,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
             }
             else
             {
-                alert("Data Error:\nThe image you are adding the icon to does not have the required metadata for this icon.")
+                alert("Data Error:\nThe image you are adding the icon to does not have \
+                the required metadata for this icon.")
             }
         }
         else if(btn != event.target)
@@ -2098,7 +2122,9 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale"))
                         
                         // rotate the icon
-                        icongroup.firstChild.setAttribute("transform", `rotate(${parseFloat(document.getElementById(`${image.id}-hg`).getAttribute("NorthAzimuth")) + 90} 13.5 13.5)` )
+                        icongroup.firstChild.setAttribute("transform", `rotate(
+                            ${parseFloat(document.getElementById(`${image.id}-hg`).getAttribute("NorthAzimuth")) + 90}
+                             13.5 13.5)` )
                     }
                     else
                     {
@@ -2142,7 +2168,10 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         icongroup.setAttribute("width", 27 * icongroup.getAttribute("scale") )
                         icongroup.setAttribute("height", 27 * icongroup.getAttribute("scale") )
 
-                        icongroup.firstChild.setAttribute("transform", `rotate(${parseFloat(document.getElementById(image.id + "-hg").getAttribute("SubSolarAzimuth")) + 90} 13.5 13.5)` )
+                        icongroup.firstChild.setAttribute("transform", 
+                        `rotate(
+                            ${parseFloat(document.getElementById(image.id + "-hg").getAttribute("SubSolarAzimuth"))
+                             + 90} 13.5 13.5)` )
                     }
                     else
                     {
@@ -2182,7 +2211,9 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         icongroup.setAttribute("width", 30 * icongroup.getAttribute("scale") )
                         icongroup.setAttribute("height", 30 * icongroup.getAttribute("scale") )
                     
-                        icongroup.firstChild.setAttribute("transform", `rotate(${parseFloat(document.getElementById(`${image.id}-hg`).getAttribute("SubSpacecraftGroundAzimuth")) + 90} 15 15)` )
+                        icongroup.firstChild.setAttribute("transform", `rotate(${parseFloat(
+                            document.getElementById(`${image.id}-hg`).getAttribute("SubSpacecraftGroundAzimuth")) + 90}
+                             15 15)` )
                     }
                     else
                     {
@@ -2217,8 +2248,11 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                             ( document.getElementById(`${image.id}-hg`).getAttribute("PixelResolution") ) 
                                 ? document.getElementById(`${image.id}-hg`).getAttribute("PixelResolution")
                                 : document.getElementById(`${image.id}-hg`).getAttribute("ObliquePixelResolution"),
-                            document.getElementById(image.id).getAttribute("width"), document.getElementById(image.id).getAttribute("height"),
-                            document.getElementById(image.id + '-hg').getAttribute("Lines"), document.getElementById(`${image.id}-hg`).getAttribute("Samples"))
+                            document.getElementById(image.id).getAttribute("width"),
+                            document.getElementById(image.id).getAttribute("height"),
+                            document.getElementById(image.id + '-hg').getAttribute("Lines"),
+                            document.getElementById(`${image.id}-hg`).getAttribute("Samples")
+                        );
                         
                         icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
                         icongroup.setAttribute("height", (scaleObject.sc * 700) )
@@ -2246,7 +2280,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                     scaleNumberStart[1].id = `scalestart-${image.id}`
 
                     document.getElementById(`scalestart-${image.id}`).innerHTML = scaleObject.display
-                    document.getElementById(`scaleend-${image.id}`).innerHTML = `${scaleObject.display} ${scaleObject.units}`
+                    document.getElementById(`scaleend-${image.id}`).innerHTML =
+                     `${scaleObject.display} ${scaleObject.units}`
                 }
                 else
                 {
@@ -2285,7 +2320,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
                         let imageDataObject = retrieveDataObject( `${image.id}-hg` ),
                             svgStringsObject = getSvgIcons( imageDataObject );
 
-                            // svgStringsObject will contain the icons as innerHTML strings and keys that coordinate with imageDataObject
+                            /* svgStringsObject will contain the icons as innerHTML strings and keys that
+                            coordinate with imageDataObject */
                             // console.log(svgStringsObject)
 
                         let keyDim = {width: 400, height: 800};
@@ -2393,7 +2429,8 @@ document.addEventListener( "DOMContentLoaded", ( event ) => {
 /**
  * @function getSvgIcons
  * @param {JSON} obj the json object that houses the data values and their keys 
- * @description this function helps the key drawing functions by returning a batch of icons that need to used during the key construction
+ * @description this function helps the key drawing functions by returning a batch of icons that need 
+ *      to used during the key construction
  * @return it's important that returnObj has the same key map as the input obj
  */
 function getSvgIcons( obj )
@@ -2423,7 +2460,8 @@ function getSvgIcons( obj )
 /**
  * @function createIcon
  * @param {string} key the keys of the special object
- * @description this function passes back the html string of the icon that will be used by the key to show angle values and any other icon needed that is not already an svg icon on the screen
+ * @description this function passes back the html string of the icon that will be used by the key to 
+ * show angle values and any other icon needed that is not already an svg icon on the screen
  */
 function createIcon( key )
 {
@@ -2432,22 +2470,43 @@ function createIcon( key )
         case "Phase":
             return '<g transform="rotate(1.0153 60.444 -51.232)">\
             <g transform="matrix(.92397 -.004502 .0052733 1.0823 0 0)" stroke-width=".72858" aria-label="0">\
-             <path d="m15.48 23.654q-1.5653 0-2.8602-0.73996-1.2807-0.73996-2.2056-2.0633-0.91072-1.3234-1.4088-3.1591-0.49805-1.8357-0.49805-4.0129 0-2.0064 0.49805-3.7852 0.49805-1.7787 1.4088-3.1021 0.92495-1.3376 2.2056-2.106 1.2949-0.76842 2.8602-0.76842t2.846 0.76842q1.2807 0.76842 2.1914 2.106 0.92495 1.3234 1.423 3.1021 0.49805 1.7787 0.49805 3.7852 0 2.1772-0.49805 4.0129-0.49805 1.8357-1.423 3.1591-0.91072 1.3234-2.1914 2.0633t-2.846 0.73996zm0-0.93918q0.95341 0 1.6649-0.73996t1.1811-1.9922q0.46959-1.2522 0.69727-2.8745 0.24191-1.6364 0.24191-3.4294 0-1.793-0.24191-3.401-0.22768-1.608-0.69727-2.8033-0.46959-1.2095-1.1811-1.921-0.7115-0.7115-1.6649-0.7115-0.96764 0-1.6791 0.7115-0.7115 0.7115-1.1811 1.921-0.46959 1.1953-0.69727 2.8033-0.22768 1.608-0.22768 3.401 0 1.793 0.22768 3.4294 0.22768 1.6222 0.69727 2.8745 0.46959 1.2522 1.1811 1.9922t1.6791 0.73996z" stroke-width=".72858"/>\
+             <path d="m15.48 23.654q-1.5653 0-2.8602-0.73996-1.2807-0.73996-2.2056-2.0633-0.91072-1.3234-1.4088\
+             -3.1591-0.49805-1.8357-0.49805-4.0129 0-2.0064 0.49805-3.7852 0.49805-1.7787 1.4088-3.1021 0.92495-\
+             1.3376 2.2056-2.106 1.2949-0.76842 2.8602-0.76842t2.846 0.76842q1.2807 0.76842 2.1914 2.106 0.92495 \
+             1.3234 1.423 3.1021 0.49805 1.7787 0.49805 3.7852 0 2.1772-0.49805 4.0129-0.49805 1.8357-1.423 3.1591-\
+             0.91072 1.3234-2.1914 2.0633t-2.846 0.73996zm0-0.93918q0.95341 0 1.6649-0.73996t1.1811-1.9922q0.46959-\
+             1.2522 0.69727-2.8745 0.24191-1.6364 0.24191-3.4294 0-1.793-0.24191-3.401-0.22768-1.608-0.69727-2.8033-\
+             0.46959-1.2095-1.1811-1.921-0.7115-0.7115-1.6649-0.7115-0.96764 0-1.6791 0.7115-0.7115 0.7115-1.1811 \
+             1.921-0.46959 1.1953-0.69727 2.8033-0.22768 1.608-0.22768 3.401 0 1.793 0.22768 3.4294 0.22768 1.6222 \
+             0.69727 2.8745 0.46959 1.2522 1.1811 1.9922t1.6791 0.73996z" stroke-width=".72858"/>\
             </g>\
-            <path d="m9.8557 13.56h9.1943v1.6536h-9.1943z" stroke-linecap="round" stroke-linejoin="round" stroke-width=".23998" style="paint-order:fill markers stroke"/>\
+            <path d="m9.8557 13.56h9.1943v1.6536h-9.1943z" stroke-linecap="round" stroke-linejoin="round" \
+            stroke-width=".23998" style="paint-order:fill markers stroke"/>\
            </g>';
-
         case "Incidence":
             return  '<g transform="translate(1.0708 -.35694)">\
             <g transform="matrix(.90664 .17818 -.2087 1.062 0 0)" stroke-width=".72858" aria-label="i">\
-             <path d="m11.905 7.4232v-0.99086q0.43714-0.17486 1.1657-0.34972 0.72858-0.204 1.5446-0.34972t1.6029-0.23314q0.816-0.11657 1.428-0.11657l0.52457 0.34972-2.6229 12.561h2.04v0.99086q-0.37886 0.26229-0.90343 0.49543-0.49543 0.23314-1.0783 0.408-0.55372 0.17486-1.1366 0.26229-0.58286 0.11657-1.1074 0.11657-1.1074 0-1.5446-0.408-0.408-0.43714-0.408-0.93258 0-0.58286 0.08743-1.1366t0.23314-1.224l1.9817-9.0343zm2.448-6.5572q0-0.99086 0.67029-1.5446t1.6903-0.55372q1.1074 0 1.7486 0.55372 0.67029 0.55372 0.67029 1.5446 0 0.93258-0.67029 1.4863-0.64115 0.55372-1.7486 0.55372-1.02 0-1.6903-0.55372-0.67029-0.55372-0.67029-1.4863z" stroke-width=".72858"/>\
+             <path d="m11.905 7.4232v-0.99086q0.43714-0.17486 1.1657-0.34972 0.72858-0.204 1.5446-0.34972t1.6029-\
+             0.23314q0.816-0.11657 1.428-0.11657l0.52457 0.34972-2.6229 12.561h2.04v0.99086q-0.37886 0.26229-0.90343\
+              0.49543-0.49543 0.23314-1.0783 0.408-0.55372 0.17486-1.1366 0.26229-0.58286 0.11657-1.1074 0.11657-\
+              1.1074 0-1.5446-0.408-0.408-0.43714-0.408-0.93258 0-0.58286 0.08743-1.1366t0.23314-1.224l1.9817-\
+              9.0343zm2.448-6.5572q0-0.99086 0.67029-1.5446t1.6903-0.55372q1.1074 0 1.7486 0.55372 0.67029 0.55372\
+               0.67029 1.5446 0 0.93258-0.67029 1.4863-0.64115 0.55372-1.7486 0.55372-1.02 0-1.6903-0.55372-0.67029\
+               -0.55372-0.67029-1.4863z" stroke-width=".72858"/>\
             </g>\
            </g>';
-        
         case "Emission":
             return '<g transform="translate(.086042 -4.2161)">\
             <g transform="matrix(.90664 .17818 -.2087 1.062 0 0)" stroke-width=".72858" aria-label="e">\
-             <path d="m22.688 17.128q-0.32057 0.58286-0.93258 1.224-0.612 0.612-1.428 1.1366-0.816 0.49543-1.8069 0.816-0.99086 0.34972-2.0692 0.34972-2.5937 0-4.0509-1.3989-1.428-1.428-1.428-4.0217 0-2.0109 0.64115-3.7886 0.64115-1.7777 1.7777-3.1183 1.1657-1.3697 2.7394-2.1566 1.6029-0.78686 3.4972-0.78686 1.7486 0 2.8852 0.816 1.1366 0.78686 1.1366 2.1857 0 1.9817-1.9817 3.264-1.9526 1.2823-6.3532 1.6029-0.08743 0.408-0.14572 0.84515-0.02914 0.408-0.02914 0.78686 0 1.6612 0.84515 2.5646 0.84515 0.87429 2.1566 0.87429 0.55372 0 1.1074-0.17486t1.0491-0.46629q0.52457-0.29143 0.93258-0.612 0.43714-0.34972 0.75772-0.67029zm-3.7303-10.083q-0.99086 0-1.9234 1.0783-0.90343 1.0783-1.5154 3.6429 2.1566-0.05829 3.468-0.96172 1.3406-0.90343 1.3406-2.3606 0-0.58286-0.32057-0.99086-0.29143-0.408-1.0491-0.408z" stroke-width=".72858"/>\
+             <path d="m22.688 17.128q-0.32057 0.58286-0.93258 1.224-0.612 0.612-1.428 1.1366-0.816 0.49543-1.8069 \
+             0.816-0.99086 0.34972-2.0692 0.34972-2.5937 0-4.0509-1.3989-1.428-1.428-1.428-4.0217 0-2.0109 0.64115-\
+             3.7886 0.64115-1.7777 1.7777-3.1183 1.1657-1.3697 2.7394-2.1566 1.6029-0.78686 3.4972-0.78686 1.7486 0 \
+             2.8852 0.816 1.1366 0.78686 1.1366 2.1857 0 1.9817-1.9817 3.264-1.9526 1.2823-6.3532 1.6029-0.08743 \
+             0.408-0.14572 0.84515-0.02914 0.408-0.02914 0.78686 0 1.6612 0.84515 2.5646 0.84515 0.87429 2.1566 \
+             0.87429 0.55372 0 1.1074-0.17486t1.0491-0.46629q0.52457-0.29143 0.93258-0.612 0.43714-0.34972 0.75772-\
+             0.67029zm-3.7303-10.083q-0.99086 0-1.9234 1.0783-0.90343 1.0783-1.5154 3.6429 2.1566-0.05829 3.468-\
+             0.96172 1.3406-0.90343 1.3406-2.3606 0-0.58286-0.32057-0.99086-0.29143-0.408-1.0491-0.408z" \
+             stroke-width=".72858"/>\
             </g>\
            </g>';
     }
@@ -2459,24 +2518,25 @@ function createIcon( key )
  */
 function retrieveDataObject( holderid )
 {
-    var holder =  document.getElementById( holderid )
-    var keyObject = {
-        "Emission": null,
-        "Incidence": null,
-        "Phase": null,
-        "NorthAzimuth": null,
-        "SubSolarAzimuth": null,
-        "SubSpacecraftGroundAzimuth": null,
-        "PixelResolution": null,
-        "ObliquePixelResolution": null,
-    }
+    var holder =  document.getElementById( holderid ),
+        keyObject = 
+        {
+            "Emission": null,
+            "Incidence": null,
+            "Phase": null,
+            "NorthAzimuth": null,
+            "SubSolarAzimuth": null,
+            "SubSpacecraftGroundAzimuth": null,
+            "PixelResolution": null,
+            "ObliquePixelResolution": null,
+        };
 
     Object.keys(keyObject).forEach( key => {
         keyObject[key] = holder.getAttribute(key)
-    })
+    });
+
     return keyObject;
 }
-
 
 /**
  * @function configDraggables
@@ -2513,7 +2573,8 @@ function preConfigPage()
   */
 function iconFailureAlert()
 {
-    window.alert("User Error: Cannot add multiple icons to the same image.\n\n Let the developers know if this feature should change.")
+    window.alert("User Error: Cannot add multiple icons to the same image.\n\n Let the developers know\
+     if this feature should change.")
 }
 
 /**
@@ -2580,7 +2641,8 @@ const ButtonManager = startButtonManager();
 
 /**
  * @function startActiveEM
- * @description This function creates an event manager object that acts as a universal flagger to start or disable running events
+ * @description This function creates an event manager object that acts as a universal 
+ * flagger to start or disable running events
  */
 var startActiveEM = function() {
     var RunningEvent = undefined;
@@ -2712,10 +2774,8 @@ function removeToolsWindow( event )
             svgcontainer = draggableSvg.getContainerObject()
 
         ButtonManager.removeImage(event.target.parentElement.attributes.objectid.value)
-
         // remove the options and other things for image
         draggableList.removeObject(parentBox)
-
         // remove the image holder now
         if( svgcontainer === svgObject.parentElement )
         {
@@ -2798,7 +2858,8 @@ var imageCount = 0,
 
 /**
  * @function objectCount
- * @param {number} inc - 0: show the current count, 1: add 1 to the count then return, -1: remove 1 from count then return
+ * @param {number} inc - 0: show the current count, 1: add 1 to the count then return, -1: 
+ * remove 1 from count then return
  * @description arg explained below and what it does 
  */
 function getObjectCount( inc=0, objecttype="both" ) 
@@ -3500,8 +3561,10 @@ function findImageToolbox( id, array )
  */
 function updateIconScale( event )
 {
-    var icon = document.getElementById( event.target.attributes.objectid.value )
-    var inputvalue = parseFloat( event.target.value )
+    var icon = document.getElementById( event.target.attributes.objectid.value ),
+        inputvalue = parseFloat( event.target.value );
+
+    // update the scale if it is valid
     if( !isNaN( inputvalue ) )
     {   
         icon.setAttribute("scale", inputvalue)
@@ -3520,8 +3583,8 @@ function updateIconScale( event )
  */
 function rescaleIconTransform ( oldscale, scale, x, y )
 {
-    let newx = x * oldscale / scale 
-    let newy = y * oldscale / scale 
+    let newx = x * oldscale / scale,
+        newy = y * oldscale / scale;
 
     // return new transform dimensions
     return {sc: scale, x:newx, y:newy}
@@ -3603,8 +3666,8 @@ function removeLineWindow( event )
  */
 function updateIconColor( event , colorid )
 {
-    let icon = document.getElementById( event.target.attributes.objectid.value )
-    let inputvalue = event.target.value
+    let icon = document.getElementById( event.target.attributes.objectid.value ),
+        inputvalue = event.target.value
 
     switch( colorid )
     {
@@ -3632,28 +3695,32 @@ function changeIconColor( colorid, colorval, icon )
             if( icon.id.indexOf( "north" ) > -1 )
             {
                 // change all three children of the north icon
-                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "", "", "", "", "","fill", "fill", "fill", "fill", "fill")
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval,
+                     "", "", "", "", "", "fill", "fill", "fill", "fill", "fill")
             }
             else if( icon.id.indexOf( "sun" ) > -1 )
             {
                 // change the primary of the sun icon
-                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "fill", "fill", "stroke")
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval,
+                     "fill", "fill", "stroke")
             }
             else if( icon.id.indexOf( "observer" ) > -1 )
             {
                 // change the primary of the observer icon
-                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "fill", "fill", "", "fill", "", "fill", "fill", "" )
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval,
+                     "fill", "fill", "", "fill", "", "fill", "fill", "" )
             }
             else if( icon.id.indexOf( "scalebar" ) > -1 )
             {
                 // change the primary of the observer icon
-                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "stroke", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "stroke")
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval,
+                     "stroke", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill",
+                      "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "stroke")
             }
             else if( icon.id.indexOf( "key" ) > -1 )
             {
                 // change the primary
                 updateKeyColor( 0, colorval, icon.id )
-
             }
             break
         case 1:
@@ -3661,7 +3728,9 @@ function changeIconColor( colorid, colorval, icon )
             if( icon.id.indexOf( "north" ) > -1 )
             {
                 // change the secondary of the north icon
-                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "stroke", "fill stroke", "fill stroke", "fill stroke", "fill stroke", "stroke", "stroke", "stroke", "stroke", "stroke" )
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval,
+                     "stroke", "fill stroke", "fill stroke", "fill stroke", "fill stroke", 
+                     "stroke", "stroke", "stroke", "stroke", "stroke" )
             }
             else if( icon.id.indexOf( "sun" ) > -1 )
             {
@@ -3671,12 +3740,14 @@ function changeIconColor( colorid, colorval, icon )
             else if( icon.id.indexOf( "observer" ) > -1 )
             {
                 // change the secondary of the observer icon
-                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "stroke", "stroke", "stroke fill", "stroke", "fill stroke", "stroke", "stroke", "stroke fill" )
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval,
+                     "stroke", "stroke", "stroke fill", "stroke", "fill stroke", "stroke", "stroke", "stroke fill" )
             }
             else if( icon.id.indexOf( "scalebar" ) > -1 )
             {
                 // change the primary of the observer icon
-                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval, "fill", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" )
+                changeColorsOfChildren( icon.firstElementChild.childNodes, colorval,
+                     "fill", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" )
             }
             else if( icon.id.indexOf( "key" ) > -1 )
             {
@@ -3702,7 +3773,8 @@ function updateKeyColor( code, value, iconId )
     var changeArray = (code === 0)?['fill', 'stroke', '#']:['stroke', 'fill', '#'];
 
     // loop through the main elements
-    for (let index = 0; index < childNodeArr.length; index++) {
+    for (let index = 0; index < childNodeArr.length; index++) 
+    {
         const child = childNodeArr[index];
 
         // check if this element is a complex group
@@ -3717,11 +3789,18 @@ function updateKeyColor( code, value, iconId )
         else
         {
             // set the values of the special group
-            var svgMirrorArray = (code == 0)? [ [""], [""], [""], ["", "", "", "", "","fill", "fill", "fill", "fill", "fill"], ["fill", "fill", "stroke"], ["fill", "fill", "", "fill", "", "fill", "fill", ""] ]:
-                 [ ["fill"], ["fill"], ["fill"], ["fill stroke", "fill stroke", "fill stroke", "fill stroke", "fill stroke","stroke", "stroke", "stroke", "stroke", "stroke"], ["stroke", "stroke", "fill"], ["stroke", "stroke", "fill stroke", "stroke", "fill stroke", "stroke", "stroke", "fill stroke"]];
-            var svgIndex = 0;
+            var svgIndex = 0,
+                svgMirrorArray = (code == 0)? 
+            [ [""], [""], [""], 
+            ["", "", "", "", "","fill", "fill", "fill", "fill", "fill"], ["fill", "fill", "stroke"],
+             ["fill", "fill", "", "fill", "", "fill", "fill", ""] ]:
+                 [ ["fill"], ["fill"], ["fill"],
+                  ["fill stroke", "fill stroke", "fill stroke", "fill stroke", "fill stroke","stroke",
+                   "stroke", "stroke", "stroke", "stroke"], ["stroke", "stroke", "fill"], ["stroke", "stroke",
+                   "fill stroke", "stroke", "fill stroke", "stroke", "stroke", "fill stroke"]];
 
-            // loop through the child doing the same thing as before settting the values of the children of each svg and text elements
+            /* loop through the child doing the same thing as before settting the values of the 
+            children of each svg and text elements */
             for (let iindex = 0; iindex < child.childNodes.length; iindex++)
             {
                 const innerChild = child.childNodes[iindex],
@@ -3781,8 +3860,10 @@ function updateKeyColor( code, value, iconId )
  * @function changeColorsOfChildren
  * @param {NodeList} children - HTMLElementCollection holding all layers of the icon
  * @param {string} color - the new color
- * @param  {...any} order - any number of strings that represents the elements to change of the svg element "stroke" and/or "fill"
- * @description change color of the children using the order objects to tell what attributes to change on the children. child[i].order[i] = color
+ * @param  {...any} order - any number of strings that represents the elements to 
+ * change of the svg element "stroke" and/or "fill"
+ * @description change color of the children using the order objects to tell what 
+ * attributes to change on the children. child[i].order[i] = color
   */
 function changeColorsOfChildren( children, color , ...order )
 {
@@ -3797,8 +3878,8 @@ function changeColorsOfChildren( children, color , ...order )
         for ( let index = 0; index < children.length; index++ )
         {
             // get current element and command
-            let element = children[ index ]
-            let commandArr = order[ index ].split(" ")
+            let element = children[ index ],
+                commandArr = order[ index ].split(" ")
 
             // for each command
             commandArr.forEach( attribute => {
@@ -3812,8 +3893,9 @@ function changeColorsOfChildren( children, color , ...order )
 }
 
 /**
- * 
- * @param {*} activation 
+ * @function setMains
+ * @param {"enable"|"disabled"} activation activation string to tell the function to add or remove
+ * @description disable and re-enable the buttons
  */
 function setMains( activation )
 {
@@ -3834,7 +3916,6 @@ function setMains( activation )
             break;
     }
 }
-
 
 /**
  * @function changeButtonActivation
@@ -3939,8 +4020,9 @@ function updateCaptionBoxColor ( color, objectid )
 }
 
 /**
- * 
- * @param {*} activation 
+ * @function toggleLayerUI
+ * @param {"add"|"remove"} activation tells the func to add or remove classes
+ * @description add or remove class from all major parts of the UI
  */
 function toggleLayerUI( activation, cls )
 {
@@ -4004,7 +4086,11 @@ function drawMouseDownListener( event )
                     line.setAttribute( "y2", svgP.y )
 
                     // must add tool box because this is a valid line
-                    createLineToolBox( lineId, line.getAttribute("x1"), line.getAttribute("y1"), svgP.x, svgP.y, line.getAttribute('stroke-width') )
+                    createLineToolBox( 
+                        lineId, 
+                        line.getAttribute("x1"),
+                        line.getAttribute("y1"),
+                        svgP.x, svgP.y, line.getAttribute('stroke-width') )
                 }
                 else
                 {
@@ -4126,14 +4212,15 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         // line width setting
         if( Number(this.getAttribute("min")) > Number(this.value) )
         {
-            document.getElementById( this.attributes.objectid.value).setAttribute("stroke-width", Number(this.getAttribute("min")) )
+            document.getElementById( this.attributes.objectid.value)
+                .setAttribute("stroke-width", Number(this.getAttribute("min")) )
             this.value = Number(this.getAttribute("min"))
         }
         else
         {
-            document.getElementById( this.attributes.objectid.value).setAttribute("stroke-width", this.value )
+            document.getElementById( this.attributes.objectid.value)
+                .setAttribute("stroke-width", this.value )
         }
-
     })
 
     // input line color fields
@@ -4193,7 +4280,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         {
             console.error("Line Has No Head")
         }
-    })
+    });
 
     //  outer toolbox info
     linetoolbox.setAttribute("objectid", objectid)
@@ -4232,9 +4319,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 
     // set the class css and the svg button graphic
     createLayerBtn(layerbtn, draggableList)
-
     /** End Dragging */
-
 
     // set aptions bar nodes
     lineoptionbar.append(
@@ -4556,7 +4641,8 @@ function optionsAction( target )
 {
     let btn = target.firstChild.nextSibling
 
-    if( btn && btn.nodeName == "BUTTON" ){
+    if( btn && btn.nodeName == "BUTTON" )
+    {
         btn.click()
     }
 }
@@ -4639,40 +4725,39 @@ function drawBoxMouseDownListener( event )
         // set the update function
         function updateBoxUI ( event )
         {
-                let svgP = draggableSvg.svgAPI( event.clientX, event.clientY )
+            let svgP = draggableSvg.svgAPI( event.clientX, event.clientY )
 
-                // if newx is lt startclick X  + left 20px 
-                if( svgP.x < startClickX - 20 )
-                {
-                    // newx = mouse location
-                    rect.setAttribute("x", svgP.x)
-                    // new width = startlocation - mouseX
-                    rect.setAttribute("width", startClickX - svgP.x)
-                }
-                else if( svgP.x > startClickX + 20 )
-                {
-                    // calculate difference in x values to get width
-                    rect.setAttribute("x", startClickX)
-                    rect.setAttribute("width", svgP.x - Number(rect.getAttribute("x")) )
-                }
+            // if newx is lt startclick X  + left 20px 
+            if( svgP.x < startClickX - 20 )
+            {
+                // newx = mouse location
+                rect.setAttribute("x", svgP.x)
+                // new width = startlocation - mouseX
+                rect.setAttribute("width", startClickX - svgP.x)
+            }
+            else if( svgP.x > startClickX + 20 )
+            {
+                // calculate difference in x values to get width
+                rect.setAttribute("x", startClickX)
+                rect.setAttribute("width", svgP.x - Number(rect.getAttribute("x")) )
+            }
 
-                // check if the new y is less than the start point
-                if( svgP.y < startClickY - 20)
-                {
-                    // update the new x location
-                    rect.setAttribute("y", svgP.y)
-                    rect.setAttribute("height", startClickY - svgP.y)
-                }
-                else if( svgP.y > startClickY + 20 )
-                {
-                    rect.setAttribute("y", startClickY)
-                    rect.setAttribute("height", svgP.y - Number(rect.getAttribute("y")) )
-                }
+            // check if the new y is less than the start point
+            if( svgP.y < startClickY - 20)
+            {
+                // update the new x location
+                rect.setAttribute("y", svgP.y)
+                rect.setAttribute("height", startClickY - svgP.y)
+            }
+            else if( svgP.y > startClickY + 20 )
+            {
+                rect.setAttribute("y", startClickY)
+                rect.setAttribute("height", svgP.y - Number(rect.getAttribute("y")) )
+            }
         }
 
         // event listener for mousemove
         draggableSvg.getContainerObject().addEventListener( "mousemove", updateBoxUI )
-
         // put the line on the svg image
         draggableSvg.getContainerObject().appendChild(rect)
     }
@@ -4759,7 +4844,8 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     {
         if( Number(this.getAttribute("min")) > Number(this.value) )
         {
-            document.getElementById( this.attributes.objectid.value).setAttribute("width", Number(this.getAttribute("min")) )
+            document.getElementById( this.attributes.objectid.value)
+                .setAttribute("width", Number(this.getAttribute("min")) )
             this.value = Number(this.getAttribute("min"))
         }
         else
@@ -4784,7 +4870,8 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
         // line width setting
         if( Number(this.getAttribute("min")) > Number(this.value) )
         {
-            document.getElementById( this.attributes.objectid.value).setAttribute("height", Number(this.getAttribute("min")) )
+            document.getElementById( this.attributes.objectid.value)
+                .setAttribute("height", Number(this.getAttribute("min")) )
             this.value = Number(this.getAttribute("min"))
         }
         else
@@ -4810,7 +4897,8 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
         // line width setting
         if( Number(this.getAttribute("min")) > Number(this.value) )
         {
-            document.getElementById( this.attributes.objectid.value).setAttribute("stroke-width", Number(this.getAttribute("min")) )
+            document.getElementById( this.attributes.objectid.value)
+                .setAttribute("stroke-width", Number(this.getAttribute("min")) )
             this.value = Number(this.getAttribute("min"))
         }
         else
@@ -5184,9 +5272,11 @@ function saveBlob(blob, fileName)
 /**
  * @function cleanSVG
  * @param {DOM Object} clone the clone of the svg element we want to prepair for export
- * @description this function cleans out un-needed parts of the svg as well as formating existing elements in a way that is efficent for other svg softwares.
+ * @description this function cleans out un-needed parts of the svg as well as formating existing 
+ * elements in a way that is efficent for other svg softwares.
  * With this function i want to go through the whole clone and remove 
- * the id and class of every element and nested child inside of the svg so that the server has an easier time handling it
+ * the id and class of every element and nested child inside of the svg so that the server has an 
+ * easier time handling it
  * 
  * @todo this may need d3 or something similar to format the whole thing properly.
  */
