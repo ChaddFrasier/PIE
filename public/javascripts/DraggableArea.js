@@ -246,9 +246,7 @@ function DraggableArea( objectbox=undefined )
             NodeName: objectbox.nodeName
         };
     }
-
     // ---------------- Private functions --------------------------
-
     /**
      * @function validNode
      * @param {string} nodeName
@@ -261,7 +259,6 @@ function DraggableArea( objectbox=undefined )
         // check test nodes for the current node name
         return (testarray.indexOf(nodeName) > -1) ? true: false;
     }
-
     /**
      * @function validDraggableNode 
      * @param {string} nodeName 
@@ -271,11 +268,9 @@ function DraggableArea( objectbox=undefined )
     function validDraggableNode( nodeName )
     {
         var testarray = ["g", "line", "rect"];
-
         // check test nodes for the current node name
         return (testarray.indexOf(nodeName) > -1) ? true: false;
     }
-
     /**
      * @function createSVGPoint
      * @param {number} x - x translate
@@ -287,11 +282,9 @@ function DraggableArea( objectbox=undefined )
     {
         // create a blank svg point on screen
         let pt = DragBoxContainer.createSVGPoint();
-        
         // Then Scale the x and y into the point object 
         pt.x = parseFloat( x );
         pt.y = parseFloat( y );
-
         if( !isNaN( pt.x ) && !isNaN( pt.y ) )
         {
             /**
@@ -305,7 +298,6 @@ function DraggableArea( objectbox=undefined )
             console.error( "Error: SVG Point Mapping Failed" )
         }
     }
-
     /**
      * @function getIconParentContainer
      * @param {Object} target 
@@ -319,14 +311,12 @@ function DraggableArea( objectbox=undefined )
             {
                 target = target.parentElement;
             }
-        }catch(err)
+        }
+        catch(err)
         {
             console.log(err);
         }
-
         return target;
     }
-
     // ---------------- ^ End Private functions ^ --------------------------
-
 }
