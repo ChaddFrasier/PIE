@@ -1664,7 +1664,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                                             .setAttribute("transform", `rotate(${
                                                 parseFloat(document.getElementById(imageId + "-hg")
                                                 .getAttribute("SubSpacecraftGroundAzimuth")) + 90
-                                            } 14 14)`)
+                                            } 16 16)`)
                                     }
                                     catch(err)
                                     {
@@ -2199,8 +2199,8 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                     icongroup.setAttribute("id", `observerIcon-${image.id}`)
 
                     // set the translate location of the icon to where the mouse was released
-                    newX = getScaledPoint( svgP.x, 1, 30*5 )
-                    newY = getScaledPoint( svgP.y, 1, 30*5 )
+                    newX = getScaledPoint( svgP.x, 1, 32*5 )
+                    newY = getScaledPoint( svgP.y, 1, 32*5 )
 
                     // test valid input and set the transform for all browsers
                     if( !isNaN(newX) && !isNaN(newY))
@@ -2208,12 +2208,12 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                         icongroup.setAttribute("x", newX)
                         icongroup.setAttribute("y", newY)
                         icongroup.setAttribute("scale", 5)
-                        icongroup.setAttribute("width", 30 * icongroup.getAttribute("scale") )
-                        icongroup.setAttribute("height", 30 * icongroup.getAttribute("scale") )
+                        icongroup.setAttribute("width", 32 * icongroup.getAttribute("scale") )
+                        icongroup.setAttribute("height", 32 * icongroup.getAttribute("scale") )
                     
                         icongroup.firstChild.setAttribute("transform", `rotate(${parseFloat(
                             document.getElementById(`${image.id}-hg`).getAttribute("SubSpacecraftGroundAzimuth")) + 90}
-                             15 15)` )
+                             16 16)` )
                     }
                     else
                     {
