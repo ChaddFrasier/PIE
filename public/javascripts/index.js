@@ -1219,6 +1219,8 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         textholder.append(rect, text)
         draggableSvg.getContainerObject().appendChild(textholder)
 
+        textinput.focus()
+
         getObjectCount(1, "caption")
     });
 
@@ -1358,6 +1360,8 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         holdergroup.classList.add("containingelement")
 
         draggableSvg.getContainerObject().appendChild(holdergroup)
+
+        powIdInput.focus()
 
         // add 1 to the totaly image count
         getObjectCount(1, "image")
