@@ -5022,7 +5022,10 @@ function distance( x1, y1, x2, y2 )
  */
 function NewFigure()
 {
-    location.reload()
+    if ( window.confirm('Figure will be lost forever. Do want to continue?') )
+    {
+        location.reload()
+    }
 }
 
 /**
