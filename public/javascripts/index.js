@@ -1219,6 +1219,8 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         textholder.append(rect, text)
         draggableSvg.getContainerObject().appendChild(textholder)
 
+        textinput.focus()
+
         getObjectCount(1, "caption")
     });
 
@@ -1358,6 +1360,8 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         holdergroup.classList.add("containingelement")
 
         draggableSvg.getContainerObject().appendChild(holdergroup)
+
+        powIdInput.focus()
 
         // add 1 to the totaly image count
         getObjectCount(1, "image")
@@ -1587,7 +1591,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                                 // read in the data values into attribute values for the image
                                 responseObject.pvlData.keys.forEach( key => {
                                     document.getElementById(imageId).parentElement
-                                        .setAttribute(key, responseObject.pvlData.data[key])
+                                        .setAttribute(key, parseFloat(responseObject.pvlData.data[key]).toFixed(3))
                                 });
 
                                 /* test to see which data values where recieved and activate the buttons 
@@ -1905,6 +1909,8 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         holdergroup.classList.add("containingelement")
 
         draggableSvg.getContainerObject().appendChild(holdergroup)
+
+        fileinput.click()
 
         // add 1 to the totaly image count
         getObjectCount(1, "image")
@@ -2360,8 +2366,8 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                             angle.setAttribute("x", 40)
                             angle.setAttribute("height", 30)
                             text.setAttribute("font-family", "Arial")
-                            angle.setAttribute("font-size", "22")
-                            angle.setAttribute("y", textoffset + 35)
+                            angle.setAttribute("font-size", "32")
+                            angle.setAttribute("y", textoffset + 45)
 
                             metagroup.append(text, imagesvg, angle);
                             offset += 120;
@@ -5022,7 +5028,10 @@ function distance( x1, y1, x2, y2 )
  */
 function NewFigure()
 {
-    location.reload()
+    if ( window.confirm('Figure will be lost forever. Do want to continue?') )
+    {
+        location.reload()
+    }
 }
 
 /**
