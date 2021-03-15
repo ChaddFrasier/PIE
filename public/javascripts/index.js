@@ -1587,7 +1587,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                                 // read in the data values into attribute values for the image
                                 responseObject.pvlData.keys.forEach( key => {
                                     document.getElementById(imageId).parentElement
-                                        .setAttribute(key, responseObject.pvlData.data[key])
+                                        .setAttribute(key, parseFloat(responseObject.pvlData.data[key]).toFixed(3))
                                 });
 
                                 /* test to see which data values where recieved and activate the buttons 
@@ -2360,8 +2360,8 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                             angle.setAttribute("x", 40)
                             angle.setAttribute("height", 30)
                             text.setAttribute("font-family", "Arial")
-                            angle.setAttribute("font-size", "22")
-                            angle.setAttribute("y", textoffset + 35)
+                            angle.setAttribute("font-size", "32")
+                            angle.setAttribute("y", textoffset + 45)
 
                             metagroup.append(text, imagesvg, angle);
                             offset += 120;
