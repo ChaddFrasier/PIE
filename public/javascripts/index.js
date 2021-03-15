@@ -1906,6 +1906,8 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
         draggableSvg.getContainerObject().appendChild(holdergroup)
 
+        fileinput.click()
+
         // add 1 to the totaly image count
         getObjectCount(1, "image")
     });
