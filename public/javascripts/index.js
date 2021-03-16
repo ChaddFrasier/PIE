@@ -5028,7 +5028,7 @@ function distance( x1, y1, x2, y2 )
  */
 function NewFigure()
 {
-    if ( window.confirm('Figure will be lost forever. Do want to continue?') )
+    if( window.confirm('Figure will be lost forever. Do want to continue?') )
     {
         location.reload()
     }
