@@ -7,6 +7,6 @@ var router = express.Router();
  */
 router.get('/', ( req, res, next ) =>
 {
-    res.render( 'about' , {title: "PIE | Help"});
+    res.render( 'help' , {title: "PIE | Help"});
 });
 module.exports = router;
