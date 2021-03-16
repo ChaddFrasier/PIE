@@ -33,7 +33,7 @@
         --export-btn-height: 30px;
 
         --toolbox-min-height: 0;
-        --toolbox-max-height: 130px;
+        --toolbox-max-height: 300px;
         --toolbox-min-width: 100%;
         --toolbox-max-width: 100%;
         --edittoolbox-max-height: 175px;
@@ -99,7 +99,7 @@
         --export-btn-height: 2.5em;
 
         --toolbox-min-height: 0;
-        --toolbox-max-height: 130px;
+        --toolbox-max-height: 300px;
         --toolbox-min-width: 90%;
         --toolbox-max-width: 100%;
         --edittoolbox-max-height: 200px;

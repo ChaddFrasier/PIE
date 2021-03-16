@@ -5086,12 +5086,21 @@ function distance( x1, y1, x2, y2 )
  * @function NewFigure
  * @description this function is used when the user wants to remove and restart the entire figure.
  */
-function NewFigure()
+function NewFigure( reload )
 {
-    if( window.confirm('Figure will be lost forever. Do want to continue?') )
+    if( !reload )
+    {
+        var a = document.createElement("a")
+        a.href = window.location.href;
+        a.target = "_blank"
+        a.click()
+
+    }
+    else if( reload && window.confirm('Figure will be lost forever. Do want to continue?') )
     {
         location.reload()
     }
+    
 }
 
 /**
