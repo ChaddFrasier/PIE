@@ -49,6 +49,11 @@ function DraggableArea( objectbox=undefined )
                 // get the current mouse location with no object body attached
                 currentX = getScaledPoint(svgP.x, 1, 1);
                 currentY = getScaledPoint(svgP.y, 1, 1);
+
+                // add the class to show the cursor 'dragging'
+                draggingIcon.classList.add('dragging');
+                DragBoxContainer.classList.add('dragging');
+
                 // drag each child
                 draggingIcon.childNodes.forEach(child => {
                     // init the starting data
@@ -73,7 +78,7 @@ function DraggableArea( objectbox=undefined )
                         child.setAttribute("x", newX);
                         child.setAttribute("y", newY);
                     }  
-                });                
+                });
             }
             else if( draggingIcon.nodeName == "svg" ) // 'svg' nodes house complex icons like the north arrow
             {
@@ -89,6 +94,11 @@ function DraggableArea( objectbox=undefined )
                 // get the current mouse location with no body to the rect
                 currentX = getScaledPoint(svgP.x, 1, 1);
                 currentY = getScaledPoint(svgP.y, 1, 1);
+
+                // add the class to show the cursor 'dragging'
+                draggingIcon.firstElementChild.classList.add('dragging');
+                DragBoxContainer.classList.add('dragging');
+
                 // get the x and y of the new point using the diffrence of the old and current mouse locations
                 let y = Number(draggingIcon.getAttribute("y")) + (currentY - oldY);
                 let x = Number(draggingIcon.getAttribute("x")) + (currentX - oldX);
@@ -98,11 +108,16 @@ function DraggableArea( objectbox=undefined )
                 draggingIcon.setAttribute("x", x);
                 draggingIcon.setAttribute("y", y);
             }
-            else if( draggingIcon.nodeName == "rect" )
+            else if( draggingIcon.nodeName == "rect" && !draggingIcon.classList.contains("marker") )
             {
                 // get the current mouse location with no body to the rect
                 currentX = getScaledPoint(svgP.x, 1, 1);
                 currentY = getScaledPoint(svgP.y, 1, 1);
+
+                // add the class to show the cursor 'dragging'
+                draggingIcon.classList.add('dragging');
+                DragBoxContainer.classList.add('dragging');
+
                 // get the x and y of the new point using the diffrence of the old and current mouse locations
                 let y = Number(draggingIcon.getAttribute("y")) + (currentY - oldY);
                 let x = Number(draggingIcon.getAttribute("x")) + (currentX - oldX);
@@ -117,6 +132,11 @@ function DraggableArea( objectbox=undefined )
                 // get transformed mouse position
                 currentX = getScaledPoint(svgP.x, 1, 1);
                 currentY = getScaledPoint(svgP.y, 1, 1);
+                
+                // add the class to show the cursor 'dragging'
+                draggingIcon.classList.add('dragging');
+                DragBoxContainer.classList.add('dragging');
+
                 // get the new location of all the points of the line element
                 let x1 = Number(draggingIcon.getAttribute("x1")) + (currentX - oldX),
                     y1 = Number(draggingIcon.getAttribute("y1")) + (currentY - oldY),
@@ -156,6 +176,7 @@ function DraggableArea( objectbox=undefined )
             // remove the class to show the cursor 'dragging'
             draggingIcon.classList.remove('dragging');
             svgcontainer.classList.remove('dragging');
+
             // reset all data
             draggingIcon = null;
             oldX = null;

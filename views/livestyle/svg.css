@@ -1,12 +1,8 @@
-line.placed:hover, rect.placed:hover , g:hover, g.containingelement:hover{
-    cursor: grab;
-}
-
 g.containingelement {
     cursor: auto;
 }
 
-line.placed.dragging, rect.placed.dragging, svg.dragging, g.dragging{
+line.dragging, rect.dragging, svg.dragging, g.dragging{
     cursor: grabbing !important;
 }
 
@@ -29,4 +25,8 @@ line.shifting:hover, rect.shifting:hover {
 
 tspan {
     font-family: Arial, Helvetica, sans-serif;
+}
+
+line.placed:hover, rect.placed:hover , g.containingelement:hover{
+    cursor: grab;
 }
