@@ -929,7 +929,13 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
         // same for delete as minimize
         deletebtn.classList.add("windowremovebtn")
-        deletebtn.innerHTML = "&times"
+        deletebtn.style.padding = "2px"
+        var img = document.createElement("img")
+        img.style.pointerEvents = "none"
+        img.src = "/images/trash.svg"
+        img.setAttribute("height", "22px")
+        img.setAttribute("width", "22px")
+        deletebtn.append(img)
         
         deletebtn.addEventListener("click", function(event){removeToolsWindow(event) })
         
@@ -1264,9 +1270,17 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             minimizeToolsWindow(event)
         })
 
-        // setup delete button
+        // same for delete as minimize
         deletebtn.classList.add("windowremovebtn")
-        deletebtn.innerHTML = "&times"
+        deletebtn.style.padding = "2px"
+        var img = document.createElement("img")
+        img.style.pointerEvents = "none"
+        img.src = "/images/trash.svg"
+        img.setAttribute("height", "22px")
+        img.setAttribute("width", "22px")
+        deletebtn.append(img)
+
+
         deletebtn.addEventListener("click", function(event){removeToolsWindow(event) })
 
         // set the class css and the svg button graphic
@@ -1414,9 +1428,15 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             minimizeToolsWindow(event)
         })
 
-        // setup delete button
+        // same for delete as minimize
         deletebtn.classList.add("windowremovebtn")
-        deletebtn.innerHTML = "&times"
+        deletebtn.style.padding = "2px"
+        var img = document.createElement("img")
+        img.style.pointerEvents = "none"
+        img.src = "/images/trash.svg"
+        img.setAttribute("height", "22px")
+        img.setAttribute("width", "22px")
+        deletebtn.append(img)
         
         deletebtn.addEventListener("click", function(event){removeToolsWindow(event) })
 
@@ -2942,7 +2962,13 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
             // same for delete as minimize
             deletebtn.classList.add("windowremovebtn")
-            deletebtn.innerHTML = "&times"
+            deletebtn.style.padding = "2px"
+            var img = document.createElement("img")
+            img.style.pointerEvents = "none"
+            img.src = "/images/trash.svg"
+            img.setAttribute("height", "22px")
+            img.setAttribute("width", "22px")
+            deletebtn.append(img)
 
             // set event listener to remove north icon
             deletebtn.addEventListener( "click", function(event) {
@@ -3071,7 +3097,13 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
             // same for delete as minimize
             deletebtn1.classList.add("windowremovebtn")
-            deletebtn1.innerHTML = "&times"
+            deletebtn1.style.padding = "2px"
+            var img = document.createElement("img")
+            img.style.pointerEvents = "none"
+            img.src = "/images/trash.svg"
+            img.setAttribute("height", "22px")
+            img.setAttribute("width", "22px")
+            deletebtn1.append(img)
             
             // add remove window listener
             deletebtn1.addEventListener( "click", function(event) {
@@ -3198,7 +3230,13 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
             // same for delete as minimize
             deletebtn2.classList.add("windowremovebtn")
-            deletebtn2.innerHTML = "&times"
+            deletebtn2.style.padding = "2px"
+            var img = document.createElement("img")
+            img.style.pointerEvents = "none"
+            img.src = "/images/trash.svg"
+            img.setAttribute("height", "22px")
+            img.setAttribute("width", "22px")
+            deletebtn2.append(img)
 
             // add event listener for delete btn
             deletebtn2.addEventListener( "click", function(event) {
@@ -3321,7 +3359,13 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
             // same for delete as minimize
             deletebtn3.classList.add("windowremovebtn")
-            deletebtn3.innerHTML = "&times"
+            deletebtn3.style.padding = "2px"
+            var img = document.createElement("img")
+            img.style.pointerEvents = "none"
+            img.src = "/images/trash.svg"
+            img.setAttribute("height", "22px")
+            img.setAttribute("width", "22px")
+            deletebtn3.append(img)
 
             // add event listener for delete btn
             deletebtn3.addEventListener( "click", function(event) {
@@ -3420,7 +3464,13 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
             // same for delete as minimize
             deletebtn4.classList.add("windowremovebtn")
-            deletebtn4.innerHTML = "&times"
+            deletebtn4.style.padding = "2px"
+            var img = document.createElement("img")
+            img.style.pointerEvents = "none"
+            img.src = "/images/trash.svg"
+            img.setAttribute("height", "22px")
+            img.setAttribute("width", "22px")
+            deletebtn4.append(img)
 
             // add event listener for delete btn
             deletebtn4.addEventListener( "click", function(event) {
@@ -3696,7 +3746,7 @@ function changeIconColor( colorid, colorval, icon )
                 // change the primary of the observer icon
                 changeColorsOfChildren( icon.firstElementChild.childNodes, colorval,
                      "stroke", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill",
-                      "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "stroke")
+                      "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill", "fill")
             }
             else if( icon.id.indexOf( "key" ) > -1 )
             {
@@ -3728,7 +3778,7 @@ function changeIconColor( colorid, colorval, icon )
             {
                 // change the primary of the observer icon
                 changeColorsOfChildren( icon.firstElementChild.childNodes, colorval,
-                     "fill", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" )
+                     "fill", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" )
             }
             else if( icon.id.indexOf( "key" ) > -1 )
             {
@@ -4287,8 +4337,13 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 
     // same for delete as minimize
     deletebtn.classList.add("windowremovebtn")
-    deletebtn.setAttribute("objectid", objectid)
-    deletebtn.innerHTML = "&times"
+    deletebtn.style.padding = "2px"
+    var img = document.createElement("img")
+    img.style.pointerEvents = "none"
+    img.src = "/images/trash.svg"
+    img.setAttribute("height", "22px")
+    img.setAttribute("width", "22px")
+    deletebtn.append(img)
 
     // set event listener to remove north icon
     deletebtn.addEventListener( "click", function(event) {
@@ -4929,8 +4984,13 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
 
     // same for delete as minimize
     deletebtn.classList.add("windowremovebtn")
-    deletebtn.setAttribute("objectid", objectid)
-    deletebtn.innerHTML = "&times"
+    deletebtn.style.padding = "2px"
+    var img = document.createElement("img")
+    img.style.pointerEvents = "none"
+    img.src = "/images/trash.svg"
+    img.setAttribute("height", "22px")
+    img.setAttribute("width", "22px")
+    deletebtn.append(img)
 
     // set event listener to remove north icon
     deletebtn.addEventListener( "click", function(event) {
