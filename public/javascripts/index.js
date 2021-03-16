@@ -5385,14 +5385,15 @@ function validFileTypes( ...arr )
  */
 function createLayerBtn(layerbtn, draggableList)
 {
+    var img = document.createElement("img")
     layerbtn.classList.add("windoworderingbtn")
-    layerbtn.innerHTML = "<svg viewBox='-10 -10 100 100' width='80%' height='80%' style='padding:1px' >"+
-                        "<rect x='10' y='10' width='10' height='10' fill='black' rx='5'/>"+
-                        "<rect x='30' y='10' width='50' height='10' fill='black' rx='5'/>"+
-                        "<rect x='10' y='41' width='10' height='10' fill='black' rx='5'/>"+
-                        "<rect x='30' y='41' width='50' height='10' fill='black' rx='5'/>" + 
-                        "<rect x='10' y='70' width='10' height='10' fill='black' rx='5'/>"+
-                        "<rect x='30' y='70' width='50' height='10' fill='black' rx='5'/></svg>"
+
+    img.setAttribute("src", "/images/switch.svg" )
+    img.style.pointerEvents = "none"
+    img.setAttribute("height", "25px" )
+    img.setAttribute("width", "25px" )
+
+    layerbtn.append(img)
     
     draggableList.addDraggable( layerbtn )
 }
