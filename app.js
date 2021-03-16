@@ -9,7 +9,7 @@ const EXPORT_PATH = path.join(__dirname, "public", "exports")
 const LOG_PATH = path.join(__dirname, "bin", "log")
 
 var indexRouter = require('./routes/index');
-var aboutRouter = require('./routes/about');
+var helpRouter = require('./routes/help');
 var faqRouter = require('./routes/faq');
 var uploadRouter = require('./routes/upload')
 var exportRouter = require('./routes/export')
@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/about', aboutRouter);
+app.use('/help', helpRouter);
 app.use('/faq', faqRouter);
 app.use('/pow', powRouter);
 app.use('/upload', uploadRouter);
