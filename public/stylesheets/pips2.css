@@ -483,6 +483,7 @@ button {
 #exportbtn {
     border-radius: 3px 3px;
     padding: 0px 1px;
+    font-size: var(--medium-font);
     background: var(--bar-gradient);
     cursor: pointer;
     width: auto;
@@ -693,12 +694,11 @@ button {
 }
 
 .concisebtngroup > button {
-    padding: 2px;
     height: var(--btn-group-btn);
     width: var(--btn-group-btn);
     max-width: 200px;
-    border: 5px solid black;
-    padding: 2px 2px;
+    border: 2px solid black;
+    padding: 3px 3px;
 }
 
 .concisebtngroup > .disabled {
@@ -1243,4 +1243,5 @@ input[type="color"]{
 .middledisplay {
     text-align: center;
     margin: 0 auto;
+    text-align: auto;
 }
