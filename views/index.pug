@@ -36,7 +36,7 @@ block content
                     .middledisplay
                         input#backgroundcolor(type="color", name="backgroundcolor", value="#1D84B5" title="Change the color of the main figure background.")
                     label.text(for="backgroundcolor")="Export Figure as "
-                    .middledisplay
+                    .middledisplay(style="border-bottom: 2px solid rgba(255, 255, 255, 0.57); padding-bottom: 3px; border-radius: 5px 5px;")
                         button#exportbtn(type="button", name="exportFigureButton" title="Download figure as ...")
                             svg(viewBox="0 0 100 100")
                                 g(stroke="#000000")
