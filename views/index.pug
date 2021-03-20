@@ -26,27 +26,26 @@ block content
                 #filetools.filetoolsbox.closed
                     label.text(for="figureoutputsize")="Figure Size"
                     br
-                    select#figsizeselect(title="Change the size of the main figure.")
-                        optgroup
-                            each figsize in ["1500x1500", "2500x2000", "3500x3500"]
-                                option(value=fidsize) #{figsize}
-                    br
+                    .middledisplay
+                        select#figsizeselect(title="Change the size of the main figure.")
+                            optgroup
+                                each figsize in ["1500x1500", "2500x2000", "3500x3500"]
+                                    option(value=fidsize) #{figsize}
+
                     label.text(for="backgroundcolor")="Background Color"
-                    br
-                    input#backgroundcolor(type="color", name="backgroundcolor", value="#1D84B5" title="Change the color of the main figure background.")
-                    br
+                    .middledisplay
+                        input#backgroundcolor(type="color", name="backgroundcolor", value="#1D84B5" title="Change the color of the main figure background.")
                     label.text(for="backgroundcolor")="Export Figure as "
-                    br
-                    button#exportbtn(type="button", name="exportFigureButton" title="Download figure as ...")
-                        svg(viewBox="0 0 100 100")
-                            g(stroke="#000000")
-                                path(d="m3.1231 15.551s1.3476 4.0152 10.775 4.1427c9.4272 0.12744 10.694-4.4231 10.694-4.4231l72.511 0.28039v67.253h-93.98z" fill="none" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="3.4396")
-                                ellipse(cx="13.906" cy="13.496" rx="10.935" ry="5.1798" fill="#000000" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="2.1725")
-                                path(d="m46.633 20.28h8.7288v19.755h8.7288l-13.093 19.755-13.093-19.755h8.7288z" fill="#000000" stroke-width=".14621px")
-                                rect(x="13.292" y="66.684" width="71.032" height="8.5526" fill="#000000" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="2.5595")
-                                rect(x="73.747" y="45.417" width="10.576" height="29.82" fill="#000000" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="2.6266")
-                                rect(x="13.292" y="45.417" width="10.576" height="29.82" fill="#000000" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="2.6266")
-                    br
+                    .middledisplay(style="border-bottom: 2px solid rgba(255, 255, 255, 0.57); padding-bottom: 3px; border-radius: 5px 5px;")
+                        button#exportbtn(type="button", name="exportFigureButton" title="Download figure as ...")
+                            svg(viewBox="0 0 100 100")
+                                g(stroke="#000000")
+                                    path(d="m3.1231 15.551s1.3476 4.0152 10.775 4.1427c9.4272 0.12744 10.694-4.4231 10.694-4.4231l72.511 0.28039v67.253h-93.98z" fill="none" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="3.4396")
+                                    ellipse(cx="13.906" cy="13.496" rx="10.935" ry="5.1798" fill="#000000" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="2.1725")
+                                    path(d="m46.633 20.28h8.7288v19.755h8.7288l-13.093 19.755-13.093-19.755h8.7288z" fill="#000000" stroke-width=".14621px")
+                                    rect(x="13.292" y="66.684" width="71.032" height="8.5526" fill="#000000" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="2.5595")
+                                    rect(x="73.747" y="45.417" width="10.576" height="29.82" fill="#000000" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="2.6266")
+                                    rect(x="13.292" y="45.417" width="10.576" height="29.82" fill="#000000" stroke-dashoffset="3.5906" stroke-linejoin="round" stroke-width="2.6266")
                     label.text(for="icongroup")="Geospacial Icons"
                     #icongroup.concisebtngroup
                         button#northarrowopt.disabled(type="button" title="North Arrow" )
@@ -137,7 +136,7 @@ block content
                                     rect.marker(x="0" y="0" width="4500" height="700" fill-opacity="0" stroke="transparent" pointer-events="inherit")
 
                         br
-                        label.text(for="annotategroup")="Annotation Tools"
+                    label.text(for="annotategroup")="Annotation Tools"
                         #annotategroup.concisebtngroup
                             button#penciloptbtn(type="button" title="Line Tool")
                                 svg.btnvectorgraphic(height="25" viewBox="0 -2 25 25" width="25" xmlns="http://www.w3.org/2000/svg")
@@ -154,7 +153,7 @@ block content
                                         path(d="m3.4298 4.7425c0.0821-0.044442 0.24261-0.076435 0.57487-0.11459l0.35467-0.040728-0.62077 0.65605c-0.3595 0.37994-0.62102 0.64803-0.62138 0.63697-0.0012-0.036475 0.10822-0.7155 0.13191-0.8189 0.03882-0.16939 0.09819-0.27415 0.1807-0.3188z" fill="#ff9923" stroke-width=".004408" fill-opacity=".8902" stroke="#000")
                                         path(d="m4.6349 2.2685c0.78805 0.25071 1.4331 0.46003 1.4335 0.46514 3.54e-4 0.00515-0.18297 0.043568-0.40738 0.08545-0.60404 0.11274-0.73933 0.16515-0.84751 0.32839-0.06927 0.10454-0.10752 0.27429-0.1709 0.75864l-0.05783 0.44197-0.1293 0.13757-0.25384 0.029159c-0.65735 0.075511-0.72584 0.089615-0.84664 0.17432-0.13955 0.097866-0.18741 0.24642-0.28233 0.87629-0.03526 0.23397-0.06758 0.42535-0.07182 0.42529-0.0042-2.42e-5 -0.2494-0.63482-0.54479-1.4106l-0.53706-1.4105 1.2831-1.357z" fill-opacity=".8902" stroke="#000" fill="#ffa622" stroke-width=".097808")
                             button#outlinebtnopt(type="button" title="Outline Tool")
-                                svg.btnvectorgraphic(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" xml:space="preserve")
+                                svg.btnvectorgraphic(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 27 27" xml:space="preserve")
                                     g#outlinegroup(stroke="black", fill="none" viewBox="0 0 25 25")
                                         rect(x="1" y="1" width="22" height="22" fill="transparent" stroke="#000" stroke-linejoin="round" fill-opacity=".8902" stroke-dasharray="3.77952766,1.88976383" stroke-dashoffset="3.5906" stroke-width="1.8898")
                                         rect(x=".47244" y=".47244" width="4" height="4" stroke-dashoffset="3.9685" stroke-width=".94488")

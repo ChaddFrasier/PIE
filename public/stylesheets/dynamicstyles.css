@@ -77,7 +77,7 @@
         --usgs-image-height: 4em;
         --usgs-image-width: 9.5em;
 
-        --color-input-width: 5em;
+        --color-input-width: 50px;
         --color-input-height: 2em;
 
         --max-image-width: 55%;
@@ -151,6 +151,9 @@
         --max-title-height: 6em;
         --max-title-width: 13em;
 
+        --color-input-width: 6em;
+        --color-input-height: 2em;
+
         --main-export-box-heigh: 300px;
 
         --header-height: 6%;
@@ -197,6 +200,9 @@
         --svg-icon-height: 65px;
 
         --main-export-box-heigh: 300px;
+
+        --color-input-width: 10em;
+        --color-input-height: 3em;
 
         --header-height: 6%;
         --main-content-height: 86vh;

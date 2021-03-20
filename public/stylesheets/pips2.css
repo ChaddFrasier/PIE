@@ -482,7 +482,8 @@ button {
 
 #exportbtn {
     border-radius: 3px 3px;
-    padding: 2px 2px;
+    padding: 0px 1px;
+    font-size: var(--medium-font);
     background: var(--bar-gradient);
     cursor: pointer;
     width: auto;
@@ -543,6 +544,7 @@ button {
 .forminputbox {
     width: 100%;
     margin: 0 auto;
+    text-align: center;
 }
 
 .forminputbox > input[name="exportfilename"] {
@@ -638,8 +640,8 @@ button {
     min-height: var(--toolbox-min-height);
     max-height: var(--toolbox-max-height);
     background: var(--accent-color);
-    text-align: center;
-    height: 45%;
+    height: 50%;
+    text-align: left;
     overflow-y: auto;
     overflow-x: hidden;
     color: white;
@@ -649,7 +651,7 @@ button {
     -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
     -o-transition: all ease-in-out var(--transition-time); /* Opera */
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
-    margin: 0 0 0 0;
+    margin: 0 auto 0 auto;
 }
 
 .dividerline {
@@ -675,29 +677,28 @@ button {
     width: 90%;
 }
 
-label.text {
-    border-bottom: 1px solid white;
+.text {
     font-size: auto;
-    border-top: 1px solid white;
     color: white;
-    padding: 2.5px 10px;
-    text-align: center;
+    margin: 0;
+    padding: 0;
+    text-align: left;
     width: 100%;
     font-size: var(--medium-font);
 }
 
 .concisebtngroup {
+    text-align: center;
     padding: 0px;
     width: 100%;
 }
 
 .concisebtngroup > button {
-    padding: 2px;
     height: var(--btn-group-btn);
     width: var(--btn-group-btn);
     max-width: 200px;
-    border: 5px solid black;
-    padding: 2px 2px;
+    border: 2px solid black;
+    padding: 3px 3px;
 }
 
 .concisebtngroup > .disabled {
@@ -1237,4 +1238,10 @@ input[type="color"]{
     max-width: 75%;
     height: auto;
     border: 1px solid black;
+}
+
+.middledisplay {
+    text-align: center;
+    margin: 0 auto;
+    text-align: auto;
 }
