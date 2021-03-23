@@ -1388,275 +1388,288 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
      */
     document.getElementById('addimagebtn').addEventListener("click", () =>
     {
-        // used for identifying the tool box for each caption in the image 
-        let imageId = randomId("image"),
-            newoptionsbar = document.createElement("div"),
-            header = document.createElement("h4"),
-            minibtn = document.createElement("button"),
-            deletebtn = document.createElement("button"),
-            layerbtn = document.createElement("button"),
-            toolsarea = document.createElement("div"),
-            filelabel = document.createElement("label"),
-            fileinput = document.createElement("input"),
-            widthlabel = document.createElement("label"),
-            widthinput = document.createElement("input"),
-            heightlabel = document.createElement("label"),
-            heightinput = document.createElement("input"),
-            xcoordlabel = document.createElement("label"),
-            xcoordinput = document.createElement("input"),
-            ycoordlabel = document.createElement("label"),
-            ycoordinput = document.createElement("input"),
-            scalelabel = document.createElement("label"),
-            scaleinput = document.createElement("input"),
-            imagesvg = document.createElementNS(NS.svg, "image"),
-            holdergroup = document.createElementNS(NS.svg, "g");
-
-        // set the class for the options bar
-        newoptionsbar.classList.add("windowoptionsbar")
-        newoptionsbar.style.display = "flex"
-        newoptionsbar.addEventListener("click", function ( event )
+        if (getObjectCount(0, "image") === 0 )
         {
-            optionsAction(event.target)
-        })
+            let imageId = randomId("image"),
+                newoptionsbar = document.createElement("div"),
+                header = document.createElement("h4"),
+                minibtn = document.createElement("button"),
+                deletebtn = document.createElement("button"),
+                layerbtn = document.createElement("button"),
+                toolsarea = document.createElement("div"),
+                filelabel = document.createElement("label"),
+                fileinput = document.createElement("input"),
+                widthlabel = document.createElement("label"),
+                widthinput = document.createElement("input"),
+                heightlabel = document.createElement("label"),
+                heightinput = document.createElement("input"),
+                xcoordlabel = document.createElement("label"),
+                xcoordinput = document.createElement("input"),
+                ycoordlabel = document.createElement("label"),
+                ycoordinput = document.createElement("input"),
+                scalelabel = document.createElement("label"),
+                scaleinput = document.createElement("input"),
+                imagesvg = document.createElementNS(NS.svg, "image"),
+                holdergroup = document.createElementNS(NS.svg, "g");
 
-        header.innerHTML = "Image Layer"
+            // set the class for the options bar
+            newoptionsbar.classList.add("windowoptionsbar")
+            newoptionsbar.style.display = "flex"
+            newoptionsbar.addEventListener("click", function ( event )
+            {
+                optionsAction(event.target)
+            })
 
-        // setup minimize button
-        minibtn.classList.add("windowminimizebtn")
-        minibtn.innerHTML = "▲"
-        minibtn.addEventListener( "click", function(event) {
-            minimizeToolsWindow(event)
-        })
+            header.innerHTML = "Image Layer"
 
-        // same for delete as minimize
-        deletebtn.classList.add("windowremovebtn")
-        deletebtn.style.padding = "2px"
-        var img = document.createElement("img")
-        img.style.pointerEvents = "none"
-        img.src = "/images/trash.svg"
-        img.setAttribute("height", "22px")
-        img.setAttribute("width", "22px")
-        deletebtn.append(img)
+            // setup minimize button
+            minibtn.classList.add("windowminimizebtn")
+            minibtn.innerHTML = "▲"
+            minibtn.addEventListener( "click", function(event) {
+                minimizeToolsWindow(event)
+            })
+
+            // same for delete as minimize
+            deletebtn.classList.add("windowremovebtn")
+            deletebtn.style.padding = "2px"
+            var img = document.createElement("img")
+            img.style.pointerEvents = "none"
+            img.src = "/images/trash.svg"
+            img.setAttribute("height", "22px")
+            img.setAttribute("width", "22px")
+            deletebtn.append(img)
+            
+            deletebtn.addEventListener("click", function(event){removeToolsWindow(event) })
+
+            // set the class css and the svg button graphic
+            createLayerBtn(layerbtn, draggableList)
+
+            // toolbox attributes
+            toolsarea.classList.add("imagetoolsbox")
+            toolsarea.setAttribute("id", `imagetoolsbox-${imageId}`)
+            toolsarea.setAttribute("objectid", imageId)
         
-        deletebtn.addEventListener("click", function(event){removeToolsWindow(event) })
+            // file input attributes
+            filelabel.innerHTML = "Upload an Image: "
+            filelabel.setAttribute("for", "imageinput")
+            fileinput.setAttribute("type", "file")
+            fileinput.setAttribute("name", "imageinput")
+            fileinput.setAttribute("id",`input${imageId}`)
+            fileinput.classList.add('fileinputfield')
 
-        // set the class css and the svg button graphic
-        createLayerBtn(layerbtn, draggableList)
+            // main form section for file input
+            let form = document.createElement("form")
+            form.setAttribute("runat", "server")
+            form.setAttribute("class", "imageform")
+            form.setAttribute("method", "post")
+            form.setAttribute("enctype", "multipart/form-data")
+            form.setAttribute("action", "/upload")
+            form.appendChild(fileinput)
 
-        // toolbox attributes
-        toolsarea.classList.add("imagetoolsbox")
-        toolsarea.setAttribute("id", `imagetoolsbox-${imageId}`)
-        toolsarea.setAttribute("objectid", imageId)
-       
-        // file input attributes
-        filelabel.innerHTML = "Upload an Image: "
-        filelabel.setAttribute("for", "imageinput")
-        fileinput.setAttribute("type", "file")
-        fileinput.setAttribute("name", "imageinput")
-        fileinput.setAttribute("id",`input${imageId}`)
-        fileinput.classList.add('fileinputfield')
+            // listener for when the user changes the image of the input field
+            fileinput.addEventListener("change", function(event){
+                // use regexp to test the acceptable file types and handle either way
+                let imgregexp = new RegExp("^.*\.(png|PNG|jpg|JPG|SVG|svg)$"),
+                    isisregexp = new RegExp("^.*\.(CUB|cub|tif|TIF)$")
 
-        // main form section for file input
-        let form = document.createElement("form")
-        form.setAttribute("runat", "server")
-        form.setAttribute("class", "imageform")
-        form.setAttribute("method", "post")
-        form.setAttribute("enctype", "multipart/form-data")
-        form.setAttribute("action", "/upload")
-        form.appendChild(fileinput)
-
-        // listener for when the user changes the image of the input field
-        fileinput.addEventListener("change", function(event){
-            // use regexp to test the acceptable file types and handle either way
-            let imgregexp = new RegExp("^.*\.(png|PNG|jpg|JPG|SVG|svg)$"),
-                isisregexp = new RegExp("^.*\.(CUB|cub|tif|TIF)$")
-
-            if(imgregexp.test(this.value))
-            {
-                // add the loading icon
-                document.getElementById("loadicon").style.visibility = "visible"
-
-                // read a simple image file and display
-                if(this.files && this.files[0])
+                if(imgregexp.test(this.value))
                 {
-                    var reader = new FileReader()
+                    // add the loading icon
+                    document.getElementById("loadicon").style.visibility = "visible"
 
-                    // occurs after readAsDataURL
-                    reader.onload = function(e) {
-                        // use jquery to update the image source
-                        document.getElementById(imageId).setAttribute('href', e.target.result)
-                        document.getElementById(imageId).setAttribute('GEO', null)
-                        document.getElementById(imageId).setAttribute('filePath', null)
-
-                        ButtonManager.addImage( imageId, [] )
-
-                        // remove the north icon b/c there is no north data
-                        try{
-                            document.getElementById(`northIcon-${imageId}`).remove()
-                        }
-                        catch(err)
-                        {
-                            /** No Thing */
-                        }
-
-                        // remove the Sun icon b/c there is no sun data
-                        try{
-                            document.getElementById(`sunIcon-${imageId}`).remove()
-                        }
-                        catch(err)
-                        {
-                            /** No Thing */
-                        }
-
-                        // remove the Observer icon b/c there is no observer data
-                        try{
-                            document.getElementById(`observerIcon-${imageId}`).remove()
-                        }
-                        catch(err)
-                        {
-                            /** No Thing */
-                        }
-
-                        // remove the scale icon b/c there is no scale data
-                        try{
-                            document.getElementById(`scalebarIcon-${imageId}`).remove()
-                        }
-                        catch(err)
-                        {
-                            /** No Thing */
-                        }
-
-                        // remove the key icon b/c there is no scale data
-                        try{
-                            document.getElementById(`keyIcon-${imageId}`).remove()
-                        }
-                        catch(err)
-                        {
-                            /** No Thing */
-                        }
-
-                        // remove the load icon from the UI
-                        document.getElementById("loadicon").style.visibility = "hidden"
-                    }
-                    // convert to base64 string
-                    reader.readAsDataURL(this.files[0])
-                }
-            }
-            else if( isisregexp.test(this.value) )
-            {
-                //add the loading icon
-                document.getElementById("loadicon").style.visibility = "visible"
-                
-                // prevent page default submit
-                event.preventDefault()
-
-                // create a form data and request object to call the server
-                var fd = new FormData(form),
-                    xhr = new XMLHttpRequest()
-
-                // when the requests load handle the response
-                xhr.onloadend = () => {
-                    var reader = new FileReader(),
-                        responseObject = {}
-                    try
+                    // read a simple image file and display
+                    if(this.files && this.files[0])
                     {
-                        JSON.parse(xhr.response)
-                    }
-                    catch(err)
-                    {
-                        // remove the btn after displaying the error to the user
-                        var imgRemoveBtn = document.querySelector(
-                            `.windowoptionsbar[objectid='${imageId}']>.windowremovebtn`
-                            );
-                        document.getElementById("loadicon").style.visibility = "hidden"
-                        alert(`Image Failed to Upload:\nError: ${xhr.response}`)
-                        imgRemoveBtn.click()
-                        return false
-                    }
-                    
-                    if (xhr.status == 200)
-                    {
-                        // ** Helps when testing server returns **
-                        // console.log(xhr.response)
-                        responseObject = JSON.parse(xhr.response)
+                        var reader = new FileReader()
 
-                        fetch(responseObject.imagefile, {
-                            method: "GET",
-                            header: {"Content-Type": "blob"}
-                        })
-                        .then( imagedatares => imagedatares.blob())
-                        .then((blob) => {
+                        // occurs after readAsDataURL
+                        reader.onload = function(e) {
+                            // use jquery to update the image source
+                            document.getElementById(imageId).setAttribute('href', e.target.result)
+                            document.getElementById(imageId).setAttribute('GEO', null)
+                            document.getElementById(imageId).setAttribute('filePath', null)
+
+                            ButtonManager.addImage( imageId, [] )
+
+                            // remove the north icon b/c there is no north data
+                            try{
+                                document.getElementById(`northIcon-${imageId}`).remove()
+                            }
+                            catch(err)
+                            {
+                                /** No Thing */
+                            }
+
+                            // remove the Sun icon b/c there is no sun data
+                            try{
+                                document.getElementById(`sunIcon-${imageId}`).remove()
+                            }
+                            catch(err)
+                            {
+                                /** No Thing */
+                            }
+
+                            // remove the Observer icon b/c there is no observer data
+                            try{
+                                document.getElementById(`observerIcon-${imageId}`).remove()
+                            }
+                            catch(err)
+                            {
+                                /** No Thing */
+                            }
+
+                            // remove the scale icon b/c there is no scale data
+                            try{
+                                document.getElementById(`scalebarIcon-${imageId}`).remove()
+                            }
+                            catch(err)
+                            {
+                                /** No Thing */
+                            }
+
+                            // remove the key icon b/c there is no scale data
+                            try{
+                                document.getElementById(`keyIcon-${imageId}`).remove()
+                            }
+                            catch(err)
+                            {
+                                /** No Thing */
+                            }
+
                             // remove the load icon from the UI
                             document.getElementById("loadicon").style.visibility = "hidden"
+                        }
+                        // convert to base64 string
+                        reader.readAsDataURL(this.files[0])
+                    }
+                }
+                else if( isisregexp.test(this.value) )
+                {
+                    //add the loading icon
+                    document.getElementById("loadicon").style.visibility = "visible"
+                    
+                    // prevent page default submit
+                    event.preventDefault()
 
-                            // occurs after readAsDataURL
-                            reader.onload = function(e) {
-                                // use jquery to update the image source
-                                document.getElementById(imageId).setAttribute('href', e.target.result)
-                                document.getElementById(imageId).setAttribute('GEO', 'true')
+                    // create a form data and request object to call the server
+                    var fd = new FormData(form),
+                        xhr = new XMLHttpRequest()
 
-                                // set the height and width of the actual image.
-                                document.getElementById(imageId).setAttribute('width',
-                                                                                responseObject.pvlData.data['Samples'])
-                                document.getElementById(imageId).setAttribute('height',
-                                                                                responseObject.pvlData.data['Lines'])
+                    // when the requests load handle the response
+                    xhr.onloadend = () => {
+                        var reader = new FileReader(),
+                            responseObject = {}
+                        try
+                        {
+                            JSON.parse(xhr.response)
+                        }
+                        catch(err)
+                        {
+                            // remove the btn after displaying the error to the user
+                            var imgRemoveBtn = document.querySelector(
+                                `.windowoptionsbar[objectid='${imageId}']>.windowremovebtn`
+                                );
+                            document.getElementById("loadicon").style.visibility = "hidden"
+                            alert(`Image Failed to Upload:\nError: ${xhr.response}`)
+                            imgRemoveBtn.click()
+                            return false
+                        }
+                        
+                        if (xhr.status == 200)
+                        {
+                            // ** Helps when testing server returns **
+                            // console.log(xhr.response)
+                            responseObject = JSON.parse(xhr.response)
 
-                                // update image input fields
-                                document.querySelector(`input[objectid='${imageId}'][name='widthinput']`).value = 
-                                    document.getElementById(imageId).getAttribute("width");
+                            fetch(responseObject.imagefile, {
+                                method: "GET",
+                                header: {"Content-Type": "blob"}
+                            })
+                            .then( imagedatares => imagedatares.blob())
+                            .then((blob) => {
+                                // remove the load icon from the UI
+                                document.getElementById("loadicon").style.visibility = "hidden"
 
-                                document.querySelector(`input[objectid='${imageId}'][name='heightinput']`).value = 
-                                    document.getElementById(imageId).getAttribute("height");
-                                
-                                // read in the data values into attribute values for the image
-                                responseObject.pvlData.keys.forEach( key => {
-                                    document.getElementById(imageId).parentElement
-                                        .setAttribute(key, parseFloat(responseObject.pvlData.data[key]).toFixed(3))
-                                });
+                                // occurs after readAsDataURL
+                                reader.onload = function(e) {
+                                    // use jquery to update the image source
+                                    document.getElementById(imageId).setAttribute('href', e.target.result)
+                                    document.getElementById(imageId).setAttribute('GEO', 'true')
 
-                                /* test to see which data values where recieved and activate the buttons 
-                                    that need to be activated for each data value. */
-                                var btnArray = []
-                                // test if the north arrow data is valid and activte the button
-                                if ( responseObject.pvlData.data['NorthAzimuth'] )
-                                {
-                                    btnArray.push('north')
-                                    try{
-                                        document.getElementById(`northIcon-${imageId}`).firstElementChild
+                                    // set the height and width of the actual image.
+                                    document.getElementById(imageId).setAttribute('width',
+                                                                                    responseObject.pvlData.data['Samples'])
+                                    document.getElementById(imageId).setAttribute('height',
+                                                                                    responseObject.pvlData.data['Lines'])
+
+                                    // update image input fields
+                                    document.querySelector(`input[objectid='${imageId}'][name='widthinput']`).value = 
+                                        document.getElementById(imageId).getAttribute("width");
+
+                                    document.querySelector(`input[objectid='${imageId}'][name='heightinput']`).value = 
+                                        document.getElementById(imageId).getAttribute("height");
+                                    
+                                    // read in the data values into attribute values for the image
+                                    responseObject.pvlData.keys.forEach( key => {
+                                        document.getElementById(imageId).parentElement
+                                            .setAttribute(key, parseFloat(responseObject.pvlData.data[key]).toFixed(3))
+                                    });
+
+                                    /* test to see which data values where recieved and activate the buttons 
+                                        that need to be activated for each data value. */
+                                    var btnArray = []
+                                    // test if the north arrow data is valid and activte the button
+                                    if ( responseObject.pvlData.data['NorthAzimuth'] )
+                                    {
+                                        btnArray.push('north')
+                                        try{
+                                            document.getElementById(`northIcon-${imageId}`).firstElementChild
+                                                .setAttribute("transform", `rotate(${
+                                                    parseFloat(document.getElementById(imageId + "-hg")
+                                                        .getAttribute("NorthAzimuth")) + 90
+                                                } 13.5 13.5)`)
+                                        }
+                                        catch(err)
+                                        {
+                                            /** Nothing */
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // remove the north icon b/c there is no north data
+                                        try{
+                                            document.getElementById(`northIcon-${imageId}`).remove()
+                                        }
+                                        catch(err)
+                                        {
+                                            /** No Thing */
+                                        }
+                                    }
+                                    // test if the sun arrow data is valid and activte the button
+                                    if ( responseObject.pvlData.data['SubSolarAzimuth'] )
+                                    {
+                                        btnArray.push('sun')
+                                        try{
+                                            document.getElementById(`sunIcon-${imageId}`).firstElementChild
                                             .setAttribute("transform", `rotate(${
                                                 parseFloat(document.getElementById(imageId + "-hg")
-                                                    .getAttribute("NorthAzimuth")) + 90
-                                            } 13.5 13.5)`)
+                                                .getAttribute("SubSolarAzimuth")) + 90
+                                            } 13.5 13.5)`);
+                                        }
+                                        catch(err)
+                                        {
+                                            try{
+                                                document.getElementById(`sunIcon-${imageId}`).remove()
+                                            }
+                                            catch(err)
+                                            {
+                                                /** No Thing */
+                                            }
+                                        }
                                     }
-                                    catch(err)
+                                    else
                                     {
-                                        /** Nothing */
-                                    }
-                                }
-                                else
-                                {
-                                    // remove the north icon b/c there is no north data
-                                    try{
-                                        document.getElementById(`northIcon-${imageId}`).remove()
-                                    }
-                                    catch(err)
-                                    {
-                                        /** No Thing */
-                                    }
-                                }
-                                // test if the sun arrow data is valid and activte the button
-                                if ( responseObject.pvlData.data['SubSolarAzimuth'] )
-                                {
-                                    btnArray.push('sun')
-                                    try{
-                                        document.getElementById(`sunIcon-${imageId}`).firstElementChild
-                                        .setAttribute("transform", `rotate(${
-                                            parseFloat(document.getElementById(imageId + "-hg")
-                                            .getAttribute("SubSolarAzimuth")) + 90
-                                        } 13.5 13.5)`);
-                                    }
-                                    catch(err)
-                                    {
+                                        // remove the Sun icon b/c there is no sun data
                                         try{
                                             document.getElementById(`sunIcon-${imageId}`).remove()
                                         }
@@ -1665,33 +1678,33 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                                             /** No Thing */
                                         }
                                     }
-                                }
-                                else
-                                {
-                                    // remove the Sun icon b/c there is no sun data
-                                    try{
-                                        document.getElementById(`sunIcon-${imageId}`).remove()
-                                    }
-                                    catch(err)
+                                    
+                                    // test if the observer arrow data is valid and activte the button
+                                    if ( responseObject.pvlData.data['SubSpacecraftGroundAzimuth'] )
                                     {
-                                        /** No Thing */
-                                    }
-                                }
-                                
-                                // test if the observer arrow data is valid and activte the button
-                                if ( responseObject.pvlData.data['SubSpacecraftGroundAzimuth'] )
-                                {
-                                    btnArray.push('observer')
+                                        btnArray.push('observer')
 
-                                    try{
-                                        document.getElementById(`observerIcon-${imageId}`).firstElementChild
-                                            .setAttribute("transform", `rotate(${
-                                                parseFloat(document.getElementById(imageId + "-hg")
-                                                .getAttribute("SubSpacecraftGroundAzimuth")) + 90
-                                            } 16 16)`)
+                                        try{
+                                            document.getElementById(`observerIcon-${imageId}`).firstElementChild
+                                                .setAttribute("transform", `rotate(${
+                                                    parseFloat(document.getElementById(imageId + "-hg")
+                                                    .getAttribute("SubSpacecraftGroundAzimuth")) + 90
+                                                } 16 16)`)
+                                        }
+                                        catch(err)
+                                        {
+                                            try{
+                                                document.getElementById(`observerIcon-${imageId}`).remove()
+                                            }
+                                            catch(err)
+                                            {
+                                                /** No Thing */
+                                            }
+                                        }
                                     }
-                                    catch(err)
+                                    else
                                     {
+                                        // remove the Observer icon b/c there is no observer data
                                         try{
                                             document.getElementById(`observerIcon-${imageId}`).remove()
                                         }
@@ -1700,240 +1713,229 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                                             /** No Thing */
                                         }
                                     }
-                                }
-                                else
-                                {
-                                    // remove the Observer icon b/c there is no observer data
+
+                                    // remove the key icon b/c there is no scale data
                                     try{
-                                        document.getElementById(`observerIcon-${imageId}`).remove()
+                                        document.getElementById(`keyIcon-${imageId}`).remove()
                                     }
                                     catch(err)
                                     {
                                         /** No Thing */
                                     }
-                                }
 
-                                // remove the key icon b/c there is no scale data
-                                try{
-                                    document.getElementById(`keyIcon-${imageId}`).remove()
-                                }
-                                catch(err)
-                                {
-                                    /** No Thing */
-                                }
-
-                                // test if the scalebar data is valid and activte the button
-                                if ( responseObject.pvlData.data['PixelResolution'] )
-                                {
-                                    btnArray.push('scale');
-                                    try {
-                                        // calculate the scale nneded for the scalebar and multiply by the svg dimensions
-                                        var scaleObject = getScalebarData(
-                                            ( document.getElementById(`${imageId}-hg`).getAttribute("PixelResolution"))
-                                                ? document.getElementById(`${imageId}-hg`)
-                                                    .getAttribute("PixelResolution")
-                                                : document.getElementById(`${imageId}-hg`)
-                                                    .getAttribute("ObliquePixelResolution"),
-                                            document.getElementById(imageId).getAttribute("width"), 
-                                            document.getElementById(imageId).getAttribute("height"),
-                                            document.getElementById(`${imageId}-hg`).getAttribute("Lines"),
-                                            document.getElementById(`${imageId}-hg`).getAttribute("Samples")
-                                        )
-
-                                        let scalebar = document.getElementById(`scalebarIcon-${imageId}`)
-                
-                                        scalebar.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
-                                        scalebar.setAttribute("height", (scaleObject.sc * 700) )
-                                        document.getElementById(`scalestart-${imageId}`).innerHTML =
-                                            scaleObject.display;
-                                        document.getElementById(`scaleend-${imageId}`).innerHTML = 
-                                            `${scaleObject.display} ${scaleObject.units}`;
-                                    }
-                                    catch( err )
+                                    // test if the scalebar data is valid and activte the button
+                                    if ( responseObject.pvlData.data['PixelResolution'] )
                                     {
-                                        /** Nothing */
+                                        btnArray.push('scale');
+                                        try {
+                                            // calculate the scale nneded for the scalebar and multiply by the svg dimensions
+                                            var scaleObject = getScalebarData(
+                                                ( document.getElementById(`${imageId}-hg`).getAttribute("PixelResolution"))
+                                                    ? document.getElementById(`${imageId}-hg`)
+                                                        .getAttribute("PixelResolution")
+                                                    : document.getElementById(`${imageId}-hg`)
+                                                        .getAttribute("ObliquePixelResolution"),
+                                                document.getElementById(imageId).getAttribute("width"), 
+                                                document.getElementById(imageId).getAttribute("height"),
+                                                document.getElementById(`${imageId}-hg`).getAttribute("Lines"),
+                                                document.getElementById(`${imageId}-hg`).getAttribute("Samples")
+                                            )
+
+                                            let scalebar = document.getElementById(`scalebarIcon-${imageId}`)
+                    
+                                            scalebar.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
+                                            scalebar.setAttribute("height", (scaleObject.sc * 700) )
+                                            document.getElementById(`scalestart-${imageId}`).innerHTML =
+                                                scaleObject.display;
+                                            document.getElementById(`scaleend-${imageId}`).innerHTML = 
+                                                `${scaleObject.display} ${scaleObject.units}`;
+                                        }
+                                        catch( err )
+                                        {
+                                            /** Nothing */
+                                        }
                                     }
-                                }
-                                else
-                                {
-                                    // remove the Scalebar icon b/c there is no observer data
-                                    try{
-                                        document.getElementById(`scalebarIcon-${imageId}`).remove()
-                                    }
-                                    catch(err)
+                                    else
                                     {
-                                        /** No Thing */
+                                        // remove the Scalebar icon b/c there is no observer data
+                                        try{
+                                            document.getElementById(`scalebarIcon-${imageId}`).remove()
+                                        }
+                                        catch(err)
+                                        {
+                                            /** No Thing */
+                                        }
                                     }
-                                }
-                                ButtonManager.addImage(imageId, btnArray )
-                                // this is not the same in the testing environment
-                                //console.log(responseObject)
-                            }    
-                            // convert to base64 string
-                            reader.readAsDataURL(blob)
-                        });
+                                    ButtonManager.addImage(imageId, btnArray )
+                                    // this is not the same in the testing environment
+                                    //console.log(responseObject)
+                                }    
+                                // convert to base64 string
+                                reader.readAsDataURL(blob)
+                            });
+                        }
+                        else if( xhr.status > 299 )
+                        {
+                            console.error("WHYY")
+                            console.error(xhr.response)
+                        }
                     }
-                    else if( xhr.status > 299 )
-                    {
-                        console.error("WHYY")
-                        console.error(xhr.response)
-                    }
+                    // open the request and send the data
+                    xhr.open('POST', "/upload", true)
+                    xhr.send(fd)
+
+                    // prevent propigation with non-true return
+                    return false
                 }
-                // open the request and send the data
-                xhr.open('POST', "/upload", true)
-                xhr.send(fd)
+                else{
+                    alert("File Type Not Supported")
+                }
+            });
 
-                // prevent propigation with non-true return
-                return false
-            }
-            else{
-                alert("File Type Not Supported")
-            }
-        });
+            // width input field
+            widthlabel.innerHTML = "Image Width (Samples): "
+            widthlabel.setAttribute("for", "widthinput")
+            widthinput.value = 1500
+            widthinput.setAttribute("name","widthinput")
 
-        // width input field
-        widthlabel.innerHTML = "Image Width (Samples): "
-        widthlabel.setAttribute("for", "widthinput")
-        widthinput.value = 1500
-        widthinput.setAttribute("name","widthinput")
+            // height input field
+            heightlabel.innerHTML = "Image Height (Lines): "
+            heightlabel.setAttribute("for", "heightinput")
+            heightinput.value = 1000
+            heightinput.setAttribute("name","heightinput")
+            
+            // x coordinate input string
+            xcoordlabel.innerHTML = "Image X: "
+            xcoordlabel.setAttribute("for", "xcoordinput")
+            xcoordinput.setAttribute("type", "number")
+            xcoordinput.value = 0
+            xcoordinput.setAttribute("name","xcoordinput")
 
-        // height input field
-        heightlabel.innerHTML = "Image Height (Lines): "
-        heightlabel.setAttribute("for", "heightinput")
-        heightinput.value = 1000
-        heightinput.setAttribute("name","heightinput")
+            xcoordinput.addEventListener("change", function(){
+                // find the matching html caption element
+                let matchingCaption = document.getElementById( this.attributes.objectid.value )
+                // updpate the text inside once found
+                if(matchingCaption && !isNaN(Number(this.value)))
+                {
+                    matchingCaption.setAttribute("x", Number(this.value))
+                }
+            })
+            
+            // y coordinate input strings
+            ycoordlabel.innerHTML = "Image Y: "
+            ycoordlabel.setAttribute("for", "ycoordinput")
+            ycoordinput.setAttribute("type", "number")
+            ycoordinput.value = 0
+            ycoordinput.setAttribute("name","ycoordinput")
+
+            ycoordinput.addEventListener("change", function(){
+                // find the matching html caption element
+                let matchingCaption = document.getElementById( this.attributes.objectid.value )
+                // updpate the text inside once found
+                if(matchingCaption && !isNaN(Number(this.value)))
+                {
+                    matchingCaption.setAttribute("y", Number(this.value))
+                }
+            })
+
+            // y coordinate input strings
+            scalelabel.innerHTML = "Image Scale: "
+            scalelabel.setAttribute("for", "scaleinput")
+            scaleinput.setAttribute("type", "number")
+            scaleinput.setAttribute("min", '.5')
+            scaleinput.setAttribute("step", '.025')
+            scaleinput.value = 1
+            scaleinput.setAttribute("name","scaleinput")
+
+            scaleinput.addEventListener("change", function(){
+                // find the matching html caption element
+                let matchingCaption = document.getElementById( `${this.attributes.objectid.value}-hg` )
+                // updpate the text inside once found
+                if(matchingCaption && !isNaN(Number(this.value)))
+                {
+                    matchingCaption.setAttribute("transform", `scale(${Number(this.value)})`)
+                }
+            })
+
+            // icon divider section
+            let divider2 = document.createElement("h3")
+            divider2.classList.add("dividerline")
+            divider2.setAttribute("id", "innerdivider")
+            divider2.innerHTML = "Icon Tools"
         
-        // x coordinate input string
-        xcoordlabel.innerHTML = "Image X: "
-        xcoordlabel.setAttribute("for", "xcoordinput")
-        xcoordinput.setAttribute("type", "number")
-        xcoordinput.value = 0
-        xcoordinput.setAttribute("name","xcoordinput")
+            // append main tool box for image
+            toolsarea.append( 
+                filelabel, 
+                document.createElement("br"),
+                form, 
+                document.createElement("br"), 
+                widthlabel, 
+                document.createElement("br"), 
+                widthinput, 
+                document.createElement("br"), 
+                heightlabel, 
+                document.createElement("br"), 
+                heightinput, 
+                document.createElement("br"), 
+                scalelabel,
+                document.createElement("br"),
+                scaleinput,
+                document.createElement("br"), 
+                xcoordlabel, 
+                document.createElement("br"),
+                xcoordinput, 
+                document.createElement("br"), 
+                ycoordlabel, 
+                document.createElement("br"), 
+                ycoordinput, 
+                document.createElement("br"), 
+                divider2
+            )
 
-        xcoordinput.addEventListener("change", function(){
-            // find the matching html caption element
-            let matchingCaption = document.getElementById( this.attributes.objectid.value )
-            // updpate the text inside once found
-            if(matchingCaption && !isNaN(Number(this.value)))
-            {
-                matchingCaption.setAttribute("x", Number(this.value))
-            }
-        })
+            // set caption id on all input elements
+            toolsarea.childNodes.forEach(element => {
+                element.setAttribute("objectid", imageId)
+            })
+
+            // append all elements together
+            newoptionsbar.append(header, minibtn, deletebtn, layerbtn, toolsarea)
+            newoptionsbar.setAttribute("objectid", imageId)
         
-        // y coordinate input strings
-        ycoordlabel.innerHTML = "Image Y: "
-        ycoordlabel.setAttribute("for", "ycoordinput")
-        ycoordinput.setAttribute("type", "number")
-        ycoordinput.value = 0
-        ycoordinput.setAttribute("name","ycoordinput")
+            // finish by appending the whole thing
+            let holderbox = document.createElement("div")
+            holderbox.setAttribute("class", "draggableToolbox")
+            holderbox.setAttribute("objectid", imageId+"-hg")
+            holderbox.setAttribute("width", "100%")
+            holderbox.setAttribute("height", "100%")
+            holderbox.append(newoptionsbar, toolsarea)
 
-        ycoordinput.addEventListener("change", function(){
-            // find the matching html caption element
-            let matchingCaption = document.getElementById( this.attributes.objectid.value )
-            // updpate the text inside once found
-            if(matchingCaption && !isNaN(Number(this.value)))
-            {
-                matchingCaption.setAttribute("y", Number(this.value))
-            }
-        })
+            draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
 
-        // y coordinate input strings
-        scalelabel.innerHTML = "Image Scale: "
-        scalelabel.setAttribute("for", "scaleinput")
-        scaleinput.setAttribute("type", "number")
-        scaleinput.setAttribute("min", '.5')
-        scaleinput.setAttribute("step", '.025')
-        scaleinput.value = 1
-        scaleinput.setAttribute("name","scaleinput")
+            // set image initial attributes
+            imagesvg.setAttribute("x", "0")
+            imagesvg.setAttribute("y", "0")
+            imagesvg.setAttribute("width", "1500")
+            imagesvg.setAttribute("height", "1000")
+            imagesvg.setAttribute("id", imageId)
+            imagesvg.setAttribute("class", "holder")
 
-        scaleinput.addEventListener("change", function(){
-            // find the matching html caption element
-            let matchingCaption = document.getElementById( `${this.attributes.objectid.value}-hg` )
-            // updpate the text inside once found
-            if(matchingCaption && !isNaN(Number(this.value)))
-            {
-                matchingCaption.setAttribute("transform", `scale(${Number(this.value)})`)
-            }
-        })
+            // this is where the desfault image is set
+            imagesvg.setAttribute("href", "#")
 
-        // icon divider section
-        let divider2 = document.createElement("h3")
-        divider2.classList.add("dividerline")
-        divider2.setAttribute("id", "innerdivider")
-        divider2.innerHTML = "Icon Tools"
-    
-        // append main tool box for image
-        toolsarea.append( 
-            filelabel, 
-            document.createElement("br"),
-            form, 
-            document.createElement("br"), 
-            widthlabel, 
-            document.createElement("br"), 
-            widthinput, 
-            document.createElement("br"), 
-            heightlabel, 
-            document.createElement("br"), 
-            heightinput, 
-            document.createElement("br"), 
-            scalelabel,
-            document.createElement("br"),
-            scaleinput,
-            document.createElement("br"), 
-            xcoordlabel, 
-            document.createElement("br"),
-            xcoordinput, 
-            document.createElement("br"), 
-            ycoordlabel, 
-            document.createElement("br"), 
-            ycoordinput, 
-            document.createElement("br"), 
-            divider2
-        )
+            holdergroup.appendChild(imagesvg)
 
-        // set caption id on all input elements
-        toolsarea.childNodes.forEach(element => {
-            element.setAttribute("objectid", imageId)
-        })
+            // This is the box that will hold the image and the icons for said image
+            holdergroup.setAttribute("id", imageId+ "-hg")
+            holdergroup.setAttribute("transform", "scale(1)")
+            holdergroup.classList.add("containingelement")
 
-        // append all elements together
-        newoptionsbar.append(header, minibtn, deletebtn, layerbtn, toolsarea)
-        newoptionsbar.setAttribute("objectid", imageId)
-    
-        // finish by appending the whole thing
-        let holderbox = document.createElement("div")
-        holderbox.setAttribute("class", "draggableToolbox")
-        holderbox.setAttribute("objectid", imageId+"-hg")
-        holderbox.setAttribute("width", "100%")
-        holderbox.setAttribute("height", "100%")
-        holderbox.append(newoptionsbar, toolsarea)
+            draggableSvg.getContainerObject().appendChild(holdergroup)
 
-        draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
+            fileinput.click()
 
-        // set image initial attributes
-        imagesvg.setAttribute("x", "0")
-        imagesvg.setAttribute("y", "0")
-        imagesvg.setAttribute("width", "1500")
-        imagesvg.setAttribute("height", "1000")
-        imagesvg.setAttribute("id", imageId)
-        imagesvg.setAttribute("class", "holder")
-
-        // this is where the desfault image is set
-        imagesvg.setAttribute("href", "#")
-
-        holdergroup.appendChild(imagesvg)
-
-        // This is the box that will hold the image and the icons for said image
-        holdergroup.setAttribute("id", imageId+ "-hg")
-        holdergroup.setAttribute("transform", "scale(1)")
-        holdergroup.classList.add("containingelement")
-
-        draggableSvg.getContainerObject().appendChild(holdergroup)
-
-        fileinput.click()
-
-        // add 1 to the totaly image count
-        getObjectCount(1, "image")
+            // add 1 to the totaly image count
+            getObjectCount(1, "image")
+        }
     });
 
     /**
@@ -5004,7 +5006,6 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     createLayerBtn(layerbtn, draggableList)
 
     /** End Dragging */
-
 
     // set aptions bar nodes
     rectoptionbar.append( 
