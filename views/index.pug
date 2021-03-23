@@ -33,7 +33,7 @@ block content
                                     option(value=fidsize) #{figsize}
 
                     label.text(for="backgroundcolor")="Background Color"
-                    .middledisplay
+                    .middledisplay(style="border-bottom: 2px solid rgba(255, 255, 255, 0.57); padding-bottom: 3px; border-radius: 5px 5px;")
                         input#backgroundcolor(type="color", name="backgroundcolor", value="#1D84B5" title="Change the color of the main figure background.")
                     label.text(for="icongroup")="Geospacial Icons"
                     #icongroup.concisebtngroup
@@ -126,7 +126,7 @@ block content
 
                         br
                     label.text(for="annotategroup")="Annotation Tools"
-                        #annotategroup.concisebtngroup
+                        #annotategroup.concisebtngroup(style="border-bottom: 2px solid rgba(255, 255, 255, 0.57); padding-bottom: 3px; border-radius: 5px 5px;")
                             button#penciloptbtn(type="button" title="Line Tool")
                                 svg.btnvectorgraphic(height="25" viewBox="0 -2 25 25" width="25" xmlns="http://www.w3.org/2000/svg")
                                     g#pencilgroup(stroke="black" stroke-width="2")
@@ -150,7 +150,7 @@ block content
                                         rect(x="19.472" y="19.472" width="4" height="4" stroke-dashoffset="3.9685" stroke-width=".94488")
                                         rect(x=".47244" y="19.472" width="4" height="4" stroke-dashoffset="3.9685" stroke-width=".94488")
                     label.text(for="exportFigureButton")="Export Figure as "
-                    .middledisplay(style="border-bottom: 2px solid rgba(255, 255, 255, 0.57); padding-bottom: 3px; border-radius: 5px 5px;")
+                    .middledisplay
                         button#exportbtn(type="button", name="exportFigureButton" title="Download figure as ...")
                             svg(viewBox="0 0 100 100")
                                 g(stroke="#000000")
