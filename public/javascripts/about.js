@@ -57,9 +57,9 @@ function updateAboutContent( id )
             header3.innerHTML = "How to Change Layers of an Object"
             header3.classList.add('basicpageheader');
             // set inner html
-            desc.innerHTML = "<h3 class='innerpageheader'>Drag and drop icons onto images.<h3><pre class='UIHolder'><img class='UIGif' alt='UI3', src='/images/sample1.gif'/></pre>";
-            desc2.innerHTML = "<h3 class='innerpageheader'>Press and hold to draw lines and boxes.<h3><pre class='UIHolder'><img class='UIGif' alt='UI3', src='/images/sample2.gif'/></pre>";
-            desc3.innerHTML = "<h3 class='innerpageheader'>Press and hold the layer button to drag the layer up or down.<h3><pre class='UIHolder'><img class='UIGif' alt='UI4', src='/images/sample3.gif'/></pre>";
+            desc.innerHTML = "<h3 class='innerpageheader'>Drag and drop icons onto images. Then move then you can drag and drop them where you like.<h3><pre class='UIHolder'><img class='UIGif' alt='UI3', src='/images/icon.gif'/></pre>";
+            desc2.innerHTML = "<h3 class='innerpageheader'>Press and hold to draw lines and boxes.<h3><pre class='UIHolder'><img class='UIGif' alt='UI3', src='/images/anot.gif'/></pre>";
+            desc3.innerHTML = "<h3 class='innerpageheader'>Press and hold the layer button to drag the layer up or down.<h3><pre class='UIHolder'><img class='UIGif' alt='UI4', src='/images/layer.gif'/></pre>";
             // set classes
             desc.classList.add('basicpagecontent')
             desc2.classList.add('basicpagecontent')
