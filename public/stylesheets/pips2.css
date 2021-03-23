@@ -415,7 +415,7 @@ div {
 }
 
 button.disabled {
-    background: transparent !important;
+    background: rgba(214, 214, 214, 0.781) !important;
     pointer-events: none;
     box-shadow: none !important;
     border: none;
@@ -932,6 +932,22 @@ button#scalebarbtnopt  {
 
 .btnvectorgraphic>svg {
     pointer-events: inherit;
+}
+
+
+.toolboxaddimagebtn.disabled {
+    background: rgba(10, 10, 10, 1);
+    border-radius: 2px 2px;
+    font-size: var(--large-font);
+    vertical-align: top;
+    width: auto;
+    height: auto;
+    padding: 0;
+    box-shadow: 2px 2px rgb(177, 177, 177);
+    min-width: var(--min-svg-btn);
+    max-width: var(--max-svg-btn);
+    min-height: var(--min-svg-btn);
+    max-height: var(--max-svg-btn);
 }
 
 .toolboxaddimagebtn {

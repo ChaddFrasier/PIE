@@ -1284,8 +1284,8 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             img.setAttribute("height", "22px")
             img.setAttribute("width", "22px")
             deletebtn.append(img)
-            
-            deletebtn.addEventListener("click", function(event){ getObjectCount(-1, "image"); removeToolsWindow(event) })
+        
+            deletebtn.addEventListener("click", function(event){ getObjectCount(-1, "image"); document.getElementById('addimagebtn').classList.remove('disabled'); removeToolsWindow(event) })
 
             // set the class css and the svg button graphic
             createLayerBtn(layerbtn, draggableList)
@@ -1781,6 +1781,8 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
             // add 1 to the totaly image count
             getObjectCount(1, "image")
+
+            document.getElementById('addimagebtn').classList.add('disabled')
         }
     });
 
