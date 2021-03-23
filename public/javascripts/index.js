@@ -937,7 +937,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         img.setAttribute("width", "22px")
         deletebtn.append(img)
         
-        deletebtn.addEventListener("click", function(event){removeToolsWindow(event) })
+        deletebtn.addEventListener("click", function(event){ getObjectCount(-1, "caption"); removeToolsWindow(event) })
         
         // set the class css and the svg button graphic
         createLayerBtn(layerbtn, draggableList)
@@ -1439,7 +1439,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             img.setAttribute("width", "22px")
             deletebtn.append(img)
             
-            deletebtn.addEventListener("click", function(event){removeToolsWindow(event) })
+            deletebtn.addEventListener("click", function(event){ getObjectCount(-1, "image"); removeToolsWindow(event) })
 
             // set the class css and the svg button graphic
             createLayerBtn(layerbtn, draggableList)
@@ -2865,7 +2865,7 @@ var imageCount = 0,
  * remove 1 from count then return
  * @description arg explained below and what it does 
  */
-function getObjectCount( inc=0, objecttype="both" ) 
+function getObjectCount( inc=0, objecttype="both" )
 {
     // switch on the object
     switch( objecttype )
