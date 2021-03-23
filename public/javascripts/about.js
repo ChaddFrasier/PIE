@@ -48,7 +48,9 @@ function updateAboutContent( id )
                 header2 = document.createElement('div'),
                 desc2 = document.createElement('div'),
                 header3 = document.createElement('div'),
-                desc3 = document.createElement('div');
+                desc3 = document.createElement('div'),
+                header4 = document.createElement('div'),
+                desc4 = document.createElement('div');
             // both main headers
             header.innerHTML = "How to Add Icons"
             header.classList.add('basicpageheader');
@@ -56,16 +58,20 @@ function updateAboutContent( id )
             header2.classList.add('basicpageheader');
             header3.innerHTML = "How to Change Layers of an Object"
             header3.classList.add('basicpageheader');
+            header4.innerHTML = "Shift Functionality for Annotation Elements"
+            header4.classList.add('basicpageheader');
             // set inner html
             desc.innerHTML = "<h3 class='innerpageheader'>Drag and drop icons onto images. Then move then you can drag and drop them where you like.<h3><pre class='UIHolder'><img class='UIGif' alt='UI3', src='/images/icon.gif'/></pre>";
             desc2.innerHTML = "<h3 class='innerpageheader'>Press and hold to draw lines and boxes.<h3><pre class='UIHolder'><img class='UIGif' alt='UI3', src='/images/anot.gif'/></pre>";
             desc3.innerHTML = "<h3 class='innerpageheader'>Press and hold the layer button to drag the layer up or down.<h3><pre class='UIHolder'><img class='UIGif' alt='UI4', src='/images/layer.gif'/></pre>";
+            desc4.innerHTML = "<h3 class='innerpageheader'>Hold shift to drag and drop the end points of the annotation objects. (lines and boxes)<h3><pre class='UIHolder'><img class='UIGif' alt='UI5', src='/images/shift.gif'/></pre>";
             // set classes
             desc.classList.add('basicpagecontent')
             desc2.classList.add('basicpagecontent')
             desc3.classList.add('basicpagecontent')
+            desc4.classList.add('basicpagecontent')
             // set the inner of the temp box and then copy it to the page
-            container.append(header,desc,header2,desc2, header3, desc3);    
+            container.append(header,desc,header2,desc2, header3, desc3, header4, desc4);    
             document.getElementById("changebox").innerHTML = container.innerHTML
             break;
         
@@ -93,7 +99,7 @@ function updateAboutContent( id )
             innerpre4.innerHTML = "<i><b>4. Draw a shape</b></i> on the map to select images in that area.<br><img class='pilotstepsimage' alt='pilotimage5' src='/images/pilot5.PNG'/>";
             innerpre5.innerHTML = "<i><b>5. Check the checkboxes</b></i> for the images you want to use.<br><img class='pilotstepsimage' alt='pilotimage6' src='/images/pilot6.PNG'/>";
             innerpre6.innerHTML = "<i><b>6. Click</b></i> the POW bubble for Projections On the Web. Then just click go! and wait for your POW Id to be returned to your email.<br><img class='pilotstepsimage' alt='pilotimage7' src='/images/pilot7.PNG'/>";
-            innerpre7.innerHTML = "<i><b>6. Click submit.</b></i><br><img class='pilotstepsimage' alt='pilotimage8' src='/images/pilot8.PNG'/>";
+            innerpre7.innerHTML = "<i><b>7. Click submit.</b></i><br><img class='pilotstepsimage' alt='pilotimage8' src='/images/pilot8.PNG'/>";
             // append all sections to the temp container
             mainpre.append( innerpre, innerpre2, innerpre3, innerpre4, innerpre5, innerpre6, innerpre7 )
             desc.innerHTML = "<i><b>1. Navigate to the </b><a class='inlayedlink' href='https://pilot.wr.usgs.gov/', target='_blank'>PILOT</a><b> homepage.</b></i>" + mainpre.outerHTML;
