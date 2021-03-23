@@ -867,8 +867,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         {
             let toolbox = document.getElementById('toolbox'),
                 imgbtn = document.getElementById('addimagebtn'),
-                capbtn = document.getElementById('addcaptionbtn'),
-                POWbtn = document.getElementById('addpowbtn');
+                capbtn = document.getElementById('addcaptionbtn');
 
             // check if the box is already closed, if true, open it, otherwise close
             if( toolbox.classList.contains('closed') )
@@ -877,7 +876,6 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 // reactivate the other buttons
                 imgbtn.classList.remove("disabled")
                 capbtn.classList.remove("disabled")
-                POWbtn.classList.remove("disabled")
                 event.target.innerHTML = "&larrb;"
             }
             else
@@ -886,7 +884,6 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 // disable the other buttons to help focus on editing image
                 imgbtn.classList.add("disabled")
                 capbtn.classList.add("disabled")
-                POWbtn.classList.add("disabled")
                 event.target.innerHTML = "&rarrb;"
             }
         });
@@ -1228,157 +1225,6 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         textinput.focus()
 
         getObjectCount(1, "caption")
-    });
-
-    /**
-     * @function button.toolboxaddimagebtn.click()
-     * @description add the image to the svg and the toolbox stuff
-     */
-    document.getElementById('addpowbtn').addEventListener("click", () =>
-    {
-        // used for identifying the tool box for each caption in the image 
-        let imageId = randomId("image"),
-            newoptionsbar = document.createElement("div"),
-            header = document.createElement("h4"),
-            minibtn = document.createElement("button"),
-            deletebtn = document.createElement("button"),
-            layerbtn = document.createElement("button"),
-            toolsarea = document.createElement("div"),
-            powIdLabel = document.createElement("label"),
-            powIdInput = document.createElement("input"),
-            powIdSubmitBtn = document.createElement("button"),
-            imagesvg = document.createElementNS(NS.svg, "image");
-
-        // create the main holder group for the image
-        var holdergroup = document.createElementNS(NS.svg, "g");
-
-        // set the class for the options bar
-        newoptionsbar.classList.add("windowoptionsbar")
-        newoptionsbar.style.display = "flex"
-
-        newoptionsbar.addEventListener("click", function ( event )
-        {
-            optionsAction(event.target)
-        })
-
-        header.innerHTML = "POW Layer"
-
-        // setup minimize button
-        minibtn.classList.add("windowminimizebtn")
-        minibtn.innerHTML = "▲"
-        minibtn.addEventListener( "click", function(event) {
-            minimizeToolsWindow(event)
-        })
-
-        // same for delete as minimize
-        deletebtn.classList.add("windowremovebtn")
-        deletebtn.style.padding = "2px"
-        var img = document.createElement("img")
-        img.style.pointerEvents = "none"
-        img.src = "/images/trash.svg"
-        img.setAttribute("height", "22px")
-        img.setAttribute("width", "22px")
-        deletebtn.append(img)
-
-
-        deletebtn.addEventListener("click", function(event){removeToolsWindow(event) })
-
-        // set the class css and the svg button graphic
-        createLayerBtn(layerbtn, draggableList)
-        
-        /** End Dynamic button*/
-
-        // toolbox attributes
-        toolsarea.classList.add("powtoolsbox")
-        toolsarea.setAttribute("id", `powtoolsbox-${imageId}`)
-        toolsarea.setAttribute("objectid", imageId)
-
-        powIdLabel.innerHTML = "Enter POW Job Id:";
-        powIdInput.name = "powIdInput"
-        
-        powIdInput.placeholder = "4580b40493f62edca422fb1958d7635";
-
-        powIdSubmitBtn.addEventListener("click", () => {
-            let powId = powIdInput.value;
-            const powRegExp = /(\d|\w){31}$/
-            if( powRegExp.test(powId) )
-            {
-                // send request to server
-                fetch(`/pow?pow=${powId}`, {
-                    method: "GET",
-                    header: {"Content-Type": "json"}
-                })
-                .then( imagedatares => imagedatares.json())
-                .then((json) => {
-                    // handle pow response
-                    if(json.err)
-                    {
-                        // notify of error
-                        console.error(`Server Error ${json.err}`)
-                        window.alert(`Server Error ${json.err}`)
-                    }
-                    else
-                    {
-                        // show the list of filenames
-                        console.log(json)
-                    }
-                });
-            }
-            else
-            {
-                window.alert("The ID you have entered could not be validated as a valid POW Job Id.")
-            }
-        });
-
-        powIdSubmitBtn.innerHTML = "Submit Id"
-        toolsarea.append(
-            powIdLabel,
-            powIdInput,
-            powIdSubmitBtn
-        )
-
-        // set caption id on all input elements
-        toolsarea.childNodes.forEach(element => {
-            element.setAttribute("objectid", imageId)
-        });
-
-        // append all elements together
-        newoptionsbar.append(header, minibtn, deletebtn, layerbtn, toolsarea)
-        newoptionsbar.setAttribute("objectid", imageId)
-    
-        // finish by appending the whole thing
-        let holderbox = document.createElement("div")
-        holderbox.setAttribute("class", "draggableToolbox")
-        holderbox.setAttribute("objectid", `${imageId}-hg`)
-        holderbox.setAttribute("width", "100%")
-        holderbox.setAttribute("height", "100%")
-        holderbox.append(newoptionsbar, toolsarea)
-
-        draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
-
-        // set image initial attributes
-        imagesvg.setAttribute("x", "0")
-        imagesvg.setAttribute("y", "0")
-        imagesvg.setAttribute("width", "1500")
-        imagesvg.setAttribute("height", "1000")
-        imagesvg.setAttribute("id", imageId)
-        imagesvg.setAttribute("class", "holder")
-
-        // this is where the desfault image is set
-        imagesvg.setAttribute("href", "#")
-
-        holdergroup.appendChild(imagesvg)
-        // This is the box that will hold the image and the icons for said image
-        holdergroup.setAttribute("id", `${imageId}-hg`)
-        holdergroup.setAttribute("transform", "scale(1)")
-        holdergroup.classList.add("containingelement")
-
-        draggableSvg.getContainerObject().appendChild(holdergroup)
-
-        powIdInput.focus()
-
-        // add 1 to the totaly image count
-        getObjectCount(1, "image")
     });
 
 
