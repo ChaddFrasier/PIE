@@ -1704,10 +1704,51 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             })
 
             // icon divider section
-            let divider2 = document.createElement("h3")
-            divider2.classList.add("dividerline")
-            divider2.setAttribute("id", "innerdivider")
-            divider2.innerHTML = "Icon Tools"
+            let powline = document.createElement("input")
+            powline.setAttribute("name", "powid")
+            powline.setAttribute("type", "text")
+            powline.setAttribute("id", "powinput")
+            powline.setAttribute("font-size", "25")
+            powline.placeholder = "4580b40493f62edca422fb1958d7635"
+
+            let powlabel = document.createElement("label")
+            powlabel.setAttribute("for", "powid")
+            powlabel.innerHTML = "POW Job ID:"
+
+            //TODO:  submit btn for pow id
+            let powbtn = document.createElement("button")
+            powbtn.innerHTML = "Submit"
+            powbtn.addEventListener("click", () => {
+                let powId = powline.value;
+                const powRegExp = /(\d|\w){31}$/
+                if( powRegExp.test(powId) )
+                {
+                    // send request to server
+                    fetch(`/pow?pow=${powId}`, {
+                        method: "GET",
+                        header: {"Content-Type": "json"}
+                    })
+                    .then( imagedatares => imagedatares.json())
+                    .then((json) => {
+                        // handle pow response
+                        if(json.err)
+                        {
+                            // notify of error
+                            console.error(`Server Error ${json.err}`)
+                            window.alert(`Server Error ${json.err}`)
+                        }
+                        else
+                        {
+                            // show the list of filenames
+                            console.log(json)
+                        }
+                    });
+                }
+                else
+                {
+                    window.alert("The ID you have entered could not be validated as a valid POW Job Id.")
+                }
+            });
         
             // append main tool box for image
             toolsarea.append( 
@@ -1733,9 +1774,12 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 document.createElement("br"), 
                 ycoordlabel, 
                 document.createElement("br"), 
-                ycoordinput, 
-                document.createElement("br"), 
-                divider2
+                ycoordinput,
+                document.createElement("br"),
+                powlabel,
+                document.createElement("br"),
+                powline,
+                powbtn
             )
 
             // set caption id on all input elements
