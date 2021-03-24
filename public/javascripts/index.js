@@ -934,7 +934,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         img.setAttribute("width", "22px")
         deletebtn.append(img)
         
-        deletebtn.addEventListener("click", function(event){ getObjectCount(-1, "caption"); removeToolsWindow(event) })
+        deletebtn.addEventListener("click", function(event){ getObjectCount(-1, "caption"); removeToolsWindow(event); })
         
         // set the class css and the svg button graphic
         createLayerBtn(layerbtn, draggableList)
@@ -1285,7 +1285,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             img.setAttribute("width", "22px")
             deletebtn.append(img)
         
-            deletebtn.addEventListener("click", function(event){ getObjectCount(-1, "image"); document.getElementById('addimagebtn').classList.remove('disabled'); removeToolsWindow(event) })
+            deletebtn.addEventListener("click", function(event){ getObjectCount(-1, "image"); document.getElementById('addimagebtn').classList.remove('disabled'); removeToolsWindow(event); removeIcons(deletebtn.parentElement.attributes.objectid.value) })
 
             // set the class css and the svg button graphic
             createLayerBtn(layerbtn, draggableList)
@@ -1992,6 +1992,64 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
             // after drawing svg icon is finished remove the object
             selectedObject = null
+        }
+    }
+
+    function removeIcons( imageId )
+    {
+        // remove the north icon b/c there is no north data
+        try{
+            document.getElementById(`northIcon-${imageId}`).remove()
+
+            // TODO: remove the toolbox for the north icon
+        }
+        catch(err)
+        {
+            /** No Thing */
+        }
+
+        // remove the north icon b/c there is no north data
+        try{
+            document.getElementById(`sunIcon-${imageId}`).remove()
+
+            // TODO: remove the toolbox
+        }
+        catch(err)
+        {
+            /** No Thing */
+        }
+
+        // remove the north icon b/c there is no north data
+        try{
+            document.getElementById(`observerIcon-${imageId}`).remove()
+
+            // TODO: remove the toolbox
+        }
+        catch(err)
+        {
+            /** No Thing */
+        }
+
+        // remove the north icon b/c there is no north data
+        try{
+            document.getElementById(`scaleIcon-${imageId}`).remove()
+
+            // TODO: remove the toolbox
+        }
+        catch(err)
+        {
+            /** No Thing */
+        }
+
+        // remove the north icon b/c there is no north data
+        try{
+            document.getElementById(`keyIcon-${imageId}`).remove()
+
+            // TODO: remove the toolbox
+        }
+        catch(err)
+        {
+            /** No Thing */
         }
     }
 
