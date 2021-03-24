@@ -867,8 +867,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         {
             let toolbox = document.getElementById('toolbox'),
                 imgbtn = document.getElementById('addimagebtn'),
-                capbtn = document.getElementById('addcaptionbtn'),
-                POWbtn = document.getElementById('addpowbtn');
+                capbtn = document.getElementById('addcaptionbtn');
 
             // check if the box is already closed, if true, open it, otherwise close
             if( toolbox.classList.contains('closed') )
@@ -877,7 +876,6 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 // reactivate the other buttons
                 imgbtn.classList.remove("disabled")
                 capbtn.classList.remove("disabled")
-                POWbtn.classList.remove("disabled")
                 event.target.innerHTML = "&larrb;"
             }
             else
@@ -886,7 +884,6 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 // disable the other buttons to help focus on editing image
                 imgbtn.classList.add("disabled")
                 capbtn.classList.add("disabled")
-                POWbtn.classList.add("disabled")
                 event.target.innerHTML = "&rarrb;"
             }
         });
@@ -937,7 +934,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         img.setAttribute("width", "22px")
         deletebtn.append(img)
         
-        deletebtn.addEventListener("click", function(event){ getObjectCount(-1, "caption"); removeToolsWindow(event) })
+        deletebtn.addEventListener("click", function(event){ getObjectCount(-1, "caption"); removeToolsWindow(event); })
         
         // set the class css and the svg button graphic
         createLayerBtn(layerbtn, draggableList)
@@ -1230,157 +1227,6 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         getObjectCount(1, "caption")
     });
 
-    /**
-     * @function button.toolboxaddimagebtn.click()
-     * @description add the image to the svg and the toolbox stuff
-     */
-    document.getElementById('addpowbtn').addEventListener("click", () =>
-    {
-        // used for identifying the tool box for each caption in the image 
-        let imageId = randomId("image"),
-            newoptionsbar = document.createElement("div"),
-            header = document.createElement("h4"),
-            minibtn = document.createElement("button"),
-            deletebtn = document.createElement("button"),
-            layerbtn = document.createElement("button"),
-            toolsarea = document.createElement("div"),
-            powIdLabel = document.createElement("label"),
-            powIdInput = document.createElement("input"),
-            powIdSubmitBtn = document.createElement("button"),
-            imagesvg = document.createElementNS(NS.svg, "image");
-
-        // create the main holder group for the image
-        var holdergroup = document.createElementNS(NS.svg, "g");
-
-        // set the class for the options bar
-        newoptionsbar.classList.add("windowoptionsbar")
-        newoptionsbar.style.display = "flex"
-
-        newoptionsbar.addEventListener("click", function ( event )
-        {
-            optionsAction(event.target)
-        })
-
-        header.innerHTML = "POW Layer"
-
-        // setup minimize button
-        minibtn.classList.add("windowminimizebtn")
-        minibtn.innerHTML = "▲"
-        minibtn.addEventListener( "click", function(event) {
-            minimizeToolsWindow(event)
-        })
-
-        // same for delete as minimize
-        deletebtn.classList.add("windowremovebtn")
-        deletebtn.style.padding = "2px"
-        var img = document.createElement("img")
-        img.style.pointerEvents = "none"
-        img.src = "/images/trash.svg"
-        img.setAttribute("height", "22px")
-        img.setAttribute("width", "22px")
-        deletebtn.append(img)
-
-
-        deletebtn.addEventListener("click", function(event){removeToolsWindow(event) })
-
-        // set the class css and the svg button graphic
-        createLayerBtn(layerbtn, draggableList)
-        
-        /** End Dynamic button*/
-
-        // toolbox attributes
-        toolsarea.classList.add("powtoolsbox")
-        toolsarea.setAttribute("id", `powtoolsbox-${imageId}`)
-        toolsarea.setAttribute("objectid", imageId)
-
-        powIdLabel.innerHTML = "Enter POW Job Id:";
-        powIdInput.name = "powIdInput"
-        
-        powIdInput.placeholder = "4580b40493f62edca422fb1958d7635";
-
-        powIdSubmitBtn.addEventListener("click", () => {
-            let powId = powIdInput.value;
-            const powRegExp = /(\d|\w){31}$/
-            if( powRegExp.test(powId) )
-            {
-                // send request to server
-                fetch(`/pow?pow=${powId}`, {
-                    method: "GET",
-                    header: {"Content-Type": "json"}
-                })
-                .then( imagedatares => imagedatares.json())
-                .then((json) => {
-                    // handle pow response
-                    if(json.err)
-                    {
-                        // notify of error
-                        console.error(`Server Error ${json.err}`)
-                        window.alert(`Server Error ${json.err}`)
-                    }
-                    else
-                    {
-                        // show the list of filenames
-                        console.log(json)
-                    }
-                });
-            }
-            else
-            {
-                window.alert("The ID you have entered could not be validated as a valid POW Job Id.")
-            }
-        });
-
-        powIdSubmitBtn.innerHTML = "Submit Id"
-        toolsarea.append(
-            powIdLabel,
-            powIdInput,
-            powIdSubmitBtn
-        )
-
-        // set caption id on all input elements
-        toolsarea.childNodes.forEach(element => {
-            element.setAttribute("objectid", imageId)
-        });
-
-        // append all elements together
-        newoptionsbar.append(header, minibtn, deletebtn, layerbtn, toolsarea)
-        newoptionsbar.setAttribute("objectid", imageId)
-    
-        // finish by appending the whole thing
-        let holderbox = document.createElement("div")
-        holderbox.setAttribute("class", "draggableToolbox")
-        holderbox.setAttribute("objectid", `${imageId}-hg`)
-        holderbox.setAttribute("width", "100%")
-        holderbox.setAttribute("height", "100%")
-        holderbox.append(newoptionsbar, toolsarea)
-
-        draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
-
-        // set image initial attributes
-        imagesvg.setAttribute("x", "0")
-        imagesvg.setAttribute("y", "0")
-        imagesvg.setAttribute("width", "1500")
-        imagesvg.setAttribute("height", "1000")
-        imagesvg.setAttribute("id", imageId)
-        imagesvg.setAttribute("class", "holder")
-
-        // this is where the desfault image is set
-        imagesvg.setAttribute("href", "#")
-
-        holdergroup.appendChild(imagesvg)
-        // This is the box that will hold the image and the icons for said image
-        holdergroup.setAttribute("id", `${imageId}-hg`)
-        holdergroup.setAttribute("transform", "scale(1)")
-        holdergroup.classList.add("containingelement")
-
-        draggableSvg.getContainerObject().appendChild(holdergroup)
-
-        powIdInput.focus()
-
-        // add 1 to the totaly image count
-        getObjectCount(1, "image")
-    });
-
 
     /**
      * @function button.toolboxaddimagebtn.click()
@@ -1438,8 +1284,8 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             img.setAttribute("height", "22px")
             img.setAttribute("width", "22px")
             deletebtn.append(img)
-            
-            deletebtn.addEventListener("click", function(event){ getObjectCount(-1, "image"); removeToolsWindow(event) })
+        
+            deletebtn.addEventListener("click", function(event){ getObjectCount(-1, "image"); document.getElementById('addimagebtn').classList.remove('disabled'); removeToolsWindow(event); removeIcons(deletebtn.parentElement.attributes.objectid.value) })
 
             // set the class css and the svg button graphic
             createLayerBtn(layerbtn, draggableList)
@@ -1858,10 +1704,51 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             })
 
             // icon divider section
-            let divider2 = document.createElement("h3")
-            divider2.classList.add("dividerline")
-            divider2.setAttribute("id", "innerdivider")
-            divider2.innerHTML = "Icon Tools"
+            let powline = document.createElement("input")
+            powline.setAttribute("name", "powid")
+            powline.setAttribute("type", "text")
+            powline.setAttribute("id", "powinput")
+            powline.setAttribute("font-size", "25")
+            powline.placeholder = "4580b40493f62edca422fb1958d7635"
+
+            let powlabel = document.createElement("label")
+            powlabel.setAttribute("for", "powid")
+            powlabel.innerHTML = "POW Job ID:"
+
+            // submit btn for pow id
+            let powbtn = document.createElement("button")
+            powbtn.innerHTML = "Submit"
+            powbtn.addEventListener("click", () => {
+                let powId = powline.value;
+                const powRegExp = /(\d|\w){31}$/
+                if( powRegExp.test(powId) )
+                {
+                    // send request to server
+                    fetch(`/pow?pow=${powId}`, {
+                        method: "GET",
+                        header: {"Content-Type": "json"}
+                    })
+                    .then( imagedatares => imagedatares.json())
+                    .then((json) => {
+                        // handle pow response
+                        if(json.err)
+                        {
+                            // notify of error
+                            console.error(`Server Error ${json.err}`)
+                            window.alert(`Server Error ${json.err}`)
+                        }
+                        else
+                        {
+                            // show the list of filenames
+                            console.log(json)
+                        }
+                    });
+                }
+                else
+                {
+                    window.alert("The ID you have entered could not be validated as a valid POW Job Id.")
+                }
+            });
         
             // append main tool box for image
             toolsarea.append( 
@@ -1887,9 +1774,12 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 document.createElement("br"), 
                 ycoordlabel, 
                 document.createElement("br"), 
-                ycoordinput, 
-                document.createElement("br"), 
-                divider2
+                ycoordinput,
+                document.createElement("br"),
+                powlabel,
+                document.createElement("br"),
+                powline,
+                powbtn
             )
 
             // set caption id on all input elements
@@ -1935,6 +1825,8 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
             // add 1 to the totaly image count
             getObjectCount(1, "image")
+
+            document.getElementById('addimagebtn').classList.add('disabled')
         }
     });
 
@@ -1945,7 +1837,26 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
     document.getElementById('figsizeselect').addEventListener("change", (event) =>
     {
         // update the svgContainer size
-        let tmp = event.target.value.split("x")
+        let tmp = []
+
+        switch( event.target.value )
+        {
+            case "1/4 Page":
+                tmp[0] = "1500"
+                tmp[1] = "1500"
+                break;
+
+            case "1/2 Page":
+                tmp[0] = "2500"
+                tmp[1] = "2000"
+                break;
+
+            case "Full Page":
+                tmp[0] = "3000"
+                tmp[1] = "3500"
+                break;
+        }
+
         draggableSvg.getContainerObject().setAttribute("viewBox", `0 0 ${tmp[0]} ${tmp[1]}`)
         draggableSvg.getContainerObject().parentElement.setAttribute("viewBox",
         `-500 0 ${Number(tmp[0]) + 1000} ${tmp[1]}`);
@@ -2103,6 +2014,64 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         }
     }
 
+    function removeIcons( imageId )
+    {
+        // remove the north icon b/c there is no north data
+        try{
+            document.getElementById(`northIcon-${imageId}`).remove()
+
+            // TODO: remove the toolbox for the north icon
+        }
+        catch(err)
+        {
+            /** No Thing */
+        }
+
+        // remove the north icon b/c there is no north data
+        try{
+            document.getElementById(`sunIcon-${imageId}`).remove()
+
+            // TODO: remove the toolbox
+        }
+        catch(err)
+        {
+            /** No Thing */
+        }
+
+        // remove the north icon b/c there is no north data
+        try{
+            document.getElementById(`observerIcon-${imageId}`).remove()
+
+            // TODO: remove the toolbox
+        }
+        catch(err)
+        {
+            /** No Thing */
+        }
+
+        // remove the north icon b/c there is no north data
+        try{
+            document.getElementById(`scaleIcon-${imageId}`).remove()
+
+            // TODO: remove the toolbox
+        }
+        catch(err)
+        {
+            /** No Thing */
+        }
+
+        // remove the north icon b/c there is no north data
+        try{
+            document.getElementById(`keyIcon-${imageId}`).remove()
+
+            // TODO: remove the toolbox
+        }
+        catch(err)
+        {
+            /** No Thing */
+        }
+    }
+
     /**
      * @function drawSvgIcon
      * @param {Node} image 
@@ -2159,7 +2128,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                         console.error("Translate Values Failed")
                     }
                     // append the icon to the svg object
-                    document.getElementById(`${image.id}-hg`).appendChild(icongroup)
+                    draggableSvg.getContainerObject().appendChild(icongroup)
                 }
                 else
                 {
@@ -2207,7 +2176,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                     }
 
                     // append the icon
-                    document.getElementById(`${image.id}-hg`).appendChild(icongroup)
+                    draggableSvg.getContainerObject().appendChild(icongroup)
                 }
                 else
                 {
@@ -2249,7 +2218,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                     }
 
                     // append the icon
-                    document.getElementById(`${image.id}-hg`).appendChild(icongroup)
+                    draggableSvg.getContainerObject().appendChild(icongroup)
                 }
                 else
                 {
@@ -2299,7 +2268,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                     }
 
                     // append the icon
-                    document.getElementById(image.id+"-hg").appendChild(icongroup)
+                    draggableSvg.getContainerObject().appendChild(icongroup)
 
                     var scaleNumberStart = document.querySelectorAll("tspan#scalestart")
                     var scaleNumberEnd = document.querySelectorAll("tspan#scaleend")
@@ -2432,7 +2401,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                     }
 
                     // append the icon
-                    document.getElementById(`${image.id}-hg`).appendChild(icongroup)
+                    draggableSvg.getContainerObject().appendChild(icongroup)
                 }
                 else
                 {
@@ -2947,6 +2916,8 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
                 iconoptionbar = document.createElement("div"),
                 iconoptionheader = document.createElement("h4"),
                 deletebtn = document.createElement("button"),
+                layerbtn = document.createElement("button"),
+                minibtn = document.createElement("button"),
                 northicontranslatex = document.createElement("input"),
                 northicontranslatexlabel = document.createElement("label"),
                 northicontranslatey = document.createElement("input"),
@@ -2962,6 +2933,14 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
             iconoptionheader.innerHTML = "North Icon"
 
+            minibtn.classList.add("windowminimizebtn")
+            minibtn.innerHTML = "▲"
+
+            // cant forget the event handler for the minimize btn
+            minibtn.addEventListener( "click", function(event) {
+                minimizeToolsWindow(event)
+            })
+
             // same for delete as minimize
             deletebtn.classList.add("windowremovebtn")
             deletebtn.style.padding = "2px"
@@ -2972,17 +2951,25 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             img.setAttribute("width", "22px")
             deletebtn.append(img)
 
+            deletebtn.setAttribute("objectid", iconId)
+
             // set event listener to remove north icon
             deletebtn.addEventListener( "click", function(event) {
                 removeIconWindow(event)
             })
 
+            // set the class css and the svg button graphic
+            createLayerBtn(layerbtn, draggableList)
+            /** End Dragging */
+
             // set aptions bar nodes
             iconoptionbar.append( 
                 iconoptionheader,
-                document.createElement("br"), 
-                deletebtn
+                minibtn,
+                deletebtn,
+                layerbtn
             )
+
             iconoptionbar.setAttribute("objectid", iconId)
 
             // set scale attributes
@@ -3067,7 +3054,15 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
                 document.createElement("br"),
                 northicontranslatey 
             )
-            toolbox.append(iconoptionbar, icontoolbox)
+            var holderbox = document.createElement("div")
+
+            holderbox.setAttribute("class", "draggableToolbox")
+            holderbox.setAttribute("objectid", iconId)
+            holderbox.setAttribute("width", "100%")
+            holderbox.setAttribute("height", "100%")
+            holderbox.append(iconoptionbar, icontoolbox)
+
+            draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
             break
     
         case "sun":
@@ -3082,6 +3077,8 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
                 sunoptionbar = document.createElement("div"),
                 sunoptionheader = document.createElement("h4"),
                 deletebtn1 = document.createElement("button"),
+                layerbtn1 = document.createElement("button"),
+                minibtn1 = document.createElement("button"),
                 sunicontranslatex = document.createElement("input"),
                 sunicontranslatexlabel = document.createElement("label"),
                 sunicontranslatey = document.createElement("input"),
@@ -3097,6 +3094,14 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
 
             sunoptionheader.innerHTML = "Sun Icon"
 
+            minibtn1.classList.add("windowminimizebtn")
+            minibtn1.innerHTML = "▲"
+
+            // cant forget the event handler for the minimize btn
+            minibtn1.addEventListener( "click", function(event) {
+                minimizeToolsWindow(event)
+            })
+
             // same for delete as minimize
             deletebtn1.classList.add("windowremovebtn")
             deletebtn1.style.padding = "2px"
@@ -3106,11 +3111,25 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             img.setAttribute("height", "22px")
             img.setAttribute("width", "22px")
             deletebtn1.append(img)
-            
-            // add remove window listener
+
+            deletebtn1.setAttribute("objectid", iconId)
+
+            // set event listener to remove north icon
             deletebtn1.addEventListener( "click", function(event) {
                 removeIconWindow(event)
             })
+
+            // set the class css and the svg button graphic
+            createLayerBtn(layerbtn1, draggableList)
+            /** End Dragging */
+
+            // set aptions bar nodes
+            sunoptionbar.append( 
+                sunoptionheader,
+                minibtn1,
+                deletebtn1,
+                layerbtn1
+            )
 
             // translate x and y input fields
             sunicontranslatex.setAttribute("type", "number")
@@ -3129,7 +3148,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             sunicontranslatexlabel.setAttribute("for", "iconxcoordinput")
 
             // append optionsbar stuff
-            sunoptionbar.append(sunoptionheader, document.createElement("br"), deletebtn1)
             sunoptionbar.setAttribute("objectid", iconId)
 
             // scale input fields
@@ -3200,7 +3218,16 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
                 document.createElement("br"),
                 sunicontranslatey
             )
-            toolbox.append( sunoptionbar, sunicontoolbox )
+            var holderbox = document.createElement("div")
+
+            holderbox.setAttribute("class", "draggableToolbox")
+            holderbox.setAttribute("objectid", iconId)
+            holderbox.setAttribute("width", "100%")
+            holderbox.setAttribute("height", "100%")
+            holderbox.append( sunoptionbar, sunicontoolbox )
+
+            draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
+
             break
     
         case "observer":
@@ -3215,6 +3242,8 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
                 obsoptionbar = document.createElement("div"),
                 obsoptionheader = document.createElement("h4"),
                 deletebtn2 = document.createElement("button"),
+                layerbtn2 = document.createElement("button"),
+                minibtn2 = document.createElement("button"),
                 obsicontranslatex = document.createElement("input"),
                 obsicontranslatexlabel = document.createElement("label"),
                 obsicontranslatey = document.createElement("input"),
@@ -3230,6 +3259,8 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             
             obsoptionheader.innerHTML = "Observer Icon"
 
+            deletebtn2.setAttribute("objectid", iconId)
+
             // same for delete as minimize
             deletebtn2.classList.add("windowremovebtn")
             deletebtn2.style.padding = "2px"
@@ -3240,10 +3271,30 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             img.setAttribute("width", "22px")
             deletebtn2.append(img)
 
-            // add event listener for delete btn
+            minibtn2.classList.add("windowminimizebtn")
+            minibtn2.innerHTML = "▲"
+
+            // cant forget the event handler for the minimize btn
+            minibtn2.addEventListener( "click", function(event) {
+                minimizeToolsWindow(event)
+            })
+
+            // set event listener to remove north icon
             deletebtn2.addEventListener( "click", function(event) {
                 removeIconWindow(event)
             })
+
+            // set the class css and the svg button graphic
+            createLayerBtn(layerbtn2, draggableList)
+            /** End Dragging */
+
+            // set aptions bar nodes
+            obsoptionbar.append( 
+                obsoptionheader,
+                minibtn2,
+                deletebtn2,
+                layerbtn2
+            )
 
             // x and y translate
             obsicontranslatex.setAttribute("type", "number")
@@ -3304,7 +3355,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             obsicontoolbox.classList.add("icontoolbox")
 
             // append aspect to options bar
-            obsoptionbar.append( obsoptionheader, document.createElement("br"), deletebtn2 )
             obsoptionbar.setAttribute( "objectid", iconId )
 
             // append rest of options
@@ -3331,7 +3381,16 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             )
             
             // append optionsbar and tools
-            toolbox.append( obsoptionbar, obsicontoolbox )
+
+            var holderbox = document.createElement("div")
+
+            holderbox.setAttribute("class", "draggableToolbox")
+            holderbox.setAttribute("objectid", iconId)
+            holderbox.setAttribute("width", "100%")
+            holderbox.setAttribute("height", "100%")
+            holderbox.append( obsoptionbar, obsicontoolbox )
+
+            draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
             break
 
 
@@ -3344,6 +3403,8 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
                 scaleoptionbar = document.createElement("div"),
                 scaleoptionheader = document.createElement("h4"),
                 deletebtn3 = document.createElement("button"),
+                minibtn3 = document.createElement("button"),
+                layerbtn3 = document.createElement("button"),
                 scaleicontranslatex = document.createElement("input"),
                 scaleicontranslatexlabel = document.createElement("label"),
                 scaleicontranslatey = document.createElement("input"),
@@ -3359,6 +3420,8 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             
             scaleoptionheader.innerHTML = "Scalebar Icon"
 
+            deletebtn3.setAttribute("objectid", iconId)
+
             // same for delete as minimize
             deletebtn3.classList.add("windowremovebtn")
             deletebtn3.style.padding = "2px"
@@ -3373,6 +3436,26 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             deletebtn3.addEventListener( "click", function(event) {
                 removeIconWindow(event)
             })
+
+            minibtn3.classList.add("windowminimizebtn")
+            minibtn3.innerHTML = "▲"
+
+            // cant forget the event handler for the minimize btn
+            minibtn3.addEventListener( "click", function(event) {
+                minimizeToolsWindow(event)
+            })
+
+            // set the class css and the svg button graphic
+            createLayerBtn(layerbtn3, draggableList)
+            /** End Dragging */
+
+            // set aptions bar nodes
+            scaleoptionbar.append( 
+                scaleoptionheader,
+                minibtn3,
+                deletebtn3,
+                layerbtn3
+            )
 
             // x and y translate
             scaleicontranslatex.setAttribute("type", "number")
@@ -3414,7 +3497,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             scaleicontoolbox.classList.add("icontoolbox")
 
             // append aspect to options bar
-            scaleoptionbar.append( scaleoptionheader, document.createElement("br"), deletebtn3 )
             scaleoptionbar.setAttribute( "objectid", iconId )
 
             // append rest of options
@@ -3437,7 +3519,16 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             )
             
             // append optionsbar and tools
-            toolbox.append( scaleoptionbar, scaleicontoolbox )
+            var holderbox = document.createElement("div")
+            holderbox.setAttribute("class", "draggableToolbox")
+            holderbox.setAttribute("objectid", iconId)
+            holderbox.setAttribute("width", "100%")
+            holderbox.setAttribute("height", "100%")
+            holderbox.append( scaleoptionbar, scaleicontoolbox )
+
+            draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
+
+
             break
 
         case "key":
@@ -3449,6 +3540,8 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
                 keyoptionbar = document.createElement("div"),
                 keyoptionheader = document.createElement("h4"),
                 deletebtn4 = document.createElement("button"),
+                layerbtn4 = document.createElement("button"),
+                minibtn4 = document.createElement("button"),
                 keyicontranslatex = document.createElement("input"),
                 keyicontranslatexlabel = document.createElement("label"),
                 keyicontranslatey = document.createElement("input"),
@@ -3478,6 +3571,26 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             deletebtn4.addEventListener( "click", function(event) {
                 removeIconWindow(event)
             })
+
+            minibtn4.classList.add("windowminimizebtn")
+            minibtn4.innerHTML = "▲"
+
+            // cant forget the event handler for the minimize btn
+            minibtn4.addEventListener( "click", function(event) {
+                minimizeToolsWindow(event)
+            })
+
+            // set the class css and the svg button graphic
+            createLayerBtn(layerbtn4, draggableList)
+            /** End Dragging */
+
+            // set aptions bar nodes
+            keyoptionbar.append( 
+                keyoptionheader,
+                minibtn4,
+                deletebtn4,
+                layerbtn4
+            )
 
             // x and y translate
             keyicontranslatex.setAttribute("type", "number")
@@ -3519,7 +3632,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             keyicontoolbox.classList.add("icontoolbox")
 
             // append aspect to options bar
-            keyoptionbar.append( keyoptionheader, document.createElement("br"), deletebtn4 )
             keyoptionbar.setAttribute( "objectid", iconId )
 
             // append rest of options
@@ -3542,7 +3654,14 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             )
             
             // append optionsbar and tools
-            toolbox.append( keyoptionbar, keyicontoolbox )
+            var holderbox = document.createElement("div")
+            holderbox.setAttribute("class", "draggableToolbox")
+            holderbox.setAttribute("objectid", iconId)
+            holderbox.setAttribute("width", "100%")
+            holderbox.setAttribute("height", "100%")
+            holderbox.append( keyoptionbar, keyicontoolbox )
+
+            draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
             break
 
         default:
@@ -3635,13 +3754,16 @@ function removeIconWindow( event )
     {
         // remove the current options bar, its next child and the caption matching the same id
         let icontoolsbar = event.target.parentElement
+        console.log(icontoolsbar)
         let toolsbox = icontoolsbar.nextElementSibling
         let iconsvg = document.getElementById( icontoolsbar.attributes.objectid.value )
-        let imagetoolbox = document.getElementById( `imagetoolsbox-${iconsvg.attributes.objectid.value}` )
 
-        imagetoolbox.removeChild( icontoolsbar )
-        imagetoolbox.removeChild( toolsbox )
-        document.getElementById(`${icontoolsbar.attributes.objectid.value.split('-')[1]}-hg`).removeChild( iconsvg )
+        draggableList.removeObject(icontoolsbar.parentElement)
+
+        draggableSvg.getContainerObject().removeChild( iconsvg )
+
+        icontoolsbar.parentElement.removeChild( icontoolsbar )
+        toolsbox.parentElement.removeChild( toolsbox )
     }
 }
 

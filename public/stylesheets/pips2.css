@@ -415,7 +415,7 @@ div {
 }
 
 button.disabled {
-    background: transparent !important;
+    background: rgba(214, 214, 214, 0.781) !important;
     pointer-events: none;
     box-shadow: none !important;
     border: none;
@@ -828,12 +828,24 @@ button.selected {
 }
 
 .icontoolbox {
-    width: 88%;
-    margin: 0 auto 0 0;
-    background: var(--contrast-color);
-    height: auto;
+    width: 100%;
+    margin: 0 0 0 0;
+    color: white;
     border-radius: 5px;
     padding: 3px;
+    text-align: center;
+    min-height: 0%;
+    max-height: 200px;
+    background: var(--accent-color);
+    height: auto;
+    padding: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: all ease-in-out var(--transition-time);
+    -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
+    -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
+    -o-transition: all ease-in-out var(--transition-time); /* Opera */
+    -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
 }
 
 .imagetoolsbox > .windowoptionsbar {
@@ -934,6 +946,22 @@ button#scalebarbtnopt  {
     pointer-events: inherit;
 }
 
+
+.toolboxaddimagebtn.disabled {
+    background: rgba(10, 10, 10, 1);
+    border-radius: 2px 2px;
+    font-size: var(--large-font);
+    vertical-align: top;
+    width: auto;
+    height: auto;
+    padding: 0;
+    box-shadow: 2px 2px rgb(177, 177, 177);
+    min-width: var(--min-svg-btn);
+    max-width: var(--max-svg-btn);
+    min-height: var(--min-svg-btn);
+    max-height: var(--max-svg-btn);
+}
+
 .toolboxaddimagebtn {
     background: var(--bar-gradient);
     border-radius: 2px 2px;
@@ -980,7 +1008,7 @@ button#scalebarbtnopt  {
 }
 
 .draggableToolbox {
-    background: yellow;
+    background: var(--main-bg-color);
     display: block;
 }
 

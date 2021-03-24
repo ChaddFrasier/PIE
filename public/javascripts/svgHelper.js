@@ -198,8 +198,8 @@ function updateInputField( objectid, ...args )
                 if( objectArr[i].getAttribute("objectid").indexOf(objectid.split("-")[1]) > -1 )
                 {
                     // set the ui input boxes
-                    var xinput = objectArr[i].children[1].querySelectorAll("input[name='iconxcoordinput']"),
-                        yinput = objectArr[i].children[1].querySelectorAll("input[name='iconycoordinput']");
+                    var xinput = objectArr[i].querySelectorAll("input[name='iconxcoordinput']"),
+                        yinput = objectArr[i].querySelectorAll("input[name='iconycoordinput']");
 
                     if(xinput.length > 0 && yinput.length > 0)
                     {

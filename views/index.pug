@@ -29,7 +29,7 @@ block content
                     .middledisplay
                         select#figsizeselect(title="Change the size of the main figure.")
                             optgroup
-                                each figsize in ["1500x1500", "2500x2000", "3500x3500"]
+                                each figsize in ["1/4 Page", "1/2 Page", "Full Page"]
                                     option(value=fidsize) #{figsize}
 
                     label.text(for="backgroundcolor")="Background Color"
@@ -172,8 +172,6 @@ block content
                     img.svgimg(src="/images/addPlanetImage.svg")
                 button#addcaptionbtn.toolboxaddcaptionbtn(title="Add Caption Object")
                     img.svgimg(src="/images/addCaptionImage.svg")
-                button#addpowbtn.toolboxaddpowbtn(title="Add POW Object")
-                    img.svgimg(src="/images/addPOW-new.svg")
         #editbox.editbox
             //- Other Options Button Group
             .exportoptionsbar(style="display:flex;")
