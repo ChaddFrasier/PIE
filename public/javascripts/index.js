@@ -1837,7 +1837,26 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
     document.getElementById('figsizeselect').addEventListener("change", (event) =>
     {
         // update the svgContainer size
-        let tmp = event.target.value.split("x")
+        let tmp = []
+
+        switch( event.target.value )
+        {
+            case "1/4 Page":
+                tmp[0] = "1500"
+                tmp[1] = "1500"
+                break;
+
+            case "1/2 Page":
+                tmp[0] = "2500"
+                tmp[1] = "2000"
+                break;
+
+            case "Full Page":
+                tmp[0] = "3000"
+                tmp[1] = "3500"
+                break;
+        }
+
         draggableSvg.getContainerObject().setAttribute("viewBox", `0 0 ${tmp[0]} ${tmp[1]}`)
         draggableSvg.getContainerObject().parentElement.setAttribute("viewBox",
         `-500 0 ${Number(tmp[0]) + 1000} ${tmp[1]}`);

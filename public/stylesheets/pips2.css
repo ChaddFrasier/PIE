@@ -1008,7 +1008,7 @@ button#scalebarbtnopt  {
 }
 
 .draggableToolbox {
-    background: yellow;
+    background: var(--main-bg-color);
     display: block;
 }
 
