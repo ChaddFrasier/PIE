@@ -3463,6 +3463,8 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
                 keyoptionbar = document.createElement("div"),
                 keyoptionheader = document.createElement("h4"),
                 deletebtn4 = document.createElement("button"),
+                layerbtn4 = document.createElement("button"),
+                minibtn4 = document.createElement("button"),
                 keyicontranslatex = document.createElement("input"),
                 keyicontranslatexlabel = document.createElement("label"),
                 keyicontranslatey = document.createElement("input"),
@@ -3492,6 +3494,26 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             deletebtn4.addEventListener( "click", function(event) {
                 removeIconWindow(event)
             })
+
+            minibtn4.classList.add("windowminimizebtn")
+            minibtn4.innerHTML = "▲"
+
+            // cant forget the event handler for the minimize btn
+            minibtn4.addEventListener( "click", function(event) {
+                minimizeToolsWindow(event)
+            })
+
+            // set the class css and the svg button graphic
+            createLayerBtn(layerbtn4, draggableList)
+            /** End Dragging */
+
+            // set aptions bar nodes
+            keyoptionbar.append( 
+                keyoptionheader,
+                minibtn4,
+                deletebtn4,
+                layerbtn4
+            )
 
             // x and y translate
             keyicontranslatex.setAttribute("type", "number")
@@ -3533,7 +3555,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             keyicontoolbox.classList.add("icontoolbox")
 
             // append aspect to options bar
-            keyoptionbar.append( keyoptionheader, document.createElement("br"), deletebtn4 )
             keyoptionbar.setAttribute( "objectid", iconId )
 
             // append rest of options
@@ -3556,7 +3577,14 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             )
             
             // append optionsbar and tools
-            toolbox.append( keyoptionbar, keyicontoolbox )
+            var holderbox = document.createElement("div")
+            holderbox.setAttribute("class", "draggableToolbox")
+            holderbox.setAttribute("objectid", iconId)
+            holderbox.setAttribute("width", "100%")
+            holderbox.setAttribute("height", "100%")
+            holderbox.append( keyoptionbar, keyicontoolbox )
+
+            draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
             break
 
         default:
@@ -3653,7 +3681,7 @@ function removeIconWindow( event )
         let toolsbox = icontoolsbar.nextElementSibling
         let iconsvg = document.getElementById( icontoolsbar.attributes.objectid.value )
 
-        console.log(toolsbox)
+        draggableList.removeObject(icontoolsbar.parentElement)
 
         draggableSvg.getContainerObject().removeChild( iconsvg )
 
