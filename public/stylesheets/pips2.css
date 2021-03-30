@@ -137,7 +137,7 @@ i>b>a, i>b>a:visited {
 }
 
 .draggableDot {
-    fill: rgb(253, 55, 55);
+    fill: rgb(230, 95, 95);
 }
 
 .draggableDot:hover {
