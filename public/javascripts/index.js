@@ -4640,6 +4640,36 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         }
     })
 
+    // TODO: here I need to add two input fields for the thickness of the ends independently
+
+    var lineheadsizelabel = document.createElement("label")
+    var lineheadsizeinput = document.createElement("input")
+
+    lineheadsizelabel.innerHTML = "Line End-Point Size: "
+
+    lineheadsizeinput.setAttribute("type", "number")
+    lineheadsizeinput.setAttribute("objectid", objectid)
+    lineheadsizeinput.value = 10
+
+    lineheadsizeinput.addEventListener("change", function( event )
+    {
+        console.log(event.target)
+    });
+
+    var linetailsizelabel = document.createElement("label")
+    var linetailsizeinput = document.createElement("input")
+
+    linetailsizelabel.innerHTML = "Line Start-Point Size: "
+
+    linetailsizeinput.setAttribute("type", "number")
+    linetailsizeinput.setAttribute("objectid", objectid)
+    linetailsizeinput.value = 10
+
+    linetailsizeinput.addEventListener("change", function( event )
+    {
+        console.log(event.target)
+    });
+
     // append the objects
     linetoolbox.append(
         colorlabel,
@@ -4650,9 +4680,17 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         document.createElement("br"),
         lineheadinput,
         document.createElement("br"),
+        lineheadsizelabel,
+        document.createElement("br"),
+        lineheadsizeinput,
+        document.createElement("br"),
         linetailheadinputlabel,
         document.createElement("br"),
         linetailheadinput,
+        document.createElement("br"),
+        linetailsizelabel,
+        document.createElement("br"),
+        linetailsizeinput,
         document.createElement("br"),
         widthlabel,
         document.createElement("br"),
