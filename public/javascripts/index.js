@@ -1017,8 +1017,6 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             // find the matching html caption element
             let matchingCaption = document.getElementById( `${this.attributes.objectid.value}text` )
 
-            // REMOVE THIS **
-            console.log(this.value)
             // updpate the text inside once found
             if(matchingCaption)
             {
@@ -2020,7 +2018,8 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         try{
             document.getElementById(`northIcon-${imageId}`).remove()
 
-            // TODO: remove the toolbox for the north icon
+            // remove the toolbox for the north icon
+            document.querySelector(`div.draggableToolbox[objectid='northIcon-${imageId}']`).remove()
         }
         catch(err)
         {
@@ -2031,7 +2030,9 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         try{
             document.getElementById(`sunIcon-${imageId}`).remove()
 
-            // TODO: remove the toolbox
+            // remove the toolbox
+            document.querySelector(`div.draggableToolbox[objectid='sunIcon-${imageId}']`).remove()
+
         }
         catch(err)
         {
@@ -2042,7 +2043,9 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         try{
             document.getElementById(`observerIcon-${imageId}`).remove()
 
-            // TODO: remove the toolbox
+            // remove the toolbox
+            document.querySelector(`div.draggableToolbox[objectid='observerIcon-${imageId}']`).remove()
+
         }
         catch(err)
         {
@@ -2051,9 +2054,11 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
         // remove the north icon b/c there is no north data
         try{
-            document.getElementById(`scaleIcon-${imageId}`).remove()
+            document.getElementById(`scalebarIcon-${imageId}`).remove()
 
-            // TODO: remove the toolbox
+            // remove the toolbox
+            document.querySelector(`div.draggableToolbox[objectid='scalebarIcon-${imageId}']`).remove()
+
         }
         catch(err)
         {
@@ -2064,7 +2069,9 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         try{
             document.getElementById(`keyIcon-${imageId}`).remove()
 
-            // TODO: remove the toolbox
+            // remove the toolbox
+            document.querySelector(`div.draggableToolbox[objectid='keyIcon-${imageId}']`).remove()
+
         }
         catch(err)
         {
@@ -4633,6 +4640,45 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         }
     })
 
+    var lineheadsizelabel = document.createElement("label")
+    var lineheadsizeinput = document.createElement("input")
+
+    lineheadsizelabel.innerHTML = "Line End-Point Size: "
+
+    lineheadsizeinput.setAttribute("type", "number")
+    lineheadsizeinput.setAttribute("objectid", objectid)
+    lineheadsizeinput.value = 5
+
+    lineheadsizeinput.addEventListener("change", function( event )
+    {
+        // uses marker-end
+        var line = document.getElementById( event.target.getAttribute("objectid") )
+        var marker = document.getElementById( line.getAttribute("marker-end").substring(5).replace(")", "") )
+
+        marker.setAttribute( "markerWidth", `${event.target.value}px`)
+        marker.setAttribute( "markerHeight", `${event.target.value}px`)
+    });
+
+    var linetailsizelabel = document.createElement("label")
+    var linetailsizeinput = document.createElement("input")
+
+    linetailsizelabel.innerHTML = "Line Start-Point Size: "
+
+    linetailsizeinput.setAttribute("type", "number")
+    linetailsizeinput.setAttribute("objectid", objectid)
+    linetailsizeinput.value = 5
+
+    linetailsizeinput.addEventListener("change", function( event )
+    {
+        // uses marker-start
+        console.log(event.target)
+        var line = document.getElementById( event.target.getAttribute("objectid") )
+        var marker = document.getElementById( line.getAttribute("marker-start").substring(5).replace(")", "") )
+
+        marker.setAttribute( "markerWidth", `${event.target.value}px`)
+        marker.setAttribute( "markerHeight", `${event.target.value}px`)
+    });
+
     // append the objects
     linetoolbox.append(
         colorlabel,
@@ -4643,9 +4689,17 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         document.createElement("br"),
         lineheadinput,
         document.createElement("br"),
+        lineheadsizelabel,
+        document.createElement("br"),
+        lineheadsizeinput,
+        document.createElement("br"),
         linetailheadinputlabel,
         document.createElement("br"),
         linetailheadinput,
+        document.createElement("br"),
+        linetailsizelabel,
+        document.createElement("br"),
+        linetailsizeinput,
         document.createElement("br"),
         widthlabel,
         document.createElement("br"),
