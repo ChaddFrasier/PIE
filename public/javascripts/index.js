@@ -4640,8 +4640,6 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         }
     })
 
-    // TODO: here I need to add two input fields for the thickness of the ends independently
-
     var lineheadsizelabel = document.createElement("label")
     var lineheadsizeinput = document.createElement("input")
 
@@ -4649,11 +4647,16 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 
     lineheadsizeinput.setAttribute("type", "number")
     lineheadsizeinput.setAttribute("objectid", objectid)
-    lineheadsizeinput.value = 10
+    lineheadsizeinput.value = 5
 
     lineheadsizeinput.addEventListener("change", function( event )
     {
-        console.log(event.target)
+        // uses marker-end
+        var line = document.getElementById( event.target.getAttribute("objectid") )
+        var marker = document.getElementById( line.getAttribute("marker-end").substring(5).replace(")", "") )
+
+        marker.setAttribute( "markerWidth", `${event.target.value}px`)
+        marker.setAttribute( "markerHeight", `${event.target.value}px`)
     });
 
     var linetailsizelabel = document.createElement("label")
@@ -4663,11 +4666,17 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 
     linetailsizeinput.setAttribute("type", "number")
     linetailsizeinput.setAttribute("objectid", objectid)
-    linetailsizeinput.value = 10
+    linetailsizeinput.value = 5
 
     linetailsizeinput.addEventListener("change", function( event )
     {
+        // uses marker-start
         console.log(event.target)
+        var line = document.getElementById( event.target.getAttribute("objectid") )
+        var marker = document.getElementById( line.getAttribute("marker-start").substring(5).replace(")", "") )
+
+        marker.setAttribute( "markerWidth", `${event.target.value}px`)
+        marker.setAttribute( "markerHeight", `${event.target.value}px`)
     });
 
     // append the objects
