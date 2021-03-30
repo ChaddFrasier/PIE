@@ -1017,8 +1017,6 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             // find the matching html caption element
             let matchingCaption = document.getElementById( `${this.attributes.objectid.value}text` )
 
-            // REMOVE THIS **
-            console.log(this.value)
             // updpate the text inside once found
             if(matchingCaption)
             {
