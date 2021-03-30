@@ -2020,7 +2020,8 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         try{
             document.getElementById(`northIcon-${imageId}`).remove()
 
-            // TODO: remove the toolbox for the north icon
+            // remove the toolbox for the north icon
+            document.querySelector(`div.draggableToolbox[objectid='northIcon-${imageId}']`).remove()
         }
         catch(err)
         {
@@ -2031,7 +2032,9 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         try{
             document.getElementById(`sunIcon-${imageId}`).remove()
 
-            // TODO: remove the toolbox
+            // remove the toolbox
+            document.querySelector(`div.draggableToolbox[objectid='sunIcon-${imageId}']`).remove()
+
         }
         catch(err)
         {
@@ -2042,7 +2045,9 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         try{
             document.getElementById(`observerIcon-${imageId}`).remove()
 
-            // TODO: remove the toolbox
+            // remove the toolbox
+            document.querySelector(`div.draggableToolbox[objectid='observerIcon-${imageId}']`).remove()
+
         }
         catch(err)
         {
@@ -2051,9 +2056,11 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
         // remove the north icon b/c there is no north data
         try{
-            document.getElementById(`scaleIcon-${imageId}`).remove()
+            document.getElementById(`scalebarIcon-${imageId}`).remove()
 
-            // TODO: remove the toolbox
+            // remove the toolbox
+            document.querySelector(`div.draggableToolbox[objectid='scalebarIcon-${imageId}']`).remove()
+
         }
         catch(err)
         {
@@ -2064,7 +2071,9 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         try{
             document.getElementById(`keyIcon-${imageId}`).remove()
 
-            // TODO: remove the toolbox
+            // remove the toolbox
+            document.querySelector(`div.draggableToolbox[objectid='keyIcon-${imageId}']`).remove()
+
         }
         catch(err)
         {
