@@ -5338,6 +5338,7 @@ function text2PieText( text, captionWidth, fontsize )
     // create return data and helper data
     let paragraphArr = [],
         pieText = "",
+        tab = 30,
         paragraphStartY = 0,
         maxCharPerLine = getMaxCharacterPerLine( captionWidth, fontsize );
 
@@ -5357,13 +5358,13 @@ function text2PieText( text, captionWidth, fontsize )
         */
         let characterEstimate = maxCharPerLine
 
-        // check if the paragraph can fit on the single line based on the esimation
+        // check if the paragraph can fit on the single line based on the estimation
         if(characterEstimate >= String(paragraph).length + 1)
         {
             // if it can fit on 1 line then set the box position and text
             p1.innerHTML = paragraph
             p1.setAttribute("y", paragraphStartY*fontsize + fontsize);
-            p1.setAttribute("x", fontsize)
+            p1.setAttribute("x", fontsize + tab)
             pieText += p1.outerHTML
         }
         else
@@ -5400,13 +5401,14 @@ function text2PieText( text, captionWidth, fontsize )
             
             // append the first line
             p1.innerHTML = firstLine
-            p1.setAttribute("x", fontsize)
+            p1.setAttribute("x", fontsize + tab)
             p1.setAttribute("y", paragraphStartY*fontsize + fontsize)
             pieText += p1.outerHTML
 
             let numberOfLines = ((rest.length / maxCharPerLine) >= 1) ? Math.ceil((rest.length / maxCharPerLine)): 1;
 
             p1.setAttribute("dy", fontsize)
+            p1.setAttribute("x", fontsize)
             p1.removeAttribute("y")
 
             if( numberOfLines === 1)
