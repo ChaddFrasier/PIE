@@ -258,7 +258,7 @@ h5.importantnote-desc {
 img#usgsNavIcon:hover {
     cursor: pointer;
 }
-.gdalimage, .headerimage{
+.gdalimage, .headerimage, .faqimage{
     width: var(--max-header-image-width);
     height: auto;
     max-height: var(--max-title-height);
