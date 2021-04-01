@@ -10,7 +10,7 @@
     --bar-gradient: linear-gradient(to bottom right,rgb(237, 237, 237), rgb(156, 156, 156));
     --transition-time: 0.125s;
 }
-
+/* loading animation */
 @-webkit-keyframes loading {
     from{
         -webkit-transform: rotate(0deg);
@@ -20,7 +20,6 @@
         -webkit-transform: rotate(-360deg);
     }
 }
-
 @keyframes loading {
     from{
         transform: rotate(0deg);
@@ -31,6 +30,7 @@
     }
 }
 
+/* html main classes */
 html {
     background: var(--main-bg-color);
     overflow-x: hidden;
@@ -40,7 +40,6 @@ html {
     margin: 0;
     height: auto;
 }
-
 html.contained {
     overflow-y: hidden;
     -webkit-touch-callout: none; /* iOS Safari */
@@ -50,23 +49,56 @@ html.contained {
     -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
+body {
+    margin: 0 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
 
+/* Fixed Chrome Border Focus Whitespace issue*/
+button {
+    outline: none;
+}
+
+/* dragging cursor parts */
+.selecting {
+    cursor: grab;
+}
+.drawing {
+    background: transparent;
+}
+.drawing:hover{
+    cursor: url("/images/pencil.svg"), auto !important;
+}
 .marker:hover {
     cursor: grab;
 }
+.hand  {
+    cursor: grabbing !important;
+}
+.outlining:hover {
+    cursor: crosshair;
+}
+.outlining {
+    cursor: crosshair;
+    background: transparent;
+}
 
+/* bottom nav bar */
 .linklist > a {
     color: var(--contrast-color);
     margin: auto auto;
     font-size: var(--medium-font);
 }
-
 .linklist {
     display: block;
     text-align: left;
     margin: 0 0;
 }
 
+/* main container parts for the top bar */
 .leftcontainer {
     width: 33.3%;
     text-align: left;
@@ -74,7 +106,6 @@ html.contained {
     max-height: var(--header-height);
     min-height: var(--header-height);
 }
-
 .centercontainer {
     margin: auto auto;
     padding: .5em;
@@ -82,7 +113,6 @@ html.contained {
     max-height: var(--header-height);
     min-height: var(--header-height);
 }
-
 .rightcontainer {
     width: 33.3%;
     text-align: right;
@@ -91,6 +121,7 @@ html.contained {
     min-height: var(--header-height);
 }
 
+/* preset the vector layer container */
 .nobody {
     background-color: transparent;
     border: none;
@@ -101,33 +132,10 @@ html.contained {
     overflow-x: hidden;
 }
 
-.hand  {
-    cursor: grabbing !important;
-}
-
-.outlining:hover {
-    cursor: crosshair;
-}
-
-.outlining {
-    cursor: crosshair;
-    background: transparent;
-}
-
-.desclist {
-    display: block;
-    text-align: left;
-    height: 100%;
-}
-
+/* FAQ page */
 .linklist > a:visited {
     color: var(--secondary-color);
 }
-
-i>b {
-    font-size: var(--large-font);
-}
-
 i>b>a, i>b>a:visited {
     font-style: normal;
     text-decoration: underline;
@@ -135,81 +143,14 @@ i>b>a, i>b>a:visited {
     color: lightskyblue;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
-
-.draggableDot {
-    fill: rgb(230, 95, 95);
+i>b {
+    font-size: var(--large-font);
 }
-
-.draggableDot:hover {
-    cursor: move;
-}
-
-.shifting:hover {
-    cursor: move !important;
-}
-
-.UIIntro {
-    width: 100%;
-    height: auto;
-}
-
-.UIGif {
-    width: var(--gif-width);
-    height: auto;
-}
-
-pre.UIHolder {
-    text-align: center;
-    padding: 0;
-    margin: auto auto;
-}
-
-.pilotstepsimage {
-    width: 80%;
-    height: auto;
-    margin: 0 10vw 0 10vw;
-    text-align: center;
-}
-
-.pilotstepsimage-sm {
- width: 40% !important;
-}
-
 .basicfaqcontent {
     display: flex;
     background-color: rgba(0,0,0,.1);
     padding: 0;
 }
-
-.inlayedlink {
-    color: var(--secondary-color);
-}
-
-
-.inlayedlink:hover {
-    color: var(--primary-color);
-}
-
-.importantnotecontent{
-    background-color: rgba(0,0,0,.1);
-    padding: 1em;
-    font-size: var(--large-font);
-}
-
-.importantnotecontent>.importantnotecontent {
-    padding: .25em;
-}
-
-h4.importantnote-main {
-    padding: 0;
-    margin-top: 0;
-}
-
-h5.importantnote-desc {
-    padding: 0;
-    margin-bottom: 0;
-}
-
 .answerBox {
     width: auto;
     min-width: 10em;
@@ -217,7 +158,6 @@ h5.importantnote-desc {
     height: 100%;
     vertical-align: middle;
 }
-
 .descBox {
     width: 65%;
     margin: 0 0 0 auto;
@@ -227,6 +167,62 @@ h5.importantnote-desc {
     font-size: var(--large-font);
 }
 
+/* used for the Shift Functionality indicator */
+.draggableDot {
+    fill: rgb(230, 95, 95);
+}
+.draggableDot:hover {
+    cursor: move;
+}
+.shifting:hover {
+    cursor: move !important;
+}
+
+/* help page styles */
+.UIIntro {
+    width: 100%;
+    height: auto;
+}
+.UIGif {
+    width: var(--gif-width);
+    height: auto;
+}
+pre.UIHolder {
+    text-align: center;
+    padding: 0;
+    margin: auto auto;
+}
+.pilotstepsimage {
+    width: 80%;
+    height: auto;
+    margin: 0 10vw 0 10vw;
+    text-align: center;
+}
+.pilotstepsimage-sm {
+ width: 40% !important;
+}
+.inlayedlink {
+    color: var(--secondary-color);
+}
+.inlayedlink:hover {
+    color: var(--primary-color);
+}
+.importantnotecontent{
+    background-color: rgba(0,0,0,.1);
+    padding: 1em;
+    font-size: var(--large-font);
+}
+.importantnotecontent>.importantnotecontent {
+    padding: .25em;
+}
+h4.importantnote-main {
+    padding: 0;
+    margin-top: 0;
+}
+h5.importantnote-desc {
+    padding: 0;
+    margin-bottom: 0;
+}
 .descBox2 {
     width: 90%;
     margin: 0 auto 0 auto;
@@ -235,121 +231,15 @@ h5.importantnote-desc {
     padding: 5px 30px;
     font-size: var(--large-font);
 }
-
-.githubimage, .faqimage, .gdalimage, .headerimage{
-    width: var(--max-header-image-width);
-    height: auto;
-    max-height: var(--max-title-height);
-    margin: 0 .5em;
-}
-
-.basicpageheader {
-    text-align: left;
-    width: 100%;
-    font-weight: bold;
-    font-size: x-large;
-    margin: 5px 10px;
-}
-
 .innerpageheader {
     margin: 0 auto;
     text-align: center;
 }
-
-.selectedBox {
-    border: 7px solid var(--main-bg-color);
-    pointer-events: none;
-    transition: all .5ms linear;
-}
-
-.selectedBox > div {
-    cursor: grabbing !important;
-}
-
-.basicpagecontent {
-    background-color: rgba(0,0,0,.1);
-    padding: 0;
-    font-size: var(--large-font);
-    margin: auto auto;
-}
-
-.navbar {
-    display: flex;
-    width: 100%;
-    text-align: center;
-    color: var(--secondary-color);
-}
-
 .changebox {
     width: 100%;
     margin: 0 auto auto auto;
     overflow-y: visible;
 }
-
-.navbar > h3:hover {
-    color: var(--contrast-color);
-    cursor: default;
-}
-
-.navbar > h3.disabled {
-    color: var(--main-bg-color);
-    cursor: default;
-}
-
-.navbar > h3 {
-    font: 20px;
-    margin: 0 0 0 15px;
-    text-decoration: underline;
-    padding: 10px;
-}
-
-pre > h3 {
-    font-size: var(--medium-font);
-}
-
-pre > i > b {
-    word-wrap: break-word;
-}
-.basicpagecontent > pre {
-    padding: 10px 20px;
-    font-size: var(--medium-font);
-    max-width: 1200px;
-    background-color: rgba(255, 255, 255, 0.1);
-    margin: auto auto;
-    text-align: left;
-    height: auto;
-}
-
-.basicpagecontent > pre > pre {
-    padding: 10px 5px;
-    max-width: 1000px;
-    background-color: rgba(0, 0, 0, 0.1);
-    margin: 10px 20px;
-    text-align: left;
-    height: auto;
-}
-
-.basicpagecontent > pre > img, .basicpagecontent > pre > pre > img {
-    margin: 0 auto 0 auto;
-    text-align: left;
-}
-
-.column {
-    display: flex;
-}
-
-.column > label {
-    font-size: var(--small-font);
-}
-
-.column > input[type="checkbox"].disabled {
-    pointer-events: none;
-}
-
-.basicpagecontent > img {
-    text-align: center !important;
-}
-
 .mainaboutbox {
     text-align: center;
     margin: auto auto;
@@ -363,139 +253,108 @@ pre > i > b {
     overflow-y: auto;
 }
 
+
+/* general help / about styles */
 img#usgsNavIcon:hover {
     cursor: pointer;
 }
-
-.iconbtn {
-    background: var(--bar-gradient);
-    padding: 4px 0;
-}
-
-a.descanchor, a.descanchor:visited   {
-    color: var(--contrast-color);
-}
-
-a.descanchor:hover {
-    color: var(--main-bg-color);
-}
-
-.selecting {
-    cursor: grab;
-}
-
-.drawing {
-    background: transparent;
-}
-
-.drawing:hover{
-    cursor: url("/images/pencil.svg"), auto !important;
-}
-
-body {
-    margin: 0 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-}
-
-.svgimg {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-}
-
-.edittoolsbox > rect, .filetoolsbox > rect {
-    pointer-events: none;
-}
-
-div {
-    border-radius: 1.5px 1.5px;
-}
-
-button.disabled {
-    background: rgba(214, 214, 214, 0.781) !important;
-    pointer-events: none;
-    box-shadow: none !important;
-    border: none;
-    cursor: auto;
-}
-
- /* Fixed Chrome Border Focus Whitespace*/
-button {
-    outline: none;
-}
-
-
-.titleLogo {
-    width: auto;
+.gdalimage, .headerimage{
+    width: var(--max-header-image-width);
     height: auto;
     max-height: var(--max-title-height);
-    max-width: var(--max-title-width);
+    margin: 0 .5em;
 }
-
-.usgsLogo {
-    height: var(--usgs-image-height);
-    width: var(--usgs-image-width);
-}
-
-.pips2header {
+.basicpageheader {
+    text-align: left;
     width: 100%;
-    max-height: var(--header-height);
-    min-height: var(--header-height);
-    display: flex;
-    padding: none;
-    border: none;
+    font-weight: bold;
+    font-size: x-large;
+    margin: 5px 10px;
 }
-
-.fileinputfield {
-    width: 80%;
-}
-
-.mainfooter {
-    display: flex;
-    width: 100%;
-    height: var(--footer-height);
-    max-height: var(--footer-height);
-    background: var(--bar-gradient);
-    color: var(--accent-color);
-    bottom: 0;
-    padding: 0 auto 20px auto;
-    position: fixed;
-}
-
-.windowremovebtn  {
-    background: transparent;
-    border-radius: 2px 2px;
+.basicpagecontent {
+    background-color: rgba(0,0,0,.1);
+    padding: 0;
     font-size: var(--large-font);
-    padding: 5px 8px;
-    vertical-align: top;
-    margin: 0 0 0 0;
-    border: 1px solid transparent;
+    margin: auto auto;
 }
-
-.exporttitlebox > h3 {
-    font-size: var(--main-export-title-font);
-    padding: 0px;
-}
-
-#exportbtn {
-    border-radius: 3px 3px;
-    padding: 0px 1px;
+.basicpagecontent > pre {
+    padding: 10px 20px;
     font-size: var(--medium-font);
-    background: var(--bar-gradient);
-    cursor: pointer;
-    width: auto;
+    max-width: 1200px;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin: auto auto;
+    text-align: left;
     height: auto;
 }
-
-#exportbtn > svg {
-    width: var(--export-btn-width);
-    height: var(--export-btn-height);
-    pointer-events: none;
+.basicpagecontent > pre > pre {
+    padding: 10px 5px;
+    max-width: 1000px;
+    background-color: rgba(0, 0, 0, 0.1);
+    margin: 10px 20px;
+    text-align: left;
+    height: auto;
+}
+.basicpagecontent > pre > img, .basicpagecontent > pre > pre > img {
+    margin: 0 auto 0 auto;
+    text-align: left;
+}
+.basicpagecontent > img {
+    text-align: center !important;
+}
+.navbar {
+    display: flex;
+    width: 100%;
+    text-align: center;
+    color: var(--secondary-color);
+}
+.navbar > h3:hover {
+    color: var(--contrast-color);
+    cursor: default;
+}
+.navbar > h3.disabled {
+    color: var(--main-bg-color);
+    cursor: default;
+}
+.navbar > h3 {
+    font: 20px;
+    margin: 0 0 0 15px;
+    text-decoration: underline;
+    padding: 10px;
+}
+pre > h3 {
+    font-size: var(--medium-font);
+}
+pre > i > b {
+    word-wrap: break-word;
+}
+.maincontent {
+    display: flex; 
+    height: auto;
+    max-height: var(--main-content-height);
+    width: 100%;
+    text-align: left;
 }
 
+/* used for the dragging part of the layer */
+.selectedBox {
+    border: 7px solid var(--main-bg-color);
+    pointer-events: none;
+    transition: all .5ms linear;
+}
+.selectedBox > div {
+    cursor: grabbing !important;
+}
+
+/* export box */
+.column {
+    display: flex;
+}
+.column > label {
+    font-size: var(--small-font);
+}
+.column > input[type="checkbox"].disabled {
+    pointer-events: none;
+}
 .exporttitlebox {
     text-align: center;
     color: black;
@@ -503,7 +362,6 @@ button {
     height: 10%;
     padding: 0px;
 }
-
 .exportbuttonholder {
     min-height: 25px;
     display: flex;
@@ -512,7 +370,6 @@ button {
     padding: auto auto 10px auto;
     bottom: 0;
 }
-
 .exportinputholder {
     margin: 0 auto;
     display: flex;
@@ -520,44 +377,37 @@ button {
     width: 95%;
     padding: 0 10px 0 0;
 }
-
 .exportpanelbtn {
     border-radius: 5px 5px;
     height: auto;
     font-size: var(--small-font);
     background: var(--bar-gradient);
 }
-
 .exportinputholder>form{
     display: flex;
     width: 100%;
     height: auto;
 }
-
 .forminputcheckboxholder {
     width: auto;
     margin: .5em 0 0 2em;
     display: block;
     color: black;
 }
-
 .forminputbox {
     width: 100%;
     margin: 0 auto;
     text-align: center;
 }
-
 .forminputbox > input[name="exportfilename"] {
     width: 100%;
     height: auto;
     font-size: var(--sm-medium-font);
     border-radius: 3px 3px;
 }
-
 .invalid {
     border: 2px dotted red;
 }
-
 .formlabelbox {
     width: 100%;
     margin: 0 auto 0 0;
@@ -566,14 +416,12 @@ button {
     padding: 3px 3px;
     text-align: left;
 }
-
 .formlabelbox > label {
     font-size: var(--large-font);
     margin: 0 10px;
     color: black;
     width: 75%;
 }
-
 .exportmainbox {
     background: var(--bar-gradient);
     width: auto;
@@ -588,7 +436,6 @@ button {
     border: 3px solid black;
     border-radius: 3px 3px;
 }
-
 .maincontent-sm {
     height: auto;
     max-height: var(--main-content-height);
@@ -597,29 +444,106 @@ button {
     text-align: left;
 }
 
-.maincontent {
-    display: flex; 
-    height: auto;
-    max-height: var(--main-content-height);
-    width: 100%;
-    text-align: left;
+/* index page */
+.iconbtn {
+    background: var(--bar-gradient);
+    padding: 4px 0;
 }
-
+a.descanchor, a.descanchor:visited   {
+    color: var(--contrast-color);
+}
+a.descanchor:hover {
+    color: var(--main-bg-color);
+}
+.svgimg {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+.edittoolsbox > rect, .filetoolsbox > rect {
+    pointer-events: none;
+}
+div {
+    border-radius: 1.5px 1.5px;
+}
+button.disabled {
+    background: rgba(214, 214, 214, 0.781) !important;
+    pointer-events: none;
+    box-shadow: none !important;
+    border: none;
+    cursor: auto;
+}
+.titleLogo {
+    width: auto;
+    height: auto;
+    max-height: var(--max-title-height);
+    max-width: var(--max-title-width);
+}
+.usgsLogo {
+    height: var(--usgs-image-height);
+    width: var(--usgs-image-width);
+}
+.pips2header {
+    width: 100%;
+    max-height: var(--header-height);
+    min-height: var(--header-height);
+    display: flex;
+    padding: none;
+    border: none;
+}
+.fileinputfield {
+    width: 80%;
+}
+.mainfooter {
+    display: flex;
+    width: 100%;
+    height: var(--footer-height);
+    max-height: var(--footer-height);
+    background: var(--bar-gradient);
+    color: var(--accent-color);
+    bottom: 0;
+    padding: 0 auto 20px auto;
+    position: fixed;
+}
+.windowremovebtn  {
+    background: transparent;
+    border-radius: 2px 2px;
+    font-size: var(--large-font);
+    padding: 5px 8px;
+    vertical-align: top;
+    margin: 0 0 0 0;
+    border: 1px solid transparent;
+}
+.exporttitlebox > h3 {
+    font-size: var(--main-export-title-font);
+    padding: 0px;
+}
+#exportbtn {
+    border-radius: 3px 3px;
+    padding: 0px 1px;
+    font-size: var(--medium-font);
+    background: var(--bar-gradient);
+    cursor: pointer;
+    width: auto;
+    height: auto;
+}
+#exportbtn > svg {
+    width: var(--export-btn-width);
+    height: var(--export-btn-height);
+    pointer-events: none;
+}
 .imageform {
     width: 90%;
     height: auto;
     padding: 0;
     margin:  0;
 }
-
 .windoworderingbtn:hover {
     cursor: grab;
 }
-
 .windoworderingbtn>svg {
     pointer-events: none;
 }
-
 .windoworderingbtn{
     background: transparent;
     border-radius: 2px 2px;
@@ -631,7 +555,6 @@ button {
     border: 1px solid transparent;
     pointer-events: visible;
 }
-
 .filetoolsbox {
     border: 1.5px solid var(--primary-color);
     width: 100%;
@@ -653,7 +576,6 @@ button {
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
     margin: 0 auto 0 auto;
 }
-
 .dividerline {
     width: 100%;
     height: auto;
@@ -667,16 +589,13 @@ button {
     padding: 0;
     text-align: center;
 }
-
 .imagetoolsbox > .dividerline {
     width: 65%;
     margin: 10px auto 0 auto;
 }
-
 .filetoolsbox > input[type="file"] {
     width: 90%;
 }
-
 .text {
     font-size: auto;
     color: white;
@@ -686,13 +605,11 @@ button {
     width: 100%;
     font-size: var(--medium-font);
 }
-
 .concisebtngroup {
     text-align: center;
     padding: 0px;
     width: 100%;
 }
-
 .concisebtngroup > button {
     height: var(--btn-group-btn);
     width: var(--btn-group-btn);
@@ -700,33 +617,25 @@ button {
     border: 2px solid black;
     padding: 3px 3px;
 }
-
 .concisebtngroup > .disabled {
     background: var(--disabled-button-gradient) !important;
 }
-
-
 .concisebtngroup > .disabled:hover {
     cursor: default !important;
 }
-
 #icongroup > button:hover {
     cursor: grab;
 }
-
 .keybox {
     margin: "2px auto 3px 5px";
     font-size: large;
     color: black;
 }
-
-
 .valbox {
     font-size: large;
     margin: "2px 5px 3px auto";
     color: black;
 }
-
 .edittoolsbox {
     border: 1.5px solid var(--primary-color);
     width: auto;
@@ -748,11 +657,9 @@ button {
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
     margin: 0 0 0 0;
 }
-
 button.selected {
     background: rgba(85, 84, 84, 0.5);
 }
-
 .captiontoolsbox {
     border: 1px solid black;
     width: auto;
@@ -774,45 +681,9 @@ button.selected {
     color: white;
     text-align: center;
 }
-
-.powtoolsbox {
-    border: 1px solid black;
-    width: auto;
-    min-width: 100%;
-    max-width: 100%;
-    min-height: 0%;
-    background: var(--accent-color);
-    max-height: 100%;
-    height: 80px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 0;
-    transition: all ease-in-out var(--transition-time);
-    -moz-transition: all ease-in-out var(--transition-time); /* Firefox 4 */
-    -webkit-transition: all ease-in-out var(--transition-time); /* Safari and Chrome */
-    -o-transition: all ease-in-out var(--transition-time); /* Opera */
-    -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
-    margin: 0;
-    color: white;
-    text-align: center;
-}
-
-.powtoolsbox > input[name='powIdInput']
-{
-    width: 90%;
-    font-size: 10px;
-}
-
-.powtoolsbox > button
-{
-    border-radius: 5px 5px;
-    background: var(--bar-gradient);
-}
-
 .captiontoolsbox > input[type='number'], .imagetoolsbox > input[type='number'] {
     width: 75%;
 }
-
 .imagetoolsbox > input[name='widthinput'], .imagetoolsbox > input[name='heightinput'] {
     background: rgb(73, 73, 73);
     width: 44%;
@@ -820,13 +691,11 @@ button.selected {
     pointer-events: none;
     border-radius: 5px;
 }
-
 .textareainputfield {
     max-width: 100%;
     font-size: var(--xsmall-font);
     margin: 0 auto;
 }
-
 .icontoolbox {
     width: 100%;
     margin: 0 0 0 0;
@@ -847,14 +716,12 @@ button.selected {
     -o-transition: all ease-in-out var(--transition-time); /* Opera */
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
 }
-
 .imagetoolsbox > .windowoptionsbar {
     width: 88%;
     margin: 0 0 0 0;
     border-radius: 5px;
     padding: 3px;
 }
-
 .linetoolsbox {
     border: 1px solid black;
     width: auto;
@@ -875,11 +742,9 @@ button.selected {
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
     margin: 0;
 }
-
 .captions {
     overflow-y: hidden;
 }
-
 .imagetoolsbox {
     border: 1px solid black;
     width: auto;
@@ -901,7 +766,6 @@ button.selected {
     margin: 0;
     text-align:  center;
 }
-
 .toolboxminimizebtn {
     background: var(--bar-gradient);
     border-radius: 2px 2px;
@@ -914,7 +778,6 @@ button.selected {
     min-width: var(--min-svg-btn);
     min-height: var(--min-svg-btn);
 }
-
 .btnvectorgraphic{
     width: auto;
     min-width: var(--svg-icon-width);
@@ -922,31 +785,24 @@ button.selected {
     height: auto;
     pointer-events: none;
 }
-
 #scalebarbtnopt > .btnvectorgraphic {
     width: 100%;
     max-width: inherit;
     height: var(--svg-icon-height);
 }
-
 button#northarrowopt, button#sunarrowopt, button#observerarrowopt , button#scalebarbtnopt , button#penciloptbtn, button#outlinebtnopt, button#keyopt{
     background: var(--bar-gradient);
     border: 3px solid black;
 }
-
 button#northarrowopt:hover, button#sunarrowopt:hover, button#observerarrowopt:hover , button#scalebarbtnopt:hover , button#penciloptbtn:hover, button#outlinebtnopt:hover, button#keyopt:hover{
     background: var(--hover-contrast-color);
 }
-
 button#scalebarbtnopt  {
     width: 85%;
 }
-
 .btnvectorgraphic>svg {
     pointer-events: inherit;
 }
-
-
 .toolboxaddimagebtn.disabled {
     background: rgba(10, 10, 10, 1);
     border-radius: 2px 2px;
@@ -961,7 +817,6 @@ button#scalebarbtnopt  {
     min-height: var(--min-svg-btn);
     max-height: var(--max-svg-btn);
 }
-
 .toolboxaddimagebtn {
     background: var(--bar-gradient);
     border-radius: 2px 2px;
@@ -976,7 +831,6 @@ button#scalebarbtnopt  {
     min-height: var(--min-svg-btn);
     max-height: var(--max-svg-btn);
 }
-
 .toolboxaddcaptionbtn {
     background: var(--bar-gradient);
     border-radius: 2px 2px;
@@ -991,57 +845,34 @@ button#scalebarbtnopt  {
     min-height: var(--min-svg-btn);
     max-height: var(--max-svg-btn);
 }
-
-.toolboxaddpowbtn {
-    background: var(--bar-gradient);
-    border-radius: 2px 2px;
-    font-size: var(--large-font);
-    vertical-align: top;
-    width: auto;
-    height: auto;
-    box-shadow: 2px 2px rgb(177, 177, 177);
-    padding: 0;
-    min-width: var(--min-svg-btn);
-    max-width: var(--max-svg-btn);
-    min-height: var(--min-svg-btn);
-    max-height: var(--max-svg-btn);
-}
-
 .draggableToolbox {
     background: var(--main-bg-color);
     display: block;
 }
-
 button.disabled {
     background: rgba(0, 0, 0, 0.35) !important;
     pointer-events: none;
     border: none;
 }
-
 button:hover {
     border-color: black;
 }
-
 .exportoptionsbar {
     text-align: right;
     width: var(--inner-main-content-max-width);
     overflow: hidden;
 }
-
 .buttongroup-left {
     margin: 0 auto 0 0;
     max-height: 2em;
 }
-
 img.loading {
     animation: loading 2s linear 1s infinite alternate;
     -webkit-animation: loading 2s linear 1s infinite;
 }
-
 .buttongroup {
     margin: 0 0 0 auto;
 }
-
 .buttongroup > button {
     background-color: transparent;
     border-right: 1px solid black;
@@ -1049,11 +880,9 @@ img.loading {
     border-radius: 2px 2px;
     font-size: var(--header-btn-font);
 }
-
 .footerbuttongroup {
     margin: 0 0 0 auto;
 }
-
 .footerbuttongroup > a {
     background-color: transparent;
     color: inherit;
@@ -1067,29 +896,24 @@ img.loading {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
-
 .footerbuttongroup > a.disabled {
    background: var(--footer-button-disabled-color);
    pointer-events: none;
 }
-
 .footerbuttongroup > a:hover {
     background: rgba(62, 149, 163, 0.24);
 }
-
 svg.imagecontainer {
     width: auto;
     height: var(--inner-main-content-max-height);
     padding: 0;
     margin: 0 auto 0 auto;
 }
-
 .svgholder {
     width: 100%;
     height: var(--inner-main-content-max-height);
     background: black;
 }
-
 svg.scalerBox {
     height: auto;
     border: 3px solid black;
@@ -1098,14 +922,12 @@ svg.scalerBox {
     width: 25%;
     margin:  0 0 0 auto;
 }
-
 .uploadBox {
     width: 100%;
     padding: 0;
     margin: 0;
     display: flex;
 }
-
 .windowminimizebtn {
     background: transparent;
     border-radius: 2px 2px;
@@ -1115,7 +937,6 @@ svg.scalerBox {
     margin: 0 0 0 auto;
     border: 1px solid transparent;
 }
-
 .windowoptionsbar {
     background: var(--bar-gradient);
     text-align: right;
@@ -1125,18 +946,15 @@ svg.scalerBox {
     margin: 0 0 0 0;
     overflow: hidden;
 }
-
 .windowoptionsbar>h4{
     font-size: var(--large-font);
     vertical-align: middle;
     margin: auto auto auto 2px;
     pointer-events: none;
 }
-
 .windowoptionsbar>button {
     font-size: var(--small-font);
 }
-
 .toolscontainer{
     width: 100%;
     height: var(--toolcontainer-height);
@@ -1151,7 +969,6 @@ svg.scalerBox {
     -o-transition: all ease-in-out var(--transition-time); /* Opera */
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
 }
-
 .windowsidebar {
     background: transparent;
     border: none;
@@ -1163,56 +980,25 @@ svg.scalerBox {
     min-width: var(--min-svg-btn);
     text-align: center;
 }
-
 .containingelement {
     cursor: none;
     width: auto;
 }
-
 .windowsidebar > button:hover {
     border: none;
     box-shadow: 1px 1px rgb(170, 167, 167);
 }
-
-.leftfooter {
-    vertical-align: middle;
-    margin: auto auto auto 1em;
-    width: 33.3%;
-    color: inherit;
-}
-
-.centerfooter {
-    margin: 2em auto 2em auto;
-    text-align: center;
-    color: inherit;
-    border: 1px solid black;
-    width: auto;
-}
-
-.rightfooter {  
-    color: inherit;
-    vertical-align: middle;
-    text-align: center;
-    margin: auto 2em auto auto;
-    width: 30%;
-    pointer-events: none;
-    font-size: var(--medium-font);
-}
-
 .closed {
     height: 0em !important;
 }
-
 .toolboxcontainer.closed {
     width: var(--min-svg-btn) !important;
     min-width: 0% !important;
 }
-
 input[type="color"]{
     width: var(--color-input-width);
     height: var(--color-input-height);
 }
-
 .toolboxcontainer {
     background: var(--main-bg-color);
     color: black;
@@ -1227,7 +1013,6 @@ input[type="color"]{
     -ms-transition: all ease-in-out var(--transition-time); /* Explorer 10 */
     margin: 0 2.5px 0 0;
 }
-
 .editbox {
     margin: 0 auto auto auto;
     background: var(--primary-color);
@@ -1245,29 +1030,33 @@ input[type="color"]{
     overflow: visible;
     padding: 5px 2px 3px 2px;
 }
-
 .pagetitle {
     margin: 0 auto 0 auto;
 }
 
-.logininputbox {
-    background-color: aquamarine;
-    min-height: 25px;
-    max-height: 100px;
-    min-width: 25em;
-    max-width: 33em;
+/* footer boxes */
+.leftfooter {
+    vertical-align: middle;
+    margin: auto auto auto 1em;
+    width: 33.3%;
+    color: inherit;
 }
-
-.inputcontainer {
-    margin: 0 auto 0 auto;
+.centerfooter {
+    margin: 2em auto 2em auto;
     text-align: center;
-    width: auto;
-    min-width: 500px;
-    max-width: 75%;
-    height: auto;
+    color: inherit;
     border: 1px solid black;
+    width: auto;
 }
-
+.rightfooter {  
+    color: inherit;
+    vertical-align: middle;
+    text-align: center;
+    margin: auto 2em auto auto;
+    width: 30%;
+    pointer-events: none;
+    font-size: var(--medium-font);
+}
 .middledisplay {
     text-align: center;
     margin: 0 auto;
