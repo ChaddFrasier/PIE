@@ -1930,33 +1930,35 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
         shadowIcon.icon = null
 
-        if(typeofObject(event.target.id) == "image" && event.target.getAttribute("GEO") == "true")
+        var imageObject = document.getElementsByTagName("image")[0]
+
+        if(typeofObject(imageObject.id) == "image" && imageObject.getAttribute("GEO") == "true")
         {
-            if( btn.id.indexOf("north") > -1 && event.target.parentElement.getAttribute("NorthAzimuth"))
+            if( btn.id.indexOf("north") > -1 && imageObject.parentElement.getAttribute("NorthAzimuth"))
             {
                 // set element
-                selectedObject = event.target
+                selectedObject = imageObject
             }
-            else if( btn.id.indexOf("sun") > -1 && event.target.parentElement.getAttribute("SubSolarAzimuth") )
+            else if( btn.id.indexOf("sun") > -1 && imageObject.parentElement.getAttribute("SubSolarAzimuth") )
             {
                 // set element
-                selectedObject = event.target
+                selectedObject = imageObject
             }
-            else if( btn.id.indexOf("observer") > -1 && event.target.parentElement
+            else if( btn.id.indexOf("observer") > -1 && imageObject.parentElement
                 .getAttribute("SubSpacecraftGroundAzimuth") 
             ){
                 // set element
-                selectedObject = event.target
+                selectedObject = imageObject
             }
-            else if( btn.id.indexOf("scale") > -1 && event.target.parentElement.getAttribute("PixelResolution") )
+            else if( btn.id.indexOf("scale") > -1 && imageObject.parentElement.getAttribute("PixelResolution") )
             {
                 // set element
-                selectedObject = event.target
+                selectedObject = imageObject
             }
             else if( btn.id.indexOf("key") > -1 )
             {
                 // set element
-                selectedObject = event.target
+                selectedObject = imageObject
             }
             else
             {
@@ -1964,7 +1966,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 the required metadata for this icon.")
             }
         }
-        else if(btn != event.target)
+        else if(btn != imageObject)
         {
             alert("CANNOT ADD ICON TO THIS ELEMENT")
         }
