@@ -329,7 +329,8 @@ pre > i > b {
 .maincontent {
     display: flex; 
     height: auto;
-    max-height: var(--main-content-height);
+    padding: 0;
+    margin: 0;
     width: 100%;
     text-align: left;
 }
