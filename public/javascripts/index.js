@@ -2176,8 +2176,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
                         icongroup.firstChild.setAttribute("transform", 
                         `rotate(
-                            ${parseFloat(document.getElementById(image.id + "-hg").getAttribute("SubSolarAzimuth"))
-                             + 90} 13.5 13.5)` )
+                            ${parseFloat(document.getElementById(image.id + "-hg").getAttribute("SubSolarAzimuth")) + 270} 13.5 13.5)` )
                     }
                     else
                     {
