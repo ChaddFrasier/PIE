@@ -895,124 +895,88 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
      */
     document.getElementById('addcaptionbtn').addEventListener("click", () =>
     {
-        // used for identifying the tool box for each caption in the image 
-        let captionId = randomId("caption"),
+        if ( getObjectCount(0, "caption") < 1 )
+        {
+            // used for identifying the tool box for each caption in the image 
+            let captionId = randomId("caption"),
             newoptionsbar = document.createElement("div"),
             header = document.createElement("h4"),
             minibtn = document.createElement("button"),
             deletebtn = document.createElement("button"),
             layerbtn = document.createElement("button")
 
-        // set required styles
-        newoptionsbar.classList.add("windowoptionsbar")
-        newoptionsbar.style.display = "flex"
+            // set required styles
+            newoptionsbar.classList.add("windowoptionsbar")
+            newoptionsbar.style.display = "flex"
 
-        newoptionsbar.addEventListener("click", function ( event )
-        {
+            newoptionsbar.addEventListener("click", function ( event )
+            {
             optionsAction(event.target)
-        })
+            })
 
-        // setup the header of the optionsbar
-        header.innerHTML = "Caption Layer"
+            // setup the header of the optionsbar
+            header.innerHTML = "Caption Layer"
 
-        // same with the minimize button
-        minibtn.classList.add("windowminimizebtn")
-        minibtn.innerHTML = "▲"
+            // same with the minimize button
+            minibtn.classList.add("windowminimizebtn")
+            minibtn.innerHTML = "▲"
 
-        // cant forget the event handler for the minimize btn
-        minibtn.addEventListener( "click", function(event) {
+            // cant forget the event handler for the minimize btn
+            minibtn.addEventListener( "click", function(event) {
             minimizeToolsWindow(event)
-        })
+            })
 
-        // same for delete as minimize
-        deletebtn.classList.add("windowremovebtn")
-        deletebtn.style.padding = "2px"
-        var img = document.createElement("img")
-        img.style.pointerEvents = "none"
-        img.src = "/images/trash.svg"
-        img.setAttribute("height", "22px")
-        img.setAttribute("width", "22px")
-        deletebtn.append(img)
-        
-        deletebtn.addEventListener("click", function(event){ getObjectCount(-1, "caption"); removeToolsWindow(event); })
-        
-        // set the class css and the svg button graphic
-        createLayerBtn(layerbtn, draggableList)
+            // same for delete as minimize
+            deletebtn.classList.add("windowremovebtn")
+            deletebtn.style.padding = "2px"
+            var img = document.createElement("img")
+            img.style.pointerEvents = "none"
+            img.src = "/images/trash.svg"
+            img.setAttribute("height", "22px")
+            img.setAttribute("width", "22px")
+            deletebtn.append(img)
 
-        // this is all dynamic css for the caption tool box
-        // the most important part is just the 'objectid' attribute
-        let toolsarea = document.createElement("div"),
+            deletebtn.addEventListener("click", function(event){ getObjectCount(-1, "caption"); removeToolsWindow(event); document.getElementById('addcaptionbtn').classList.remove('disabled'); })
+
+            // set the class css and the svg button graphic
+            createLayerBtn(layerbtn, draggableList)
+
+            // this is all dynamic css for the caption tool box
+            // the most important part is just the 'objectid' attribute
+            let toolsarea = document.createElement("div"),
             textinput = document.createElement("textarea"),
-            widthlabel = document.createElement("label"),
-            widthinput = document.createElement("input"),
-            heightlabel = document.createElement("label"),
-            fontSizeInput = document.createElement("input"),
-            fontSizeLabel = document.createElement("label"),
-            heightinput = document.createElement("input"),
-            xcoordlabel = document.createElement("label"),
-            xcoordinput = document.createElement("input"),
-            ycoordlabel = document.createElement("label"),
-            ycoordinput = document.createElement("input"),
             textlabel = document.createElement("label"),
             captiontextcolorinput = document.createElement("input"),
             captiontextcolorlabel = document.createElement("label"),
             captionbackgroundcolorinput = document.createElement("input"),
             captionbackgroundcolorlabel = document.createElement("label");
 
-        captiontextcolorlabel.setAttribute("objectid", captionId)
-        captiontextcolorinput.setAttribute("objectid", captionId)
+            captiontextcolorlabel.setAttribute("objectid", captionId)
+            captiontextcolorinput.setAttribute("objectid", captionId)
 
-        captiontextcolorinput.setAttribute("type", "color")
-        captiontextcolorlabel.innerHTML = "Font Color: "
-        captiontextcolorinput.value ="#000"
+            captiontextcolorinput.setAttribute("type", "color")
+            captiontextcolorlabel.innerHTML = "Font Color: "
+            captiontextcolorinput.value ="#000"
 
-        fontSizeLabel.innerHTML = "Font Size (px): "
-        fontSizeInput.value = "30"
-        fontSizeInput.type = "number"
-        fontSizeInput.min = "30"
-        fontSizeInput.setAttribute("objectid", captionId)
+            captionbackgroundcolorlabel.setAttribute("objectid", captionId)
+            captionbackgroundcolorinput.setAttribute("objectid", captionId)
+            captionbackgroundcolorinput.setAttribute("type", "color")
+            captionbackgroundcolorinput.value = "#d3d3d3"
 
-        fontSizeInput.addEventListener("change", function(){
-            let inputInt = parseInt(this.value),
-                captionTextElement = document.getElementById(`${this.attributes.objectid.value}text`)
+            captionbackgroundcolorlabel.innerHTML = "Background Color: "
 
-            if( !isNaN(inputInt) )
-            {
-                captionTextElement.setAttribute("font-size", `${inputInt}px`)
-                // find the matching html caption element
-                let matchingCaption = document.getElementById( this.attributes.objectid.value )
+            // set attributes and classes
+            toolsarea.classList.add("captiontoolsbox")
+            toolsarea.setAttribute("id", `captiontoolsbox-${captionId}`)
+            toolsarea.setAttribute("objectid", captionId)
+            textlabel.innerHTML = "Caption Text: "
+            textlabel.setAttribute("for", "captiontextinput")
+            textinput.setAttribute("name","captiontextinput")
+            textinput.setAttribute("placeholder", "Type your caption here")
+            textinput.classList.add('textareainputfield')
 
-                // updpate the text inside once found
-                if( matchingCaption )
-                {   
-                    matchingCaption.lastChild.innerHTML = text2PieText(
-                        textinput.value, 
-                        parseFloat(matchingCaption.getAttribute("width")), 
-                        parseInt(captionTextElement.getAttribute("font-size"))
-                    );
-                }
-            }
-        })
-
-        captionbackgroundcolorlabel.setAttribute("objectid", captionId)
-        captionbackgroundcolorinput.setAttribute("objectid", captionId)
-        captionbackgroundcolorinput.setAttribute("type", "color")
-        captionbackgroundcolorinput.value = "#d3d3d3"
-
-        captionbackgroundcolorlabel.innerHTML = "Background Color: "
-
-        // set attributes and classes
-        toolsarea.classList.add("captiontoolsbox")
-        toolsarea.setAttribute("id", `captiontoolsbox-${captionId}`)
-        toolsarea.setAttribute("objectid", captionId)
-        textlabel.innerHTML = "Caption Text: "
-        textlabel.setAttribute("for", "captiontextinput")
-        textinput.setAttribute("name","captiontextinput")
-        textinput.setAttribute("placeholder", "Type your caption here")
-        textinput.classList.add('textareainputfield')
-
-        // pass the keyup listener to update the text input
-        textinput.addEventListener("keyup", function(){
+            // pass the keyup listener to update the text input
+            textinput.addEventListener("keyup", function(){
 
             // find the matching html caption element
             let matchingCaption = document.getElementById( `${this.attributes.objectid.value}text` )
@@ -1026,110 +990,19 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                     parseInt(matchingCaption.getAttribute("font-size"))
                 );
             }
-        })
+            })
 
-        /**
-         * Do the same general idea for the text input on all the input to follow here
-         */
-        widthlabel.innerHTML = "Caption Width: "
-        widthlabel.setAttribute("for", "widthinput")
-        widthinput.setAttribute("type", "number")
-        widthinput.setAttribute("min", '500')
-        widthinput.setAttribute("max", 'none')
-        widthinput.value = 750
-        widthinput.setAttribute("name","widthinput")
 
-        widthinput.addEventListener("change", function() {
-            // find the matching html caption element
-            let matchingCaption = document.getElementById( this.attributes.objectid.value )
-            // updpate the text inside once found
-            if(matchingCaption && !isNaN(Number(this.value)))
-            {
-                if( Number(this.value) < Number(this.getAttribute("min")) )
-                {
-                    matchingCaption.setAttribute("width", Number(this.getAttribute("min")))
-                    this.value = Number(this.getAttribute("min"))
-                }
-                else
-                {
-                    matchingCaption.setAttribute("width", Number(this.value))
-                }
-                matchingCaption.lastChild.innerHTML = text2PieText(
-                    textinput.value,
-                    parseFloat(matchingCaption.getAttribute("width")),
-                    parseInt(document.getElementById(`${this.attributes.objectid.value}text`)
-                        .getAttribute("font-size"))
-                );
-            }
-        })
-
-        heightlabel.innerHTML = "Caption Height: "
-        heightlabel.setAttribute("for", "heightinput")
-
-        heightinput.setAttribute("type", "number")
-        heightinput.setAttribute("min", '100')
-        heightinput.value = 100
-        heightinput.setAttribute("name","heightinput")
-        heightinput.addEventListener("change", function() {
-            // find the matching html caption element
-            let matchingCaption = document.getElementById( this.attributes.objectid.value )
-            // updpate the text inside once found
-            if(matchingCaption && !isNaN(Number(this.value)))
-            {
-                if( Number(this.value) < Number(this.getAttribute("min")) )
-                {
-                    matchingCaption.setAttribute("height", Number(this.getAttribute("min")))
-                    this.value = Number(this.getAttribute("min"))
-                }
-                else
-                {
-                    matchingCaption.setAttribute("height", Number(this.value))
-                }
-            }
-        })
-
-        xcoordlabel.innerHTML = "Caption X: "
-        xcoordlabel.setAttribute("for", "xcoordinput")
-        xcoordinput.setAttribute("type", "number")
-        xcoordinput.value = 0
-        xcoordinput.setAttribute("name","xcoordinput")
-
-        xcoordinput.addEventListener("change", function() {
-            // find the matching html caption element
-            let matchingCaption = document.getElementById( this.attributes.objectid.value )
-            // updpate the text inside once found
-            if(matchingCaption && !isNaN(Number(this.value)))
-            {
-                matchingCaption.setAttribute("x", Number(this.value))
-            }
-        })
-        
-        ycoordlabel.innerHTML = "Caption Y: "
-        ycoordlabel.setAttribute("for", "ycoordinput")
-        ycoordinput.setAttribute("type", "number")
-        ycoordinput.value = '0'
-        ycoordinput.setAttribute("name","ycoordinput")
-        
-        ycoordinput.addEventListener("change", function() {
-            // find the matching html caption element
-            let matchingCaption = document.getElementById( this.attributes.objectid.value )
-            // updpate the text inside once found
-            if(matchingCaption && !isNaN(Number(this.value)))
-            {
-                matchingCaption.setAttribute("y", Number(this.value))
-            }
-        })
-
-        captiontextcolorinput.addEventListener("change", function(event){
+            captiontextcolorinput.addEventListener("change", function(event){
             updateCaptionTextColor( event.target.value , event.target.attributes.objectid.value)
-        })
+            })
 
-        captionbackgroundcolorinput.addEventListener("change", function(event){
+            captionbackgroundcolorinput.addEventListener("change", function(event){
             updateCaptionBoxColor( event.target.value , event.target.attributes.objectid.value)
-        })
+            })
 
-        // append all the elements to the tool box
-        toolsarea.append( 
+            // append all the elements to the tool box
+            toolsarea.append( 
             textlabel,
             document.createElement("br"),
             textinput,
@@ -1140,89 +1013,71 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             document.createElement("br"),
             captionbackgroundcolorlabel,
             document.createElement("br"),
-            captionbackgroundcolorinput,
-            document.createElement("br"),
-            fontSizeLabel,
-            document.createElement("br"),
-            fontSizeInput,
-            document.createElement("br"),
-            widthlabel,
-            document.createElement("br"),
-            widthinput,
-            document.createElement("br"),
-            heightlabel,
-            document.createElement("br"),
-            heightinput,
-            document.createElement("br"),
-            xcoordlabel,
-            document.createElement("br"),
-            xcoordinput,
-            document.createElement("br"),
-            ycoordlabel,
-            document.createElement("br"),
-            ycoordinput
-        )
+            captionbackgroundcolorinput
+            )
 
-        // set caption id on all input elements
-        toolsarea.childNodes.forEach(element => {
+            // set caption id on all input elements
+            toolsarea.childNodes.forEach(element => {
             element.setAttribute("objectid", captionId)
-        });
+            });
 
-        // append all elements together
-        newoptionsbar.append(
+            // append all elements together
+            newoptionsbar.append(
             header,
             minibtn,
             deletebtn,
             layerbtn,
             toolsarea
-        )
+            )
 
-        newoptionsbar.setAttribute( "objectid", captionId )
+            newoptionsbar.setAttribute( "objectid", captionId )
 
-        // finish by appending the whole thing
-        let holderbox = document.createElement("div")
-        holderbox.setAttribute("class", "draggableToolbox")
-        holderbox.append(newoptionsbar, toolsarea)
-        holderbox.setAttribute("objectid", captionId)
+            // finish by appending the whole thing
+            let holderbox = document.createElement("div")
+            holderbox.setAttribute("class", "draggableToolbox")
+            holderbox.append(newoptionsbar, toolsarea)
+            holderbox.setAttribute("objectid", captionId)
 
-        draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
+            draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
 
-        /** Add a caption box in the svg area */
-        const textholder = document.createElementNS(NS.svg, "svg")
-        textholder.setAttribute("id", captionId)
-        textholder.setAttribute("x", "0")
-        textholder.setAttribute("y", "0")
-        textholder.setAttribute("width", "750")
-        textholder.setAttribute("height", "100")
-        textholder.setAttribute("preserveAspectRatio", "xMidYMid meet")
+            /** Add a caption box in the svg area */
+            const textholder = document.createElementNS(NS.svg, "svg")
+            textholder.setAttribute("id", captionId)
+            textholder.setAttribute("x", "0")
+            textholder.setAttribute("y", "0")
+            textholder.setAttribute("width", "750")
+            textholder.setAttribute("height", "100")
+            textholder.setAttribute("preserveAspectRatio", "xMidYMid meet")
 
-        const rect = document.createElementNS(NS.svg,"rect");
-        rect.setAttribute("id", `${captionId}bg`);
-        rect.setAttribute("width", "100%");
-        rect.setAttribute("height", "100%");
-        rect.setAttribute("fill", "#fff");
-        rect.setAttribute("x", "0");
-        rect.setAttribute("y", "0");
-        rect.classList.add("marker")
+            const rect = document.createElementNS(NS.svg,"rect");
+            rect.setAttribute("id", `${captionId}bg`);
+            rect.setAttribute("width", "100%");
+            rect.setAttribute("height", "100%");
+            rect.setAttribute("fill", "#fff");
+            rect.setAttribute("x", "0");
+            rect.setAttribute("y", "0");
+            rect.classList.add("marker")
 
-        const text = document.createElementNS(NS.svg, "text")
-        text.setAttribute("id", `${captionId}text`)
-        text.setAttribute("data-cy", "caption")
-        text.setAttribute("width", "100%")
-        text.setAttribute("height", "100%")
-        text.setAttribute("font-size", "30px")
-        text.setAttribute("pointer-events", "none")
-        
-        // how to display the caption text
-        text.innerHTML = "<tspan x='0' y='30'>Type your caption here</tspan>"
+            const text = document.createElementNS(NS.svg, "text")
+            text.setAttribute("id", `${captionId}text`)
+            text.setAttribute("data-cy", "caption")
+            text.setAttribute("width", "100%")
+            text.setAttribute("height", "100%")
+            text.setAttribute("font-size", "30px")
+            text.setAttribute("pointer-events", "none")
 
-        // finish by adding them to the document
-        textholder.append(rect, text)
-        draggableSvg.getContainerObject().appendChild(textholder)
+            // how to display the caption text
+            text.innerHTML = "<tspan x='0' y='30'>Type your caption here</tspan>"
 
-        textinput.focus()
+            // finish by adding them to the document
+            textholder.append(rect, text)
 
-        getObjectCount(1, "caption")
+            // append the caption box somewhere on the screen
+            document.getElementById("editbox").appendChild(textholder)
+            textinput.focus()
+            getObjectCount(1, "caption")
+            document.getElementById('addcaptionbtn').classList.add('disabled')
+        }
     });
 
 
@@ -2749,9 +2604,11 @@ function removeToolsWindow( event )
     if(event.target.parentElement.attributes.objectid.value)
     {
         // remove the current options bar, its next child and the caption matching the same id
+        // TODO: explain what the objectid is 
         var parentBox = event.target.parentElement.parentElement,
             svgObject = document.getElementById(event.target.parentElement.attributes.objectid.value),
-            svgcontainer = draggableSvg.getContainerObject()
+            svgcontainer = draggableSvg.getContainerObject(),
+            captioncontainer = document.getElementById("editbox")
 
         ButtonManager.removeImage(event.target.parentElement.attributes.objectid.value)
         // remove the options and other things for image
@@ -2760,6 +2617,10 @@ function removeToolsWindow( event )
         if( svgcontainer === svgObject.parentElement )
         {
             svgcontainer.removeChild(svgObject);
+        }
+        else if( svgObject.parentElement === captioncontainer )
+        {
+            captioncontainer.removeChild(svgObject);
         }
         else
         {
