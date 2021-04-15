@@ -1359,7 +1359,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                                             document.getElementById(`sunIcon-${imageId}`).firstElementChild
                                             .setAttribute("transform", `rotate(${
                                                 parseFloat(document.getElementById(imageId + "-hg")
-                                                .getAttribute("SubSolarAzimuth")) + 90
+                                                .getAttribute("SubSolarAzimuth")) + 270
                                             } 13.5 13.5)`);
                                         }
                                         catch(err)
@@ -1733,7 +1733,6 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 figwidthinput.addEventListener("change", function( event ) {
                     // TODO: validation
                     
-                    
                     tmp[0] = parseInt(event.target.value)
 
                     draggableSvg.getContainerObject().setAttribute("viewBox", `0 0 ${tmp[0]} ${tmp[1]}`)
@@ -1742,7 +1741,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                     draggableSvg.getContainerObject().setAttribute("width", tmp[0])
                     draggableSvg.getContainerObject().setAttribute("height", tmp[1])
                 });
-                
+
                 figheightinput.addEventListener("change", function( event ) {
                     // TODO: validation
                     
@@ -1787,6 +1786,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 break;
         }
 
+        // TODO: this should be its own functions
         draggableSvg.getContainerObject().setAttribute("viewBox", `0 0 ${tmp[0]} ${tmp[1]}`)
         draggableSvg.getContainerObject().parentElement.setAttribute("viewBox",
         `-500 0 ${Number(tmp[0]) + 1000} ${tmp[1]}`);
