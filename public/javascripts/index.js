@@ -7,6 +7,8 @@
  * @requires "PIE-api.js"
  * 
  * @fileoverview main event loop for the index page of PIE
+ * 
+ * @todo Documentation and better comments for someone who has never seen the code before.
 */
 
 var draggableSvg = null,
@@ -837,10 +839,9 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
                     // download the text as a seperate file because the export succeeded
                     var textBlob = new Blob( [ document.querySelector("textarea[name='captiontextinput']").value ], {type : "text/plain;charset=utf-8"});
-
                     saveBlob( textBlob, `${fileinputname.value}.txt`)
                 };
-                
+
                 // open the request and send the data
                 xhr.open('POST', "/export", true);
                 xhr.send(fd);
@@ -1698,8 +1699,73 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         // update the svgContainer size
         let tmp = []
 
+        // reset state of the toolboxes
+        removeCustomBoxes();
+
         switch( event.target.value )
         {
+            case "Custom":
+                //render the new input boxes
+                tmp[0] = "1300"
+                tmp[1] = "1300"
+
+                // create the input boxes and labels
+                var figwidthlabel = document.createElement("label"),
+                    figwidthinput = document.createElement("input"),
+                    figheightlabel = document.createElement("label"),
+                    figheightinput = document.createElement("input");
+
+                // set the label and class
+                figwidthlabel.innerHTML = "Figure Width (Pixels)"
+                figheightlabel.innerHTML = "Figure Height (Pixels)"
+                figwidthlabel.classList.add("text-inner")
+                figheightlabel.classList.add("text-inner")
+                figwidthlabel.htmlFor = "figwidthinput"
+                figheightlabel.htmlFor = "figheightinput"
+
+                // set the placeholder to tell the user it is pxls
+                figwidthinput.placeholder = 1300
+                figheightinput.placeholder = 1300
+                figwidthinput.name = "figwidthinput"
+                figheightinput.name = "figheightinput"
+
+                // set the listeners for the input boxes
+                figwidthinput.addEventListener("change", function( event ) {
+                    // TODO: validation
+                    
+                    
+                    tmp[0] = parseInt(event.target.value)
+
+                    draggableSvg.getContainerObject().setAttribute("viewBox", `0 0 ${tmp[0]} ${tmp[1]}`)
+                    draggableSvg.getContainerObject().parentElement.setAttribute("viewBox",
+                    `-500 0 ${Number(tmp[0]) + 1000} ${tmp[1]}`);
+                    draggableSvg.getContainerObject().setAttribute("width", tmp[0])
+                    draggableSvg.getContainerObject().setAttribute("height", tmp[1])
+                });
+                
+                figheightinput.addEventListener("change", function( event ) {
+                    // TODO: validation
+                    
+                    tmp[1] = parseInt(event.target.value)
+
+                    draggableSvg.getContainerObject().setAttribute("viewBox", `0 0 ${tmp[0]} ${tmp[1]}`)
+                    draggableSvg.getContainerObject().parentElement.setAttribute("viewBox",
+                    `-500 0 ${Number(tmp[0]) + 1000} ${tmp[1]}`);
+                    draggableSvg.getContainerObject().setAttribute("width", tmp[0])
+                    draggableSvg.getContainerObject().setAttribute("height", tmp[1])
+                });
+                
+                //attach the boxes under the figure size selector
+                document.querySelector("label[for='figureoutputsize']")
+                    .insertAdjacentElement("afterend", document.createElement("br"))    
+                    .insertAdjacentElement("afterend", figheightlabel )
+                    .insertAdjacentElement("afterend", figheightinput )
+                    .insertAdjacentElement("afterend", document.createElement("br"))
+                    .insertAdjacentElement("afterend", figwidthlabel)
+                    .insertAdjacentElement("afterend", figwidthinput)
+
+                break;
+
             case "1/4 Page":
                 tmp[0] = "1500"
                 tmp[1] = "1500"
@@ -1713,6 +1779,11 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             case "Full Page":
                 tmp[0] = "3000"
                 tmp[1] = "3500"
+                break;
+            
+            case "PowerPoint":
+                tmp[0] = "1000"
+                tmp[1] = "1000"
                 break;
         }
 
@@ -5451,4 +5522,24 @@ function createLayerBtn(layerbtn, draggableList)
     layerbtn.append(img)
     
     draggableList.addDraggable( layerbtn )
+}
+
+/**
+ * TODO:
+ */
+function removeCustomBoxes( )
+{
+    var labels = document.querySelectorAll("label[class='text-inner']")
+
+    labels.forEach(label => {
+        var input = document.querySelector(`input[name='${label.htmlFor}']`);
+        if( input.nextElementSibling.outerHTML === '<br>' )
+        {
+            // remove extra breaks
+            input.nextElementSibling.remove()
+        }
+        // remove the tool box parts
+        input.remove()
+        label.remove()
+    });
 }
