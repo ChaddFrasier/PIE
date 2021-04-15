@@ -943,16 +943,6 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         // the most important part is just the 'objectid' attribute
         let toolsarea = document.createElement("div"),
             textinput = document.createElement("textarea"),
-            widthlabel = document.createElement("label"),
-            widthinput = document.createElement("input"),
-            heightlabel = document.createElement("label"),
-            fontSizeInput = document.createElement("input"),
-            fontSizeLabel = document.createElement("label"),
-            heightinput = document.createElement("input"),
-            xcoordlabel = document.createElement("label"),
-            xcoordinput = document.createElement("input"),
-            ycoordlabel = document.createElement("label"),
-            ycoordinput = document.createElement("input"),
             textlabel = document.createElement("label"),
             captiontextcolorinput = document.createElement("input"),
             captiontextcolorlabel = document.createElement("label"),
@@ -965,34 +955,6 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         captiontextcolorinput.setAttribute("type", "color")
         captiontextcolorlabel.innerHTML = "Font Color: "
         captiontextcolorinput.value ="#000"
-
-        fontSizeLabel.innerHTML = "Font Size (px): "
-        fontSizeInput.value = "30"
-        fontSizeInput.type = "number"
-        fontSizeInput.min = "30"
-        fontSizeInput.setAttribute("objectid", captionId)
-
-        fontSizeInput.addEventListener("change", function(){
-            let inputInt = parseInt(this.value),
-                captionTextElement = document.getElementById(`${this.attributes.objectid.value}text`)
-
-            if( !isNaN(inputInt) )
-            {
-                captionTextElement.setAttribute("font-size", `${inputInt}px`)
-                // find the matching html caption element
-                let matchingCaption = document.getElementById( this.attributes.objectid.value )
-
-                // updpate the text inside once found
-                if( matchingCaption )
-                {   
-                    matchingCaption.lastChild.innerHTML = text2PieText(
-                        textinput.value, 
-                        parseFloat(matchingCaption.getAttribute("width")), 
-                        parseInt(captionTextElement.getAttribute("font-size"))
-                    );
-                }
-            }
-        })
 
         captionbackgroundcolorlabel.setAttribute("objectid", captionId)
         captionbackgroundcolorinput.setAttribute("objectid", captionId)
@@ -1028,97 +990,6 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             }
         })
 
-        /**
-         * Do the same general idea for the text input on all the input to follow here
-         */
-        widthlabel.innerHTML = "Caption Width: "
-        widthlabel.setAttribute("for", "widthinput")
-        widthinput.setAttribute("type", "number")
-        widthinput.setAttribute("min", '500')
-        widthinput.setAttribute("max", 'none')
-        widthinput.value = 750
-        widthinput.setAttribute("name","widthinput")
-
-        widthinput.addEventListener("change", function() {
-            // find the matching html caption element
-            let matchingCaption = document.getElementById( this.attributes.objectid.value )
-            // updpate the text inside once found
-            if(matchingCaption && !isNaN(Number(this.value)))
-            {
-                if( Number(this.value) < Number(this.getAttribute("min")) )
-                {
-                    matchingCaption.setAttribute("width", Number(this.getAttribute("min")))
-                    this.value = Number(this.getAttribute("min"))
-                }
-                else
-                {
-                    matchingCaption.setAttribute("width", Number(this.value))
-                }
-                matchingCaption.lastChild.innerHTML = text2PieText(
-                    textinput.value,
-                    parseFloat(matchingCaption.getAttribute("width")),
-                    parseInt(document.getElementById(`${this.attributes.objectid.value}text`)
-                        .getAttribute("font-size"))
-                );
-            }
-        })
-
-        heightlabel.innerHTML = "Caption Height: "
-        heightlabel.setAttribute("for", "heightinput")
-
-        heightinput.setAttribute("type", "number")
-        heightinput.setAttribute("min", '100')
-        heightinput.value = 100
-        heightinput.setAttribute("name","heightinput")
-        heightinput.addEventListener("change", function() {
-            // find the matching html caption element
-            let matchingCaption = document.getElementById( this.attributes.objectid.value )
-            // updpate the text inside once found
-            if(matchingCaption && !isNaN(Number(this.value)))
-            {
-                if( Number(this.value) < Number(this.getAttribute("min")) )
-                {
-                    matchingCaption.setAttribute("height", Number(this.getAttribute("min")))
-                    this.value = Number(this.getAttribute("min"))
-                }
-                else
-                {
-                    matchingCaption.setAttribute("height", Number(this.value))
-                }
-            }
-        })
-
-        xcoordlabel.innerHTML = "Caption X: "
-        xcoordlabel.setAttribute("for", "xcoordinput")
-        xcoordinput.setAttribute("type", "number")
-        xcoordinput.value = 0
-        xcoordinput.setAttribute("name","xcoordinput")
-
-        xcoordinput.addEventListener("change", function() {
-            // find the matching html caption element
-            let matchingCaption = document.getElementById( this.attributes.objectid.value )
-            // updpate the text inside once found
-            if(matchingCaption && !isNaN(Number(this.value)))
-            {
-                matchingCaption.setAttribute("x", Number(this.value))
-            }
-        })
-        
-        ycoordlabel.innerHTML = "Caption Y: "
-        ycoordlabel.setAttribute("for", "ycoordinput")
-        ycoordinput.setAttribute("type", "number")
-        ycoordinput.value = '0'
-        ycoordinput.setAttribute("name","ycoordinput")
-        
-        ycoordinput.addEventListener("change", function() {
-            // find the matching html caption element
-            let matchingCaption = document.getElementById( this.attributes.objectid.value )
-            // updpate the text inside once found
-            if(matchingCaption && !isNaN(Number(this.value)))
-            {
-                matchingCaption.setAttribute("y", Number(this.value))
-            }
-        })
 
         captiontextcolorinput.addEventListener("change", function(event){
             updateCaptionTextColor( event.target.value , event.target.attributes.objectid.value)
@@ -1140,27 +1011,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             document.createElement("br"),
             captionbackgroundcolorlabel,
             document.createElement("br"),
-            captionbackgroundcolorinput,
-            document.createElement("br"),
-            fontSizeLabel,
-            document.createElement("br"),
-            fontSizeInput,
-            document.createElement("br"),
-            widthlabel,
-            document.createElement("br"),
-            widthinput,
-            document.createElement("br"),
-            heightlabel,
-            document.createElement("br"),
-            heightinput,
-            document.createElement("br"),
-            xcoordlabel,
-            document.createElement("br"),
-            xcoordinput,
-            document.createElement("br"),
-            ycoordlabel,
-            document.createElement("br"),
-            ycoordinput
+            captionbackgroundcolorinput
         )
 
         // set caption id on all input elements
@@ -1218,10 +1069,11 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
         // finish by adding them to the document
         textholder.append(rect, text)
-        draggableSvg.getContainerObject().appendChild(textholder)
+        
+        // append the caption box somewhere on the screen
+        // draggableSvg.getContainerObject().appendChild(textholder)
 
         textinput.focus()
-
         getObjectCount(1, "caption")
     });
 
