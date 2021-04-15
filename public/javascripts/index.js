@@ -819,7 +819,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
                         // create new formdata to tell the server what to download
                         var postData = new FormData(),
-                            xhrd = new XMLHttpRequest()
+                            xhrd = new XMLHttpRequest();
                             
                         postData.append('fileName', filename);
 
@@ -834,7 +834,13 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                         };
                         xhrd.send(postData);
                     });
+
+                    // download the text as a seperate file because the export succeeded
+                    var textBlob = new Blob( [ document.querySelector("textarea[name='captiontextinput']").value ], {type : "text/plain;charset=utf-8"});
+
+                    saveBlob( textBlob, `${fileinputname.value}.txt`)
                 };
+                
                 // open the request and send the data
                 xhr.open('POST', "/export", true);
                 xhr.send(fd);
@@ -5354,7 +5360,6 @@ function saveBlob(blob, fileName)
 {
     // create the anchor for downloading
     var a = document.createElement('a');
-
     // set the download link to the blob object URL
     a.href = window.URL.createObjectURL(blob);
     // set the download name
