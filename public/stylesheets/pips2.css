@@ -597,13 +597,20 @@ button.disabled {
     width: 90%;
 }
 .text {
-    font-size: auto;
     color: white;
     margin: 0;
     padding: 0;
     text-align: left;
     width: 100%;
     font-size: var(--medium-font);
+}
+.text-inner{
+    color: white;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    width: 100%;
+    font-size: var(--small-font);
 }
 .concisebtngroup {
     text-align: center;
