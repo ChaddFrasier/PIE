@@ -25,13 +25,11 @@ block content
                     button.windowminimizebtn='▼'
                 #filetools.filetoolsbox.closed
                     label.text(for="figureoutputsize")="Figure Size"
-                    br
                     .middledisplay
                         select#figsizeselect(title="Change the size of the main figure.")
                             optgroup
-                                each figsize in ["1/4 Page", "1/2 Page", "Full Page"]
+                                each figsize in ["1/4 Page", "1/2 Page", "Full Page", "PowerPoint", "Custom"]
                                     option(value=fidsize) #{figsize}
-
                     label.text(for="backgroundcolor")="Background Color"
                     .middledisplay(style="border-bottom: 2px solid rgba(255, 255, 255, 0.57); padding-bottom: 3px; border-radius: 5px 5px;")
                         input#backgroundcolor(type="color", name="backgroundcolor", value="#1D84B5" title="Change the color of the main figure background.")
