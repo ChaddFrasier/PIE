@@ -895,53 +895,55 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
      */
     document.getElementById('addcaptionbtn').addEventListener("click", () =>
     {
-        // used for identifying the tool box for each caption in the image 
-        let captionId = randomId("caption"),
+        if ( getObjectCount(0, "caption") < 1 )
+        {
+            // used for identifying the tool box for each caption in the image 
+            let captionId = randomId("caption"),
             newoptionsbar = document.createElement("div"),
             header = document.createElement("h4"),
             minibtn = document.createElement("button"),
             deletebtn = document.createElement("button"),
             layerbtn = document.createElement("button")
 
-        // set required styles
-        newoptionsbar.classList.add("windowoptionsbar")
-        newoptionsbar.style.display = "flex"
+            // set required styles
+            newoptionsbar.classList.add("windowoptionsbar")
+            newoptionsbar.style.display = "flex"
 
-        newoptionsbar.addEventListener("click", function ( event )
-        {
+            newoptionsbar.addEventListener("click", function ( event )
+            {
             optionsAction(event.target)
-        })
+            })
 
-        // setup the header of the optionsbar
-        header.innerHTML = "Caption Layer"
+            // setup the header of the optionsbar
+            header.innerHTML = "Caption Layer"
 
-        // same with the minimize button
-        minibtn.classList.add("windowminimizebtn")
-        minibtn.innerHTML = "▲"
+            // same with the minimize button
+            minibtn.classList.add("windowminimizebtn")
+            minibtn.innerHTML = "▲"
 
-        // cant forget the event handler for the minimize btn
-        minibtn.addEventListener( "click", function(event) {
+            // cant forget the event handler for the minimize btn
+            minibtn.addEventListener( "click", function(event) {
             minimizeToolsWindow(event)
-        })
+            })
 
-        // same for delete as minimize
-        deletebtn.classList.add("windowremovebtn")
-        deletebtn.style.padding = "2px"
-        var img = document.createElement("img")
-        img.style.pointerEvents = "none"
-        img.src = "/images/trash.svg"
-        img.setAttribute("height", "22px")
-        img.setAttribute("width", "22px")
-        deletebtn.append(img)
-        
-        deletebtn.addEventListener("click", function(event){ getObjectCount(-1, "caption"); removeToolsWindow(event); })
-        
-        // set the class css and the svg button graphic
-        createLayerBtn(layerbtn, draggableList)
+            // same for delete as minimize
+            deletebtn.classList.add("windowremovebtn")
+            deletebtn.style.padding = "2px"
+            var img = document.createElement("img")
+            img.style.pointerEvents = "none"
+            img.src = "/images/trash.svg"
+            img.setAttribute("height", "22px")
+            img.setAttribute("width", "22px")
+            deletebtn.append(img)
 
-        // this is all dynamic css for the caption tool box
-        // the most important part is just the 'objectid' attribute
-        let toolsarea = document.createElement("div"),
+            deletebtn.addEventListener("click", function(event){ getObjectCount(-1, "caption"); removeToolsWindow(event); document.getElementById('addcaptionbtn').classList.remove('disabled'); })
+
+            // set the class css and the svg button graphic
+            createLayerBtn(layerbtn, draggableList)
+
+            // this is all dynamic css for the caption tool box
+            // the most important part is just the 'objectid' attribute
+            let toolsarea = document.createElement("div"),
             textinput = document.createElement("textarea"),
             textlabel = document.createElement("label"),
             captiontextcolorinput = document.createElement("input"),
@@ -949,32 +951,32 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             captionbackgroundcolorinput = document.createElement("input"),
             captionbackgroundcolorlabel = document.createElement("label");
 
-        captiontextcolorlabel.setAttribute("objectid", captionId)
-        captiontextcolorinput.setAttribute("objectid", captionId)
+            captiontextcolorlabel.setAttribute("objectid", captionId)
+            captiontextcolorinput.setAttribute("objectid", captionId)
 
-        captiontextcolorinput.setAttribute("type", "color")
-        captiontextcolorlabel.innerHTML = "Font Color: "
-        captiontextcolorinput.value ="#000"
+            captiontextcolorinput.setAttribute("type", "color")
+            captiontextcolorlabel.innerHTML = "Font Color: "
+            captiontextcolorinput.value ="#000"
 
-        captionbackgroundcolorlabel.setAttribute("objectid", captionId)
-        captionbackgroundcolorinput.setAttribute("objectid", captionId)
-        captionbackgroundcolorinput.setAttribute("type", "color")
-        captionbackgroundcolorinput.value = "#d3d3d3"
+            captionbackgroundcolorlabel.setAttribute("objectid", captionId)
+            captionbackgroundcolorinput.setAttribute("objectid", captionId)
+            captionbackgroundcolorinput.setAttribute("type", "color")
+            captionbackgroundcolorinput.value = "#d3d3d3"
 
-        captionbackgroundcolorlabel.innerHTML = "Background Color: "
+            captionbackgroundcolorlabel.innerHTML = "Background Color: "
 
-        // set attributes and classes
-        toolsarea.classList.add("captiontoolsbox")
-        toolsarea.setAttribute("id", `captiontoolsbox-${captionId}`)
-        toolsarea.setAttribute("objectid", captionId)
-        textlabel.innerHTML = "Caption Text: "
-        textlabel.setAttribute("for", "captiontextinput")
-        textinput.setAttribute("name","captiontextinput")
-        textinput.setAttribute("placeholder", "Type your caption here")
-        textinput.classList.add('textareainputfield')
+            // set attributes and classes
+            toolsarea.classList.add("captiontoolsbox")
+            toolsarea.setAttribute("id", `captiontoolsbox-${captionId}`)
+            toolsarea.setAttribute("objectid", captionId)
+            textlabel.innerHTML = "Caption Text: "
+            textlabel.setAttribute("for", "captiontextinput")
+            textinput.setAttribute("name","captiontextinput")
+            textinput.setAttribute("placeholder", "Type your caption here")
+            textinput.classList.add('textareainputfield')
 
-        // pass the keyup listener to update the text input
-        textinput.addEventListener("keyup", function(){
+            // pass the keyup listener to update the text input
+            textinput.addEventListener("keyup", function(){
 
             // find the matching html caption element
             let matchingCaption = document.getElementById( `${this.attributes.objectid.value}text` )
@@ -988,19 +990,19 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                     parseInt(matchingCaption.getAttribute("font-size"))
                 );
             }
-        })
+            })
 
 
-        captiontextcolorinput.addEventListener("change", function(event){
+            captiontextcolorinput.addEventListener("change", function(event){
             updateCaptionTextColor( event.target.value , event.target.attributes.objectid.value)
-        })
+            })
 
-        captionbackgroundcolorinput.addEventListener("change", function(event){
+            captionbackgroundcolorinput.addEventListener("change", function(event){
             updateCaptionBoxColor( event.target.value , event.target.attributes.objectid.value)
-        })
+            })
 
-        // append all the elements to the tool box
-        toolsarea.append( 
+            // append all the elements to the tool box
+            toolsarea.append( 
             textlabel,
             document.createElement("br"),
             textinput,
@@ -1012,69 +1014,70 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             captionbackgroundcolorlabel,
             document.createElement("br"),
             captionbackgroundcolorinput
-        )
+            )
 
-        // set caption id on all input elements
-        toolsarea.childNodes.forEach(element => {
+            // set caption id on all input elements
+            toolsarea.childNodes.forEach(element => {
             element.setAttribute("objectid", captionId)
-        });
+            });
 
-        // append all elements together
-        newoptionsbar.append(
+            // append all elements together
+            newoptionsbar.append(
             header,
             minibtn,
             deletebtn,
             layerbtn,
             toolsarea
-        )
+            )
 
-        newoptionsbar.setAttribute( "objectid", captionId )
+            newoptionsbar.setAttribute( "objectid", captionId )
 
-        // finish by appending the whole thing
-        let holderbox = document.createElement("div")
-        holderbox.setAttribute("class", "draggableToolbox")
-        holderbox.append(newoptionsbar, toolsarea)
-        holderbox.setAttribute("objectid", captionId)
+            // finish by appending the whole thing
+            let holderbox = document.createElement("div")
+            holderbox.setAttribute("class", "draggableToolbox")
+            holderbox.append(newoptionsbar, toolsarea)
+            holderbox.setAttribute("objectid", captionId)
 
-        draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
+            draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
 
-        /** Add a caption box in the svg area */
-        const textholder = document.createElementNS(NS.svg, "svg")
-        textholder.setAttribute("id", captionId)
-        textholder.setAttribute("x", "0")
-        textholder.setAttribute("y", "0")
-        textholder.setAttribute("width", "750")
-        textholder.setAttribute("height", "100")
-        textholder.setAttribute("preserveAspectRatio", "xMidYMid meet")
+            /** Add a caption box in the svg area */
+            const textholder = document.createElementNS(NS.svg, "svg")
+            textholder.setAttribute("id", captionId)
+            textholder.setAttribute("x", "0")
+            textholder.setAttribute("y", "0")
+            textholder.setAttribute("width", "750")
+            textholder.setAttribute("height", "100")
+            textholder.setAttribute("preserveAspectRatio", "xMidYMid meet")
 
-        const rect = document.createElementNS(NS.svg,"rect");
-        rect.setAttribute("id", `${captionId}bg`);
-        rect.setAttribute("width", "100%");
-        rect.setAttribute("height", "100%");
-        rect.setAttribute("fill", "#fff");
-        rect.setAttribute("x", "0");
-        rect.setAttribute("y", "0");
-        rect.classList.add("marker")
+            const rect = document.createElementNS(NS.svg,"rect");
+            rect.setAttribute("id", `${captionId}bg`);
+            rect.setAttribute("width", "100%");
+            rect.setAttribute("height", "100%");
+            rect.setAttribute("fill", "#fff");
+            rect.setAttribute("x", "0");
+            rect.setAttribute("y", "0");
+            rect.classList.add("marker")
 
-        const text = document.createElementNS(NS.svg, "text")
-        text.setAttribute("id", `${captionId}text`)
-        text.setAttribute("data-cy", "caption")
-        text.setAttribute("width", "100%")
-        text.setAttribute("height", "100%")
-        text.setAttribute("font-size", "30px")
-        text.setAttribute("pointer-events", "none")
-        
-        // how to display the caption text
-        text.innerHTML = "<tspan x='0' y='30'>Type your caption here</tspan>"
+            const text = document.createElementNS(NS.svg, "text")
+            text.setAttribute("id", `${captionId}text`)
+            text.setAttribute("data-cy", "caption")
+            text.setAttribute("width", "100%")
+            text.setAttribute("height", "100%")
+            text.setAttribute("font-size", "30px")
+            text.setAttribute("pointer-events", "none")
 
-        // finish by adding them to the document
-        textholder.append(rect, text)
-        
-        // append the caption box somewhere on the screen
-        // draggableSvg.getContainerObject().appendChild(textholder)
+            // how to display the caption text
+            text.innerHTML = "<tspan x='0' y='30'>Type your caption here</tspan>"
 
-        textinput.focus()
-        getObjectCount(1, "caption")
+            // finish by adding them to the document
+            textholder.append(rect, text)
+
+            // append the caption box somewhere on the screen
+            document.getElementById("editbox").appendChild(textholder)
+            textinput.focus()
+            getObjectCount(1, "caption")
+            document.getElementById('addcaptionbtn').classList.add('disabled')
+        }
     });
 
 
@@ -2601,9 +2604,11 @@ function removeToolsWindow( event )
     if(event.target.parentElement.attributes.objectid.value)
     {
         // remove the current options bar, its next child and the caption matching the same id
+        // TODO: explain what the objectid is 
         var parentBox = event.target.parentElement.parentElement,
             svgObject = document.getElementById(event.target.parentElement.attributes.objectid.value),
-            svgcontainer = draggableSvg.getContainerObject()
+            svgcontainer = draggableSvg.getContainerObject(),
+            captioncontainer = document.getElementById("editbox")
 
         ButtonManager.removeImage(event.target.parentElement.attributes.objectid.value)
         // remove the options and other things for image
@@ -2612,6 +2617,10 @@ function removeToolsWindow( event )
         if( svgcontainer === svgObject.parentElement )
         {
             svgcontainer.removeChild(svgObject);
+        }
+        else if( svgObject.parentElement === captioncontainer )
+        {
+            captioncontainer.removeChild(svgObject);
         }
         else
         {
