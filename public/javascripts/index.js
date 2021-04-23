@@ -803,7 +803,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 // set response type
                 xhr.responseType = 'json';
                 // append the xml header line to make an official svg file
-                var data = `<?xml version="1.0" encoding="UTF-8"?>\n${(new XMLSerializer()).serializeToString(temp)}`;
+                var data = `<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n${(new XMLSerializer()).serializeToString(temp)}`;
                 // creates a blob from the encoded svg and sets the type of the blob to and image svg
                 var svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
                 // append the svgBlob as a file with the name given the exportfile 
@@ -1434,7 +1434,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                                     {
                                         btnArray.push('scale');
                                         try {
-                                            // calculate the scale nneded for the scalebar and multiply by the svg dimensions
+                                            // calculate the scale needed for the scalebar and multiply by the svg dimensions
                                             var scaleObject = getScalebarData(
                                                 ( document.getElementById(`${imageId}-hg`).getAttribute("PixelResolution"))
                                                     ? document.getElementById(`${imageId}-hg`)
@@ -1448,9 +1448,11 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                                             )
 
                                             let scalebar = document.getElementById(`scalebarIcon-${imageId}`)
+                                            // TODO: set the new scale after calculating the raw scale
+                                            var imagescale = parseFloat( image.parentElement.getAttribute("transform").split('scale(')[1] )
                     
-                                            scalebar.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
-                                            scalebar.setAttribute("height", (scaleObject.sc * 700) )
+                                            scalebar.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) * imagescale )
+                                            scalebar.setAttribute("height", (scaleObject.sc * 700) * imagescale )
                                             document.getElementById(`scalestart-${imageId}`).innerHTML =
                                                 scaleObject.display;
                                             document.getElementById(`scaleend-${imageId}`).innerHTML = 
@@ -1560,6 +1562,27 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 if(matchingCaption && !isNaN(Number(this.value)))
                 {
                     matchingCaption.setAttribute("transform", `scale(${Number(this.value)})`)
+
+                    var scalebar = document.getElementById(`scalebarIcon-${this.attributes.objectid.value}`);
+                    if( scalebar )
+                    {
+                        console.log('NEW SCALE BAR')
+
+                        // calculate the scale nneded for the scalebar and multiply by the svg dimensions
+                        var scaleObject = getScalebarData(
+                            ( document.getElementById(`${this.attributes.objectid.value}-hg`).getAttribute("PixelResolution") ) 
+                                ? document.getElementById(`${this.attributes.objectid.value}-hg`).getAttribute("PixelResolution")
+                                : document.getElementById(`${this.attributes.objectid.value}-hg`).getAttribute("ObliquePixelResolution"),
+                            document.getElementById(this.attributes.objectid.value).getAttribute("width"),
+                            document.getElementById(this.attributes.objectid.value).getAttribute("height"),
+                            document.getElementById(`${this.attributes.objectid.value}-hg`).getAttribute("Lines"),
+                            document.getElementById(`${this.attributes.objectid.value}-hg`).getAttribute("Samples")
+                        );
+                        
+                        // set the new scale after calculating the raw scale and multiplying that to the dimensions
+                        scalebar.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) * Number(this.value) )
+                        scalebar.setAttribute("height", (scaleObject.sc * 700) * Number(this.value) )
+                    }
                 }
             })
 
@@ -1731,27 +1754,18 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
                 // set the listeners for the input boxes
                 figwidthinput.addEventListener("change", function( event ) {
-                    // TODO: validation
-                    
-                    tmp[0] = parseInt(event.target.value)
-
-                    draggableSvg.getContainerObject().setAttribute("viewBox", `0 0 ${tmp[0]} ${tmp[1]}`)
-                    draggableSvg.getContainerObject().parentElement.setAttribute("viewBox",
-                    `-500 0 ${Number(tmp[0]) + 1000} ${tmp[1]}`);
-                    draggableSvg.getContainerObject().setAttribute("width", tmp[0])
-                    draggableSvg.getContainerObject().setAttribute("height", tmp[1])
+                    // validation of integer value
+                    if ( !isNaN( parseInt(event.target.value) ) ){
+                        tmp[0] = parseInt(event.target.value)
+                        setViewBox( draggableSvg, tmp )
+                    }
                 });
 
                 figheightinput.addEventListener("change", function( event ) {
-                    // TODO: validation
-                    
-                    tmp[1] = parseInt(event.target.value)
-
-                    draggableSvg.getContainerObject().setAttribute("viewBox", `0 0 ${tmp[0]} ${tmp[1]}`)
-                    draggableSvg.getContainerObject().parentElement.setAttribute("viewBox",
-                    `-500 0 ${Number(tmp[0]) + 1000} ${tmp[1]}`);
-                    draggableSvg.getContainerObject().setAttribute("width", tmp[0])
-                    draggableSvg.getContainerObject().setAttribute("height", tmp[1])
+                    if ( !isNaN( parseInt(event.target.value) ) ){
+                        tmp[1] = parseInt(event.target.value)
+                        setViewBox( draggableSvg, tmp )
+                    }                   
                 });
                 
                 //attach the boxes under the figure size selector
@@ -1786,12 +1800,8 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 break;
         }
 
-        // TODO: this should be its own functions
-        draggableSvg.getContainerObject().setAttribute("viewBox", `0 0 ${tmp[0]} ${tmp[1]}`)
-        draggableSvg.getContainerObject().parentElement.setAttribute("viewBox",
-        `-500 0 ${Number(tmp[0]) + 1000} ${tmp[1]}`);
-        draggableSvg.getContainerObject().setAttribute("width", tmp[0])
-        draggableSvg.getContainerObject().setAttribute("height", tmp[1])
+        // set the figure dimensions
+        setViewBox( draggableSvg, tmp )
     });
 
     /**
@@ -2108,7 +2118,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
                         icongroup.firstChild.setAttribute("transform", 
                         `rotate(
-                            ${parseFloat(document.getElementById(image.id + "-hg").getAttribute("SubSolarAzimuth")) + 270} 13.5 13.5)` )
+                            ${parseFloat(document.getElementById(image.id + "-hg").getAttribute("SubSolarAzimuth")) + 90} 13.5 13.5)` )
                     }
                     else
                     {
@@ -2190,9 +2200,12 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                             document.getElementById(image.id + '-hg').getAttribute("Lines"),
                             document.getElementById(`${image.id}-hg`).getAttribute("Samples")
                         );
-                        
-                        icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) )
-                        icongroup.setAttribute("height", (scaleObject.sc * 700) )
+
+                        // TODO: set the new scale after calculating the raw scale and multiplying that to the dimensions here
+                        var imagescale = parseFloat( image.parentElement.getAttribute("transform").split('scale(')[1] )
+
+                        icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) * imagescale )
+                        icongroup.setAttribute("height", (scaleObject.sc * 700) * imagescale )
 
                         // set the translate location of the icon to where the mouse was released
                         newX = getScaledPoint( svgP.x, 1, parseFloat(icongroup.getAttribute("width")) )
@@ -2210,8 +2223,8 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                     // append the icon
                     draggableSvg.getContainerObject().appendChild(icongroup)
 
-                    var scaleNumberStart = document.querySelectorAll("tspan#scalestart")
-                    var scaleNumberEnd = document.querySelectorAll("tspan#scaleend")
+                    var scaleNumberStart = document.querySelectorAll("#scalestart")
+                    var scaleNumberEnd = document.querySelectorAll("#scaleend")
 
                     scaleNumberEnd[1].id = `scaleend-${image.id}`
                     scaleNumberStart[1].id = `scalestart-${image.id}`
@@ -2322,9 +2335,10 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                         text_header.innerHTML = "Key"
 
                         var marker = document.createElementNS( NS.svg, "rect")
+                        marker.setAttribute("class", "marker")
+
                         marker.setAttribute("width", keyDim.width)
                         marker.setAttribute("height", keyDim.height)
-                        marker.setAttribute("class", "marker")
                         marker.setAttribute("fill", "transparent")
                         marker.setAttribute("stroke", "transparent")
 
@@ -3473,8 +3487,6 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             holderbox.append( scaleoptionbar, scaleicontoolbox )
 
             draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
-
-
             break
 
         case "key":
@@ -5452,7 +5464,7 @@ function saveBlob(blob, fileName)
  */
 function cleanSVG( clone )
 {
-    removeAttributes(clone, "id", "class")
+    //removeAttributes(clone, "id", "class")
 
     // fixes errors when exporting as svg image
     clone.setAttribute("xmlns:rdf", NS.rdf)
@@ -5542,4 +5554,17 @@ function removeCustomBoxes( )
         input.remove()
         label.remove()
     });
+}
+
+/**
+ * TODO:
+ */
+function setViewBox( draggable, arr )
+{
+    // set the dimensions of the viewbox
+    draggable.getContainerObject().setAttribute("viewBox", `0 0 ${arr[0]} ${arr[1]}`)
+    draggable.getContainerObject().parentElement.setAttribute("viewBox",
+    `-500 0 ${Number(arr[0]) + 1000} ${arr[1]}`);
+    draggable.getContainerObject().setAttribute("width", arr[0])
+    draggable.getContainerObject().setAttribute("height", arr[1])
 }
