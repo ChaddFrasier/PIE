@@ -148,19 +148,13 @@ function beautifySVG( from, to )
 
         console.log(line);
 
-        // dont add the following linesß
-        if( line.indexOf("<style>") > -1 )
-        {
-            passOver = true;
-        }
-
         if( line.indexOf(parentElementArray[2]) > -1 )
         {
             metaFlag = true;
         }
 
         // set this line in the new file if the passOver is false
-        if( !passOver )
+        if( !passOver && line.indexOf('<rect class="marker"') < 0)
         {
             // check if the current line needs to to moved back b/c it is the end of a parent section
             parentEndArray.forEach( tag => {
@@ -187,12 +181,6 @@ function beautifySVG( from, to )
                     count++;
                 }
             })
-        }
-
-        // start adding lines again
-        if( line.indexOf("</style>") > -1 )
-        {
-            passOver = false;
         }
     });
     // close the Write Stream

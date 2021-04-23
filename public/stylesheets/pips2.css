@@ -606,7 +606,8 @@ button.disabled {
 }
 .text-inner{
     color: white;
-    margin: 0;
+    display: block;
+    text-align: center;
     padding: 0;
     text-align: left;
     width: 100%;
