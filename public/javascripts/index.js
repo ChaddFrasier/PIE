@@ -1448,7 +1448,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                                             )
 
                                             let scalebar = document.getElementById(`scalebarIcon-${imageId}`)
-                                            // TODO: set the new scale after calculating the raw scale
+                                            // set the new scale after calculating the raw scale
                                             var imagescale = parseFloat( image.parentElement.getAttribute("transform").split('scale(')[1] )
                     
                                             scalebar.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) * imagescale )
@@ -2201,7 +2201,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                             document.getElementById(`${image.id}-hg`).getAttribute("Samples")
                         );
 
-                        // TODO: set the new scale after calculating the raw scale and multiplying that to the dimensions here
+                        // set the new scale after calculating the raw scale and multiplying that to the dimensions here
                         var imagescale = parseFloat( image.parentElement.getAttribute("transform").split('scale(')[1] )
 
                         icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) * imagescale )
@@ -4531,15 +4531,23 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
             {
                 case "arrow":
                     createMarker(line.getAttributeNS(NS.svg, "marker-end"), line.id, "arrow", 0 )
+                    lineheadsizeinput.classList.remove("disabled")
                     break
                 case "square":
                     createMarker(line.getAttributeNS(NS.svg, "marker-end"), line.id, "square", 0 )
+                    lineheadsizeinput.classList.remove("disabled")
                     break
                 case "circle":
                     createMarker(line.getAttributeNS(NS.svg, "marker-end"), line.id, "circle", 0 )
+                    lineheadsizeinput.classList.remove("disabled")
                     break
                 default:
                     object.setAttributeNS(NS.svg, "marker-end","");
+
+                    // deactivate the input for the marker
+                    lineheadsizeinput.classList.add("disabled")
+                    lineheadsizeinput.value = 5
+
                     document.getElementById("figdefs").removeChild(document.getElementById(`${line.id}-marker`))
             }
         }
@@ -4573,15 +4581,23 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
 
                 case "arrow":
                     createMarker(line.getAttributeNS(NS.svg, "marker-start"), line.id, "arrow", 1 )
+                    linetailsizeinput.classList.remove("disabled")
                     break
                 case "square":
                     createMarker(line.getAttributeNS(NS.svg, "marker-start"), line.id, "square", 1 )
+                    linetailsizeinput.classList.remove("disabled")
                     break
                 case "circle":
                     createMarker(line.getAttributeNS(NS.svg, "marker-start"), line.id, "circle", 1 )
+                    linetailsizeinput.classList.remove("disabled")
                     break
                 default:
                     object.setAttributeNS(NS.svg, "marker-start", "");
+
+                    // deactivate the input for the marker
+                    linetailsizeinput.classList.add("disabled")
+                    linetailsizeinput.value = 5
+
                     document.getElementById("figdefs").removeChild(document.getElementById(`${line.id}-markerEnd`))
             }
         }
@@ -4597,6 +4613,8 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     lineheadsizelabel.innerHTML = "Line End-Point Size: "
 
     lineheadsizeinput.setAttribute("type", "number")
+    lineheadsizeinput.classList.add("disabled")
+
     lineheadsizeinput.setAttribute("objectid", objectid)
     lineheadsizeinput.value = 5
 
@@ -4616,6 +4634,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     linetailsizelabel.innerHTML = "Line Start-Point Size: "
 
     linetailsizeinput.setAttribute("type", "number")
+    linetailsizeinput.classList.add("disabled")
     linetailsizeinput.setAttribute("objectid", objectid)
     linetailsizeinput.value = 5
 

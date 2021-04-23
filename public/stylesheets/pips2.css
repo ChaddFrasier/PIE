@@ -857,7 +857,7 @@ button#scalebarbtnopt  {
     background: var(--main-bg-color);
     display: block;
 }
-button.disabled {
+.disabled {
     background: rgba(0, 0, 0, 0.35) !important;
     pointer-events: none;
     border: none;
