@@ -1300,6 +1300,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                                 reader.onload = function(e) {
                                     // use jquery to update the image source
                                     document.getElementById(imageId).setAttribute('href', e.target.result)
+                                    document.getElementById(imageId).setAttribute('xlink:href', e.target.result)
                                     document.getElementById(imageId).setAttribute('GEO', 'true')
 
                                     // set the height and width of the actual image.
