@@ -24,7 +24,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
     var PencilFlag = false,
         selectedObject = null,
         OutlineFlag = false,
-        shadowIcon = initShadowIcon(),
+        shadowIcon = new DraggableGhost(),
         activeEventManager = startActiveEM(),
         draggingDot = null,
         rectstartx = 0,
@@ -2476,7 +2476,8 @@ function retrieveDataObject( holderid )
 function configDraggables( svg, dragCont )
 {
     // create the Draggable Object Container
-    draggableSvg = DraggableArea( svg )
+    draggableSvg = new DraggableSVG( svg.getAttribute('id') );
+    
     // create the DraggableList
     draggableList = DraggableList( dragCont )
 }
