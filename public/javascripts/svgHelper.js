@@ -279,17 +279,6 @@ function updateInputField( objectid, ...args )
     }
 }
 /**
- * @function moveSvgUp
- * @param {Node} element - the element to shift layers
- * @description move the svg element up to the top of the layers of the svg
- */
-function moveSvgUp( element )
-{
-    // run the last insert to place the image on the bottom of the icons
-    element.nextSibling.insertAdjacentElement("afterend", element)
-    
-}
-/**
  * @function moveSvgDown
  * @param {Node} element - the element to shift down a layer of the svg parent
  * @description move the svg element down to the top of the layers of the svg
