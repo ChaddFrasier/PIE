@@ -130,7 +130,7 @@ class DraggableSVG {
             }
         }
         else {
-            console.log("Error: ContainerId = NULL")
+            console.log("Error: ContainerId === undefined")
         }
     }
 
