@@ -1,18 +1,19 @@
 /**
- * @file
- * TODO:
+ * @file DraggableSVG.js
+ * @fileoverview 
+ * This file houses all of the functions and data object for creating a DraggableSVG object using a parent svg as input to the constructor.
+ * This class controls all the drag and drop functionality for the main figure box in PIE
  */
 "use strict"
+var _this = null;
 /**
  * @class DraggableSVG
  */
-var _this = null;
-
 class DraggableSVG {
-    
+
     /**
-     * 
-     * @param {string} containerId 
+     * @constructor
+     * @param {string} containerId id to the SVG object you want to be a draggable area 
      */
     constructor( containerId=undefined ) {
         // validate the input to the class constructor
@@ -26,13 +27,15 @@ class DraggableSVG {
             this.currentY = null;
             this.paused = false;
 
+            // set the private class variable inside the constructor
             _this = this;
-            document.getElementById( containerId ).addEventListener( "mousedown", this.dragHandler )
+            document.getElementById( containerId ).addEventListener( "mousedown", DraggableSVG.dragHandler )
         }
     }
 
     /**
-     * 
+     * @function getContainerObject
+     * @description this function retrieves the container box that the containerId belongs to
      */
     getContainerObject() {
         return document.getElementById( this.containerId )
@@ -42,7 +45,7 @@ class DraggableSVG {
      * @description create  point that when given an x,y in client space returns and x,y in svg space
      */
     svgAPI(x, y) {
-        return DraggableSVG.prototype.createSVGP( x, y );
+        return DraggableSVG.createSVGP( x, y );
     }
 
     /**
@@ -50,7 +53,7 @@ class DraggableSVG {
      * @description prevent dragging using flag
      */
     pauseDraggables() {
-        this.getContainerObject().removeEventListener("mousedown", this.dragHandler );
+        this.getContainerObject().removeEventListener("mousedown", DraggableSVG.dragHandler );
         this.paused = true;
     }
 
@@ -60,7 +63,7 @@ class DraggableSVG {
      */
     unpauseDraggables() {
         // add the main listener to the object targeted by DraggableArea() init function
-        this.getContainerObject().addEventListener("mousedown", this.dragHandler );
+        this.getContainerObject().addEventListener("mousedown", DraggableSVG.dragHandler );
         this.paused = false;
     }
 
@@ -69,7 +72,7 @@ class DraggableSVG {
      * @param {_Event} event the mouse move event
      * @description This function drags the elemnt inside the DraggableArea that was clicked on 
     */
-    dragHandler ( event )
+    static dragHandler ( event )
     {
         event.preventDefault();
         // IF THE NODE IS AN IMAGE IGNORE
@@ -82,16 +85,15 @@ class DraggableSVG {
         // if the drag icon is found to be valid then initiate the dragging functions
         if( _this.draggingIcon != null && !_this.paused && _this.draggingIcon.getAttribute("id") != "bgelement")
         {   
-            console.log(_this.containerId)
             // requires svgHelper.js
-            let svgP = DraggableSVG.prototype.createSVGP( event.clientX, event.clientY );
+            let svgP = DraggableSVG.createSVGP( event.clientX, event.clientY );
             // set the oldX for later
             _this.oldX = svgP.x;
             _this.oldY = svgP.y;
             // start dragging events
-            document.getElementById( _this.containerId ).addEventListener("mousemove", _this.dragObject );
-            document.getElementById( _this.containerId ).addEventListener("mouseleave", _this.endDrag );
-            document.getElementById( _this.containerId ).addEventListener("mouseup", _this.endDrag );
+            document.getElementById( _this.containerId ).addEventListener("mousemove", DraggableSVG.dragObject );
+            document.getElementById( _this.containerId ).addEventListener("mouseleave", DraggableSVG.endDrag );
+            document.getElementById( _this.containerId ).addEventListener("mouseup", DraggableSVG.endDrag );
             // add class for 'dragging' cursor
             _this.draggingIcon.classList.add('dragging');
             document.getElementById( _this.containerId ).classList.add('dragging');
@@ -106,7 +108,7 @@ class DraggableSVG {
      * @description this function creates a svg point from the svgContainer matrix and transforms it into the client space.
      *  This is used to get the pixel in the svg that was clicked when dropping icons on screen
      */
-    createSVGP( x, y )
+    static createSVGP( x, y )
     {
         if( _this.containerId !== undefined ){
             // create a blank svg point on screen
@@ -137,11 +139,11 @@ class DraggableSVG {
     * @param {_Event} event the mouse move event to get the location of the mouse
     * @description Function that adjusts the element's transform that is currently being clicked on inside the DraggableArea.
     */
-    dragObject ( event )
+    static dragObject ( event )
     {
         event.preventDefault();
         // transform the mouse event location to the svg subspace
-        let svgP = DraggableSVG.prototype.createSVGP( event.clientX, event.clientY );
+        let svgP = DraggableSVG.createSVGP( event.clientX, event.clientY );
         // drag all icons and image things at one time
         if( _this.draggingIcon.nodeName == "g" && _this.draggingIcon.getAttribute("id").indexOf("-hg") > -1)
         {
@@ -259,15 +261,15 @@ class DraggableSVG {
     * @param {void}
     * @description Trys to remove all the event listeners from the svgcontainer to change the location of the icon and then erases the memory at the variables
     */
-    endDrag( )
+    static endDrag( )
     {
         // copy the dragcontainer object
         let svgcontainer = document.getElementById( _this.containerId );
         // attempt to remove the dragging listeners
         try{
-            svgcontainer.removeEventListener("mousemove", _this.dragObject );
-            svgcontainer.removeEventListener("mouseleave", _this.endDrag );
-            svgcontainer.removeEventListener("mouseup", _this.endDrag );
+            svgcontainer.removeEventListener("mousemove", DraggableSVG.dragObject );
+            svgcontainer.removeEventListener("mouseleave", DraggableSVG.endDrag );
+            svgcontainer.removeEventListener("mouseup", DraggableSVG.endDrag );
         }catch( err )
         {
             // log an error but dont fail
@@ -286,11 +288,11 @@ class DraggableSVG {
     }
 } // End DraggableSVG Class
 
-
-// Private Class Functions
+// Private Functions
 /**
 * @function validNode
-* @param {*} containerId 
+* @param {string} containerId the id of the parent SVG object
+* @description this function verifies that the object with the given id is an SVG object
 */
 function validNode( containerId )
 {
@@ -306,7 +308,7 @@ function validNode( containerId )
 /**
  * @function getIconParentContainer
  * @param {Object} target 
- * @description this function loops until failure or until a expected / draggable parent is found (Usually Fails in 4 to 5 loops)
+ * @description this function loops until failure or until a expected / draggable parent is found (Usually Fails in 4 to 5 loops if at all)
  */
 function getIconParentContainer( target )
 {
