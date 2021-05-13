@@ -1045,7 +1045,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             holderbox.append(newoptionsbar, toolsarea)
             holderbox.setAttribute("objectid", captionId)
 
-            draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
+            draggableList.getMenuParent().insertAdjacentElement("afterbegin", holderbox)
 
             /** Add a caption box in the svg area */
             const textholder = document.createElementNS(NS.svg, "svg")
@@ -1683,7 +1683,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             holderbox.setAttribute("height", "100%")
             holderbox.append(newoptionsbar, toolsarea)
 
-            draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
+            draggableList.getMenuParent().insertAdjacentElement("afterbegin", holderbox)
 
             // set image initial attributes
             imagesvg.setAttribute("x", "0")
@@ -2477,9 +2477,9 @@ function configDraggables( svg, dragCont )
 {
     // create the Draggable Object Container
     draggableSvg = new DraggableSVG( svg.getAttribute('id') );
-    
+
     // create the DraggableList
-    draggableList = DraggableList( dragCont )
+    draggableList = new DraggableMenu( dragCont.getAttribute("id") )
 }
 
 /**
@@ -3024,7 +3024,7 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             holderbox.setAttribute("height", "100%")
             holderbox.append(iconoptionbar, icontoolbox)
 
-            draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
+            draggableList.getMenuParent().insertAdjacentElement("afterbegin", holderbox)
             break
     
         case "sun":
@@ -3188,7 +3188,7 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             holderbox.setAttribute("height", "100%")
             holderbox.append( sunoptionbar, sunicontoolbox )
 
-            draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
+            draggableList.getMenuParent().insertAdjacentElement("afterbegin", holderbox)
 
             break
     
@@ -3352,7 +3352,7 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             holderbox.setAttribute("height", "100%")
             holderbox.append( obsoptionbar, obsicontoolbox )
 
-            draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
+            draggableList.getMenuParent().insertAdjacentElement("afterbegin", holderbox)
             break
 
 
@@ -3488,7 +3488,7 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             holderbox.setAttribute("height", "100%")
             holderbox.append( scaleoptionbar, scaleicontoolbox )
 
-            draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
+            draggableList.getMenuParent().insertAdjacentElement("afterbegin", holderbox)
             break
 
         case "key":
@@ -3621,7 +3621,7 @@ function drawToolbox( toolbox, icontype, iconId, transX, transY )
             holderbox.setAttribute("height", "100%")
             holderbox.append( keyoptionbar, keyicontoolbox )
 
-            draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
+            draggableList.getMenuParent().insertAdjacentElement("afterbegin", holderbox)
             break
 
         default:
@@ -4134,28 +4134,6 @@ function updateCaptionBoxColor ( color, objectid )
     }
 }
 
-/**
- * @function toggleLayerUI
- * @param {"add"|"remove"} activation tells the func to add or remove classes
- * @description add or remove class from all major parts of the UI
- */
-function toggleLayerUI( activation, cls )
-{
-    let requiredLayers = [ document.getElementById("toolbox"), document.getElementById("editbox") ]
-
-    requiredLayers.forEach(div => {
-        switch(activation)
-        {
-            case "remove":
-                div.classList.remove(cls)
-                break
-            
-            case "add":
-                div.classList.add(cls)
-                break
-        }
-    });
-} 
 
 /**
  * @function drawMouseDownListener
@@ -4700,7 +4678,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
     holderbox.setAttribute("objectid", objectid)
     holderbox.append(lineoptionbar, linetoolbox)
 
-    draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
+    draggableList.getMenuParent().insertAdjacentElement("afterbegin", holderbox)
 }
  /** End Draw Functions */
 
@@ -5196,7 +5174,7 @@ function createOutlineToolbox ( objectid, rectX, rectY, rectW, rectH, strokeColo
     holderbox.setAttribute("objectid", objectid)
     holderbox.append(rectoptionbar, recttoolbox)
 
-    draggableList.getContainerObject().insertAdjacentElement("afterbegin", holderbox)
+    draggableList.getMenuParent().insertAdjacentElement("afterbegin", holderbox)
 }
 
 /**
