@@ -8,14 +8,14 @@ const UPLOAD_PATH = path.join(__dirname, "public", "uploads")
 const EXPORT_PATH = path.join(__dirname, "public", "exports")
 const LOG_PATH = path.join(__dirname, "bin", "log")
 
-var indexRouter = require('./routes/index');
-var helpRouter = require('./routes/help');
-var faqRouter = require('./routes/faq');
-var uploadRouter = require('./routes/upload')
-var exportRouter = require('./routes/export')
-var imageRouter = require('./routes/images');
-var downloadRouter = require('./routes/download');
-var powRouter = require('./routes/pow')
+const indexRouter = require('./routes/index');
+const helpRouter = require('./routes/help');
+const faqRouter = require('./routes/faq');
+const uploadRouter = require('./routes/upload')
+const exportRouter = require('./routes/export')
+const imageRouter = require('./routes/images');
+const downloadRouter = require('./routes/download');
+const powRouter = require('./routes/pow')
 
 var app = express();
 
@@ -36,7 +36,6 @@ app.use('/upload', uploadRouter);
 app.use('/images',imageRouter);
 app.use('/export',exportRouter);
 app.use('/download', downloadRouter);
-
 
 /**
  * @function cleanCreateFolder
