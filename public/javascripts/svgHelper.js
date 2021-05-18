@@ -1,6 +1,9 @@
 /**
  * @file svgHelper.js
  * @fileoverview file for helping the DraggableArea and DraggableList files
+ * 
+ * 
+ * TODO: this file could be broken down and used in seperate classes
 */
 "use strict";
 // Namespaces Global

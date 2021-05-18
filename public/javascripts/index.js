@@ -25,7 +25,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         selectedObject = null,
         OutlineFlag = false,
         shadowIcon = new DraggableGhost(),
-        activeEventManager = startActiveEM(),
+        activeEventManager = new EventManager(),
         draggingDot = null,
         rectstartx = 0,
         rectstarty = 0;
@@ -34,8 +34,12 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
     let svgContainer = document.getElementById("figurecontainer");
     // add the custom keys 
     document.addEventListener("keydown", customKeys);
-    // start draggable actions
-    configDraggables( svgContainer, document.getElementById("DraggableContainer") )
+
+    // create the Draggable Object Container
+    draggableSvg = new DraggableSVG( svgContainer.getAttribute('id') );
+
+    // create the DraggableList
+    draggableList = new DraggableMenu( "DraggableContainer" )
 
     /**
      * @function shiftKeyup
@@ -2367,11 +2371,8 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
         if( icongroup != null )
         {
-            // find proper tool box
-            let imagetoolbox = findImageToolbox( selectedObject.id, document.getElementsByClassName("imagetoolsbox") )
-
             // draw the tool box based on the icon type
-            drawToolbox( imagetoolbox, icontype, icongroup.id, newX, newY )
+            drawToolbox( icontype, icongroup.id, newX, newY )
         }
     }
 }) // end of jquery functions
@@ -2466,23 +2467,6 @@ function retrieveDataObject( holderid )
 }
 
 /**
- * @function configDraggables
- * @requires DraggableContainer
- * @requires DraggableList
- * @param {SVG Object} svg 
- * @param {HTML Object} dragCont 
- * @description this function just initiates the draggable things on the index page
- */
-function configDraggables( svg, dragCont )
-{
-    // create the Draggable Object Container
-    draggableSvg = new DraggableSVG( svg.getAttribute('id') );
-
-    // create the DraggableList
-    draggableList = new DraggableMenu( dragCont.getAttribute("id") )
-}
-
-/**
  * @function preConfigPage
  * @description this function is to set a few required things for the body of the index that cannot be set
  *              with a PUG template
@@ -2566,52 +2550,6 @@ var startButtonManager = function() {
     }
 }
 const ButtonManager = startButtonManager();
-
-/**
- * @function startActiveEM
- * @description This function creates an event manager object that acts as a universal 
- * flagger to start or disable running events
- */
-var startActiveEM = function() {
-    var RunningEvent = undefined;
-
-    return {
-        activateEvent: function()
-        {
-            // if there is no event running then return true otherwise false
-            if( RunningEvent )
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        },
-
-        setEventFlag: function( val ) {
-            RunningEvent = val;
-        },
-
-        deactivateBtn: function( id )
-        {
-            var btn = document.getElementById(id)
-            if( btn )
-            {
-                btn.classList.add("disabled")
-            }
-        },
-
-        reactivateBtn: function( id )
-        {
-            var btn = document.getElementById(id)
-            if( btn )
-            {
-                btn.classList.remove("disabled")
-            }
-        }
-    };
-}
 
 /**
  * @function getScalebarData
@@ -2856,14 +2794,13 @@ function typeofObject(testString)
 
 /**
  * @function drawToolbox
- * @param {Node} toolbox 
  * @param {string} icontype 
  * @param {string} iconId
  * @param {number} transX 
  * @param {number} transY
  * @description draws tool boxes for each icon, this method allows for more than 1 of each icon
  */
-function drawToolbox( toolbox, icontype, iconId, transX, transY )
+function drawToolbox( icontype, iconId, transX, transY )
 {
     switch ( icontype )
     {
