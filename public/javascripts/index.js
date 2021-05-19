@@ -850,8 +850,13 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                     });
 
                     // download the text as a seperate file because the export succeeded
-                    var textBlob = new Blob( [ document.querySelector("textarea[name='captiontextinput']").value ], {type : "text/plain;charset=utf-8"});
-                    saveBlob( textBlob, `${fileinputname.value}.txt`)
+                    try{
+                        var textBlob = new Blob( [ document.querySelector("textarea[name='captiontextinput']").value ], {type : "text/plain;charset=utf-8"});
+                        saveBlob( textBlob, `${fileinputname.value}.txt`)
+                    }
+                    catch( err ) {
+                        console.log('There is no caption.')
+                    }
                 };
 
                 // open the request and send the data
