@@ -4,8 +4,8 @@ const multer = require('multer');
 const path  = require('path');
 const fs  = require('fs');
 const router = express.Router();
-//const PIEAPI = require('../public/javascripts/PIE-api.js');
-const PIEAPI = require('../api/PIEAPI.js');
+
+const PIEAPI = require('../api/PIEAPI');
 // init storage object to tell multer what to do
 var storage = multer.diskStorage(
     {
@@ -31,11 +31,9 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
     // check if the file uploaded was an isis3 file
     if( isisregexp.test(req.file.filename) )
     {
-
         // start the api object
         var pieapi = new PIEAPI();
 
-        console.log(pieapi.logFilename)
         // call the gdal scaling function that Trent uses and convert the output to jpg at 50% size
         var promise = pieapi.gdal_rescale(
             path.join("public", "uploads", req.file.filename),
