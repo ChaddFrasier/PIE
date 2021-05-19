@@ -1,6 +1,3 @@
-/**
- * @requires svgHelper.js
- */
 var _this2 = null;
 
 class DraggableMenu {

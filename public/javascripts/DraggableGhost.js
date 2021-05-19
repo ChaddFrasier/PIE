@@ -2,7 +2,6 @@
  * @file DraggableGhost.js
  * @fileoverview This class is used to copy a button on the screen and make a smaller 'ghost' version of the icon that follows the mouse for drag and dropping effect.
  */
-var _this = undefined;
 /**
  * @class DraggableGhost
  */
@@ -10,7 +9,7 @@ var _this = undefined;
 class DraggableGhost {
     constructor( ) {
         this.icon = null
-        _this = this
+        _this = this;
     }
 
     /**
@@ -30,7 +29,7 @@ class DraggableGhost {
         shadowdiv.style.top = event.pageY+'px';
         shadowdiv.style.pointerEvents = "none";
         _this.icon = shadowdiv;
-        return shadowdiv;
+        return shadowdiv
     }
 
     /**
@@ -39,7 +38,10 @@ class DraggableGhost {
      * @description this function sets the position of the 'ghosting' icon
      */
     shadowAnimate( event ) {
-        _this.icon.style.left = Number(event.pageX).toFixed(0)+'px';
-        _this.icon.style.top = Number(event.pageY).toFixed(0)+'px';
+        if( _this.icon )
+        {
+            _this.icon.style.left = Number(event.pageX).toFixed(0)+'px';
+            _this.icon.style.top = Number(event.pageY).toFixed(0)+'px';
+        }
     }
 }
