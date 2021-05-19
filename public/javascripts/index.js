@@ -1,10 +1,9 @@
 /**
  * @file index.js
- * @requires "svgHelper.js"
  * @requires "DraggableArea.js"
  * @requires "DraggableList.js"
  * @requires "GhostDraggable.js"
- * @requires "PIE-api.js"
+ * @requires "EventManager.js"
  * 
  * @fileoverview main event loop for the index page of PIE
  * 
@@ -1859,6 +1858,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 else {
                     // make new shadow icon
                     shadowIcon.icon = shadowIcon.drawShadowIcon( event )
+
                     document.addEventListener("mousemove", shadowIcon.shadowAnimate);
                     document.getElementsByClassName("maincontent")[0].appendChild(shadowIcon.icon);
 
