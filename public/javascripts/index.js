@@ -15,6 +15,15 @@ var draggableSvg = null,
     draggableList = null,
     geoIconArray = Array('northarrowopt', 'scalebarbtnopt', 'sunarrowopt', 'keyopt', 'observerarrowopt');
 
+    // Namespaces Global
+var NS = {
+    xhtml:"http://www.w3.org/1999/xhtml",
+    svg: "http://www.w3.org/2000/svg",
+    cc: "http://creativecommons.org/ns#",
+    dc: "http://purl.org/dc/elements/1.1/",
+    rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+};
+
 // Function executes when the page loads fully
 document.addEventListener( "DOMContentLoaded", ( ) => {
     // Pre config
@@ -1816,7 +1825,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
      */
     document.getElementById('backgroundcolor').addEventListener("change", (event) =>
     { 
-        setSVGBackground("bgelement", event.target.value) 
+        document.getElementById('bgelement').setAttribute("fill", event.target.value);
     });
 
     /**
@@ -3587,6 +3596,19 @@ function updateIconPosition ( event, attrId )
 }
 
 /**
+ * @function updateTranslate
+ * @requires translateSring()
+ * @param {string} translateStr - translate string for the translate
+ * @param {string} attr - the attribute to update
+ * @param {number} value - the new value
+ * @description update just one part of the translate. either x or y and return translateString()
+ */
+function updateTranslate ( object, attr, value )
+{
+    object.setAttribute(attr, value)
+}
+
+/**
  * @function findImageToolbox
  * @param {string} id 
  * @param {NodeList} array 
@@ -3628,7 +3650,7 @@ function updateIconScale( event )
  * @param {number} scale - new scale 
  * @param {string} x - the transform x
  * @param {string} y - the transform y value
- * @description return an object that has all the components for the setTransform() function besides that actual icon
+ * @description return an object that has all the components for the function besides that actual icon
  */
 function rescaleIconTransform ( oldscale, scale, x, y )
 {

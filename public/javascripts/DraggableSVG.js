@@ -6,6 +6,7 @@
  */
 "use strict"
 var _this = null;
+
 /**
  * @class DraggableSVG
  */
@@ -326,4 +327,157 @@ function getIconParentContainer( target )
         console.log(err);
     }
     return target;
+}
+
+/**
+ * @function updateInputField
+ * @param {string} objectid the object id to change
+ * @param  {...any} args list of the values to update in order of input fields for each object
+ */
+function updateInputField( objectid, ...args )
+{
+    // dragging a line
+    if( objectid.indexOf("line") > -1)
+    {
+        var objectArr = document.getElementsByClassName("draggableToolbox")
+        // more than 1 toolbox present
+        for(let i = 0; i < objectArr.length; i++ )
+        {
+            if( objectArr[i].getAttribute("objectid") == objectid )
+            { 
+                // set the ui input boxes
+                var x1input = objectArr[i].children[1].querySelector("input[name='linex1input']"),
+                    y1input = objectArr[i].children[1].querySelector("input[name='liney1input']"),
+                    x2input = objectArr[i].children[1].querySelector("input[name='linex2input']"),
+                    y2input = objectArr[i].children[1].querySelector("input[name='liney2input']");
+                
+                x1input.value = Number(args[0]).toFixed(0)
+                y1input.value = Number(args[1]).toFixed(0)
+                x2input.value = Number(args[2]).toFixed(0)
+                y2input.value = Number(args[3]).toFixed(0)
+            }
+        }
+    }
+    else if( objectid.indexOf("rect") > -1)
+    {
+        var objectArr = document.getElementsByClassName("draggableToolbox")
+
+        // more than 1 toolbox present
+        for(let i = 0; i < objectArr.length; i++ ){
+            if( objectArr[i].getAttribute("objectid") == objectid )
+            {
+                // set the ui input boxes
+                var xinput = objectArr[i].children[1].querySelector("input[name='rectxinput']"),
+                    yinput = objectArr[i].children[1].querySelector("input[name='rectyinput']");
+
+                xinput.value = Number(args[0]).toFixed(0)
+                yinput.value = Number(args[1]).toFixed(0)
+            }
+        }
+    }
+    else if( objectid.indexOf("Icon") > -1 )
+    {
+        var objectArr = document.getElementsByClassName("draggableToolbox") 
+ 
+        if( objectArr.length > 0)
+        {
+            // more than 1 toolbox present
+            for(let i = 0; i < objectArr.length; i++ ){
+                if( objectArr[i].getAttribute("objectid").indexOf(objectid.split("-")[1]) > -1 )
+                {
+                    // set the ui input boxes
+                    var xinput = objectArr[i].querySelectorAll("input[name='iconxcoordinput']"),
+                        yinput = objectArr[i].querySelectorAll("input[name='iconycoordinput']");
+
+                    if(xinput.length > 0 && yinput.length > 0)
+                    {
+                        xinput.forEach(inputfield => {
+                            if(inputfield.getAttribute("objectid") === objectid)
+                            {
+                                inputfield.value = Number(args[0]).toFixed(0)
+                            }
+                        });
+
+                        yinput.forEach(inputfield => {
+                            if(inputfield.getAttribute("objectid") === objectid)
+                            {
+                                inputfield.value = Number(args[1]).toFixed(0)
+                            }
+                        });
+                    }
+                }
+            }
+        }
+        else
+        {
+            console.log("Something went wrong")
+        }
+    }
+    else if( objectid.indexOf("image") > -1 )
+    {
+        var objectArr = document.getElementsByClassName("draggableToolbox")
+        
+        if(objectArr.length > 0)
+        {
+            // more than 1 toolbox present
+            for(let i = 0; i < objectArr.length; i++ ){
+                if( objectArr[i].getAttribute("objectid").split('-')[0] === objectid )
+                {
+                    // set the ui input boxes
+                    var xinput = objectArr[i].children[1].querySelector("input[name='xcoordinput']"),
+                        yinput = objectArr[i].children[1].querySelector("input[name='ycoordinput']")
+
+                    xinput.value = Number(args[0]).toFixed(0)
+                    yinput.value = Number(args[1]).toFixed(0)
+                }
+            }
+        }
+        else
+        {
+            console.log("Something went wrong")
+        }
+    }
+    else if(objectid.indexOf("caption") > -1)
+    {
+        var objectArr = document.getElementsByClassName("draggableToolbox")
+        
+        if(objectArr.length > 0)
+        {
+            // more than 1 toolbox present
+            for(let i = 0; i < objectArr.length; i++ ){
+                if( objectArr[i].getAttribute("objectid").split('-')[0] === objectid )
+                {
+                    // set the ui input boxes
+                    var xinput = objectArr[i].children[1].querySelector("input[name='xcoordinput']"),
+                        yinput = objectArr[i].children[1].querySelector("input[name='ycoordinput']");
+
+                    xinput.value = Number(args[0]).toFixed(0)
+                    yinput.value = Number(args[1]).toFixed(0)
+                }
+            }
+        }
+        else
+        {
+            console.log("Something went wrong")
+        }
+    }
+    else
+    {
+        console.error("Could not find object to correct")
+    }
+}
+
+/**
+ * @function getScaledPoint
+ * @param {number} p - the point that we need to scale
+ * @param {number} scale - the new scale of the image
+ * @param {number} objectDim - the object dimension, either width or height
+ * @description move the point over half the scaled width and then divide by the scale again 
+ */
+function getScaledPoint( p, scale, objectDim )
+{
+    // scale object dimension and get half of it because we want the center of the object
+    let p_half = (objectDim * scale) / 2
+    // scale the point down with half subtracted to find the center of the icon
+    return ( p  - p_half ) /  scale  
 }
