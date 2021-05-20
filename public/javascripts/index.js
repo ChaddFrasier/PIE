@@ -4,6 +4,7 @@
  * @requires "DraggableList.js"
  * @requires "GhostDraggable.js"
  * @requires "EventManager.js"
+ * @requires "DraggableDot.js"
  * 
  * @fileoverview main event loop for the index page of PIE
  * 
@@ -33,10 +34,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         selectedObject = null,
         OutlineFlag = false,
         shadowIcon = new DraggableGhost(),
-        activeEventManager = new EventManager(),
-        draggingDot = null,
-        rectstartx = 0,
-        rectstarty = 0;
+        activeEventManager = new EventManager();
 
     // get the global figure element
     let svgContainer = document.getElementById("figurecontainer");
@@ -48,329 +46,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
     // create the DraggableList
     draggableList = new DraggableMenu( "DraggableContainer" )
-
-    /**
-     * @function shiftKeyup
-     * @param {Event} event 
-     * @description remove the dots and listener events from the dots if the shift key if lifted
-     */
-    function shiftKeyup( event )
-    {
-        // stop event chain
-        event.preventDefault()
-
-        // if the key being let go is the shift key
-        if( event.key === "Shift" || event.key ==='shift' || event.key === 16 )
-        {
-            // unpause the drag stuff from the DraggableArea Object
-            draggableSvg.unpauseDraggables();
-            // reactivate the UI buttons
-            changeButtonActivation("enable", 2)
-            // update the main dom elements and inner children to class
-            applyClassToMainDOMandChildren("shifting", "remove")
-            // remove the color the endpoints of the lines and the endpoints of the rectangles
-            document.removeEventListener("keyup", shiftKeyup)
-            // remove all draggable dots
-            document.querySelectorAll("circle.draggableDot").forEach( dot => {
-                dot.removeEventListener("mousedown", dotMouseDownFunction)
-                draggableSvg.getContainerObject().removeChild( dot )
-            });
-        }
-        return true
-    }
-
-    /**
-     * @function dotMouseMoveFunction
-     * @param {Event} event 
-     * @description manipuate the rect and line elements and adjust the dots respectivley
-     */
-    function dotMouseMoveFunction( event )
-    {
-        // make sure draggingDot is valid
-        if( draggingDot !== null )
-        {
-            // check if the dot is for a line
-            if( String(draggingDot.getAttribute("spyId")).indexOf('line') > -1 )
-            {
-                // get the svg point that the line uses
-                var svgP = draggableSvg.svgAPI(event.pageX, event.pageY),
-                    svgObject = document.getElementById( draggingDot.getAttribute("spyId").split("-")[0] ),
-                    code = (draggingDot.getAttribute("spyId").split("-")[1] == 'start') ? 1 : 2;
-
-                // set the point for the new line end
-                draggingDot.setAttribute("cx", svgP.x)
-                draggingDot.setAttribute("cy", svgP.y)
-                svgObject.setAttribute(`x${code}`, svgP.x)
-                svgObject.setAttribute(`y${code}`, svgP.y)
-
-                // update the line input field
-                updateLineXY( svgObject.id, svgP.x, svgP.y, code )
-            }
-            else if( String(draggingDot.getAttribute("spyId")).indexOf('rect') > -1 )
-            {
-                // get the scaled point on the svg and the rectangle dimensions
-                var svgP = draggableSvg.svgAPI(event.pageX, event.pageY),
-                    svgObject = document.getElementById( draggingDot.getAttribute("spyId").split("-")[0] ),
-                    code = draggingDot.getAttribute("spyId").split("-")[1],
-                    width = parseFloat(svgObject.getAttribute("width")),
-                    height = parseFloat(svgObject.getAttribute("height")), 
-                    newwidth = 0, 
-                    newheight = 0;
-
-                // use a different if statement for each corner of the rectangle
-                if( code === "ptl" )
-                {
-                    newwidth = width - (svgP.x - rectstartx),
-                    newheight = height - (svgP.y - rectstarty)
-
-                    if( newheight > 0 )
-                    {
-                        // update the dot locations
-                        draggingDot.setAttribute("cy", svgP.y)
-                        svgObject.setAttribute("y", svgP.y)
-                        svgObject.setAttribute( "height", newheight )
-                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptr']`)
-                            .setAttribute("cy", svgP.y );
-                        rectstarty = svgP.y
-                    }
-                    if( newwidth > 0 )
-                    {
-                        draggingDot.setAttribute("cx", svgP.x);
-                        svgObject.setAttribute("x", svgP.x);
-                        svgObject.setAttribute( "width", newwidth );
-                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`)
-                            .setAttribute("cy", svgP.y + newheight);
-                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbl']`)
-                            .setAttribute("cx", svgP.x );
-                        rectstartx = svgP.x
-                    }
-
-                    if( newwidth > 0 || newheight > 0 )
-                    {
-                        // standard drag update
-                        updateRectDims( svgObject.id, rectstartx, rectstarty, newwidth, newheight)
-                    }
-                }
-                else if( code === "ptr" )
-                {
-                    newwidth = width + (svgP.x - rectstartx),
-                    newheight = height - (svgP.y - rectstarty)
-
-                    if( newheight > 0 )
-                    {
-                        // update the dot location
-                        draggingDot.setAttribute("cy", svgP.y);
-                        svgObject.setAttribute("y", svgP.y);
-                        svgObject.setAttribute( "height", newheight );
-                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptl']`)
-                            .setAttribute("cy", svgP.y );
-                        rectstarty = svgP.y
-                    }
-                    if( newwidth > 0 )
-                    {
-                        draggingDot.setAttribute("cx", svgP.x)
-                        svgObject.setAttribute( "width", newwidth )
-                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`)
-                            .setAttribute("cx", svgP.x );
-                        rectstartx = svgP.x
-                    }
-
-                    if( newwidth > 0 || newheight > 0 )
-                    {
-                        // standard drag update
-                        updateRectDims( svgObject.id, rectstartx - newwidth, rectstarty, newwidth, newheight)
-                    }
-                }
-                else if( code === "pbr" )
-                {
-                    newwidth = width + (svgP.x - rectstartx),
-                    newheight = height + (svgP.y - rectstarty)
-
-                    if( newheight > 0 )
-                    {
-                        // update the dot location
-                        draggingDot.setAttribute("cy", svgP.y)
-                        svgObject.setAttribute( "height", newheight )
-                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbl']`)
-                            .setAttribute("cy", svgP.y );
-                        rectstarty = svgP.y
-                    }
-                    if( newwidth > 0 )
-                    {
-                        draggingDot.setAttribute("cx", svgP.x)
-                        svgObject.setAttribute( "width", newwidth )
-                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptr']`)
-                            .setAttribute("cx", svgP.x );
-                        rectstartx = svgP.x
-                    }
-
-                    if( newwidth > 0 || newheight > 0 )
-                    {
-                        // standard drag update
-                        updateRectDims( svgObject.id, rectstartx - newwidth, rectstarty - newheight, newwidth, newheight)
-                    }
-                }
-                else if( code === "pbl" )
-                {
-                    newwidth = width - (svgP.x - rectstartx),
-                    newheight = height + (svgP.y - rectstarty);
-
-                    if( newheight > 0 )
-                    {
-                        // update the dot location
-                        draggingDot.setAttribute("cy", svgP.y)
-                        svgObject.setAttribute( "height", newheight )
-                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-pbr']`)
-                            .setAttribute("cy", svgP.y );
-                        rectstarty = svgP.y
-                    }
-                    if( newwidth > 0 )
-                    {
-                        draggingDot.setAttribute("cx", svgP.x)
-                        svgObject.setAttribute("x", svgP.x)
-                        svgObject.setAttribute( "width", newwidth )
-                        document.querySelector(`circle.draggableDot[spyId='${svgObject.getAttribute("id")}-ptl']`)
-                            .setAttribute("cx", svgP.x );
-                        rectstartx = svgP.x
-                    }
-
-                    if( newwidth > 0 || newheight > 0 )
-                    {
-                        // standard drag update
-                        updateRectDims( svgObject.id, rectstartx, rectstarty - newheight, newwidth, newheight)
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * @function updateLineXY
-     * @param {string} id the id of the target line
-     * @param {number} x the new x of that line
-     * @param {number} y the new y of that line
-     * @param {number} code used to distinguish from both ends of the line
-     */
-    function updateLineXY( id, x, y, code )
-    {
-        var linexList = document.querySelectorAll(`input[name='linex${code}input']`),
-            lineyList = document.querySelectorAll(`input[name='liney${code}input']`);
-
-        linexList.forEach( lineinputfield => {
-            if( lineinputfield.getAttribute("objectid") == id )
-            {
-                lineinputfield.value = x
-            }
-        });
-        lineyList.forEach( lineinputfield => {
-            if( lineinputfield.getAttribute("objectid") == id )
-            {
-                lineinputfield.value = y
-            }
-        });
-    }
-
-    /**
-     * @function updateRectDims
-     * @param {string} id the id of the rectangle
-     * @param {number} x the new x value of the rectangle
-     * @param {number} y the new y value of the rectangle
-     * @param {number} width the new width of the rectangle
-     * @param {number} height the new height of rectangle
-     */
-    function updateRectDims( id, x, y, width, height )
-    {
-        var rectxList = document.querySelectorAll(`input[name='rectxinput']`),
-            rectyList = document.querySelectorAll(`input[name='rectyinput']`),
-            rectwList = document.querySelectorAll(`input[name='rectwidthinput']`),
-            recthList = document.querySelectorAll(`input[name='rectheightinput']`);
-
-        rectxList.forEach( rectinputfield => {
-            if( rectinputfield.getAttribute("objectid") == id )
-            {
-                rectinputfield.value = x
-            }
-        });
-        rectyList.forEach( rectinputfield => {
-            if( rectinputfield.getAttribute("objectid") == id )
-            {
-                rectinputfield.value = y
-            }
-        });
-        rectwList.forEach( rectinputfield => {
-            if( rectinputfield.getAttribute("objectid") == id )
-            {
-                rectinputfield.value = width
-            }
-        });
-        recthList.forEach( rectinputfield => {
-            if( rectinputfield.getAttribute("objectid") == id )
-            {
-                rectinputfield.value = height
-            }
-        });
-    }
-
-    /**
-     * @function dotEndFunction
-     * @description clear the globals and reove the functions
-     */
-    function dotEndFunction()
-    {
-        draggingDot = null
-        rectstartx = 0
-        rectstarty = 0
-        rectwidth = 0
-        rectheight = 0
-
-        draggableSvg.getContainerObject().removeEventListener("mousemove", dotMouseMoveFunction)
-        draggableSvg.getContainerObject().removeEventListener("mouseup", dotEndFunction)
-        draggableSvg.getContainerObject().removeEventListener("mouseleave", dotEndFunction)
-    }
-
-    /**
-     * @function dotMouseDownFunction
-     * @param {Event} event 
-     * @description capture the starting data for the mousemove function and activate the other listeners
-     */
-    function dotMouseDownFunction( event )
-    {
-        // get the dot the user clicks and the svg it belongs to
-        draggingDot = event.target;
-
-        let svg = document.getElementById( draggingDot.getAttribute("spyId").split("-")[0] )
-
-        // read in the starting data as floats
-        rectstartx = parseFloat( draggingDot.getAttribute("cx") );
-        rectstarty = parseFloat( draggingDot.getAttribute("cy") );
-        rectwidth = parseFloat( svg.getAttribute('width') );
-        rectheight = parseFloat( svg.getAttribute('height') );
-        // activate the dragging and stopping function
-        draggableSvg.getContainerObject().addEventListener( "mousemove", dotMouseMoveFunction );
-        draggableSvg.getContainerObject().addEventListener( "mouseup", dotEndFunction );
-        draggableSvg.getContainerObject().addEventListener( "mouseleave", dotEndFunction );
-    }
-
-    /**
-     * @function createDot
-     * @param {string} spyId the id of the 'spy' SVG Element
-     * @param {float} x the cx of the dot
-     * @param {float} y the cy of the dot
-     * @description create and add a single dot to the svg element
-     */
-    function createDot( spyId, x, y )
-    {
-        // add a dot where one of the line points are
-        var dot = document.createElementNS( NS.svg, "circle" );
-        dot.setAttribute( "class", "draggableDot" );
-        dot.setAttribute( "r", "13" );
-        // get the x and y of all the points of the rectangles and lines
-        dot.setAttribute( "cx", x );
-        dot.setAttribute( "cy", y );
-        dot.setAttribute( "spyId", spyId );
-        dot.addEventListener( "mousedown", dotMouseDownFunction );
-        draggableSvg.getContainerObject().append( dot );
-    }
+    draggingDot = new DraggableDot( draggableSvg )
 
     /**
      * @function customKeys
@@ -442,7 +118,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             )
         {
             // parse over all dom objects and children to add the class
-            applyClassToMainDOMandChildren("shifting", "add")
+            DraggableDot.applyClassToMainDOMandChildren("shifting", "add")
 
             // pause the drag stuff from the DraggableArea Object
             draggableSvg.pauseDraggables();
@@ -464,8 +140,8 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                                 // Example:   <circle ... spyId="line345-start" ... /> 
                                 //            <circle ... spyId="line345-end" ... /> 
 
-                            createDot(`${dotObjectName}start`, obj.getAttribute("x1"), obj.getAttribute("y1"))
-                            createDot(`${dotObjectName}end`, obj.getAttribute("x2"), obj.getAttribute("y2"))
+                            DraggableDot.createDot(`${dotObjectName}start`, obj.getAttribute("x1"), obj.getAttribute("y1"))
+                            DraggableDot.createDot(`${dotObjectName}end`, obj.getAttribute("x2"), obj.getAttribute("y2"))
                             break;
 
                         case 'rect':                        
@@ -479,10 +155,10 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                                 width = parseFloat( obj.getAttribute("width") ),
                                 height = parseFloat( obj.getAttribute("height") );
 
-                            createDot(`${dotObjectName}ptl`, x, y)
-                            createDot(`${dotObjectName}ptr`, x + width, y)
-                            createDot(`${dotObjectName}pbr`, x + width, y + height)
-                            createDot(`${dotObjectName}pbl`, x, y + height)
+                            DraggableDot.createDot(`${dotObjectName}ptl`, x, y)
+                            DraggableDot.createDot(`${dotObjectName}ptr`, x + width, y)
+                            DraggableDot.createDot(`${dotObjectName}pbr`, x + width, y + height)
+                            DraggableDot.createDot(`${dotObjectName}pbl`, x, y + height)
                             break;
 
                         default:
@@ -492,7 +168,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 });
             });
             // add the key listener specifically to cancel the shift function
-            document.addEventListener("keyup", shiftKeyup);
+            document.addEventListener("keyup", draggingDot.shiftKeyup);
         }
         return true;
     }
@@ -519,7 +195,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 // cancel the drawing functionality
                 event.target.classList.remove("drawing")
                 // remove the class to draw
-                applyClassToMainDOMandChildren( "drawing", "remove" );
+                DraggableDot.applyClassToMainDOMandChildren( "drawing", "remove" );
                 changeButtonActivation("enable", 0)
                 // allow dragging again
                 draggableSvg.unpauseDraggables()
@@ -537,7 +213,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 event.target.classList.add("drawing")
                 /* add class to the main content peices *Helps force a cursor look when there is 
                 an unknown number of interor objects*; must remove class later. */
-                applyClassToMainDOMandChildren( "drawing", "add" );
+                DraggableDot.applyClassToMainDOMandChildren( "drawing", "add" );
                 changeButtonActivation("disable", 0);
                 // pause the dragging function for now
                 draggableSvg.pauseDraggables()
@@ -549,39 +225,6 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         }
         PencilFlag = !(PencilFlag)
     });
-
-    /**
-     * @function applyClassToMainDOMandChildren
-     * @param {string} cls the class to apply
-     * @param {'add' || 'remove'} interaction the key work to 'add' or 'remove'
-     * @description this class simplified the part of the index.js that controlled the user cursor UI
-     */
-    function applyClassToMainDOMandChildren( cls, interaction ){
-        
-        switch (interaction) {
-            case "remove":
-                // add the pencil cursor icon to the main content objects
-                document.getElementById("maincontent").childNodes.forEach((childel) => {
-                    childel.classList.remove(cls)
-                });
-                // add the pencil cursor icon to the svg objects
-                document.getElementById("figurecontainer").childNodes.forEach((childel) => {
-                    childel.classList.remove(cls)
-                });
-                break;
-        
-            case "add":
-                // add the pencil cursor icon to the main content objects
-                document.getElementById("maincontent").childNodes.forEach((childel) => {
-                    childel.classList.add(cls)
-                });
-                // add the pencil cursor icon to the svg objects
-                document.getElementById("figurecontainer").childNodes.forEach((childel) => {
-                    childel.classList.add(cls)
-                });
-                break;
-        }    
-    }
 
     /**
      * @function #outlinebtnopt.click()
@@ -598,7 +241,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 document.getElementById("editbox").classList.remove("outlining")
                 event.target.classList.remove("outlining")                
                 // remove the outline cursor
-                applyClassToMainDOMandChildren("outlining", "remove")
+                DraggableDot.applyClassToMainDOMandChildren("outlining", "remove")
                 // unblock dragging
                 draggableSvg.unpauseDraggables()
                 changeButtonActivation("enable", 1)
@@ -616,7 +259,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 document.getElementById("editbox").classList.add("outlining")
                 event.target.classList.add("outlining")
                 // add the outline cursor
-                applyClassToMainDOMandChildren("outlining", "add")
+                DraggableDot.applyClassToMainDOMandChildren("outlining", "add")
                 changeButtonActivation("disable", 1)
                 // block dragging again
                 draggableSvg.pauseDraggables()
@@ -850,8 +493,13 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                     });
 
                     // download the text as a seperate file because the export succeeded
-                    var textBlob = new Blob( [ document.querySelector("textarea[name='captiontextinput']").value ], {type : "text/plain;charset=utf-8"});
-                    saveBlob( textBlob, `${fileinputname.value}.txt`)
+                    try{
+                        var textBlob = new Blob( [ document.querySelector("textarea[name='captiontextinput']").value ], {type : "text/plain;charset=utf-8"});
+                        saveBlob( textBlob, `${fileinputname.value}.txt`)
+                    }
+                    catch( err ) {
+                        console.log('There is no caption.')
+                    }
                 };
 
                 // open the request and send the data
