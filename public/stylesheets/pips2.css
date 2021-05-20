@@ -311,8 +311,9 @@ img#usgsNavIcon:hover {
     cursor: default;
 }
 .navbar > h3.disabled {
-    color: var(--main-bg-color);
+    color: var(--hover-contrast-color);
     cursor: default;
+    border-radius: 12px 10px;
 }
 .navbar > h3 {
     font: 20px;
