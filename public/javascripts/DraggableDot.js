@@ -252,7 +252,7 @@ class DraggableDot {
     static createDot( spyId, x, y )
     {
         // add a dot where one of the line points are
-        var dot = document.createElementNS( NS.svg, "circle" );
+        var dot = document.createElementNS( "http://www.w3.org/2000/svg", "circle" );
         dot.setAttribute( "class", "draggableDot" );
         dot.setAttribute( "r", "13" );
         // get the x and y of all the points of the rectangles and lines
