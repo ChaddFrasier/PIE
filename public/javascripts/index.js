@@ -12,10 +12,11 @@
 */
 
 var draggableSvg = null,
-    draggableList = null,
-    geoIconArray = Array('northarrowopt', 'scalebarbtnopt', 'sunarrowopt', 'keyopt', 'observerarrowopt');
+    draggableList = null;
 
-    // Namespaces Global
+const bm = new ButtonManager();
+
+// Namespaces Global
 var NS = {
     xhtml:"http://www.w3.org/1999/xhtml",
     svg: "http://www.w3.org/2000/svg",
@@ -108,7 +109,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 document.getElementById("savebtn").click()
             }
         }
-        else if( 
+        else if(
                 (key === "Shift" 
                 || key === 'shift' 
                 || key === 16)
@@ -122,6 +123,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
             // pause the drag stuff from the DraggableArea Object
             draggableSvg.pauseDraggables();
+            
             // disable the buttons in the toolbox
             changeButtonActivation("disable", 2)
 
@@ -855,7 +857,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                             document.getElementById(imageId).setAttribute('GEO', null)
                             document.getElementById(imageId).setAttribute('filePath', null)
 
-                            ButtonManager.addImage( imageId, [] )
+                            bm.addImage( imageId, [] )
 
                             // remove the north icon b/c there is no north data
                             try{
@@ -1135,7 +1137,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                                             /** No Thing */
                                         }
                                     }
-                                    ButtonManager.addImage(imageId, btnArray )
+                                    bm.addImage(imageId, btnArray )
                                     // this is not the same in the testing environment
                                     //console.log(responseObject)
                                 }    
@@ -1478,7 +1480,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
     /**
      * Loop over all the buttons and set the custom drag and drop functions
      */
-    geoIconArray.forEach(element => {
+    ButtonManager.geoBtnArray.forEach(element => {
         document.getElementById(element).addEventListener("mousedown", geoIconButtonListener)
     });
 
@@ -2035,7 +2037,6 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 }) // end of jquery functions
 
 /* Helper functions */
-
 /**
  * @function getSvgIcons
  * @param {JSON} obj the json object that houses the data values and their keys 
@@ -2147,68 +2148,6 @@ function iconFailureAlert()
 }
 
 /**
- * @function startButtonManager
- * @description a simple object that helps handle the button UIs
- */
-var startButtonManager = function() {
-
-    var MemoryObject = {};
-
-    return {
-        refresh: function()
-        {
-            // deactivate all the buttons
-            setMains("disable")
-            
-            // activate only the ones that are needed
-            Object.keys(MemoryObject).forEach( imageId => {
-
-                if( MemoryObject[imageId].indexOf("north") > -1 )
-                {
-                    // activate the north button
-                    document.getElementById("northarrowopt").classList.remove("disabled")
-                    document.getElementById("keyopt").classList.remove("disabled")
-                }
-                if( MemoryObject[imageId].indexOf("sun") > -1 )
-                {
-                    // activate the north button
-                    document.getElementById("sunarrowopt").classList.remove("disabled")
-                    document.getElementById("keyopt").classList.remove("disabled")
-                }
-                if( MemoryObject[imageId].indexOf("observer") > -1 )
-                {
-                    // activate the north button
-                    document.getElementById("observerarrowopt").classList.remove("disabled")
-                    document.getElementById("keyopt").classList.remove("disabled")
-                }
-                if( MemoryObject[imageId].indexOf("scale") > -1 )
-                {
-                    // activate the north button
-                    document.getElementById("scalebarbtnopt").classList.remove("disabled")
-                    document.getElementById("keyopt").classList.remove("disabled")
-                }
-            });
-        },
-
-        addImage: function( imagename, btnArray )
-        {
-            MemoryObject[imagename] = btnArray
-            this.refresh()
-        },
-
-        removeImage: function( imagename )
-        {
-            if( MemoryObject[imagename] ) 
-            {
-                delete MemoryObject[imagename]
-                this.refresh()
-            }
-        }
-    }
-}
-const ButtonManager = startButtonManager();
-
-/**
  * @function getScalebarData
  * @param {float} resolution ISIS data point either PixelResolution or ObliquePixelResolution
  * @param {number} imageW Image width
@@ -2298,7 +2237,7 @@ function removeToolsWindow( event )
             svgcontainer = draggableSvg.getContainerObject(),
             captioncontainer = document.getElementById("editbox")
 
-        ButtonManager.removeImage(event.target.parentElement.attributes.objectid.value)
+        bm.removeImage(event.target.parentElement.attributes.objectid.value)
         // remove the options and other things for image
         draggableList.removeObject(parentBox)
         // remove the image holder now
@@ -3615,31 +3554,6 @@ function changeColorsOfChildren( children, color , ...order )
 }
 
 /**
- * @function setMains
- * @param {"enable"|"disabled"} activation activation string to tell the function to add or remove
- * @description disable and re-enable the buttons
- */
-function setMains( activation )
-{
-    switch( activation )
-    {
-        case "enable":
-            geoIconArray.forEach( (geoId) => {
-                document.getElementById(geoId.replace("#", '')).classList.remove( "disabled" )
-            });
-            break;
-        case "disable":
-            geoIconArray.forEach( (geoId) => {
-                document.getElementById(geoId.replace("#", '')).classList.add( "disabled" )
-            });
-            break;
-        default:
-            console.error("Unknown Activation Code")
-            break;
-    }
-}
-
-/**
  * @function changeButtonActivation
  * @param {string} code - either "enable", or "disable" 
  * @description disabled the buttons when the pencil icon is hit
@@ -3651,7 +3565,7 @@ function changeButtonActivation( ActivationCode, code )
         switch( code ) 
         {
             case 0: // change all icons and outline
-                setMains(ActivationCode)
+                ButtonManager.setMains(ActivationCode)
 
                 // enable or disable buttons depending on code
                 if( ActivationCode == "enable" )
@@ -3665,7 +3579,7 @@ function changeButtonActivation( ActivationCode, code )
                 break
             
             case 1: // change all icons and pencil
-                setMains(ActivationCode)
+                ButtonManager.setMains(ActivationCode)
 
                 // enable or disable buttons depending on code
                 if( ActivationCode == "enable" )
@@ -3679,7 +3593,7 @@ function changeButtonActivation( ActivationCode, code )
                 break
             
             case 2: // change all icons
-                setMains(ActivationCode)
+                ButtonManager.setMains(ActivationCode)
 
                 // enable or disable buttons depending on code
                 if( ActivationCode == "enable" )
