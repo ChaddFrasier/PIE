@@ -1,8 +1,19 @@
+/**
+ * @file DraggableDot.js
+ * @fileoverview this file houses the functions to allow the user to hold 'shift' 
+ * and drag and drop endpoints of lines and rectangles.
+ */
 "use strict"
-
 var _this3 = null
 
+/**
+ * @class DraggableDot
+ */
 class DraggableDot {
+    /**
+     * @constructor
+     * @param {HTML Object} SVGObject 
+     */
     constructor( SVGObject=undefined ) {
         this.rectstartx = 0;
         this.rectstarty = 0;
@@ -12,6 +23,11 @@ class DraggableDot {
         _this3 = this
     }
 
+    /**
+     * @function shiftKeyup
+     * @param {_Event} event the event object that started the shift function
+     * @description function that performs the steps needed to stop the shift dragging.
+     */
     shiftKeyup( event )
     {
         // stop event chain
