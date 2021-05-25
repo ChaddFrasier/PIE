@@ -1,10 +1,17 @@
+/**
+ * @file PIEAPI.js
+ * @fileoverview This file houses the PIEAPI class which controls the PIE 
+ * connection to the command line functions for Geo-Data processing.
+ */
+"use strict";
 const { spawn } = require('child_process');
 const fs = require('fs');
-
-"use strict";
-
+/**
+ * @class PIEAPI
+ * @classdesc This class will hold functions to execute command line jobs on Geospacial files using Nodejs.
+ */
 module.exports = class PIEAPI {
-    constructor( )
+    constructor()
     {
         this.logFilename = "./bin/log/pieLog.txt";
 
@@ -355,7 +362,6 @@ module.exports = class PIEAPI {
         tmp[tmp.length-1] = ext;
         return tmp.join(".");
     }
-
 };
 
 /**
