@@ -1,6 +1,21 @@
+/**
+ * @file DraggableMenu.js
+ * @fileoverview this file creates a draggable side menu for PIE.
+ *  Allowing the user to drag and drop toolboxes to change the layer that object appears on.
+ */
+"use strict";
 var _this2 = null;
 
+/**
+ * @class DraggableMenu
+ * @classdesc This class goes along with the DraggableSVG class to make a nice 
+ * usable unterface between the menu the user sees and the way the image is constructed.
+ */
 class DraggableMenu {
+    /**
+     * @constructor
+     * @param {string} parentId the id of the parent container for the menu
+     */
     constructor( parentId=undefined ) {
 
         if ( parentId !== undefined )
@@ -22,6 +37,10 @@ class DraggableMenu {
         }
     }
 
+    /**
+     * @function getMenuParent
+     * @description this function return the object attached to the parentId.
+     */
     getMenuParent() {
         return document.getElementById( this.parentId )
     }
