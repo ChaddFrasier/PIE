@@ -1,19 +1,31 @@
-
 /**
- * @function startButtonManager
- * @description a simple object that helps handle the button UIs
+ * @file ButtonManager.js
+ * @fileoverview a class object to control the button detections
  */
-"use strict"
+"use strict";
 var btnManager = null;
 
+/**
+ * @class ButtonManger
+ * @classdesc Class to control the buttons on the PIE UI. It will turn buttons on and off when needed.
+ */
 class ButtonManager {
+    static geoBtnArray = ['northarrowopt', 'scalebarbtnopt', 'sunarrowopt', 'keyopt', 'observerarrowopt'];
+    
+    /**
+     * @constructor
+     * @param void
+     */
     constructor( ){
         this.MemoryObject = [];
         btnManager = this;
     }
 
-    static geoBtnArray = Array('northarrowopt', 'scalebarbtnopt', 'sunarrowopt', 'keyopt', 'observerarrowopt');
-
+    /**
+     * @function refresh
+     * @param void
+     * @description refresh the button manager to update the button detections.
+     */
     refresh()
     {
         // deactivate all the buttons
@@ -49,12 +61,23 @@ class ButtonManager {
         });
     }
 
+    /**
+     * @function addImage
+     * @param {string} imagename the name of the image we are editing.
+     * @param {string} btnArray array of buttons that need to be updated.
+     * @description this function adds objects into an array to track which buttons are active an deactivated.
+     */
     addImage( imagename, btnArray )
     {
         btnManager.MemoryObject[imagename] = btnArray
         btnManager.refresh()
     }
 
+    /**
+     * @function removeImage
+     * @param {string} imagename the name of the image being removed from the MemoryObject
+     * @description this functions removes objects from the MemoryObject and then refreshes the UI
+     */
     removeImage( imagename )
     {
         if( btnManager.MemoryObject[imagename] ) 
