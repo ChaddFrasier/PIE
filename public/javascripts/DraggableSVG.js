@@ -11,7 +11,6 @@ var _this = null;
  * @class DraggableSVG
  */
 class DraggableSVG {
-
     /**
      * @constructor
      * @param {string} containerId id to the SVG object you want to be a draggable area 
@@ -100,7 +99,6 @@ class DraggableSVG {
             document.getElementById( _this.containerId ).classList.add('dragging');
         }
     }
-
 
     /**
      * @function createSVGP
