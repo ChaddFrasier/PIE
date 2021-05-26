@@ -6,6 +6,8 @@ const fs = require('fs');
 const sharp  = require('sharp');
 const router = express.Router();
 const EXPORT_FILE_PATH = path.join( __dirname, "..", "public", "exports" );
+const PIEAPI = require('../api/PIEAPI')
+
 // init storage object to tell multer what to do
 var storage = multer.diskStorage(
     {
@@ -25,17 +27,6 @@ var storage = multer.diskStorage(
 var upload = multer( { storage: storage } );
 /**
  * POST /export
- * 
- * upload the svg data and convert the image data into the desired output formats and return the names of the files.
- * 
- * 
- * TODO: 
- * 
- *       SVG File Exportation is not the best. it works when vieewing in browsers but fails to render anything propely when opened in an editor.
- * 
- *      1*. figure out how to parse over the user svg and create a D3 copy of it then export using the D3 format. 
- *      2. rewrite how the application works on the user side to create the figure using d3 and then exporting it using the browser. removing a server path.
- *      3*. read morre about standard svg files and write the data in by hand on the server.
  */
 router.post('/', upload.single('exportfile') , async (req, res, next) => {
     console.log(req.body)
@@ -93,7 +84,41 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
                         break;
 
                     case "tiff":
-                        // TODO: run the gdal operations to preserve the origional geospacialdata on this image with the icons added to it
+                        
+                    /* TODO: 
+
+                        Prereq: 
+                            1. Output Size
+                            2. output X and Y of the geo data
+                            3. the scale of the geo data
+                            4. the name of the GEO data file in the /uploads folder
+                            5. the output name 
+
+                         run the gdal operations to preserve the origional geospacialdata on this image with the icons added to it
+                        
+                        1. Create the raw vrt
+                        gdal_translate -of VRT ../public/upload/<userfile>
+
+                        2. Edit the vrt to match the output dimensions and image location x and y, then create the new cub or tiff file.
+                        gdal_translate -of (ISIS3 or GTIFF) new.vrt new_geo.(cub or tif)
+
+                        3. Export the new geo_file raster into a vrt at the new size and create a fake png to use for the auxilary data,
+                        then remove the fake png image we dont need.
+                        gdal_translate -of VRT new_geo.(cub or tif) new_geo.vrt
+                        gdal_translate -of PNG new_geo.(cub or tif) new_geo_fake.png
+                        rm new_geo_fake.png
+
+                        4. Change the name of the source detsination in the vrt to the users png that we extract and create using Sharp,
+                        then convert the new vrt into the GEO format combining the users PNG.
+                        gdal_translate -of (ISIS3 or GTIFF) new_geo.vrt output.(cub or tif)
+
+                        5. send back the new geoFile.
+                    */
+                        const api = PIEAPI()
+
+                        // 1
+                        api.gdal_translate(['--help'])
+
                         console.log("TIFF");
                         break;
 
@@ -154,7 +179,7 @@ function beautifySVG( from, to )
         }
 
         // set this line in the new file if the passOver is false
-        if( !passOver && line.indexOf('<rect class="marker"') < 0)
+        if( !passOver && line.indexOf('<rect class="marker"') < 0 )
         {
             // check if the current line needs to to moved back b/c it is the end of a parent section
             parentEndArray.forEach( tag => {
