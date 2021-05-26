@@ -417,7 +417,9 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             event.preventDefault();
 
             var regexp = new RegExp( /([A-Z]|[0-9])*(?:\.(png|jpg|svg|tiff|tif)|\s)$/i ),
-                breakFlag = false;
+                breakFlag = false,
+                figContainer = document.getElementById("figurecontainer"),
+                imageContainer = document.querySelector(".containingelement");
 
             // change the color of the border for bad filename
             if( regexp.test(fileinputname.value) || fileinputname.value.length == 0 )
@@ -455,7 +457,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 // create the request data using the form
                 var fd = new FormData(form),
                     xhr = new XMLHttpRequest(),
-                    temp = cleanSVG(document.getElementById("figurecontainer").cloneNode(true));
+                    temp = cleanSVG(figContainer.cloneNode(true));
 
                 // set response type
                 xhr.responseType = 'json';
@@ -467,14 +469,13 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 fd.append("exportfile", svgBlob, `${fileinputname.value}_tmp.svg`);
                 fd.append("svg", fileinputtype.checked);
                 fd.append("png", fileinputtype1.checked);
-                fd.append("tiff",fileinputtype2.checked )
+                fd.append("tiff",fileinputtype2.checked);
                 fd.append("jpeg", fileinputtype3.checked);
                 fd.append("dims", figsizeselect.value);
-                
-                // TODO:
-                    // append the origional file name
-                    // append the x and y and the image
-                    // append the scale
+                fd.append('xOff', Number(imageContainer.firstElementChild.getAttribute("x")));
+                fd.append('yOff', Number(imageContainer.firstElementChild.getAttribute("y")));
+                fd.append('scale', Number(imageContainer.getAttribute("transform").split('(')[1].slice(0,1)));
+                fd.append('srcFilename', document.querySelector("input[name='imageinput']").value );
 
                 // when the requests load handle the response
                 xhr.onloadend = () => {
@@ -4985,8 +4986,6 @@ function saveBlob(blob, fileName)
  * With this function i want to go through the whole clone and remove 
  * the id and class of every element and nested child inside of the svg so that the server has an 
  * easier time handling it
- * 
- * @todo this may need d3 or something similar to format the whole thing properly.
  */
 function cleanSVG( clone )
 {
