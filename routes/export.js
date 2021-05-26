@@ -6,6 +6,7 @@ const fs = require('fs');
 const sharp  = require('sharp');
 const router = express.Router();
 const EXPORT_FILE_PATH = path.join( __dirname, "..", "public", "exports" );
+const UPLOADS_FILE_PATH = path.join( __dirname, "..", "public", "uploads" );
 const PIEAPI = require('../api/PIEAPI')
 
 // init storage object to tell multer what to do
@@ -114,10 +115,7 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
 
                         5. send back the new geoFile.
                     */
-                        const api = PIEAPI()
-
-                        // 1
-                        api.gdal_translate(['--help'])
+                        const api = PIEAPI();
 
                         console.log("TIFF");
                         break;
