@@ -93,7 +93,28 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
                         break;
 
                     case "tiff":
-                        // TODO: run the gdal operations to preserve the origional geospacialdata on this image with the icons added to it
+                        
+                    /* TODO: 
+                         run the gdal operations to preserve the origional geospacialdata on this image with the icons added to it
+                        
+                        1. Create the raw vrt
+                        gdal_translate -of VRT ../public/upload/<userfile>
+
+                        2. Edit the vrt to match the output dimensions and image location x and y, then create the new cub or tiff file.
+                        gdal_translate -of (ISIS3 or GTIFF) new.vrt new_geo.(cub or tif)
+
+                        3. Export the new geo_file raster into a vrt at the new size and create a fake png to use for the auxilary data,
+                        then remove the fake png image we dont need.
+                        gdal_translate -of VRT new_geo.(cub or tif) new_geo.vrt
+                        gdal_translate -of PNG new_geo.(cub or tif) new_geo_fake.png
+                        rm new_geo_fake.png
+
+                        4. Change the name of the source detsination in the vrt to the users png that we extract and create using Sharp,
+                        then convert the new vrt into the GEO format combining the users PNG.
+                        gdal_translate -of (ISIS3 or GTIFF) new_geo.vrt output.(cub or tif)
+
+                        5. send back the new geoFile.
+                    */
                         console.log("TIFF");
                         break;
 
