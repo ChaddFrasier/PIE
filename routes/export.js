@@ -6,6 +6,8 @@ const fs = require('fs');
 const sharp  = require('sharp');
 const router = express.Router();
 const EXPORT_FILE_PATH = path.join( __dirname, "..", "public", "exports" );
+const PIEAPI = require('../api/PIEAPI')
+
 // init storage object to tell multer what to do
 var storage = multer.diskStorage(
     {
@@ -84,6 +86,14 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
                     case "tiff":
                         
                     /* TODO: 
+
+                        Prereq: 
+                            1. Output Size
+                            2. output X and Y of the geo data
+                            3. the scale of the geo data
+                            4. the name of the GEO data file in the /uploads folder
+                            5. the output name 
+
                          run the gdal operations to preserve the origional geospacialdata on this image with the icons added to it
                         
                         1. Create the raw vrt
@@ -104,6 +114,11 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
 
                         5. send back the new geoFile.
                     */
+                        const api = PIEAPI()
+
+                        // 1
+                        api.gdal_translate(['--help'])
+
                         console.log("TIFF");
                         break;
 
@@ -164,7 +179,7 @@ function beautifySVG( from, to )
         }
 
         // set this line in the new file if the passOver is false
-        if( !passOver && line.indexOf('<rect class="marker"') < 0)
+        if( !passOver && line.indexOf('<rect class="marker"') < 0 )
         {
             // check if the current line needs to to moved back b/c it is the end of a parent section
             parentEndArray.forEach( tag => {

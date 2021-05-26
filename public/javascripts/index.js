@@ -401,7 +401,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
         columnsvg.append(fileinputtypesvglabel, dividericonbox, fileinputtype);
         columnpng.append(fileinputtypepnglabel, dividericonbox.cloneNode(true), fileinputtype1);
-        //columntiff.append(fileinputtypetifflabel, dividericonbox.cloneNode(true), fileinputtype2)
+        columntiff.append(fileinputtypetifflabel, dividericonbox.cloneNode(true), fileinputtype2)
         columnjpg.append(fileinputtypejpeglabel, dividericonbox.cloneNode(true), fileinputtype3);
 
         forminputcheckboxholder.append(columnsvg, columntiff, columnpng, columnjpg);
@@ -467,9 +467,15 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 fd.append("exportfile", svgBlob, `${fileinputname.value}_tmp.svg`);
                 fd.append("svg", fileinputtype.checked);
                 fd.append("png", fileinputtype1.checked);
-                //fd.append("tiff",fileinputtype2.checked )
+                fd.append("tiff",fileinputtype2.checked )
                 fd.append("jpeg", fileinputtype3.checked);
                 fd.append("dims", figsizeselect.value);
+                
+                // TODO:
+                    // append the origional file name
+                    // append the x and y and the image
+                    // append the scale
+
                 // when the requests load handle the response
                 xhr.onloadend = () => {
                     // response has all the links for downloading images
