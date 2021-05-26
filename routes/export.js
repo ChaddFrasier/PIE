@@ -25,17 +25,6 @@ var storage = multer.diskStorage(
 var upload = multer( { storage: storage } );
 /**
  * POST /export
- * 
- * upload the svg data and convert the image data into the desired output formats and return the names of the files.
- * 
- * 
- * TODO: 
- * 
- *       SVG File Exportation is not the best. it works when vieewing in browsers but fails to render anything propely when opened in an editor.
- * 
- *      1*. figure out how to parse over the user svg and create a D3 copy of it then export using the D3 format. 
- *      2. rewrite how the application works on the user side to create the figure using d3 and then exporting it using the browser. removing a server path.
- *      3*. read morre about standard svg files and write the data in by hand on the server.
  */
 router.post('/', upload.single('exportfile') , async (req, res, next) => {
     console.log(req.body)
