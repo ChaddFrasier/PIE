@@ -5,9 +5,10 @@ const path  = require('path');
 const fs = require('fs');
 const sharp  = require('sharp');
 const router = express.Router();
+const PIEAPI = require('../api/PIEAPI');
+
 const EXPORT_FILE_PATH = path.join( __dirname, "..", "public", "exports" );
 const UPLOADS_FILE_PATH = path.join( __dirname, "..", "public", "uploads" );
-const PIEAPI = require('../api/PIEAPI')
 
 // init storage object to tell multer what to do
 var storage = multer.diskStorage(
@@ -39,7 +40,12 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
     // 2. What was the new filename given by user
     let newname = req.body.exportfilename;
     // 3. What was the desired dimensions of the output set by figuresize input
-    let figoutputsize = req.body.dims;
+    let figoutputsize = req.body.dims.split(','),
+        newX = req.body.xOff,
+        newY = req.body.yOff,
+        scale = req.body.scale,
+        srcFilename = req.body.srcFilename.replace(/^.*[\\\/]/, '');
+
     try
     {
         // convert the image to the desired format(s)
@@ -85,39 +91,82 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
                         break;
 
                     case "tiff":
-                        
-                    /* TODO: 
+                        await sharp( path.join(EXPORT_FILE_PATH, req.file.originalname) )
+                        .png()
+                        .toFile( path.join(EXPORT_FILE_PATH, newname+".png") )
+                        .catch( err => {
+                            console.log("ERROR HAPPNEED IN SHARP");
+                            if(err) throw err;
+                        })
 
-                        Prereq: 
-                            1. Output Size
-                            2. output X and Y of the geo data
-                            3. the scale of the geo data
-                            4. the name of the GEO data file in the /uploads folder
-                            5. the output name 
+                        var api = new PIEAPI();
 
-                         run the gdal operations to preserve the origional geospacialdata on this image with the icons added to it
-                        
-                        1. Create the raw vrt
-                        gdal_translate -of VRT ../public/upload/<userfile>
+                        // edit the VRT and create the new GEOFILE
+                        await api.edit_vrt( 
+                            PIEAPI.getNewImageName(path.join(UPLOADS_FILE_PATH, srcFilename), 'vrt' ), 
+                            Number(figoutputsize[0]),
+                            Number(figoutputsize[1]),
+                            Number(newX),
+                            Number(newY),
+                            Number(scale)
+                            ).then( async editedVrt => {
+                                
+                                // use the new GEOFILE to create the new parent VRT.
+                                await api.gdal_virtual(
+                                    editedVrt,
+                                    PIEAPI.getNewImageName(
+                                        editedVrt,
+                                        'cub'
+                                    )
+                                ).then( async (isisFile) => {
+                                    // make png from the new cub file
+                                    await api.gdal_virtual(
+                                        isisFile,
+                                        PIEAPI.getNewImageName(
+                                            isisFile,
+                                            "png"
+                                        ))
 
-                        2. Edit the vrt to match the output dimensions and image location x and y, then create the new cub or tiff file.
-                        gdal_translate -of (ISIS3 or GTIFF) new.vrt new_geo.(cub or tif)
+                                    await api.gdal_virtual(
+                                        isisFile,
+                                        PIEAPI.getNewImageName(
+                                            isisFile,
+                                            "vrt"
+                                        ))
+                                        
+                                    // convert the user tmp into a png
+                                    await sharp( path.join( EXPORT_FILE_PATH, `${newname}_tmp.svg` ) )
+                                        .png()
+                                        .toFile( path.join( EXPORT_FILE_PATH, `${newname}.png` ) )
+                                        .catch( err => {
+                                            console.log(err)
+                                        })
 
-                        3. Export the new geo_file raster into a vrt at the new size and create a fake png to use for the auxilary data,
-                        then remove the fake png image we dont need.
-                        gdal_translate -of VRT new_geo.(cub or tif) new_geo.vrt
-                        gdal_translate -of PNG new_geo.(cub or tif) new_geo_fake.png
-                        rm new_geo_fake.png
+                                    await api.edit_src(
+                                        PIEAPI.getNewImageName(isisFile, "vrt"),
+                                        path.join( EXPORT_FILE_PATH, `${newname}.png` )
+                                    )
+                                    
+                                    await api.gdal_virtual(
+                                        PIEAPI.getNewImageName(isisFile, "vrt"),
+                                        path.join( EXPORT_FILE_PATH, `${newname}.tif`)
+                                    )
 
-                        4. Change the name of the source detsination in the vrt to the users png that we extract and create using Sharp,
-                        then convert the new vrt into the GEO format combining the users PNG.
-                        gdal_translate -of (ISIS3 or GTIFF) new_geo.vrt output.(cub or tif)
+                                    var regex = new RegExp( `${api.getFileId(srcFilename)}_.*\.export\.`, "i")
 
-                        5. send back the new geoFile.
-                    */
-                        const api = PIEAPI();
+                                    console.log(regex)
 
-                        console.log("TIFF");
+                                    fs.readdirSync(UPLOADS_FILE_PATH)
+                                        .filter(f => regex.test(f) )
+                                        .map(f => fs.unlinkSync(UPLOADS_FILE_PATH + '/' + f))
+
+                                });
+                            }).catch( err => {
+                                console.log(err)
+                            });
+
+                        // after the await functions finish this send the file name the user for download
+                        returnObject["tiff"] = `${newname}.tif`
                         break;
 
                     default:
@@ -126,11 +175,13 @@ router.post('/', upload.single('exportfile') , async (req, res, next) => {
                 }
             }
         }
-        // send the resulting object back
+
         res.send(returnObject);
+
     }
     catch( err )
     {
+        console.log( `Error: ${err}`)
         // send an internal error code
         res.sendStatus(500)
     }
@@ -227,4 +278,5 @@ function repeat( string, count )
     // return the built string
     return build;
 }
+
 module.exports = router;
