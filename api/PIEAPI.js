@@ -131,7 +131,7 @@ module.exports = class PIEAPI {
             child.stderr.on("data", data => { 
                 if( data !== " " )
                 {
-                    logToFile(logFilename, errorBuf);
+                    logToFile(this.logFilename, errorBuf);
                 }
             });
 
@@ -218,7 +218,7 @@ module.exports = class PIEAPI {
             child.stderr.on("data", data => { errorBuf += data });
             child.on('isis2std Error', (error) => {
                 console.log(`error: ${error.message}`);
-                logToFile(logFilename, error.message);
+                logToFile(this.logFilename, error.message);
             });
             // when the response is ready to close
             child.on("close", code => {
@@ -252,13 +252,13 @@ module.exports = class PIEAPI {
                 }
             });
             child.on('error', (error) => {
-                logToFile(logFilename, `ISIS Error:\n\t${error.name}: ${error.message}`);
+                logToFile(this.logFilename, `ISIS Error:\n\t${error.name}: ${error.message}`);
             });
             // when the response is ready to close
             child.on("close", code => {
                 if( code !== 0 )
                 {
-                    logToFile(logFilename, errorBuf);
+                    logToFile(this.logFilename, errorBuf);
                 }
                 // resolve with the return code
                 resolveFunc(code);
@@ -295,13 +295,13 @@ module.exports = class PIEAPI {
                 }
             });
             child.on('error', (error) => {
-                logToFile(logFilename, `ISIS Error:\n\t${error.name}: ${error.message}`);
+                logToFile(this.logFilename, `ISIS Error:\n\t${error.name}: ${error.message}`);
             });
             // when the response is ready to close
             child.on("close", code => {
                 if( code !== 0 )
                 {
-                    logToFile( logFilename, errorBuf)
+                    logToFile( this.logFilename, errorBuf)
                 }
                 
                 resolveFunc(code);
@@ -337,17 +337,104 @@ module.exports = class PIEAPI {
                 }
             });
             child.on('error', (error) => {
-                logToFile(logFilename, `ISIS Error:\n\t${error.name}: ${error.message}`);
+                logToFile(this.logFilename, `ISIS Error:\n\t${error.name}: ${error.message}`);
             });
             // when the response is ready to close
             child.on("close", code => {
                 if( code !== 0 )
                 {
-                    logToFile( logFilename, errorBuf)
+                    logToFile( this.logFilename, errorBuf)
                 }
                 resolveFunc(code);
             });
         });
+    }
+
+
+    /**
+     * 
+     * @param {*} vrtFile 
+     * @param {*} figX 
+     * @param {*} figY 
+     * @param {*} dataX 
+     * @param {*} dataY 
+     * @param {*} scale
+     */
+    edit_vrt ( vrtFile, figX, figY, dataX, dataY, scale ) {
+
+        return  new Promise( (resolveFunc, rejectFunc) => {
+
+            try{
+                var filecontent = fs.readFileSync(vrtFile).toString().split('\n'),
+                    pastMask = false;
+
+                for (let index = 0; index < filecontent.length; index++) {
+                    const line = filecontent[index];
+                    
+                    if( line.indexOf('rasterXSize') > -1 && index === 0)
+                    {
+                        filecontent[index] = `<VRTDataset rasterXSize="${figX}" rasterYSize="${figY}">`;
+                    }
+                    else if( line.indexOf('DstRect') > -1 )
+                    {
+                        if( pastMask )
+                        {
+                            filecontent[index] = `\t\t\t<DstRect xOff="${parseInt(dataX)}" yOff="${parseInt(dataY)}" xSize="${parseInt(scale * getOldDims(line, 0))}" ySize="${parseInt(scale * getOldDims(line, 1))}" />`;
+                        }
+                        else
+                        {
+                            pastMask = !pastMask
+                        }
+                    }
+                }
+    
+                fs.writeFileSync( PIEAPI.getNewImageName(vrtFile, 'export.vrt'), String(filecontent.join('\n')))
+    
+                resolveFunc( PIEAPI.getNewImageName(vrtFile, 'export.vrt') )
+            }
+            catch( err )
+            {
+                console.log(err)
+                rejectFunc()
+            }
+        })
+    }
+
+    
+    edit_src ( vrtFile, newPng ) {
+
+        return  new Promise( (resolveFunc, rejectFunc) => {
+
+            try{
+                var filecontent = fs.readFileSync(vrtFile).toString().split('\n'),
+                    pastMask = false;
+
+                for (let index = 0; index < filecontent.length; index++) {
+                    const line = filecontent[index];
+                    
+                    if( line.indexOf('SourceFilename') > -1 )
+                    {
+                        if( pastMask )
+                        {
+                            filecontent[index] = `\t\t\t<SourceFilename relativeToVRT="1">${newPng}</SourceFilename>`;
+                        }
+                        else
+                        {
+                            pastMask = !pastMask
+                        }
+                    }
+                }
+    
+                fs.writeFileSync( vrtFile, String(filecontent.join('\n')))
+    
+                resolveFunc( vrtFile )
+            }
+            catch( err )
+            {
+                console.log(err)
+                rejectFunc()
+            }
+        })
     }
 
     /**
@@ -361,6 +448,21 @@ module.exports = class PIEAPI {
         let tmp = filename.split(".")
         tmp[tmp.length-1] = ext;
         return tmp.join(".");
+    }
+
+    eraseExportFiles( filepath ) {
+        return new Promise( (resolve, reject) =>
+        {
+            var id = this.getFileId(filepath),
+            path = filepath.split(id)[0];
+
+            
+            resolve()
+        });
+    }
+    
+    getFileId( filename ) {
+        return filename.split("_")[0]
     }
 };
 
@@ -376,9 +478,11 @@ function getOutputFormat( filename )
         jpegs = [ "JPEG", "jpeg", "JPG", "jpg" ],
         vrts = ["VRT", "vrt" ],
         svg = ["SVG", "svg" ],
+        cub = ["ISIS3", "cub", "CUB" ],
+        tif = ["GTIFF", "tif", "tiff", "TIFF", "TIF" ],
         ext = chunks[chunks.length-1];
 
-    Array(jpegs, pngs, vrts, svg).forEach(array => {
+    Array(jpegs, pngs, vrts, svg, cub, tif).forEach(array => {
         if(array.includes(ext))
         { 
             ext = array[0];
@@ -408,4 +512,25 @@ function cleanPvlObject( object, keys )
         }
     }
     return {data: object, keys: keys}
+}
+
+function logToFile( file, text )
+{
+    console.log(`FAILURE: ${text}` )
+}
+
+/**
+ * 
+ * @param {string} line the line of text that contains the origional offset and size
+ * @param {Number<Binary>} val 0 is X; 1 is Y
+ */
+function getOldDims ( line, val) {
+
+    switch( val )
+    {
+        case 0:
+            return parseInt(line.split('xSize="').pop().split('ySize')[0])
+        case 1:
+            return parseInt(line.split('ySize="').pop())
+    }
 }
