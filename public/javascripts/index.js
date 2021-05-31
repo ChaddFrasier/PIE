@@ -359,9 +359,6 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
         fileinputtypetifflabel.innerHTML = "GeoTIFF";
         fileinputtypejpeglabel.innerHTML = "JPEG";
 
-        //remove this function for the next docker build of v1.1.0
-        //fileinputtype2.classList.add("disabled") 
-
         form.setAttribute("method", "post");
         form.setAttribute("enctype", "multipart/form-data");
         form.setAttribute("runat", "server");
@@ -471,11 +468,11 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                 fd.append("png", fileinputtype1.checked);
                 fd.append("tiff",fileinputtype2.checked);
                 fd.append("jpeg", fileinputtype3.checked);
-                fd.append("dims", figsizeselect.value);
+                fd.append("dims", [ figContainer.getAttribute("width"), figContainer.getAttribute('height') ]);
                 fd.append('xOff', Number(imageContainer.firstElementChild.getAttribute("x")));
                 fd.append('yOff', Number(imageContainer.firstElementChild.getAttribute("y")));
-                fd.append('scale', Number(imageContainer.getAttribute("transform").split('(')[1].slice(0,1)));
-                fd.append('srcFilename', document.querySelector("input[name='imageinput']").value );
+                fd.append('scale', Number(imageContainer.getAttribute("transform").split('(').pop().slice(0,1)));
+                fd.append('srcFilename', imageContainer.firstElementChild.getAttribute("srcFile") );
 
                 // when the requests load handle the response
                 xhr.onloadend = () => {
@@ -968,6 +965,8 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                                 // occurs after readAsDataURL
                                 reader.onload = function(e) {
                                     // use jquery to update the image source
+                                    document.getElementById(imageId).setAttribute('srcFile', responseObject.fn)
+
                                     document.getElementById(imageId).setAttribute('href', e.target.result)
                                     document.getElementById(imageId).setAttribute('xlink:href', e.target.result)
                                     document.getElementById(imageId).setAttribute('GEO', 'true')
@@ -1119,7 +1118,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
                                             let scalebar = document.getElementById(`scalebarIcon-${imageId}`)
                                             // set the new scale after calculating the raw scale
-                                            var imagescale = parseFloat( image.parentElement.getAttribute("transform").split('scale(')[1] )
+                                            var imagescale = parseFloat( image.parentElement.getAttribute("transform").split('scale(').pop() )
                     
                                             scalebar.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) * imagescale )
                                             scalebar.setAttribute("height", (scaleObject.sc * 700) * imagescale )
@@ -1873,7 +1872,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
                         );
 
                         // set the new scale after calculating the raw scale and multiplying that to the dimensions here
-                        var imagescale = parseFloat( image.parentElement.getAttribute("transform").split('scale(')[1] )
+                        var imagescale = parseFloat( image.parentElement.getAttribute("transform").split('scale(').pop() )
 
                         icongroup.setAttribute("width", (scaleObject.width * scaleObject.sc * 2) * imagescale )
                         icongroup.setAttribute("height", (scaleObject.sc * 700) * imagescale )
@@ -3233,8 +3232,8 @@ function updateIconScale( event )
     if( !isNaN( inputvalue ) )
     {   
         icon.setAttribute("scale", inputvalue)
-        icon.setAttribute("width", parseFloat(icon.getAttribute("viewBox").split(" 0 ")[1])*inputvalue )
-        icon.setAttribute("height", parseFloat(icon.getAttribute("viewBox").split(" 0 ")[1])*inputvalue )
+        icon.setAttribute("width", parseFloat(icon.getAttribute("viewBox").split(" 0 ").pop())*inputvalue )
+        icon.setAttribute("height", parseFloat(icon.getAttribute("viewBox").split(" 0 ").pop())*inputvalue )
     }
 }
 
@@ -3311,12 +3310,12 @@ function removeLineWindow( event )
             // remove marker if there is one
             if( linesvg.getAttribute("marker-end") )
             {
-                removeMarker(linesvg.getAttribute("marker-end").split("url(#")[1].replace(")","") )
+                removeMarker(linesvg.getAttribute("marker-end").split("url(#").pop().replace(")","") )
             }
 
             if( linesvg.getAttribute("marker-start") )
             {
-                removeMarker(linesvg.getAttribute("marker-start").split("url(#")[1].replace(")","") )
+                removeMarker(linesvg.getAttribute("marker-start").split("url(#").pop().replace(")","") )
             }
         }
         catch(err)
@@ -3861,7 +3860,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
         lineelement.setAttribute("stroke", this.value )
 
         try{
-            let markerEndid = lineelement.getAttribute("marker-end").split('#')[1].replace(')','')
+            let markerEndid = lineelement.getAttribute("marker-end").split('#').pop().replace(')','')
 
             if( markerEndid )
             {
@@ -3883,7 +3882,7 @@ function createLineToolBox( objectid, x1, y1, x2, y2 , strokeWidth)
          
         try 
         {
-            let markerStartid = lineelement.getAttribute("marker-start").split('#')[1].replace(')','')
+            let markerStartid = lineelement.getAttribute("marker-start").split('#').pop().replace(')','')
 
             if( markerStartid )
             {
