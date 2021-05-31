@@ -62,11 +62,17 @@ router.post('/', upload.single('imageinput') , (req, res, next) => {
                 
                 // when both promises finish read the data out of the pvl file
                 Promise.all([promise1, promise2, promise3]).then( codes => {
+
+                    pieapi.gdal_virtual(
+                        path.join("public", "uploads", req.file.filename),
+                        path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, 'vrt') )
+                    );
+                    
                     // read the resulting pvl file
                     (pieapi.pie_readPVL(path.join("public", "uploads", PIEAPI.getNewImageName(req.file.filename, "pvl")),
                     ['Lines', 'Samples', 'SubSpacecraftGroundAzimuth', 'SubSolarAzimuth', 'NorthAzimuth', 'PixelResolution', 'ObliquePixelResolution', 'Phase', 'Emission', 'Incidence',])
                     ).then( object => {
-                        res.status(200).send({ imagefile: pieapi.URLerize(filepath, "upload"), pvlData: object })
+                        res.status(200).send({ imagefile: pieapi.URLerize(filepath, "upload"), pvlData: object, fn: path.basename(filepath) })
                     })
                 });
             }
