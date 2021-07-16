@@ -622,7 +622,9 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             captiontextcolorinput = document.createElement("input"),
             captiontextcolorlabel = document.createElement("label"),
             captionbackgroundcolorinput = document.createElement("input"),
-            captionbackgroundcolorlabel = document.createElement("label");
+            captionbackgroundcolorlabel = document.createElement("label"),
+            captiontempbox = document.createElement("div"),
+            captiontemplabel = document.createElement("label");
 
             captiontextcolorlabel.setAttribute("objectid", captionId)
             captiontextcolorinput.setAttribute("objectid", captionId)
@@ -665,7 +667,6 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             }
             })
 
-
             captiontextcolorinput.addEventListener("change", function(event){
             updateCaptionTextColor( event.target.value , event.target.attributes.objectid.value)
             })
@@ -674,8 +675,32 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             updateCaptionBoxColor( event.target.value , event.target.attributes.objectid.value)
             })
 
+            let templateBtn1 = document.createElement("button"),
+                templateBtn2 = document.createElement("button"),
+                templateBtn3 = document.createElement("button");
+
+                templateBtn1.innerHTML = "Mosaic"
+                templateBtn2.innerHTML = "Map Projected"
+                templateBtn3.innerHTML = "Composite"
+
+                templateBtn1.classList.add("templateBtn")
+                templateBtn2.classList.add("templateBtn")
+                templateBtn3.classList.add("templateBtn")
+
+            captiontemplabel.innerHTML = "Templates"
+            captiontempbox.append(
+                templateBtn1,
+                templateBtn2,
+                templateBtn3
+            )
+
+            // add the events for the caption generator
+            templateBtn1.addEventListener("click", function(){ updateTemplateText( 0 ) })
+            templateBtn2.addEventListener("click", function(){ updateTemplateText( 1 ) })
+            templateBtn3.addEventListener("click", function(){ updateTemplateText( 2 ) })
+
             // append all the elements to the tool box
-            toolsarea.append( 
+            toolsarea.append(
             textlabel,
             document.createElement("br"),
             textinput,
@@ -686,7 +711,11 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
             document.createElement("br"),
             captionbackgroundcolorlabel,
             document.createElement("br"),
-            captionbackgroundcolorinput
+            captionbackgroundcolorinput,
+            document.createElement("br"),
+            captiontemplabel,
+            document.createElement("br"),
+            captiontempbox
             )
 
             // set caption id on all input elements
@@ -696,11 +725,11 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
             // append all elements together
             newoptionsbar.append(
-            header,
-            minibtn,
-            deletebtn,
-            layerbtn,
-            toolsarea
+                header,
+                minibtn,
+                deletebtn,
+                layerbtn,
+                toolsarea
             )
 
             newoptionsbar.setAttribute( "objectid", captionId )
@@ -713,6 +742,7 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
 
             draggableList.getMenuParent().insertAdjacentElement("afterbegin", holderbox)
 
+            /**TODO: this could be better located on the page to show the user what they are writing */
             /** Add a caption box in the svg area */
             const textholder = document.createElementNS(NS.svg, "svg")
             textholder.setAttribute("id", captionId)
@@ -2389,8 +2419,42 @@ function typeofObject(testString)
     {
         return "caption";
     }
-    else{
+    else
+    {
         return "none";
+    }
+}
+
+/**
+ * TODO:
+ * @param {number} code 
+ */
+function updateTemplateText( code )
+{
+    var captionBox = document.querySelector("textarea[name='captiontextinput']")
+
+    /**
+     * TODO: write a function to exchange the key words with the data values
+     * 
+     *      The concept for this function will be adopted from PIPS.
+     */
+
+    switch( code )
+    {
+        case 0:
+            captionBox.value = "Pictured is a SpacecraftName map of TargetName with IsisCube.Mapping.ProjectionName projection.\
+             The figure was created from the image IsisCube.Archive.ProductId in mission phase Phase. The figure is at a scale\
+              of PixelResolution m/pix and centered at IsisCube.Mapping.CenterLatitude°N, IsisCube.Mapping.CenterLongitude°E.";
+            break;
+        case 1:
+            captionBox.value = "This image of TargetName is a mosaic with ProjectionName projection. This image is centered at\
+             IsisCube.Mapping.CenterLatitude°N, IsisCube.Mapping.CenterLongitude°E. This image was captured by the SpacecraftName\
+              during the mission phase Phase and is at a scale of PixelResolution m/pix.";
+            break;
+        case 2:
+            captionBox.value = "This composite image of TargetName was created using multiple images from IsisCube.Instrument.\
+            SpacecraftName's mission phase Phase. This composite shows ProjectionName projection of the surface of TargetName."
+            break;
     }
 }
 
@@ -2625,7 +2689,7 @@ function drawToolbox( icontype, iconId, transX, transY )
             /** End Dragging */
 
             // set aptions bar nodes
-            sunoptionbar.append( 
+            sunoptionbar.append(
                 sunoptionheader,
                 minibtn1,
                 deletebtn1,

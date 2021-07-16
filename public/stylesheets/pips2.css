@@ -693,6 +693,13 @@ button.selected {
 .captiontoolsbox > input[type='number'], .imagetoolsbox > input[type='number'] {
     width: 75%;
 }
+
+.templateBtn {
+    width: auto;
+    border-radius: 5px;
+    background: var(--bar-gradient);
+}
+
 .imagetoolsbox > input[name='widthinput'], .imagetoolsbox > input[name='heightinput'] {
     background: rgb(73, 73, 73);
     width: 44%;
