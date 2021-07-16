@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node_modules/pm2/bin/pm2 start ./bin/www",
+    "stop": "node_modules/pm2/bin/pm2 stop ./bin/www",
     "debug:win": "SET DEBUG=pie:* & node ./bin/www",
     "debug:mac": "set DEBUG=pie:* & node ./bin/www",
     "cy:dev": "node ./bin/www & ./node_modules/.bin/cypress open"
